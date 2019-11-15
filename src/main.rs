@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::vec::Vec;
 use rand::seq::SliceRandom; 
+use std::cmp::PartialEq;
+
 
 #[derive(Debug)]
 struct Bag {
@@ -9,6 +11,16 @@ struct Bag {
     values: [i32; 27],
     scores: HashMap<char, i32>,
     distribution: Vec<char>
+}
+
+trait ItemRemovable<T> {
+    fn remove_item(&mut self, some_x: T) -> T;
+}
+
+impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable feature
+    fn remove_item(&mut self, some_x: T) -> T {
+        self.remove(self.iter().position(|x| *x == some_x).unwrap())
+    }
 }
 
 impl Bag {
@@ -41,14 +53,13 @@ impl Bag {
             None => -1
         }
     }
-
-    #[feature(vec_remove_item)]
-    fn draw_tiles(&self, n: usize) -> Vec<&char> {
-        let tiles: Vec<&char> = self.distribution
+    
+    fn draw_tiles(&mut self, n: usize) -> Vec<char> {
+        let tiles: Vec<char> = self.distribution
                                    .choose_multiple(&mut rand::thread_rng(), n)
-                                   .collect();
+                                   .cloned().collect();
         for i in tiles.iter() {
-            self.distribution.remove_item(i);
+            self.distribution.remove_item(*i);
         }
         tiles
     }
