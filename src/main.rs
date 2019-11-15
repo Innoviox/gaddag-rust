@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::vec::Vec;
+use rand::seq::SliceRandom; 
 
 #[derive(Debug)]
 struct Bag {
@@ -26,7 +27,7 @@ impl Bag {
         for (i, &c) in self.alph.iter().enumerate() {
             self.scores.insert(c, self.values[i]);
         }
-        
+
         for (i, &c) in self.alph.iter().enumerate() {
             for _ in 0..self.amts[i] {
                 self.distribution.push(c);
@@ -41,12 +42,15 @@ impl Bag {
         }
     }
 
-    // fn draw_tiles(&self, n: i32) -> i32 {
-    //     if let d = self.distribution {
-
-    //     }
-    //     self.init().draw_tiles(n)
-    // }
+    fn draw_tiles(&self, n: usize) -> Vec<&char> {
+        let tiles: Vec<&char> = self.distribution
+                                   .choose_multiple(&mut rand::thread_rng(), n)
+                                   .collect();
+        for i in tiles.iter() {
+            self.distribution.remove_item(i);
+        }
+        tiles
+    }
 }
 
 fn main() {
@@ -54,4 +58,8 @@ fn main() {
     BAG.init();
     println!("Bag is: {:?}", BAG);
     println!("Score for z is: {}", BAG.score('z'));
+
+    let rack = BAG.draw_tiles(7);
+    println!("Rack is: {:?}", rack);
+    println!("Bag is: {:?}", BAG.distribution);
 }
