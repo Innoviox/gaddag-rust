@@ -16,11 +16,11 @@ impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable f
 
 #[derive(Debug)]
 pub struct Bag {
-    pub alph: [char; 27],
-    pub amts: [i32; 27],
-    pub values: [i32; 27],
-    pub scores: HashMap<char, i32>,
-    pub distribution: Vec<char>
+    alph: [char; 27],
+    amts: [i32; 27],
+    values: [i32; 27],
+    scores: HashMap<char, i32>,
+    distribution: Vec<char>
 }
 
 impl Bag {
