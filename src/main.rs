@@ -11,7 +11,7 @@ struct Bag {
 }
 
 impl Bag {
-    fn default() -> Bag {
+    pub fn default() -> Bag {
         Bag {
             alph: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '?'],
@@ -20,13 +20,18 @@ impl Bag {
             scores: HashMap::new(), 
             distribution: Vec::new()
         }
-    };
+    }
 
     pub fn init(&mut self) {
         for (i, &c) in self.alph.iter().enumerate() {
             self.scores.insert(c, self.values[i]);
         }
-        // self.distribution = 
+        
+        for (i, &c) in self.alph.iter().enumerate() {
+            for _ in 0..self.amts[i] {
+                self.distribution.push(c);
+            }
+        }
     }
 
     fn score(&self, c: char) -> i32 {
@@ -48,5 +53,5 @@ fn main() {
     let mut BAG = Bag::default();
     BAG.init();
     println!("Bag is: {:?}", BAG);
-    println!("Score for a is: {}", BAG.score('a'));
+    println!("Score for z is: {}", BAG.score('z'));
 }
