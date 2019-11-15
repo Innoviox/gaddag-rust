@@ -1,19 +1,19 @@
-use std::io;
-use std::ops::Index;
+use std::collections::HashMap;
 
-struct Ixx {
-    idx: usize
+#[derive(Debug)]
+struct Bag {
+    alph: [char; 27],
+    amts: [i32; 27],
+    values: [i32; 27]
 }
 
-impl Index<Ixx> for String {
-    type Output = Option<char>;
-
-    fn index (&self, idx: Ixx) -> &Self::Output {
-        &self.chars().nth(idx.idx)
-    }
-}
+const BAG: Bag = Bag {
+    alph: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+           'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '?'],
+    amts: [9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2],
+    values: [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0]
+};
 
 fn main() {
-    let v = String::from("hello");
-    println!("First char: {:?}", v[Ixx{idx: 0}]);
+    println!("Bag is: {:?}", BAG)
 }
