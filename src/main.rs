@@ -42,6 +42,7 @@ impl Bag {
         }
     }
 
+    #[feature(vec_remove_item)]
     fn draw_tiles(&self, n: usize) -> Vec<&char> {
         let tiles: Vec<&char> = self.distribution
                                    .choose_multiple(&mut rand::thread_rng(), n)
