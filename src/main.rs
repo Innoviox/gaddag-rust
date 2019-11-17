@@ -20,6 +20,9 @@ fn main() {
     let dir = utils::Direction::Across;
 
     board.play_word(position, word, dir);
+    board.play_word(utils::Position { row: 8, col: 8 }, 
+                    String::from("WORLD"),
+                    utils::Direction::Down);
 
     println!("{}", board);
 }
