@@ -47,3 +47,8 @@ pub struct Position {
     pub row: usize,
     pub col: usize
 }
+
+pub enum Direction {
+    Across,
+    Down
+}

@@ -42,6 +42,10 @@ impl Board {
 
     }
 
+    pub fn play_word(&self, p: Position, word: String, dir: Direction) -> bool {
+
+    }
+
     pub fn valid_at(&self, p: Position) -> [bool; 26] {
         if !"#^+_*.".contains(self.at_position(p)) {
             return [false; 26];
