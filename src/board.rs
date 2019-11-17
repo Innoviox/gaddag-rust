@@ -46,18 +46,19 @@ impl Board {
         let mut current = p.clone();
 
         for c in word.chars() {
+            println!("Writing {}, current {:?} {}", c, current, self.at_position(current));
             match self.at_position(current) {
-                '.' | "*" => self.set(current, c),
-                    _     => return false
+                '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, c),
+                                                _ => return false
             }
 
-            current.tick(direction);
+            if !(current.tick(dir)) { return false }
         }
 
         true
     }
 
-    pub fn valid_at(&self, p: Position) -> [bool; 26] {
+    pub fn valid_at(&mut self, p: Position) -> [bool; 26] {
         if !"#^+_*.".contains(self.at_position(p)) {
             return [false; 26];
         }

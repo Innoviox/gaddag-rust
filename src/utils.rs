@@ -42,19 +42,36 @@ impl Dictionary {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Position {
     pub row: usize,
     pub col: usize
 }
 
-impl Position {
-    pub fn tick(d: Direction) -> bool {
-
-    }
-}
-
+#[derive(Copy, Clone)]
 pub enum Direction {
     Across,
     Down
+}
+
+impl Position {
+    pub fn tick(&mut self, d: Direction) -> bool {
+        match d {
+            Direction::Across => {
+                if (0 <= self.col) && (self.col <= 14) {
+                    self.col += 1;
+                } else {
+                    return false;
+                }
+            },
+            Direction::Down => {
+                if (0 <= self.row) && (self.row <= 14) {
+                    self.row += 1;
+                } else {
+                    return false;
+                }
+            }
+        }
+        true
+    }
 }

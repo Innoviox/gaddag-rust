@@ -13,9 +13,9 @@ fn main() {
     // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
     // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
 
-    let board = board::Board::default();
+    let mut board = board::Board::default();
 
-    let position = utils::Position { row: 8, col: 8 };
+    let position = utils::Position { row: 7, col: 7 };
     let word = String::from("HELLO");
     let dir = utils::Direction::Across;
 
