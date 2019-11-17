@@ -83,28 +83,32 @@ impl Board {
     pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
-        let mut marked: Vec<Position> = Vec::new();
+        let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
 
         for (r, row) in self.state.iter().enumerate() {
             for (c, col) in row.iter().enumerate() {
                 let p = Position { row: r, col: c };
-                if !marked.contains(&p) && self.is_letter(p) {
-                    // start word finding
-                    for d in Direction::iter() {
+                for (di, d) in Direction::iter().enumerate() {
+                    if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(p) {                    
                         let mut curr = p.clone();
                         let mut word = String::new();
                         while self.is_letter(curr) {
-                            println!("{:?}", curr);
                             word.push(self.at_position(curr));
-                            marked.push(curr);
+                            marked.insert(curr, [false, false]);
+                            marked.get_mut(&curr).unwrap()[di] = true;
                             if !curr.tick(*d) { break }
                         }
-                        println!("{}", word);
-                        result.push(word);
+                        
+                        if word.len() > 1 {
+                            println!("{}", word);
+                            result.push(word);
+                        }
                     }
                 }
             }
         }
+
+        println!("{:?}", marked);
 
         result
     }
