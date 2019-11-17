@@ -86,9 +86,9 @@ impl Board {
 
         let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
 
-        for p in iproduct!(0..15, 0..15).map(|(row, col)| Position { row, col }) {
+        for p in positions().iter() {
             for (di, d) in Direction::iter().enumerate() {
-                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(p) {                    
+                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(*p) {                    
                     let mut curr = p.clone();
                     let mut word = String::new();
                     while self.is_letter(curr) {

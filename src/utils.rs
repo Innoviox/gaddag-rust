@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::slice::Iter;
 use std::cmp::PartialEq;
+use std::ops::Range;
 
 pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -91,4 +92,10 @@ pub fn chars(arr: [bool; 26]) -> Vec<char> {
         .filter(|&(a, b)| *b)
         .map(|(a, b)| a)
         .collect()
+}
+
+static pos: Range<usize> = 0..15;
+
+pub fn positions() -> Vec<Position> {
+    iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
