@@ -43,7 +43,8 @@ impl Board {
     }
 
     pub fn play_word(&self, p: Position, word: String, dir: Direction) -> bool {
-
+        let mut current = p.clone();
+        false
     }
 
     pub fn valid_at(&self, p: Position) -> [bool; 26] {
@@ -72,27 +73,27 @@ impl fmt::Display for Board {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let sep = "-".repeat(66);
 
-        write!(f, "{}\n", sep);
-        write!(f, "|    |");
+        write!(f, "{}\n", sep).expect("fail");
+        write!(f, "|    |").expect("fail");
         for row in alph.chars().take(15) {
-            write!(f, "{}", format!(" {} |", row));
+            write!(f, "{}", format!(" {} |", row)).expect("fail");
         }
-        write!(f, "\n{}\n", sep);
+        write!(f, "\n{}\n", sep).expect("fail");
 
         for (num, row) in self.state.iter().enumerate() {
-            write!(f, "| {} |", format!("{:0>2}", num));
+            write!(f, "| {} |", format!("{:0>2}", num)).expect("fail");
             for sq in row.iter() {
                 match sq {
-                    '#' => write!(f, "TWS"),
-                    '^' => write!(f, "DWS"),
-                    '+' => write!(f, "TLS"),
-                    '-' => write!(f, "DLS"),
-                    '.' => write!(f, "   "),
-                     _  => write!(f, " {} ", sq)
+                    '#' => write!(f, "TWS").expect("fail"),
+                    '^' => write!(f, "DWS").expect("fail"),
+                    '+' => write!(f, "TLS").expect("fail"),
+                    '-' => write!(f, "DLS").expect("fail"),
+                    '.' => write!(f, "   ").expect("fail"),
+                     _  => write!(f, " {} ", sq).expect("fail")
                 };
-                write!(f, "|");
+                write!(f, "|").expect("fail");
             }
-            write!(f, "\n{}\n", sep);
+            write!(f, "\n{}\n", sep).expect("fail");
         }
 
         write!(f, "\n")

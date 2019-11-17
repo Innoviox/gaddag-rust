@@ -15,5 +15,11 @@ fn main() {
 
     let board = board::Board::default();
 
+    let position = utils::Position { row: 8, col: 8 };
+    let word = String::from("HELLO");
+    let dir = utils::Direction::Across;
+
+    board.play_word(position, word, dir);
+
     println!("{}", board);
 }
