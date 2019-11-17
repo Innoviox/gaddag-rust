@@ -84,6 +84,17 @@ impl Position {
         }
         true
     }
+
+    pub fn neighbors(&self) -> Vec<Position> {
+        let mut result = Vec::new();
+
+        result.push(Position { row: self.row, col: self.col + 1 });
+        result.push(Position { row: self.row, col: self.col - 1 });
+        result.push(Position { row: self.row + 1, col: self.col });
+        result.push(Position { row: self.row - 1, col: self.col });
+
+        result
+    }
 }
 
 pub fn chars(arr: [bool; 26]) -> Vec<char> {
@@ -99,3 +110,4 @@ static pos: Range<usize> = 0..15;
 pub fn positions() -> Vec<Position> {
     iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
+

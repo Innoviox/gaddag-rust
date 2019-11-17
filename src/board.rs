@@ -117,7 +117,13 @@ impl Board {
     pub fn anchors(&self) -> Vec<Position> {
         let mut result = Vec::new();
 
-
+        for p in positions().iter() {
+            for n in p.neighbors() {
+                if !self.is_letter(n) {
+                    result.push(n);
+                }
+            }
+        }
 
         result
     }
