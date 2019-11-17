@@ -81,19 +81,14 @@ impl Board {
         cross
     }
 
-    fn positions(&self) -> Iter<Position> {
-        iproduct!(0..15, 0..15).map(|(row, col)| Position { row, col })
-                               .collect::<Vec<Position>>().iter()
-    }
-
     pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
         let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
 
-        for p in self.positions() {
+        for p in iproduct!(0..15, 0..15).map(|(row, col)| Position { row, col }) {
             for (di, d) in Direction::iter().enumerate() {
-                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(*p) {                    
+                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(p) {                    
                     let mut curr = p.clone();
                     let mut word = String::new();
                     while self.is_letter(curr) {
