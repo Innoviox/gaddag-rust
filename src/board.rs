@@ -94,21 +94,20 @@ impl Board {
                         let mut word = String::new();
                         while self.is_letter(curr) {
                             word.push(self.at_position(curr));
-                            marked.insert(curr, [false, false]);
+                            if !marked.contains_key(&curr) {
+                                marked.insert(curr, [false, false]);
+                            }
                             marked.get_mut(&curr).unwrap()[di] = true;
                             if !curr.tick(*d) { break }
                         }
                         
                         if word.len() > 1 {
-                            println!("{}", word);
                             result.push(word);
                         }
                     }
                 }
             }
         }
-
-        println!("{:?}", marked);
 
         result
     }

@@ -21,8 +21,8 @@ fn main() {
 
     board.play_word(position, word, dir);
     board.play_word(utils::Position { row: 8, col: 8 }, 
-                    String::from("MINENCE"),
-                    utils::Direction::Down);
+                    String::from("WORLD"),
+                    utils::Direction::Across);
 
     println!("{}", board);
 
