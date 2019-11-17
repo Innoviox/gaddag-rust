@@ -41,3 +41,8 @@ impl Dictionary {
         false
     }
 }
+
+pub struct Position {
+    row: int,
+    col: int
+}
