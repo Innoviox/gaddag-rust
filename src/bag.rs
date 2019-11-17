@@ -4,7 +4,7 @@ use rand::seq::SliceRandom;
 use std::cmp::PartialEq;
 
 trait ItemRemovable<T> {
-    fn remove_item(&mut self, some_x: T) -> T;
+    fn _remove_item(&mut self, some_x: T) -> T;
 }
 
 impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable feature
@@ -12,7 +12,6 @@ impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable f
         self.remove(self.iter().position(|x| *x == some_x).unwrap())
     }
 }
-
 
 #[derive(Debug)]
 pub struct Bag {

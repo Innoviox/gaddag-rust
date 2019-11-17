@@ -33,15 +33,15 @@ impl Board {
         ] }
     }
 
-    pub fn at_position(&self, &p: Position) -> char {
+    pub fn at_position(&self, p: Position) -> char {
         self.state[p.row][p.col]
     }
 
-    fn set(&self, &p: Position, &c: char) {
+    fn set(&self, p: Position, c: char) {
 
     }
 
-    pub fn valid_at(&self, &p: Position) -> [bool; 26] {
+    pub fn valid_at(&self, p: Position) -> [bool; 26] {
         if !"#^+_*.".contains(self.at_position(p)) {
             return [false; 26];
         }

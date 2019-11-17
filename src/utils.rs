@@ -43,6 +43,6 @@ impl Dictionary {
 }
 
 pub struct Position {
-    row: i32,
-    col: i32
+    pub row: usize,
+    pub col: usize
 }
