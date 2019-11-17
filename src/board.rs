@@ -1,5 +1,6 @@
 use crate::utils::*;
 use std::fmt;
+use std::collections::HashMap;
 
 pub struct Board {
     state: [[char; 15]; 15],
@@ -39,6 +40,10 @@ impl Board {
         self.state[p.row][p.col]
     }
 
+    fn is_letter(&self, p: Position) -> bool {
+        return !"#^+_*.".contains(self.at_position(p))
+    }
+
     fn set(&mut self, p: Position, c: char) {
         self.state[p.row][p.col] = c;
     }
@@ -59,7 +64,7 @@ impl Board {
     }
 
     pub fn valid_at(&mut self, p: Position) -> [bool; 26] {
-        if !"#^+_*.".contains(self.at_position(p)) {
+        if self.is_letter(p) {
             return [false; 26];
         }
 
@@ -76,7 +81,23 @@ impl Board {
     }
 
     fn get_words(&self) -> Vec<String> {
+        let mut result = Vec::new();
 
+        let mut marked: HashMap<usize, HashMap<usize, bool>> = HashMap::new();
+
+        for (r, row) in self.state.iter().enumerate() {
+            for (c, col) in row.iter().enumerate() {
+                let p = Position { row: r, col: c };
+                if self.is_letter(p) {
+                    // start word finding
+                    for d in Direction::iter() {
+
+                    }
+                }
+            }
+        }
+
+        result
     }
 
     pub fn valid(&self) -> bool {

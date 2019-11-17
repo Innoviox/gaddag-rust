@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
+use std::slice::Iter;
 
 pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -52,6 +53,13 @@ pub struct Position {
 pub enum Direction {
     Across,
     Down
+}
+
+impl Direction {
+    pub fn iter() -> Iter<'static, Direction> {
+        static d: [Direction; 2] = [Direction::Across, Direction::Down];
+        d.iter()
+    }
 }
 
 impl Position {
