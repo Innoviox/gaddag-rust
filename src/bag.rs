@@ -25,26 +25,26 @@ pub struct Bag {
 
 impl Bag {
     pub fn default() -> Bag {
-        Bag {
+        let mut bag = Bag {
             alph: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
                 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '?'],
             amts: [9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2],
             values: [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0],
             scores: HashMap::new(), 
             distribution: Vec::new()
-        }
-    }
+        };
 
-    pub fn init(&mut self) {
-        for (i, &c) in self.alph.iter().enumerate() {
-            self.scores.insert(c, self.values[i]);
+        for (i, &c) in bag.alph.iter().enumerate() {
+            bag.scores.insert(c, bag.values[i]);
         }
 
-        for (i, &c) in self.alph.iter().enumerate() {
-            for _ in 0..self.amts[i] {
-                self.distribution.push(c);
+        for (i, &c) in bag.alph.iter().enumerate() {
+            for _ in 0..bag.amts[i] {
+                bag.distribution.push(c);
             }
         }
+
+        bag
     }
 
     pub fn score(&self, c: char) -> i32 {
