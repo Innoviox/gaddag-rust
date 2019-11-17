@@ -66,28 +66,31 @@ impl Board {
 
 impl fmt::Display for Board {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let sep = "-".repeat(48);
+        let sep = "-".repeat(66);
 
-        write!(f, "{}\n", sep)
-        write!(f, "|   |")
+        write!(f, "{}\n", sep);
+        write!(f, "|    |");
         for row in alph.chars().take(15) {
-            write!(f, "{}", format!(" {} |", row))
+            write!(f, "{}", format!(" {} |", row));
         }
-        write!(f, "\n{}\n", sep)
+        write!(f, "\n{}\n", sep);
 
-        for row in self.state.iter () {
-            write!(f, "|");
+        for (num, row) in self.state.iter().enumerate() {
+            write!(f, "| {} |", format!("{:0>2}", num));
             for sq in row.iter() {
                 match sq {
                     '#' => write!(f, "TWS"),
                     '^' => write!(f, "DWS"),
                     '+' => write!(f, "TLS"),
                     '-' => write!(f, "DLS"),
-                    _ => write!(f, " {} ", sq)
-                }
-                write!(f, "|")
+                    '.' => write!(f, "   "),
+                     _  => write!(f, " {} ", sq)
+                };
+                write!(f, "|");
             }
-            write!(f, "\n{}\n", sep)
+            write!(f, "\n{}\n", sep);
         }
+
+        write!(f, "\n")
 	}
 }
