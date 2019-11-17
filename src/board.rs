@@ -38,13 +38,23 @@ impl Board {
         self.state[p.row][p.col]
     }
 
-    fn set(&self, p: Position, c: char) {
-
+    fn set(&mut self, p: Position, c: char) {
+        self.state[p.row][p.col] = c;
     }
 
-    pub fn play_word(&self, p: Position, word: String, dir: Direction) -> bool {
+    pub fn play_word(&mut self, p: Position, word: String, dir: Direction) -> bool {
         let mut current = p.clone();
-        false
+
+        for c in word.chars() {
+            match self.at_position(current) {
+                '.' | "*" => self.set(current, c),
+                    _     => return false
+            }
+
+            current.tick(direction);
+        }
+
+        true
     }
 
     pub fn valid_at(&self, p: Position) -> [bool; 26] {

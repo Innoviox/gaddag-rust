@@ -48,6 +48,12 @@ pub struct Position {
     pub col: usize
 }
 
+impl Position {
+    pub fn tick(d: Direction) -> bool {
+
+    }
+}
+
 pub enum Direction {
     Across,
     Down
