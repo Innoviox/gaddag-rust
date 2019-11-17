@@ -41,7 +41,7 @@ impl Board {
     }
 
     fn is_letter(&self, p: Position) -> bool {
-        return !"#^+_*.".contains(self.at_position(p))
+        return !"#^+-*.".contains(self.at_position(p))
     }
 
     fn set(&mut self, p: Position, c: char) {
@@ -94,10 +94,12 @@ impl Board {
                         let mut curr = p.clone();
                         let mut word = String::new();
                         while self.is_letter(curr) {
+                            println!("{:?}", curr);
                             word.push(self.at_position(curr));
                             marked.push(curr);
-                            curr.tick(*d);
+                            if !curr.tick(*d) { break }
                         }
+                        println!("{}", word);
                         result.push(word);
                     }
                 }
