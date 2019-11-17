@@ -88,10 +88,11 @@ impl Position {
     pub fn neighbors(&self) -> Vec<Position> {
         let mut result = Vec::new();
 
-        result.push(Position { row: self.row, col: self.col + 1 });
-        result.push(Position { row: self.row, col: self.col - 1 });
-        result.push(Position { row: self.row + 1, col: self.col });
-        result.push(Position { row: self.row - 1, col: self.col });
+        if self.col < 14 { result.push(Position { row: self.row, col: self.col + 1 }); }
+        if self.row < 14 { result.push(Position { row: self.row + 1, col: self.col }); }
+
+        if self.col > 0  { result.push(Position { row: self.row, col: self.col - 1 }); }
+        if self.row > 0  { result.push(Position { row: self.row - 1, col: self.col }); }
 
         result
     }

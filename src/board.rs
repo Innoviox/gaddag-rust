@@ -118,6 +118,7 @@ impl Board {
         let mut result = Vec::new();
 
         for p in positions().iter() {
+            if !self.is_letter(*p) { continue }
             for n in p.neighbors() {
                 if !self.is_letter(n) {
                     result.push(n);
@@ -140,17 +141,25 @@ impl fmt::Display for Board {
         }
         write!(f, "\n{}\n", sep).expect("fail");
 
+        // let a = self.anchors();
+
         for (num, row) in self.state.iter().enumerate() {
             write!(f, "| {} |", format!("{:0>2}", num+1)).expect("fail");
-            for sq in row.iter() {
-                match sq {
-                    '#' => write!(f, "TWS").expect("fail"),
-                    '^' => write!(f, "DWS").expect("fail"),
-                    '+' => write!(f, "TLS").expect("fail"),
-                    '-' => write!(f, "DLS").expect("fail"),
-                    '.' => write!(f, "   ").expect("fail"),
-                     _  => write!(f, " {} ", sq).expect("fail")
-                };
+            // for sq in row.iter() {
+            
+            for (col, sq) in row.iter().enumerate() {
+                // if a.contains(&Position{ row: num, col }) { 
+                //     write!(f, "AAA").expect("fail");
+                // } else { 
+                    match sq {
+                        '#' => write!(f, "TWS").expect("fail"),
+                        '^' => write!(f, "DWS").expect("fail"),
+                        '+' => write!(f, "TLS").expect("fail"),
+                        '-' => write!(f, "DLS").expect("fail"),
+                        '.' => write!(f, "   ").expect("fail"),
+                        _  => write!(f, " {} ", sq).expect("fail")
+                    };
+                // }
                 write!(f, "|").expect("fail");
             }
             write!(f, "\n{}\n", sep).expect("fail");
