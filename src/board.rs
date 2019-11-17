@@ -2,7 +2,8 @@ use crate::utils::*;
 use std::fmt;
 
 pub struct Board {
-    state: [[char; 15]; 15]
+    state: [[char; 15]; 15],
+    dictionary: Dictionary
 }
 
 /*
@@ -31,7 +32,7 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ] }
+        ], dictionary: Dictionary::default() }
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -46,7 +47,6 @@ impl Board {
         let mut current = p.clone();
 
         for c in word.chars() {
-            println!("Writing {}, current {:?} {}", c, current, self.at_position(current));
             match self.at_position(current) {
                 '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, c),
                                                 _ => return false
@@ -75,8 +75,12 @@ impl Board {
         cross
     }
 
+    fn get_words(&self) -> Vec<String> {
+
+    }
+
     pub fn valid(&self) -> bool {
-        false
+        self.get_words().iter().all(|x| self.dictionary.check_word(x.to_string()))
     }
 }
 
