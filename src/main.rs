@@ -14,4 +14,6 @@ fn main() {
     // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
 
     let board = board::Board::default();
+
+    println!("{}", board);
 }
