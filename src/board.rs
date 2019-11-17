@@ -130,6 +130,14 @@ impl Board {
     }
 }
 
+impl Board {
+    fn generate_all_moves(&self) -> Vec<Move> {
+        Vec::new()
+    }
+
+    
+}
+
 impl fmt::Display for Board {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let sep = "-".repeat(66);

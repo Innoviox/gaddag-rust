@@ -112,3 +112,8 @@ pub fn positions() -> Vec<Position> {
     iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
 
+struct Move {
+    word: String,
+    position: Position,
+    direction: Direction
+}
