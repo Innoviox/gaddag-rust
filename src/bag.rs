@@ -8,7 +8,7 @@ trait ItemRemovable<T> {
 }
 
 impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable feature
-    fn remove_item(&mut self, some_x: T) -> T {
+    fn _remove_item(&mut self, some_x: T) -> T {
         self.remove(self.iter().position(|x| *x == some_x).unwrap())
     }
 }
@@ -59,7 +59,7 @@ impl Bag {
                                 .choose_multiple(&mut rand::thread_rng(), n)
                                 .cloned().collect();
         for i in tiles.iter() {
-            self.distribution.remove_item(*i);
+            self.distribution._remove_item(*i);
         }
         tiles
     }

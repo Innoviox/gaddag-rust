@@ -1,3 +1,5 @@
+use crate::utils::*;
+
 pub struct Board {
     state: [[char; 15]; 15]
 }
