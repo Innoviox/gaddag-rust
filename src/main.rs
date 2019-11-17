@@ -1,3 +1,5 @@
+#[macro_use] extern crate itertools;
+
 mod bag;
 mod utils;
 mod board;

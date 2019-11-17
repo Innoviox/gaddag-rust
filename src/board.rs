@@ -1,6 +1,7 @@
 use crate::utils::*;
 use std::fmt;
 use std::collections::HashMap;
+use std::slice::Iter;
 
 pub struct Board {
     state: [[char; 15]; 15],
@@ -80,30 +81,32 @@ impl Board {
         cross
     }
 
+    fn positions(&self) -> Iter<Position> {
+        iproduct!(0..15, 0..15).map(|(row, col)| Position { row, col })
+                               .collect::<Vec<Position>>().iter()
+    }
+
     pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
         let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
 
-        for (r, row) in self.state.iter().enumerate() {
-            for (c, col) in row.iter().enumerate() {
-                let p = Position { row: r, col: c };
-                for (di, d) in Direction::iter().enumerate() {
-                    if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(p) {                    
-                        let mut curr = p.clone();
-                        let mut word = String::new();
-                        while self.is_letter(curr) {
-                            word.push(self.at_position(curr));
-                            if !marked.contains_key(&curr) {
-                                marked.insert(curr, [false, false]);
-                            }
-                            marked.get_mut(&curr).unwrap()[di] = true;
-                            if !curr.tick(*d) { break }
+        for p in self.positions() {
+            for (di, d) in Direction::iter().enumerate() {
+                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(*p) {                    
+                    let mut curr = p.clone();
+                    let mut word = String::new();
+                    while self.is_letter(curr) {
+                        word.push(self.at_position(curr));
+                        if !marked.contains_key(&curr) {
+                            marked.insert(curr, [false, false]);
                         }
-                        
-                        if word.len() > 1 {
-                            result.push(word);
-                        }
+                        marked.get_mut(&curr).unwrap()[di] = true;
+                        if !curr.tick(*d) { break }
+                    }
+                    
+                    if word.len() > 1 {
+                        result.push(word);
                     }
                 }
             }
@@ -114,6 +117,14 @@ impl Board {
 
     pub fn valid(&self) -> bool {
         self.get_words().iter().all(|x| self.dictionary.check_word(x.to_string()))
+    }
+
+    pub fn anchors(&self) -> Vec<Position> {
+        let mut result = Vec::new();
+
+
+
+        result
     }
 }
 
