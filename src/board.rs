@@ -81,7 +81,7 @@ impl fmt::Display for Board {
         write!(f, "\n{}\n", sep).expect("fail");
 
         for (num, row) in self.state.iter().enumerate() {
-            write!(f, "| {} |", format!("{:0>2}", num)).expect("fail");
+            write!(f, "| {} |", format!("{:0>2}", num+1)).expect("fail");
             for sq in row.iter() {
                 match sq {
                     '#' => write!(f, "TWS").expect("fail"),
