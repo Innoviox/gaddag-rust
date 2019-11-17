@@ -33,4 +33,16 @@ impl Board {
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
         ] }
     }
+
+    pub fn at_position(&self, &p: Position) -> char {
+        self.state[p.row][p.col]
+    }
+
+    pub fn valid_at(&self, &p: Position) -> Vec<bool> {
+        let mut cross = Vec<char>::new();
+
+        
+
+        cross
+    }
 }

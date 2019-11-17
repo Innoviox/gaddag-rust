@@ -7,5 +7,7 @@ pub struct Dawg {
 }
 
 impl Dawg {
-    
+    pub fn new() -> Dawg {
+        
+    }
 }

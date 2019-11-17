@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::fs;
 
+const alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, Vec<String>>>
 }
@@ -8,8 +10,6 @@ pub struct Dictionary {
 impl Dictionary {
     pub fn default() -> Dictionary {
         let mut dict = Dictionary { words: HashMap::new() };
-
-        let alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         for i in alph.chars() {
             let mut sub: HashMap<char, Vec<String>> = HashMap::new();
