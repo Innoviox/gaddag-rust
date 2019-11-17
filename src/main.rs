@@ -28,6 +28,8 @@ fn main() {
 
     println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
 
+    println!("{}", board);
+
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());
 }
