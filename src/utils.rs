@@ -42,6 +42,7 @@ impl Dictionary {
     }
 }
 
+#[derive(Copy, Clone)]
 pub struct Position {
     pub row: usize,
     pub col: usize
