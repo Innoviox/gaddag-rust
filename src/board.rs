@@ -83,15 +83,22 @@ impl Board {
     fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
-        let mut marked: HashMap<usize, HashMap<usize, bool>> = HashMap::new();
+        let mut marked: HashMap<Position, bool> = HashMap::new();
 
         for (r, row) in self.state.iter().enumerate() {
             for (c, col) in row.iter().enumerate() {
                 let p = Position { row: r, col: c };
-                if self.is_letter(p) {
+                if !marked[&p] && self.is_letter(p) {
                     // start word finding
                     for d in Direction::iter() {
-
+                        let curr = p.clone();
+                        let word = String::new();
+                        while self.is_letter(curr) {
+                            word.push(self.at_position(curr));
+                            marked.insert(curr, true);
+                            curr.tick(*d);
+                        }
+                        result.push(word);
                     }
                 }
             }

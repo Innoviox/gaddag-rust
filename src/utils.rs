@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use std::slice::Iter;
+use std::cmp::PartialEq;
 
 pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -43,7 +44,7 @@ impl Dictionary {
     }
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Position {
     pub row: usize,
     pub col: usize

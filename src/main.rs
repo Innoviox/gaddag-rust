@@ -25,4 +25,6 @@ fn main() {
                     utils::Direction::Down);
 
     println!("{}", board);
+
+    println!("{}", board.get_words());
 }
