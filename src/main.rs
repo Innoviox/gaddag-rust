@@ -26,5 +26,5 @@ fn main() {
 
     println!("{}", board);
 
-    println!("{}", board.get_words());
+    println!("{:?}", board.get_words());
 }

@@ -80,7 +80,7 @@ impl Board {
         cross
     }
 
-    fn get_words(&self) -> Vec<String> {
+    pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
         let mut marked: HashMap<Position, bool> = HashMap::new();
@@ -91,8 +91,8 @@ impl Board {
                 if !marked[&p] && self.is_letter(p) {
                     // start word finding
                     for d in Direction::iter() {
-                        let curr = p.clone();
-                        let word = String::new();
+                        let mut curr = p.clone();
+                        let mut word = String::new();
                         while self.is_letter(curr) {
                             word.push(self.at_position(curr));
                             marked.insert(curr, true);
