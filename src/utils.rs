@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 
-const alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const alph: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, Vec<String>>>

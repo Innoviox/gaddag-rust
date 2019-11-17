@@ -38,11 +38,28 @@ impl Board {
         self.state[p.row][p.col]
     }
 
-    pub fn valid_at(&self, &p: Position) -> Vec<bool> {
-        let mut cross = Vec<char>::new();
+    fn set(&self, &p: Position, &c: char) {
 
-        
+    }
+
+    pub fn valid_at(&self, &p: Position) -> [bool; 26] {
+        if !"#^+_*.".contains(self.at_position(p)) {
+            return Vec::from([false; 26]);
+        }
+
+        let mut cross = [bool; 26];
+
+        for (i, l) in alph.chars().enumerate() {
+            let old = self.at_position(p);
+            self.set(p, l);
+            cross[i] = self.valid()
+            self.set(p, old);
+        }
 
         cross
+    }
+
+    pub fn valid(&self) -> bool {
+        return false
     }
 }
