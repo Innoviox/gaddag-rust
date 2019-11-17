@@ -84,3 +84,11 @@ impl Position {
         true
     }
 }
+
+pub fn chars(arr: [bool; 26]) -> Vec<char> {
+    alph.chars()
+        .zip(arr.iter())
+        .filter(|&(a, b)| *b)
+        .map(|(a, b)| a)
+        .collect()
+}

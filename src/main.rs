@@ -20,12 +20,14 @@ fn main() {
     let dir = utils::Direction::Across;
 
     board.play_word(position, word, dir);
-    board.play_word(utils::Position { row: 8, col: 8 }, 
-                    String::from("WORLD"),
-                    utils::Direction::Across);
+    // board.play_word(utils::Position { row: 8, col: 8 }, 
+    //                 String::from("WORLD"),
+    //                 utils::Direction::Across);
 
     println!("{}", board);
 
-    println!("{:?}", board.get_words());
-    println!("{:?}", board.valid());
+    println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
+
+    // println!("{:?}", board.get_words());
+    // println!("{:?}", board.valid());
 }
