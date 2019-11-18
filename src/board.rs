@@ -147,9 +147,10 @@ impl Board {
     pub fn generate_all_moves(&mut self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
-        let mut cross_checks: HashMap<Position, Vec<char>> = HashMap::new();
+        let mut cross_checks: [Vec<char>; 225] = array_init(Vec::new); // : HashMap<Position, Vec<char>> = HashMap::new();
         for p in positions().iter() {
-            cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
+            // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
+            cross_checks[p.to_int()] = chars(self.valid_at(*p, dict));
         }
 
         for p in self.anchors() {
@@ -171,7 +172,7 @@ impl Board {
         result
     }
 
-    pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
+    pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &[Vec<char>; 225]) -> Option<Move> {
         if self.is_letter(p) { return None }
         
         let mut word = Vec::new();
@@ -191,7 +192,7 @@ impl Board {
         let mut i = 0;
         while i < part.len() {
             if !self.is_letter(curr) { 
-                if cross_checks.get(&curr).unwrap().contains(&part[i]) { 
+                if cross_checks[curr.to_int()].contains(&part[i]) { 
                     self.set(curr, part[i]);
                 } else {
                     return None
@@ -202,29 +203,10 @@ impl Board {
             if !curr.tick(d) { return None }
         }
 
-        // if curr.tick(d) {
-            while self.is_letter(curr) { // get stuff after word
-                word.push(self.at_position(curr));
-                if !curr.tick(d) { break }
-            }
-        // }
-
-        // word.reverse();
-        
-        // let mut curr_right = p.clone();
-        // i = 0;
-        // while i < rp.len() {
-        //     if !curr_right.tick(d) { return None }
-        //     if !self.is_letter(curr_right) {
-        //         if cross_checks.get(&curr_right).unwrap().contains(&rp[i]) { 
-        //             self.set(curr_right, rp[i]);
-        //         } else {
-        //             return None
-        //         }
-        //         i += 1;
-        //     }
-        //     word.push(self.at_position(curr_right));
-        // }
+        while self.is_letter(curr) { // get stuff after word
+            word.push(self.at_position(curr));
+            if !curr.tick(d) { break }
+        }
 
 
         let word = word.iter().collect();
@@ -233,7 +215,7 @@ impl Board {
             return None
         }
 
-        // println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
+        // println!("{}", self);
 
 
         Some(Move {

@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 rand = "0.7.2"
 itertools = "0.8.1"
+array-init = "0.1.1"
