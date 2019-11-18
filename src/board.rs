@@ -2,6 +2,7 @@ use crate::utils::*;
 use std::fmt;
 use std::collections::HashMap;
 use std::slice::Iter;
+use std::convert::TryInto;
 
 pub struct Board {
     state: [[char; 15]; 15]
@@ -93,13 +94,7 @@ impl Board {
 
     pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
-
-        // let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
         let mut marked: [[bool; 225]; 2] = [[false; 225]; 2];
-
-        // for p in positions().iter() {
-        //     marked.insert(*p, [false, false]);
-        // }
 
         for p in positions().iter() {
             for (di, d) in Direction::iter().enumerate() {
@@ -109,7 +104,6 @@ impl Board {
                     while self.is_letter(curr) {
                         word.push(self.at_position(curr));
                         marked[di][curr.to_int()] = true;
-                        // marked.get_mut(&curr).unwrap()[di] = true;
                         if !curr.tick(*d) { break }
                     }
                     
@@ -124,7 +118,7 @@ impl Board {
     }
 
     pub fn valid(&self, d: &Dictionary) -> bool { // TODO check connectedness
-        self.get_words().iter().all(|x| d.check_word(x.to_string()))
+        self.get_words().iter().all(|x| d.check_word(&x.to_string()))
     }
 
     pub fn anchors(&self) -> Vec<Position> {
@@ -154,11 +148,13 @@ impl Board {
 
         for p in self.anchors() {
             for d in Direction::iter() {
-                for (lp, rp) in gen_parts(rack.clone()).iter() {
-                    // println!("{:?} {:?}", lp, rp);
-                    if lp.len() > 0 && rp.len() > 0 {
-                        if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict, &cross_checks) {
-                            result.push(mv);
+                // for (lp, rp) in gen_parts(rack.clone()).iter() {
+                for part in gen_parts(rack.clone()).iter() {
+                    for dist in (-part.len()-1)..(part.len()+1) {
+                        if let some(pos) = p.add(dist.try_into().unwrap(), *d) {
+                            if let Some(mv) = self.clone().place(pos, *d, part.to_vec(), dict, &cross_checks) {
+                                result.push(mv);
+                            }
                         }
                     }
                 }
@@ -168,54 +164,54 @@ impl Board {
         result
     }
 
-    pub fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
+    pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
         let mut word = Vec::new();
 
-        let mut curr_left = p.clone();
+        let mut curr = p.clone();
         let mut i = 0;
-        while i < lp.len() { // left contains anchor
-            if !self.is_letter(curr_left) { 
-                if cross_checks.get(&curr_left).unwrap().contains(&lp[i]) { 
-                    self.set(curr_left, lp[i]);
+        while i < part.len() {
+            if !self.is_letter(curr) { 
+                if cross_checks.get(&curr).unwrap().contains(&lp[i]) { 
+                    self.set(curr, lp[i]);
                 } else {
                     return None
                 }
                 i += 1;
             }
-            word.push(self.at_position(curr_left));
-            if !curr_left.tick_opp(d) { return None }
+            word.push(self.at_position(curr));
+            if !curr.tick(d) { return None }
         }
 
-        word.reverse();
+        // word.reverse();
         
-        let mut curr_right = p.clone();
-        i = 0;
-        while i < rp.len() {
-            if !curr_right.tick(d) { return None }
-            if !self.is_letter(curr_right) {
-                if cross_checks.get(&curr_right).unwrap().contains(&rp[i]) { 
-                    self.set(curr_right, rp[i]);
-                } else {
-                    return None
-                }
-                i += 1;
-            }
-            word.push(self.at_position(curr_right));
-        }
+        // let mut curr_right = p.clone();
+        // i = 0;
+        // while i < rp.len() {
+        //     if !curr_right.tick(d) { return None }
+        //     if !self.is_letter(curr_right) {
+        //         if cross_checks.get(&curr_right).unwrap().contains(&rp[i]) { 
+        //             self.set(curr_right, rp[i]);
+        //         } else {
+        //             return None
+        //         }
+        //         i += 1;
+        //     }
+        //     word.push(self.at_position(curr_right));
+        // }
 
         // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
 
-        // let word = word.iter().collect();
+        let word = word.iter().collect();
 
-        if !dict.check_word(word.iter().collect()) {
+        if !dict.check_word(&word) {
             return None
         }
 
-        println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
+        // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
 
         Some(Move {
-            word: word.iter().collect(),
-            position: curr_left,
+            word,
+            position: p,
             direction: d
         })
     }

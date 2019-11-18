@@ -45,11 +45,11 @@ impl Dictionary {
         dict
     }
 
-    pub fn check_word(&self, word: String) -> bool {
+    pub fn check_word(&self, word: &String) -> bool {
         let mut chars = word.chars();
         if let Some(c1) = chars.next() {
             if let Some(c2) = chars.next() {
-                return self.words[&c1][&c2].contains(&word)
+                return self.words[&c1][&c2].contains(word)
             }
         }
         false
@@ -116,6 +116,21 @@ impl Position {
         true
     }
 
+    pub fn add(&self, n: i32, d: Direction) -> Option<Position> {
+        let p = self.clone();
+        if n < 0 {
+            for i in 0..(-n) {
+                if !p.tick_opp(d) { return None }
+            }
+        } else {
+            for i in 0..n {
+                if !p.tick(d) { return None }
+            }
+        }
+
+        Some(p)
+    }
+
     pub fn neighbors(&self) -> Vec<Position> {
         let mut result = Vec::new();
 
@@ -154,20 +169,21 @@ pub struct Move {
     pub direction: Direction
 }
 
-pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
+pub fn gen_parts(rack: Vec<char>) -> Vec<Vec<char>> {
     let mut result = Vec::new();
 
     for n in 0..(rack.len()+1) {
         for part in rack.iter().permutations(n) {
-            let mut rpart = rack.clone();
-            for l in part.iter() {
-                rpart._remove_item(**l);
-            }
-            for n2 in 0..(rpart.len()+1) {
-                for rrpart in rpart.iter().permutations(n2) {
-                    result.push((part.iter().map(|x| **x).collect(), rrpart.iter().map(|x| **x).collect()));
-                }
-            }
+            result.push(part.iter().map(|x| **x).collect());
+            // let mut rpart = rack.clone();
+            // for l in part.iter() {
+            //     rpart._remove_item(**l);
+            // }
+            // for n2 in 0..(rpart.len()+1) {
+            //     for rrpart in rpart.iter().permutations(n2) {
+            //         result.push((part.iter().map(|x| **x).collect(), rrpart.iter().map(|x| **x).collect()));
+            //     }
+            // }
         }
     }
 
