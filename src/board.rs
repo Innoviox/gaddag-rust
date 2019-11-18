@@ -63,7 +63,7 @@ impl Board {
         true
     }
 
-    pub fn valid_at(&mut self, p: Position) -> [bool; 26] {
+    pub fn valid_at(&mut self, p: Position, d: &Dictionary) -> [bool; 26] {
         if self.is_letter(p) {
             return [false; 26];
         }
@@ -73,7 +73,7 @@ impl Board {
         for (i, l) in alph.chars().enumerate() {
             let old = self.at_position(p);
             self.set(p, l);
-            cross[i] = self.valid();
+            cross[i] = self.valid(d);
             self.set(p, old);
         }
 
@@ -109,8 +109,8 @@ impl Board {
         result
     }
 
-    pub fn valid(&self) -> bool {
-        self.get_words().iter().all(|x| self.dictionary.check_word(x.to_string()))
+    pub fn valid(&self, d: &Dictionary) -> bool { // TODO check connectedness
+        self.get_words().iter().all(|x| d.check_word(x.to_string()))
     }
 
     pub fn anchors(&self) -> Vec<Position> {
@@ -130,14 +130,14 @@ impl Board {
 }
 
 impl Board {
-    pub fn generate_all_moves(&self, rack: Vec<char>) -> Vec<Move> {
+    pub fn generate_all_moves(&self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
         for p in self.anchors() {
             println!("{:?}", p);
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
-                    if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec()) {
+                    if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
                         result.push(mv);
                     }
                 }
@@ -147,7 +147,7 @@ impl Board {
         result
     }
 
-    fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>) -> Option<Move> {
+    pub fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>, dict: &Dictionary) -> Option<Move> {
         let mut word = Vec::new();
 
         let mut curr_left = p.clone();
@@ -166,14 +166,14 @@ impl Board {
         let mut curr_right = p.clone();
         i = 0;
         while i < rp.len() {
-            if !curr_right.tick(d) { return None }
             if self.is_letter(curr_right) { continue }
             self.set(curr_right, rp[i]);
             word.push(self.at_position(curr_right));
             i += 1;
+            if !curr_right.tick(d) { return None }
         }
 
-        if self.valid() {
+        if self.valid(dict) {
             return Some(Move {
                 word: word.iter().collect(),
                 position: curr_left,
@@ -188,8 +188,7 @@ impl Board {
 impl Board {
     fn clone(&self) -> Board {
         Board {
-            state: self.state.clone(),
-            dictionary: self.dictionary // todo: copy???
+            state: self.state.clone()
         }
     }
 }
