@@ -172,7 +172,7 @@ pub struct Move {
 pub fn gen_parts(rack: Vec<char>) -> Vec<Vec<char>> {
     let mut result = Vec::new();
 
-    for n in 0..(rack.len()+1) {
+    for n in 2..(rack.len()+1) {
         for part in rack.iter().permutations(n) {
             result.push(part.iter().map(|x| **x).collect());
             // let mut rpart = rack.clone();

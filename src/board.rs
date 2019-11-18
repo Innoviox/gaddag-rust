@@ -171,6 +171,8 @@ impl Board {
     }
 
     pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
+        if self.is_letter(p) { return None }
+        
         let mut word = Vec::new();
 
         let mut curr_left = p.clone();
@@ -230,10 +232,8 @@ impl Board {
             return None
         }
 
-        // println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
+        println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
 
-
-        // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
 
         Some(Move {
             word,
