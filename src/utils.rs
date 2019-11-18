@@ -3,6 +3,17 @@ use std::fs;
 use std::slice::Iter;
 use std::cmp::PartialEq;
 use std::ops::Range;
+use itertools::Itertools;
+
+pub trait ItemRemovable<T> {
+    fn _remove_item(&mut self, some_x: T) -> T;
+}
+
+impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable feature
+    fn _remove_item(&mut self, some_x: T) -> T {
+        self.remove(self.iter().position(|x| *x == some_x).unwrap())
+    }
+}
 
 pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -112,8 +123,24 @@ pub fn positions() -> Vec<Position> {
     iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
 
-struct Move {
+pub struct Move {
     word: String,
     position: Position,
     direction: Direction
+}
+
+pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
+    let mut result = Vec::new();
+
+    for n in 0..rack.len() {
+        for part in rack.iter().combinations(n) {
+            let mut rpart = rack.clone();
+            for l in part.iter() {
+                rpart._remove_item(**l);
+            }
+            result.push((part, rpart));
+        }
+    }
+
+    result
 }

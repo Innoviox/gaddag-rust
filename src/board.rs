@@ -135,14 +135,18 @@ impl Board {
         let mut result = Vec::new();
 
         for p in self.anchors() {
-            for (lp, rp) in gen_parts(rack) {
-                if let Some(move) = self.place(p, lp, rp) {
-                    result.push(move);
-                }
+            for (lp, rp) in gen_parts(rack).iter() {
+                // if let Some(move) = self.place(p, lp, rp) {
+                //     result.push(move);
+                // }
             }
         }
 
         result
+    }
+
+    fn place(&self, p: Position, lp: Vec<char>, rp: Vec<char>) -> Option<Move> {
+        None
     }
 }
 
