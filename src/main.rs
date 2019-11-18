@@ -32,14 +32,15 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C', 'D'];
+    let rack = vec!['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
     // board.place(utils::Position{ row: 7, col: 7}, utils::Direction::Down, vec!['A', 'C'], vec!['B'], &utils::Dictionary::default());
 
     // println!("{}", board);
 
 
-    println!("{:?}", board.generate_all_moves(rack, &utils::Dictionary::default()).iter());
+    // println!("{:?}", board.generate_all_moves(rack, &utils::Dictionary::default()).iter());
+    board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
 
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());

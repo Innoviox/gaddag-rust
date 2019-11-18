@@ -211,7 +211,7 @@ impl Board {
             return None
         }
 
-        println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
+        // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
 
         Some(Move {
             word: word.iter().collect(),
