@@ -173,14 +173,14 @@ impl Board {
             i += 1;
         }
 
-        println!("{} {:?}", self, self.get_words());
+        // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
 
         if self.valid(dict) {
-            return Some(Move {
+            return Move {
                 word: word.iter().collect(),
                 position: curr_left,
                 direction: d
-            })
+            }
         }
 
         None
