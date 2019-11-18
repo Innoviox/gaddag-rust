@@ -32,7 +32,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C'];
+    let rack = vec!['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
     // board.place(utils::Position{ row: 7, col: 7}, utils::Direction::Down, vec!['A', 'C'], vec!['B'], &utils::Dictionary::default());
 
