@@ -153,13 +153,13 @@ pub struct Move {
 pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
     let mut result = Vec::new();
 
-    for n in 0..rack.len() {
+    for n in 0..(rack.len()+1) {
         for part in rack.iter().permutations(n) {
             let mut rpart = rack.clone();
             for l in part.iter() {
                 rpart._remove_item(**l);
             }
-            for n2 in 0..rpart.len() {
+            for n2 in 0..(rpart.len()+1) {
                 for rrpart in rpart.iter().permutations(n2) {
                     result.push((part.iter().map(|x| **x).collect(), rrpart.iter().map(|x| **x).collect()));
                 }

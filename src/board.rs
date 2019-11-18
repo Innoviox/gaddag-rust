@@ -143,6 +143,7 @@ impl Board {
         for p in self.anchors() {
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
+                    // println!("{:?} {:?}", lp, rp);
                     if lp.len() > 0 && rp.len() > 0 {
                         if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
                             result.push(mv);
