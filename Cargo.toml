@@ -9,4 +9,3 @@ edition = "2018"
 [dependencies]
 rand = "0.7.2"
 itertools = "0.8.1"
-cpuprofiler = "0.0.4"

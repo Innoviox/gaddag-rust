@@ -1,5 +1,4 @@
 #[macro_use] extern crate itertools;
-use cpuprofiler::PROFILER;
 
 mod bag;
 mod utils;
@@ -39,11 +38,9 @@ fn main() {
 
     // println!("{}", board);
 
-    PROFILER.lock().unwrap().start("./my-prof.profile").expect("Couldn't start");
 
     board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
 
-    PROFILER.lock().unwrap().stop().expect("Couldn't stop");
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());
 }
