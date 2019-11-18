@@ -38,7 +38,7 @@ fn main() {
 
     // println!("{}", board);
 
-    board.generate_all_moves(rack, &utils::Dictionary::default());
+    println!("{:#?}", board.generate_all_moves(rack, &utils::Dictionary::default()));
 
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());
