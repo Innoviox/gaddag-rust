@@ -173,7 +173,18 @@ impl Board {
     pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
         let mut word = Vec::new();
 
-        let mut curr = p.clone();
+        let mut curr_left = p.clone();
+
+        if curr_left.tick_opp(d) {
+            while self.is_letter(curr_left) { // get stuff before word
+                word.push(self.at_position(curr_left));
+                if !curr_left.tick_opp(d) { break }
+            }
+        }
+
+        word.reverse();
+
+        let mut curr = p.clone(); 
         let mut i = 0;
         while i < part.len() {
             if !self.is_letter(curr) { 
@@ -188,9 +199,12 @@ impl Board {
             if !curr.tick(d) { return None }
         }
 
-        if self.is_letter(curr) { // played to a letter
-            word.push(self.at_position(curr));
-        }
+        // if curr.tick(d) {
+            while self.is_letter(curr) { // get stuff after word
+                word.push(self.at_position(curr));
+                if !curr.tick(d) { break }
+            }
+        // }
 
         // word.reverse();
         
@@ -216,7 +230,7 @@ impl Board {
             return None
         }
 
-        println!("{} {}, {:?} {} {:?}", self, word, self.get_words(), self.valid(dict), p);
+        // println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
 
 
         // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
