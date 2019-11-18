@@ -4,8 +4,7 @@ use std::collections::HashMap;
 use std::slice::Iter;
 
 pub struct Board {
-    state: [[char; 15]; 15],
-    dictionary: Dictionary
+    state: [[char; 15]; 15]
 }
 
 /*
@@ -34,7 +33,7 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ], dictionary: Dictionary::default() }
+        ] }
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -174,11 +173,15 @@ impl Board {
             i += 1;
         }
 
-        Some(Move {
-            word: word.iter().collect(),
-            position: curr_left,
-            direction: d
-        })
+        if self.valid() {
+            return Some(Move {
+                word: word.iter().collect(),
+                position: curr_left,
+                direction: d
+            })
+        }
+
+        None
     }
 }
 
@@ -186,7 +189,7 @@ impl Board {
     fn clone(&self) -> Board {
         Board {
             state: self.state.clone(),
-            dictionary: Dictionary::default() // todo: copy???
+            dictionary: self.dictionary // todo: copy???
         }
     }
 }
