@@ -131,11 +131,19 @@ impl Board {
 }
 
 impl Board {
-    fn generate_all_moves(&self) -> Vec<Move> {
-        Vec::new()
-    }
+    fn generate_all_moves(&self, rack: Vec<char>) -> Vec<Move> {
+        let mut result = Vec::new();
 
-    
+        for p in self.anchors() {
+            for (lp, rp) in gen_parts(rack) {
+                if let Some(move) = self.place(p, lp, rp) {
+                    result.push(move);
+                }
+            }
+        }
+
+        result
+    }
 }
 
 impl fmt::Display for Board {
