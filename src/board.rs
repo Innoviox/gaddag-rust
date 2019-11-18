@@ -48,19 +48,26 @@ impl Board {
         self.state[p.row][p.col] = c;
     }
 
-    pub fn play_word(&mut self, p: Position, word: String, dir: Direction) -> bool {
+    pub fn play_word(&mut self, p: Position, word: String, dir: Direction, force: bool) -> bool {
         let mut current = p.clone();
 
         for c in word.chars() {
-            match self.at_position(current) {
-                '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, c),
-                                                _ => return false
+            if force { self.set(current, c); }
+            else {
+                match self.at_position(current) {
+                    '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, c),
+                                                   _  => return false
+                }
             }
 
             if !(current.tick(dir)) { return false }
         }
 
         true
+    }
+
+    pub fn place_move(&mut self, m: &Move) -> bool {
+        self.play_word(m.position, m.word.clone(), m.direction, true)
     }
 
     pub fn valid_at(&mut self, p: Position, d: &Dictionary) -> [bool; 26] {
@@ -136,8 +143,10 @@ impl Board {
         for p in self.anchors() {
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
-                    if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
-                        result.push(mv);
+                    if lp.len() > 0 && rp.len() > 0 {
+                        if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
+                            result.push(mv);
+                        }
                     }
                 }
             }
@@ -187,7 +196,7 @@ impl Board {
 }
 
 impl Board {
-    fn clone(&self) -> Board {
+    pub fn clone(&self) -> Board {
         Board {
             state: self.state.clone()
         }

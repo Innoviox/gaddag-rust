@@ -21,7 +21,7 @@ fn main() {
     let word = String::from("HELLO");
     let dir = utils::Direction::Across;
 
-    board.play_word(position, word, dir);
+    board.play_word(position, word, dir, false);
     // board.play_word(utils::Position { row: 8, col: 8 }, 
     //                 String::from("WORLD"),
     //                 utils::Direction::Across);
@@ -38,7 +38,11 @@ fn main() {
 
     // println!("{}", board);
 
-    println!("{:#?}", board.generate_all_moves(rack, &utils::Dictionary::default()));
+    for m in board.generate_all_moves(rack, &utils::Dictionary::default()).iter() {
+        let mut x = board.clone();
+        x.place_move(m);
+        println!("{:?}\n{}{}", m, x, x.valid(&utils::Dictionary::default()));
+    }
 
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());
