@@ -145,9 +145,9 @@ pub fn positions() -> Vec<Position> {
 
 #[derive(Debug)]
 pub struct Move {
-    word: String,
-    position: Position,
-    direction: Direction
+    pub word: String,
+    pub position: Position,
+    pub direction: Direction
 }
 
 pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
@@ -162,6 +162,6 @@ pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
             result.push((part.iter().map(|x| **x).collect(), rpart));
         }
     }
-
+    
     result
 }

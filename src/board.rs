@@ -135,6 +135,7 @@ impl Board {
         let mut result = Vec::new();
 
         for p in self.anchors() {
+            println!("{:?}", p);
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
                     if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec()) {
