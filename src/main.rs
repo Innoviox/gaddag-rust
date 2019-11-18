@@ -1,4 +1,5 @@
 #[macro_use] extern crate itertools;
+use cpuprofiler::PROFILER;
 
 mod bag;
 mod utils;
@@ -32,19 +33,17 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    let rack = vec!['A', 'B', 'C'];
 
     // board.place(utils::Position{ row: 7, col: 7}, utils::Direction::Down, vec!['A', 'C'], vec!['B'], &utils::Dictionary::default());
 
     // println!("{}", board);
 
-    for m in board.generate_all_moves(rack, &utils::Dictionary::default()).iter() {
-        println!("{:?}", m);
-        // let mut x = board.clone();
-        // x.place_move(m);
-        // println!("{:?}\n{}{}", m, x, x.valid(&utils::Dictionary::default()));
-    }
+    PROFILER.lock().unwrap().start("./my-prof.profile").expect("Couldn't start");
 
+    board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
+
+    PROFILER.lock().unwrap().stop().expect("Couldn't stop");
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());
 }

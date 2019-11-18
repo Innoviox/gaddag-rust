@@ -169,7 +169,7 @@ impl Board {
             if !curr_left.tick_opp(d) { return None }
         }
 
-        word = word.iter().rev().cloned().collect();
+        word.reverse();
         
         let mut curr_right = p.clone();
         i = 0;
