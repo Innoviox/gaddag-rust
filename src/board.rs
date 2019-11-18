@@ -1,4 +1,5 @@
 use crate::utils::*;
+use crate::dictionary::Dictionary;
 use std::fmt;
 use std::collections::HashMap;
 use std::slice::Iter;
@@ -232,7 +233,7 @@ impl Board {
             return None
         }
 
-        println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
+        // println!("{} {:?} {}, {:?} {} {:?}", self, part, word, self.get_words(), self.valid(dict), p);
 
 
         Some(Move {
