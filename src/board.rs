@@ -175,10 +175,11 @@ impl Board {
         i = 0;
         while i < rp.len() {
             if !curr_right.tick(d) { return None }
-            if self.is_letter(curr_right) { continue }
-            self.set(curr_right, rp[i]);
+            if !self.is_letter(curr_right) {
+                self.set(curr_right, rp[i]);
+                i += 1;
+            }
             word.push(self.at_position(curr_right));
-            i += 1;
         }
 
         // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
