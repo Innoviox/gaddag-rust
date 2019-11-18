@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use std::slice::Iter;
 use std::convert::TryFrom;
 use std::convert::TryInto;
+use array_init::array_init;
 
 fn _as(v: usize) -> i32 {
     i32::try_from(v).unwrap()
@@ -147,7 +148,7 @@ impl Board {
     pub fn generate_all_moves(&mut self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
-        let mut cross_checks: [Vec<char>; 225] = array_init(Vec::new); // : HashMap<Position, Vec<char>> = HashMap::new();
+        let mut cross_checks: [Vec<char>; 225] = array_init(|x| Vec::new()); // : HashMap<Position, Vec<char>> = HashMap::new();
         for p in positions().iter() {
             // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
             cross_checks[p.to_int()] = chars(self.valid_at(*p, dict));
