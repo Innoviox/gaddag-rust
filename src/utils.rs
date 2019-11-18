@@ -159,7 +159,11 @@ pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
             for l in part.iter() {
                 rpart._remove_item(**l);
             }
-            result.push((part.iter().map(|x| **x).collect(), rpart));
+            for n2 in 0..rpart.len() {
+                for rrpart in rpart.iter().permutations(n2) {
+                    result.push((part.iter().map(|x| **x).collect(), rrpart.iter().map(|x| **x).collect()));
+                }
+            }
         }
     }
 

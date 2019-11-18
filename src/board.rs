@@ -134,9 +134,9 @@ impl Board {
         let mut result = Vec::new();
 
         for p in self.anchors() {
-            println!("{:?}", p);
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
+                    println!("{:?}, {:?}", lp, rp);
                     if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
                         result.push(mv);
                     }
@@ -153,12 +153,12 @@ impl Board {
         let mut curr_left = p.clone();
         let mut i = 0;
         while i < lp.len() {
-            if !curr_left.tick_opp(d) { return None }
             if !self.is_letter(curr_left) { 
                 self.set(curr_left, lp[i]);
                 i += 1;
             }
             word.push(self.at_position(curr_left));
+            if !curr_left.tick_opp(d) { return None }
         }
 
         word = word.iter().rev().cloned().collect();
@@ -166,12 +166,14 @@ impl Board {
         let mut curr_right = p.clone();
         i = 0;
         while i < rp.len() {
+            if !curr_right.tick(d) { return None }
             if self.is_letter(curr_right) { continue }
             self.set(curr_right, rp[i]);
             word.push(self.at_position(curr_right));
             i += 1;
-            if !curr_right.tick(d) { return None }
         }
+
+        println!("{} {:?}", self, self.get_words());
 
         if self.valid(dict) {
             return Some(Move {
@@ -228,6 +230,6 @@ impl fmt::Display for Board {
             write!(f, "\n{}\n", sep).expect("fail");
         }
 
-        write!(f, "\n")
+        write!(f, "")
 	}
 }
