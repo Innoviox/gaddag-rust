@@ -138,7 +138,7 @@ pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
             for l in part.iter() {
                 rpart._remove_item(**l);
             }
-            result.push((part, rpart));
+            result.push((part.iter().map(|x| **x).collect(), rpart));
         }
     }
 
