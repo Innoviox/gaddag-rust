@@ -127,6 +127,10 @@ impl Position {
 
         result
     }
+
+    pub fn to_int(&self) -> usize {
+        self.row * 15 + self.col
+    }
 }
 
 pub fn chars(arr: [bool; 26]) -> Vec<char> {

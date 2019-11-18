@@ -75,6 +75,10 @@ impl Board {
             return [false; 26];
         }
 
+        if !p.neighbors().iter().any(|x| self.is_letter(*x)) {
+            return [true; 26];
+        }
+
         let mut cross = [false; 26];
 
         for (i, l) in alph.chars().enumerate() {
@@ -90,19 +94,22 @@ impl Board {
     pub fn get_words(&self) -> Vec<String> {
         let mut result = Vec::new();
 
-        let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
+        // let mut marked: HashMap<Position, [bool; 2]> = HashMap::new();
+        let mut marked: [[bool; 225]; 2] = [[false; 225]; 2];
+
+        // for p in positions().iter() {
+        //     marked.insert(*p, [false, false]);
+        // }
 
         for p in positions().iter() {
             for (di, d) in Direction::iter().enumerate() {
-                if (!marked.contains_key(&p) || !marked[&p][di]) && self.is_letter(*p) {                    
+                if !marked[di][p.to_int()] && self.is_letter(*p) {   
                     let mut curr = p.clone();
                     let mut word = String::new();
                     while self.is_letter(curr) {
                         word.push(self.at_position(curr));
-                        if !marked.contains_key(&curr) {
-                            marked.insert(curr, [false, false]);
-                        }
-                        marked.get_mut(&curr).unwrap()[di] = true;
+                        marked[di][curr.to_int()] = true;
+                        // marked.get_mut(&curr).unwrap()[di] = true;
                         if !curr.tick(*d) { break }
                     }
                     
@@ -137,15 +144,20 @@ impl Board {
 }
 
 impl Board {
-    pub fn generate_all_moves(&self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
+    pub fn generate_all_moves(&mut self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
+
+        let mut cross_checks: HashMap<Position, Vec<char>> = HashMap::new();
+        for p in positions().iter() {
+            cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
+        }
 
         for p in self.anchors() {
             for d in Direction::iter() {
                 for (lp, rp) in gen_parts(rack.clone()).iter() {
                     // println!("{:?} {:?}", lp, rp);
                     if lp.len() > 0 && rp.len() > 0 {
-                        if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict) {
+                        if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec(), dict, &cross_checks) {
                             result.push(mv);
                         }
                     }
@@ -156,14 +168,18 @@ impl Board {
         result
     }
 
-    pub fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>, dict: &Dictionary) -> Option<Move> {
+    pub fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>, dict: &Dictionary, cross_checks: &HashMap<Position, Vec<char>>) -> Option<Move> {
         let mut word = Vec::new();
 
         let mut curr_left = p.clone();
         let mut i = 0;
-        while i < lp.len() {
+        while i < lp.len() { // left contains anchor
             if !self.is_letter(curr_left) { 
-                self.set(curr_left, lp[i]);
+                if cross_checks.get(&curr_left).unwrap().contains(&lp[i]) { 
+                    self.set(curr_left, lp[i]);
+                } else {
+                    return None
+                }
                 i += 1;
             }
             word.push(self.at_position(curr_left));
@@ -177,7 +193,11 @@ impl Board {
         while i < rp.len() {
             if !curr_right.tick(d) { return None }
             if !self.is_letter(curr_right) {
-                self.set(curr_right, rp[i]);
+                if cross_checks.get(&curr_right).unwrap().contains(&rp[i]) { 
+                    self.set(curr_right, rp[i]);
+                } else {
+                    return None
+                }
                 i += 1;
             }
             word.push(self.at_position(curr_right));
@@ -185,16 +205,19 @@ impl Board {
 
         // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
 
-        if self.valid(dict) {
-            // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
-            return Some(Move {
-                word: word.iter().collect(),
-                position: curr_left,
-                direction: d
-            })
+        // let word = word.iter().collect();
+
+        if !dict.check_word(word.iter().collect()) {
+            return None
         }
 
-        None
+        println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
+
+        Some(Move {
+            word: word.iter().collect(),
+            position: curr_left,
+            direction: d
+        })
     }
 }
 
