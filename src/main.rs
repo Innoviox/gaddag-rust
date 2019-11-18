@@ -28,9 +28,12 @@ fn main() {
 
     println!("{}", board);
 
-    println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
+    // println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
 
-    println!("{:?}", board.anchors());
+    // println!("{:?}", board.anchors());
+
+    let rack = vec!['A', 'B', 'C'];
+    println!("{:#?}", board.generate_all_moves(rack));
 
     // println!("{:?}", board.get_words());
     // println!("{:?}", board.valid());

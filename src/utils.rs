@@ -62,7 +62,7 @@ pub struct Position {
     pub col: usize
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum Direction {
     Across,
     Down
@@ -88,6 +88,26 @@ impl Position {
             Direction::Down => {
                 if self.row < 14 {
                     self.row += 1;
+                } else {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    pub fn tick_opp(&mut self, d: Direction) -> bool {
+        match d {
+            Direction::Across => {
+                if 0 < self.col { // note: don't have to check for 0-bound because usizes are positive
+                    self.col -= 1;
+                } else {
+                    return false;
+                }
+            },
+            Direction::Down => {
+                if 0 < self.row {
+                    self.row -= 1;
                 } else {
                     return false;
                 }
@@ -123,6 +143,7 @@ pub fn positions() -> Vec<Position> {
     iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
 
+#[derive(Debug)]
 pub struct Move {
     word: String,
     position: Position,
@@ -133,7 +154,7 @@ pub fn gen_parts(rack: Vec<char>) -> Vec<(Vec<char>, Vec<char>)> {
     let mut result = Vec::new();
 
     for n in 0..rack.len() {
-        for part in rack.iter().combinations(n) {
+        for part in rack.iter().permutations(n) {
             let mut rpart = rack.clone();
             for l in part.iter() {
                 rpart._remove_item(**l);

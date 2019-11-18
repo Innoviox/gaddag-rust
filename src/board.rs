@@ -131,22 +131,62 @@ impl Board {
 }
 
 impl Board {
-    fn generate_all_moves(&self, rack: Vec<char>) -> Vec<Move> {
+    pub fn generate_all_moves(&self, rack: Vec<char>) -> Vec<Move> {
         let mut result = Vec::new();
 
         for p in self.anchors() {
-            for (lp, rp) in gen_parts(rack).iter() {
-                // if let Some(move) = self.place(p, lp, rp) {
-                //     result.push(move);
-                // }
+            for d in Direction::iter() {
+                for (lp, rp) in gen_parts(rack.clone()).iter() {
+                    if let Some(mv) = self.clone().place(p, *d, lp.to_vec(), rp.to_vec()) {
+                        result.push(mv);
+                    }
+                }
             }
         }
 
         result
     }
 
-    fn place(&self, p: Position, lp: Vec<char>, rp: Vec<char>) -> Option<Move> {
-        None
+    fn place(&mut self, p: Position, d: Direction, lp: Vec<char>, rp: Vec<char>) -> Option<Move> {
+        let mut word = Vec::new();
+
+        let mut curr_left = p.clone();
+        let mut i = 0;
+        while i < lp.len() {
+            if !curr_left.tick_opp(d) { return None }
+            if !self.is_letter(curr_left) { 
+                self.set(curr_left, lp[i]);
+                i += 1;
+            }
+            word.push(self.at_position(curr_left));
+        }
+
+        word = word.iter().rev().cloned().collect();
+        
+        let mut curr_right = p.clone();
+        i = 0;
+        while i < rp.len() {
+            if !curr_right.tick(d) { return None }
+            if self.is_letter(curr_right) { continue }
+            self.set(curr_right, rp[i]);
+            word.push(self.at_position(curr_right));
+            i += 1;
+        }
+
+        Some(Move {
+            word: word.iter().collect(),
+            position: curr_left,
+            direction: d
+        })
+    }
+}
+
+impl Board {
+    fn clone(&self) -> Board {
+        Board {
+            state: self.state.clone(),
+            dictionary: Dictionary::default() // todo: copy???
+        }
     }
 }
 
