@@ -2,7 +2,12 @@ use crate::utils::*;
 use std::fmt;
 use std::collections::HashMap;
 use std::slice::Iter;
+use std::convert::TryFrom;
 use std::convert::TryInto;
+
+fn _as(v: usize) -> i32 {
+    i32::try_from(v).unwrap()
+}
 
 pub struct Board {
     state: [[char; 15]; 15]
@@ -150,8 +155,9 @@ impl Board {
             for d in Direction::iter() {
                 // for (lp, rp) in gen_parts(rack.clone()).iter() {
                 for part in gen_parts(rack.clone()).iter() {
-                    for dist in (-part.len()-1)..(part.len()+1) {
-                        if let some(pos) = p.add(dist.try_into().unwrap(), *d) {
+                    for dist in ((-_as(part.len())+1)..1) {
+                        if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
+                            // println!("{}, {:?}, {:?}", dist, p, pos);
                             if let Some(mv) = self.clone().place(pos, *d, part.to_vec(), dict, &cross_checks) {
                                 result.push(mv);
                             }
@@ -171,8 +177,8 @@ impl Board {
         let mut i = 0;
         while i < part.len() {
             if !self.is_letter(curr) { 
-                if cross_checks.get(&curr).unwrap().contains(&lp[i]) { 
-                    self.set(curr, lp[i]);
+                if cross_checks.get(&curr).unwrap().contains(&part[i]) { 
+                    self.set(curr, part[i]);
                 } else {
                     return None
                 }
@@ -180,6 +186,10 @@ impl Board {
             }
             word.push(self.at_position(curr));
             if !curr.tick(d) { return None }
+        }
+
+        if self.is_letter(curr) { // played to a letter
+            word.push(self.at_position(curr));
         }
 
         // word.reverse();
@@ -199,13 +209,15 @@ impl Board {
         //     word.push(self.at_position(curr_right));
         // }
 
-        // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
 
         let word = word.iter().collect();
 
         if !dict.check_word(&word) {
             return None
         }
+
+        println!("{} {}, {:?} {} {:?}", self, word, self.get_words(), self.valid(dict), p);
+
 
         // println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
 

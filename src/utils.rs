@@ -117,7 +117,7 @@ impl Position {
     }
 
     pub fn add(&self, n: i32, d: Direction) -> Option<Position> {
-        let p = self.clone();
+        let mut p = self.clone();
         if n < 0 {
             for i in 0..(-n) {
                 if !p.tick_opp(d) { return None }
