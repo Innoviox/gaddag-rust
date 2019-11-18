@@ -184,6 +184,7 @@ impl Board {
         // println!("{} {:?} {}", self, self.get_words(), self.valid(dict));
 
         if self.valid(dict) {
+            println!("{} {:?} {} {:?} {:?} {:?} {:?}", self, self.get_words(), self.valid(dict), p, d, lp, rp);
             return Some(Move {
                 word: word.iter().collect(),
                 position: curr_left,

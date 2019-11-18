@@ -39,9 +39,10 @@ fn main() {
     // println!("{}", board);
 
     for m in board.generate_all_moves(rack, &utils::Dictionary::default()).iter() {
-        let mut x = board.clone();
-        x.place_move(m);
-        println!("{:?}\n{}{}", m, x, x.valid(&utils::Dictionary::default()));
+        println!("{:?}", m);
+        // let mut x = board.clone();
+        // x.place_move(m);
+        // println!("{:?}\n{}{}", m, x, x.valid(&utils::Dictionary::default()));
     }
 
     // println!("{:?}", board.get_words());
