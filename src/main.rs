@@ -35,8 +35,11 @@ fn main() {
 
     let rack = vec!['L', 'L', 'O'];
 
-    let t = &dictionary::Trie::default();
+    let mut t = dictionary::Trie::default();
+    println!("{:?}", t.graph);
     println!("{} {}", t.graph.node_count(), t.graph.edge_count());
+
+    t.seed(vec!['H']);
 
     // println!("{:?}", t.graph);
 

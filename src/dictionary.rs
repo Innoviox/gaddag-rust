@@ -4,8 +4,9 @@ use std::collections::HashSet;
 use std::fs;
 // use daggy::*;
 use petgraph::Graph;
-use petgraph::NodeIndex;
-
+use petgraph::Direction;
+use petgraph::graph::NodeIndex;
+use petgraph::visit::EdgeRef;
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, HashSet<String>>>
@@ -47,27 +48,27 @@ impl Dictionary {
 }
 
 pub struct Trie {
-    pub graph: Graph<char, u32>
-    pub current: NodeIndex<char>
+    pub graph: Graph<char, char>,
+    pub current: NodeIndex<u32>,
 }
 
 impl Trie {
     pub fn default() -> Trie {
-        let graph = Graph::new();
-        let current = trie.graph.add_node(' ');
+        let mut graph = Graph::new();
+        let current = graph.add_node(' ');
         let mut trie = Trie { graph, current };
 
         for i in alph.chars() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
-            let i_node = trie.graph.add_node(i);
+            let i_node = trie.graph.add_node(i.clone());
 
-            trie.graph.add_edge(trie.current, i_node);
+            trie.graph.add_edge(trie.current, i_node, i.clone());
 
             for j in alph.chars() {
-                let j_node = trie.graph.add_node(j);
+                let j_node = trie.graph.add_node(j.clone());
 
-                trie.graph.add_edge(i_node, j_node, 0);
+                trie.graph.add_edge(i_node, j_node, j.clone());
 
                 let dipth: String = i.to_string() + &j.to_string();
                 let filepath = format!("resources/{}.txt", dipth);
@@ -80,8 +81,8 @@ impl Trie {
                 for word in words {
                     let mut last_node = j_node;
                     for c in word.chars() {
-                        let next_node = trie.graph.add_node(c);
-                        trie.graph.add_edge(last_node, next_node, 0);
+                        let next_node = trie.graph.add_node(c.clone());
+                        trie.graph.add_edge(last_node, next_node, c.clone());
                         last_node = next_node;
                     }
                 }
@@ -93,15 +94,33 @@ impl Trie {
         trie
     }
 
-    pub fn seed(initial: Vec<char>) {
+    pub fn seed(&mut self, initial: Vec<char>) {
+        println!("seeding");
 
+        let nodes = self.graph.raw_nodes();
+        let edges = self.graph.raw_edges();
+        self.current = self.graph.node_indices().next().unwrap();
+        for c in initial {
+            for a in self.graph.edges_directed(self.current, Direction::Outgoing) {
+                println!("{:?}", a); 
+                for b in self.graph.edges_directed(edges[a.id().index()].target(), Direction::Outgoing) {
+                    println!("\t{:?}", b); 
+                    for d in self.graph.edges_directed(edges[b.id().index()].target(), Direction::Outgoing) {
+                        println!("\t\t{:?}", d); 
+                        // for e in self.graph.edges_directed(edges[d.id().index()].target(), Direction::Outgoing) {
+                        //     println!("\t\t\t{:?}", e); 
+                        // }
+                    }
+                }
+            }
+        }
     }
 
-    pub fn next() -> Vec<char> {
-
+    pub fn next(&self) -> Vec<char> {
+        Vec::new()
     }
 
-    pub fn advance(next: char) {
+    pub fn advance(&self, next: char) {
         
     }
 }
