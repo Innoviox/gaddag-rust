@@ -1,5 +1,6 @@
 use crate::utils::*;
 use crate::dictionary::Dictionary;
+use crate::dictionary::Trie;
 use std::fmt;
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -146,7 +147,7 @@ impl Board {
 }
 
 impl Board {
-    pub fn generate_all_moves(&mut self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
+    pub fn generate_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
         let mut cross_checks: [Vec<char>; 225] = array_init(|_| Vec::new()); // : HashMap<Position, Vec<char>> = HashMap::new();
@@ -162,7 +163,7 @@ impl Board {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.clone().place(pos, *d, &part, dict, &cross_checks, true) {
+                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks, true) {
                                 result.push(mv);
                             }
                         }
@@ -175,7 +176,7 @@ impl Board {
     }
 
     pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
-                 dict: &Dictionary, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
+                 trie: &Trie, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
         // todo: return vector of positions, not word
         if self.is_letter(p) { return None }
         
@@ -192,11 +193,16 @@ impl Board {
 
         word.reverse();
 
+        let mut trie_node = trie.seed(&word);
+
         let mut curr = p.clone(); 
         let mut i = 0;
         while i < part.len() {
             if !self.is_letter(curr) { 
-                if cross_checks[curr.to_int()].contains(&part[i]) { 
+                if !cross_checks[curr.to_int()].contains(&part[i]) { 
+                    return None
+                } else if let Some(now) = trie.can_next(trie_node, part[i]) {
+                    trie_node = now;
                     if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
                 } else {
@@ -216,14 +222,14 @@ impl Board {
 
         let word = word.iter().collect();
 
-        if p.row == 7 && p.col == 9 {
+        // if p.row == 7 && p.col == 9 {
             println!("{} {}", self, word);
-        }
+        // }
         
 
-        if !dict.check_word(&word) {
-            return None
-        }
+        // if !dict.check_word(&word) {
+        //     return None
+        // }
 
 
         Some(Move {

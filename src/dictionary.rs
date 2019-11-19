@@ -52,6 +52,8 @@ pub struct Trie {
     pub current: NodeIndex<u32>,
 }
 
+
+
 impl Trie {
     pub fn default() -> Trie {
         let mut graph = Graph::new();
@@ -106,69 +108,33 @@ impl Trie {
         trie
     }
 
-    // pub fn compress(&mut self) {
-    //     // self.current = self.graph.node_indices().next().unwrap();
-    //     for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
-            
-    //     }
-    // }
-
-    // fn _compress(&mut self, node: NodeIndex<u32>) {
-
-    // }
-
-    // fn _merge(node1: NodeIndex<u32>, node2: NodeIndex<u32>) { // -> NodeIndex?
-    //     // add all offshoots of node2 to node1
-    //     let nodes = self.graph.raw_nodes();
-    //     let edges = self.graph.raw_edges();
-
-    //     let n1 = nodes[node1.index()];
-
-    //     for edge in self.graph.edges_directed(self.graph.raw_nodes()[node2.index()], Direction::Outgoing) {
-    //         let to = edges[edge.id().index()].target();
-    //         self.graph.add_edge(n1, to, edge.weight());
-    //     }
-
-    //     self.graph.remove_node(nodes[node2.index()]);
-    // }
-
-    pub fn seed(&mut self, initial: Vec<char>) {
-        println!("seeding");
-
-        let nodes = self.graph.raw_nodes();
+    pub fn seed(&self, initial: &Vec<char>) -> NodeIndex {
         let edges = self.graph.raw_edges();
-        self.current = self.graph.node_indices().next().unwrap();
+        
+        let mut current = self.graph.node_indices().next().unwrap();
+        
         for c in initial {
-            for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
-                println!("{:?}", nodes[a.index()]); 
-                // for b in self.graph.edges_directed(edges[a.id().index()].target(), Direction::Outgoing) {
-                for b in self.graph.neighbors_directed(a, Direction::Outgoing) {
-                    println!("\t{:?}", nodes[b.index()]); 
-                    for d in self.graph.neighbors_directed(b, Direction::Outgoing) {
-                        println!("\t\t{:?}", nodes[d.index()]); 
-                        for e in self.graph.neighbors_directed(d, Direction::Outgoing) {
-                            println!("\t\t\t{:?}", nodes[e.index()]); 
-                            for f in self.graph.neighbors_directed(e, Direction::Outgoing) {
-                                println!("\t\t\t\t{:?}", nodes[f.index()]); 
-                            }
-                        }
-                    }
-                    // for d in self.graph.edges_directed(edges[b.id().index()].target(), Direction::Outgoing) {
-                        // println!("\t\t{:?}", d); 
-                        // for e in self.graph.edges_directed(edges[d.id().index()].target(), Direction::Outgoing) {
-                        //     println!("\t\t\t{:?}", e); 
-                        // }
-                    // }
+            for a in self.graph.edges_directed(current, Direction::Outgoing) {
+                let e = &edges[a.id().index()];
+                if e.weight == *c {
+                    current = e.target();
+                    break;
                 }
             }
         }
+
+        current
     }
 
-    pub fn next(&self) -> Vec<char> {
-        Vec::new()
-    }
+    pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
+        let edges = self.graph.raw_edges();
+        for a in self.graph.edges_directed(current, Direction::Outgoing) {
+            let e = &edges[a.id().index()];
+            if e.weight == next {
+                return Some(e.target())
+            }
+        }
 
-    pub fn advance(&self, next: char) {
-        
+        None
     }
 }

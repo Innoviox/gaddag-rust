@@ -16,6 +16,9 @@ fn main() {
     // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
     // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
 
+    let t = dictionary::Trie::default();
+    let d = dictionary::Dictionary::default();
+
     let mut board = board::Board::default();
 
     let position = utils::Position { row: 7, col: 7 };
@@ -35,7 +38,7 @@ fn main() {
 
     let rack = vec!['L', 'L', 'O'];
 
-    let mut t = dictionary::Trie::default();
+    
     // println!("{:?}", t.graph);
     // println!("{} {}", t.graph.node_count(), t.graph.edge_count());
 
@@ -48,7 +51,7 @@ fn main() {
     // println!("{}", board);
 
 
-    // println!("{:?}", board.generate_all_moves(rack, &dictionary::Dictionary::default()));
+    println!("{:?}", board.generate_all_moves(rack, &t, &d));
     // board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
 
     // println!("{:?}", board.get_words());
