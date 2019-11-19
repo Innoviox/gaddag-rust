@@ -148,7 +148,7 @@ impl Board {
     pub fn generate_all_moves(&mut self, rack: Vec<char>, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
-        let mut cross_checks: [Vec<char>; 225] = array_init(|x| Vec::new()); // : HashMap<Position, Vec<char>> = HashMap::new();
+        let mut cross_checks: [Vec<char>; 225] = array_init(|_| Vec::new()); // : HashMap<Position, Vec<char>> = HashMap::new();
         for p in positions().iter() {
             // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
             cross_checks[p.to_int()] = chars(self.valid_at(*p, dict));
@@ -160,7 +160,7 @@ impl Board {
                 for part in gen_parts(rack.clone()).iter() {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
-                            // println!("{}, {:?}, {:?}", dist, p, pos);
+                                // println!("{}, {:?}, {:?}", dist, p, pos);
                             if let Some(mv) = self.clone().place(pos, *d, part.to_vec(), dict, &cross_checks) {
                                 result.push(mv);
                             }
@@ -176,7 +176,7 @@ impl Board {
     pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &[Vec<char>; 225]) -> Option<Move> {
         if self.is_letter(p) { return None }
         
-        let mut word = Vec::new();
+        let mut word = Vec::new(); // todo: efficiency - make string?
 
         let mut curr_left = p.clone();
 

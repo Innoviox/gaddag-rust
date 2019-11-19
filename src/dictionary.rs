@@ -1,9 +1,10 @@
 use crate::utils::alph;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::fs;
 
 pub struct Dictionary {
-    words: HashMap<char, HashMap<char, Vec<String>>>
+    words: HashMap<char, HashMap<char, HashSet<String>>>
 }
 
 impl Dictionary {
@@ -11,7 +12,7 @@ impl Dictionary {
         let mut dict = Dictionary { words: HashMap::new() };
 
         for i in alph.chars() {
-            let mut sub: HashMap<char, Vec<String>> = HashMap::new();
+            let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
             for j in alph.chars() {
                 let dipth: String = i.to_string() + &j.to_string();
