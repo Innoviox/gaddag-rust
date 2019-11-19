@@ -2,6 +2,7 @@ use crate::utils::*;
 use crate::dictionary::Dictionary;
 use std::fmt;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::slice::Iter;
 use std::convert::TryFrom;
 use std::convert::TryInto;
@@ -157,11 +158,11 @@ impl Board {
         for p in self.anchors() {
             for d in Direction::iter() {
                 // for (lp, rp) in gen_parts(rack.clone()).iter() {
-                for part in gen_parts(rack.clone()).iter() {
+                for part in gen_parts(&rack).iter() {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.clone().place(pos, *d, part.to_vec(), dict, &cross_checks) {
+                            if let Some(mv) = self.place(pos, *d, &part, dict, &cross_checks) {
                                 result.push(mv);
                             }
                         }
@@ -173,7 +174,8 @@ impl Board {
         result
     }
 
-    pub fn place(&mut self, p: Position, d: Direction, part: Vec<char>, dict: &Dictionary, cross_checks: &[Vec<char>; 225]) -> Option<Move> {
+    pub fn place(&self, p: Position, d: Direction, part: &Vec<char>, dict: &Dictionary, cross_checks: &[Vec<char>; 225]) -> Option<Move> {
+        // todo: return vector of positions, not word
         if self.is_letter(p) { return None }
         
         let mut word = Vec::new(); // todo: efficiency - make string?
@@ -194,13 +196,15 @@ impl Board {
         while i < part.len() {
             if !self.is_letter(curr) { 
                 if cross_checks[curr.to_int()].contains(&part[i]) { 
-                    self.set(curr, part[i]);
+                    // self.set(curr, part[i]);
+                    word.push(part[i]);
                 } else {
                     return None
                 }
                 i += 1;
+            } else {
+                word.push(self.at_position(curr));
             }
-            word.push(self.at_position(curr));
             if !curr.tick(d) { return None }
         }
 
@@ -208,7 +212,6 @@ impl Board {
             word.push(self.at_position(curr));
             if !curr.tick(d) { break }
         }
-
 
         let word = word.iter().collect();
 
@@ -221,6 +224,7 @@ impl Board {
 
         Some(Move {
             word,
+            // part,
             position: p,
             direction: d
         })

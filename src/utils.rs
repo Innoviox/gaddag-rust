@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::slice::Iter;
 use std::cmp::PartialEq;
 use std::ops::Range;
@@ -125,11 +126,12 @@ pub fn positions() -> Vec<Position> {
 #[derive(Debug)]
 pub struct Move {
     pub word: String,
+    // pub part: Vec<char>,
     pub position: Position,
     pub direction: Direction
 }
 
-pub fn gen_parts(rack: Vec<char>) -> Vec<Vec<char>> {
+pub fn gen_parts(rack: &Vec<char>) -> Vec<Vec<char>> {
     let mut result = Vec::new();
 
     for n in 2..(rack.len()+1) {
