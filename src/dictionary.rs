@@ -61,12 +61,12 @@ impl Trie {
         for i in alph.chars() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
-            let i_node = trie.graph.add_node(i.clone());
+            let i_node = trie.graph.add_node(i);
 
             trie.graph.add_edge(trie.current, i_node, i.clone());
 
             for j in alph.chars() {
-                let j_node = trie.graph.add_node(j.clone());
+                let j_node = trie.graph.add_node(j);
 
                 trie.graph.add_edge(i_node, j_node, j.clone());
 
@@ -80,10 +80,22 @@ impl Trie {
 
                 for word in words {
                     let mut last_node = j_node;
+
                     for c in word.chars().skip(2) {
-                        let next_node = trie.graph.add_node(c.clone());
-                        trie.graph.add_edge(last_node, next_node, c.clone());
-                        last_node = next_node;
+                        let mut set = false;
+                        for a in trie.graph.edges_directed(last_node, Direction::Outgoing) {
+                            let e = &trie.graph.raw_edges()[a.id().index()];
+                            if e.weight == c {
+                                last_node = e.target();
+                                set = true;
+                                break;
+                            }
+                        }
+                        if !set { // python reigns supreme
+                            let next_node = trie.graph.add_node(c);
+                            trie.graph.add_edge(last_node, next_node, c.clone());
+                            last_node = next_node;
+                        }
                     }
                 }
 
@@ -94,20 +106,31 @@ impl Trie {
         trie
     }
 
-    pub fn compress(&mut self) {
-        // self.current = self.graph.node_indices().next().unwrap();
-        for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
+    // pub fn compress(&mut self) {
+    //     // self.current = self.graph.node_indices().next().unwrap();
+    //     for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
             
-        }
-    }
+    //     }
+    // }
 
-    fn _compress(&mut self, node: NodeIndex<u32>) {
+    // fn _compress(&mut self, node: NodeIndex<u32>) {
 
-    }
+    // }
 
-    fn _merge(node1: NodeIndex<u32>, node2: NodeIndex<u32>) { // -> NodeIndex?
+    // fn _merge(node1: NodeIndex<u32>, node2: NodeIndex<u32>) { // -> NodeIndex?
+    //     // add all offshoots of node2 to node1
+    //     let nodes = self.graph.raw_nodes();
+    //     let edges = self.graph.raw_edges();
 
-    }
+    //     let n1 = nodes[node1.index()];
+
+    //     for edge in self.graph.edges_directed(self.graph.raw_nodes()[node2.index()], Direction::Outgoing) {
+    //         let to = edges[edge.id().index()].target();
+    //         self.graph.add_edge(n1, to, edge.weight());
+    //     }
+
+    //     self.graph.remove_node(nodes[node2.index()]);
+    // }
 
     pub fn seed(&mut self, initial: Vec<char>) {
         println!("seeding");
@@ -125,6 +148,9 @@ impl Trie {
                         println!("\t\t{:?}", nodes[d.index()]); 
                         for e in self.graph.neighbors_directed(d, Direction::Outgoing) {
                             println!("\t\t\t{:?}", nodes[e.index()]); 
+                            for f in self.graph.neighbors_directed(e, Direction::Outgoing) {
+                                println!("\t\t\t\t{:?}", nodes[f.index()]); 
+                            }
                         }
                     }
                     // for d in self.graph.edges_directed(edges[b.id().index()].target(), Direction::Outgoing) {
