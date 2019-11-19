@@ -99,7 +99,7 @@ impl Trie {
                     }
                 }
 
-                return trie;
+                // return trie;
             }
         }
 
