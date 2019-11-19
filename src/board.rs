@@ -176,12 +176,8 @@ impl Board {
 
     pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
                  dict: &Dictionary, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
-        println!("{:?} {:?}", part, p);
-        if p.row == 7 && p.col == 9 {
-            println!("HI");
-        }
         // todo: return vector of positions, not word
-        if self.is_letter(p) { println!("A"); return None }
+        if self.is_letter(p) { return None }
         
         let mut word = Vec::new(); // todo: efficiency - make string?
 
@@ -262,16 +258,16 @@ impl fmt::Display for Board {
         }
         write!(f, "\n{}\n", sep).expect("fail");
 
-        let a = self.anchors();
+        // let a = self.anchors();
 
         for (num, row) in self.state.iter().enumerate() {
             write!(f, "| {} |", format!("{:0>2}", num+1)).expect("fail");
             // for sq in row.iter() {
             
             for (col, sq) in row.iter().enumerate() {
-                if a.contains(&Position{ row: num, col }) { 
-                    write!(f, "AAA").expect("fail");
-                } else { 
+                // if a.contains(&Position{ row: num, col }) { 
+                    // write!(f, "AAA").expect("fail");
+                // } else { 
                     match sq {
                         '#' => write!(f, "TWS").expect("fail"),
                         '^' => write!(f, "DWS").expect("fail"),
@@ -280,7 +276,7 @@ impl fmt::Display for Board {
                         '.' => write!(f, "   ").expect("fail"),
                         _  => write!(f, " {} ", sq).expect("fail")
                     };
-                }
+                // }
                 write!(f, "|").expect("fail");
             }
             write!(f, "\n{}\n", sep).expect("fail");
