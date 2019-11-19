@@ -162,7 +162,7 @@ impl Board {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.place(pos, *d, &part, dict, &cross_checks) {
+                            if let Some(mv) = self.clone().place(pos, *d, &part, dict, &cross_checks, true) {
                                 result.push(mv);
                             }
                         }
@@ -174,9 +174,14 @@ impl Board {
         result
     }
 
-    pub fn place(&self, p: Position, d: Direction, part: &Vec<char>, dict: &Dictionary, cross_checks: &[Vec<char>; 225]) -> Option<Move> {
+    pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
+                 dict: &Dictionary, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
+        println!("{:?} {:?}", part, p);
+        if p.row == 7 && p.col == 9 {
+            println!("HI");
+        }
         // todo: return vector of positions, not word
-        if self.is_letter(p) { return None }
+        if self.is_letter(p) { println!("A"); return None }
         
         let mut word = Vec::new(); // todo: efficiency - make string?
 
@@ -196,7 +201,7 @@ impl Board {
         while i < part.len() {
             if !self.is_letter(curr) { 
                 if cross_checks[curr.to_int()].contains(&part[i]) { 
-                    // self.set(curr, part[i]);
+                    if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
                 } else {
                     return None
@@ -215,11 +220,14 @@ impl Board {
 
         let word = word.iter().collect();
 
+        if p.row == 7 && p.col == 9 {
+            println!("{} {}", self, word);
+        }
+        
+
         if !dict.check_word(&word) {
             return None
         }
-
-        // println!("{}", self);
 
 
         Some(Move {
@@ -228,6 +236,10 @@ impl Board {
             position: p,
             direction: d
         })
+    }
+
+    pub fn score(&self, m: Move) {
+        
     }
 }
 
@@ -250,16 +262,16 @@ impl fmt::Display for Board {
         }
         write!(f, "\n{}\n", sep).expect("fail");
 
-        // let a = self.anchors();
+        let a = self.anchors();
 
         for (num, row) in self.state.iter().enumerate() {
             write!(f, "| {} |", format!("{:0>2}", num+1)).expect("fail");
             // for sq in row.iter() {
             
             for (col, sq) in row.iter().enumerate() {
-                // if a.contains(&Position{ row: num, col }) { 
-                //     write!(f, "AAA").expect("fail");
-                // } else { 
+                if a.contains(&Position{ row: num, col }) { 
+                    write!(f, "AAA").expect("fail");
+                } else { 
                     match sq {
                         '#' => write!(f, "TWS").expect("fail"),
                         '^' => write!(f, "DWS").expect("fail"),
@@ -268,7 +280,7 @@ impl fmt::Display for Board {
                         '.' => write!(f, "   ").expect("fail"),
                         _  => write!(f, " {} ", sq).expect("fail")
                     };
-                // }
+                }
                 write!(f, "|").expect("fail");
             }
             write!(f, "\n{}\n", sep).expect("fail");
