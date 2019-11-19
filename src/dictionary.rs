@@ -4,6 +4,7 @@ use std::collections::HashSet;
 use std::fs;
 // use daggy::*;
 use petgraph::Graph;
+use petgraph::NodeIndex;
 
 
 pub struct Dictionary {
@@ -47,16 +48,21 @@ impl Dictionary {
 
 pub struct Trie {
     pub graph: Graph<char, u32>
+    pub current: NodeIndex<char>
 }
 
 impl Trie {
     pub fn default() -> Trie {
-        let mut trie = Trie { graph: Graph::new() };
+        let graph = Graph::new();
+        let current = trie.graph.add_node(' ');
+        let mut trie = Trie { graph, current };
 
         for i in alph.chars() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
             let i_node = trie.graph.add_node(i);
+
+            trie.graph.add_edge(trie.current, i_node);
 
             for j in alph.chars() {
                 let j_node = trie.graph.add_node(j);
@@ -87,15 +93,15 @@ impl Trie {
         trie
     }
 
-    // pub fn seed(initial: Vec<char>) {
+    pub fn seed(initial: Vec<char>) {
 
-    // }
+    }
 
-    // pub fn next() -> Vec<char> {
+    pub fn next() -> Vec<char> {
 
-    // }
+    }
 
-    // pub fn advance(next: char) {
+    pub fn advance(next: char) {
         
-    // }
+    }
 }

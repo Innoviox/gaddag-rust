@@ -1,7 +1,5 @@
 #[macro_use] extern crate itertools;
 
-use petgraph_graphml::GraphMl;
-
 mod bag;
 mod utils;
 mod board;
@@ -40,11 +38,7 @@ fn main() {
     let t = &dictionary::Trie::default();
     println!("{} {}", t.graph.node_count(), t.graph.edge_count());
 
-    let graphml = GraphMl::new(&t.graph)
-    .pretty_print(true)
-    .export_node_weights_display();
-
-    println!("{:?}", t.graph);
+    // println!("{:?}", t.graph);
 
     // board.place(utils::Position{ row: 7, col: 7}, utils::Direction::Down, vec!['A', 'C'], vec!['B'], &utils::Dictionary::default());
 
