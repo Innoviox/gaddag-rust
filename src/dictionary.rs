@@ -80,7 +80,7 @@ impl Trie {
 
                 for word in words {
                     let mut last_node = j_node;
-                    for c in word.chars() {
+                    for c in word.chars().skip(2) {
                         let next_node = trie.graph.add_node(c.clone());
                         trie.graph.add_edge(last_node, next_node, c.clone());
                         last_node = next_node;
@@ -94,6 +94,21 @@ impl Trie {
         trie
     }
 
+    pub fn compress(&mut self) {
+        // self.current = self.graph.node_indices().next().unwrap();
+        for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
+            
+        }
+    }
+
+    fn _compress(&mut self, node: NodeIndex<u32>) {
+
+    }
+
+    fn _merge(node1: NodeIndex<u32>, node2: NodeIndex<u32>) { // -> NodeIndex?
+
+    }
+
     pub fn seed(&mut self, initial: Vec<char>) {
         println!("seeding");
 
@@ -101,16 +116,23 @@ impl Trie {
         let edges = self.graph.raw_edges();
         self.current = self.graph.node_indices().next().unwrap();
         for c in initial {
-            for a in self.graph.edges_directed(self.current, Direction::Outgoing) {
-                println!("{:?}", a); 
-                for b in self.graph.edges_directed(edges[a.id().index()].target(), Direction::Outgoing) {
-                    println!("\t{:?}", b); 
-                    for d in self.graph.edges_directed(edges[b.id().index()].target(), Direction::Outgoing) {
-                        println!("\t\t{:?}", d); 
+            for a in self.graph.neighbors_directed(self.current, Direction::Outgoing) {
+                println!("{:?}", nodes[a.index()]); 
+                // for b in self.graph.edges_directed(edges[a.id().index()].target(), Direction::Outgoing) {
+                for b in self.graph.neighbors_directed(a, Direction::Outgoing) {
+                    println!("\t{:?}", nodes[b.index()]); 
+                    for d in self.graph.neighbors_directed(b, Direction::Outgoing) {
+                        println!("\t\t{:?}", nodes[d.index()]); 
+                        for e in self.graph.neighbors_directed(d, Direction::Outgoing) {
+                            println!("\t\t\t{:?}", nodes[e.index()]); 
+                        }
+                    }
+                    // for d in self.graph.edges_directed(edges[b.id().index()].target(), Direction::Outgoing) {
+                        // println!("\t\t{:?}", d); 
                         // for e in self.graph.edges_directed(edges[d.id().index()].target(), Direction::Outgoing) {
                         //     println!("\t\t\t{:?}", e); 
                         // }
-                    }
+                    // }
                 }
             }
         }
