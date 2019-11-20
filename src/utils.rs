@@ -23,7 +23,7 @@ pub struct Position {
     pub col: usize
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Direction {
     Across,
     Down

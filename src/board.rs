@@ -80,7 +80,7 @@ impl Board {
         self.play_word(m.position, m.word.clone(), m.direction, true)
     }
 
-    pub fn valid_at(&mut self, p: Position, d: &Dictionary) -> [bool; 26] {
+    pub fn valid_at(&mut self, p: Position, d: &Dictionary, dir: Direction) -> [bool; 26] {
         if self.is_letter(p) {
             return [false; 26];
         }
@@ -94,14 +94,14 @@ impl Board {
         for (i, l) in alph.chars().enumerate() {
             let old = self.at_position(p);
             self.set(p, l);
-            cross[i] = self.valid(d);
+            cross[i] = self.valid(d, &dir);
             self.set(p, old);
         }
 
         cross
     }
 
-    pub fn get_words(&self) -> Vec<String> {
+    pub fn get_words(&self) -> Vec<Move> {
         let mut result = Vec::new();
         let mut marked: [[bool; 225]; 2] = [[false; 225]; 2];
 
@@ -117,7 +117,7 @@ impl Board {
                     }
                     
                     if word.len() > 1 {
-                        result.push(word);
+                        result.push(Move { word, direction: *d, position: *p });
                     }
                 }
             }
@@ -126,8 +126,8 @@ impl Board {
         result
     }
 
-    pub fn valid(&self, d: &Dictionary) -> bool { // TODO check connectedness
-        self.get_words().iter().all(|x| d.check_word(&x.to_string()))
+    pub fn valid(&self, d: &Dictionary, dir: &Direction) -> bool { // TODO check connectedness
+        self.get_words().iter().filter(|x| x.direction == *dir).all(|x| d.check_word(&x.word))
     }
 
     pub fn anchors(&self) -> Vec<Position> {
@@ -150,20 +150,26 @@ impl Board {
     pub fn generate_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
-        let mut cross_checks: [Vec<char>; 225] = array_init(|_| Vec::new()); // : HashMap<Position, Vec<char>> = HashMap::new();
-        for p in positions().iter() {
-            // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
-            cross_checks[p.to_int()] = chars(self.valid_at(*p, dict));
+        let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
+        for (di, d) in Direction::iter().enumerate() {
+            for p in positions().iter() {
+                // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
+                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
+            }
         }
 
+        return Vec::new();
+
         for p in self.anchors() {
-            for d in Direction::iter() {
+            for (di, d) in Direction::iter().enumerate() {
+                let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
+                println!("{} {}", di, di_opp);
                 // for (lp, rp) in gen_parts(rack.clone()).iter() {
                 for part in gen_parts(&rack).iter() {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks, true) {
+                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks[di_opp], true) {
                                 result.push(mv);
                             }
                         }
@@ -206,6 +212,9 @@ impl Board {
                     if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
                 } else {
+                    if p.row == 7 && p.col == 9 {
+                        println!("{} {:?} {:?}", self, word, part);
+                    }
                     return None
                 }
                 i += 1;
@@ -223,7 +232,7 @@ impl Board {
         let word = word.iter().collect();
 
         // if p.row == 7 && p.col == 9 {
-            println!("{} {}", self, word);
+            // println!("{} {}", self, word);
         // }
         
 
