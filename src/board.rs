@@ -157,13 +157,10 @@ impl Board {
                 cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
             }
         }
-
-        return Vec::new();
-
+        
         for p in self.anchors() {
             for (di, d) in Direction::iter().enumerate() {
                 let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-                println!("{} {}", di, di_opp);
                 // for (lp, rp) in gen_parts(rack.clone()).iter() {
                 for part in gen_parts(&rack).iter() {
                     for dist in ((-_as(part.len())+1)..1) {
@@ -212,9 +209,6 @@ impl Board {
                     if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
                 } else {
-                    if p.row == 7 && p.col == 9 {
-                        println!("{} {:?} {:?}", self, word, part);
-                    }
                     return None
                 }
                 i += 1;
@@ -232,7 +226,7 @@ impl Board {
         let word = word.iter().collect();
 
         // if p.row == 7 && p.col == 9 {
-            // println!("{} {}", self, word);
+            println!("{} {}", self, word);
         // }
         
 
