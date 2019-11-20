@@ -166,7 +166,7 @@ impl Board {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks[di_opp], true) {
+                            if let Some(mv) = self.place(pos, *d, &part, trie, &cross_checks[di_opp], false) {
                                 result.push(mv);
                             }
                         }
@@ -181,7 +181,6 @@ impl Board {
     pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
                  trie: &Trie, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
         // todo: return vector of positions, not word
-        println!("Starting for {:?} {:?} {:?}", p, d, part);
         if self.is_letter(p) { return None }
         
         let mut word = Vec::new(); // todo: efficiency - make string?
@@ -206,7 +205,6 @@ impl Board {
                 if !cross_checks[curr.to_int()].contains(&part[i]) { 
                     return None
                 } else if let Some(now) = trie.can_next(trie_node, part[i]) {
-                    println!("\ta {:?}{:?}", word, trie.nexts(trie_node));
                     trie_node = now;
                     if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
@@ -217,7 +215,6 @@ impl Board {
             } else {
                 let stumbled = self.at_position(curr);
                 if let Some(st) = trie.can_next(trie_node, stumbled) {
-                    println!("\tb {:?}{:?}", word, trie.nexts(trie_node));
                     trie_node = st;
                     word.push(stumbled);
                 } else {
@@ -230,7 +227,6 @@ impl Board {
         while self.is_letter(curr) { // get stuff after word
             let stumbled = self.at_position(curr);
             if let Some(st) = trie.can_next(trie_node, stumbled) {
-                println!("\tc {:?}{:?}", word, trie.nexts(trie_node));
                 trie_node = st;
                 word.push(stumbled);
             } else {
