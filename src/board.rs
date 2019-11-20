@@ -257,6 +257,40 @@ impl Board {
 }
 
 impl Board {
+    fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
+                 limit: i32, trie: &trie, rack: Vec<char>, cross_checks: &[Vec<char>; 225], 
+                 direction: Direction) {
+        // todo: calculate limit
+        self.extend_right(part, idx, position, cross_checks, direction);
+        if limit > 0 {
+            for next in trie.nexts(node) {
+                if rack.contains(next) {
+                    self.left_part(position.tick_opp(direction), part + next, node.follow(next).unwrap(), limit - 1,
+                                   trie, rack - next, cross_checks);
+                }
+            }
+        }
+    }
+
+    fn extend_right(&self, part: Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<char>) {
+        if !self.is_letter(position) {
+            if let Some(terminal) = trie.can_next(node, '@') {
+                // return move
+            }
+
+            for next in trie.nexts(node) {
+                if rack.contains(next) && cross_checks[position.to_int()].contains(next) {
+                    self.extend_right(part + next, node.follow(next).unwrap(), position.tick(direction), cross_checks, direction, rack - next);
+                }
+            }
+        } else {
+            let next = self.at_position(position);
+            self.extend_right(part + next, node.follow(next).unwrap(), position.tick(direction), cross_checks, direction, rack);
+        }
+    }
+}
+
+impl Board {
     pub fn clone(&self) -> Board {
         Board {
             state: self.state.clone()

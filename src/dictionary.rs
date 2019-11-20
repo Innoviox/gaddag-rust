@@ -130,15 +130,20 @@ impl Trie {
     }
 
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
-        let edges = self.graph.raw_edges(); // todo: optimize away
-        
-        match self.graph.edges_directed(current, Direction::Outgoing)
-            .map(|x| &edges[x.id().index()])
-            .filter(|x| x.weight == next)
-            .next() {
-            Some(e) => Some(e.target()),
-            None => None
+        let edges = self.graph.raw_edges();
+        for a in self.graph.edges_directed(current, Direction::Outgoing) {
+            let e = &edges[a.id().index()];
+            if e.weight == next {
+                return Some(e.target())
+            }
         }
+        
+        None
+    }
+
+    // for readability
+    pub fn follow(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
+        self.can_next(current, next)
     }
 
     pub fn nexts(&self, current: NodeIndex) -> Vec<char> { // debugging method
