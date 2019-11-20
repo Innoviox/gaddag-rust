@@ -7,6 +7,7 @@ use petgraph::Graph;
 use petgraph::Direction;
 use petgraph::graph::NodeIndex;
 use petgraph::visit::EdgeRef;
+use petgraph::graph::Edge;
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, HashSet<String>>>
@@ -50,7 +51,6 @@ impl Dictionary {
 pub struct Trie {
     pub graph: Graph<char, char>,
     pub current: NodeIndex<u32>,
-    edges: Vec<Edge<E, Ix>>
 }
 
 
@@ -59,7 +59,7 @@ impl Trie {
     pub fn default() -> Trie {
         let mut graph = Graph::new();
         let current = graph.add_node(' ');
-        let mut trie = Trie { graph, current, edges: Vec::new() };
+        let mut trie = Trie { graph, current };
 
         for i in alph.chars() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
@@ -109,17 +109,16 @@ impl Trie {
             }
         }
 
-        trie.edges = trie.graph.raw_edges();
-
         trie
     }
 
     pub fn seed(&self, initial: &Vec<char>) -> NodeIndex {        
+        let edges = self.graph.raw_edges(); // todo: optimize away
         let mut current = self.graph.node_indices().next().unwrap();
         
         for c in initial {
             for a in self.graph.edges_directed(current, Direction::Outgoing) {
-                let e = &self.edges[a.id().index()];
+                let e = &edges[a.id().index()];
                 if e.weight == *c {
                     current = e.target();
                     break;
@@ -131,17 +130,18 @@ impl Trie {
     }
 
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
-        for a in self.graph.edges_directed(current, Direction::Outgoing) {
-            let e = &self.edges[a.id().index()];
-            if e.weight == next {
-                return Some(e.target())
-            }
+        let edges = self.graph.raw_edges(); // todo: optimize away
+        
+        match self.graph.edges_directed(current, Direction::Outgoing)
+            .map(|x| &edges[x.id().index()])
+            .filter(|x| x.weight == next)
+            .next() {
+            Some(e) => Some(e.target()),
+            None => None
         }
-
-        None
     }
 
-    pub fn nexts(&self, current: NodeIndex) -> Vec<char> {
+    pub fn nexts(&self, current: NodeIndex) -> Vec<char> { // debugging method
         let edges = self.graph.raw_edges();
         let mut res = Vec::new();
         for a in self.graph.edges_directed(current, Direction::Outgoing) {
