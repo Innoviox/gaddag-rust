@@ -166,7 +166,7 @@ impl Board {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.place(pos, *d, &part, trie, &cross_checks[di_opp], false) {
+                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks[di_opp], true) {
                                 result.push(mv);
                             }
                         }
@@ -237,7 +237,9 @@ impl Board {
 
         let word = word.iter().collect();
 
-        if let Some(_) = trie.can_next(trie_node, '@') {
+        if let Some(_) = trie.can_next(trie_node, '@') { // valid word checker (speed!!!!)
+            println!("{} {}", self, word);
+
             return Some(Move {
                 word,
                 // part,
