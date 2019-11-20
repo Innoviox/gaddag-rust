@@ -99,6 +99,9 @@ impl Trie {
                             last_node = next_node;
                         }
                     }
+
+                    let end_node = trie.graph.add_node('@'); // EOW
+                    trie.graph.add_edge(last_node, end_node, '@');
                 }
 
                 // return trie;

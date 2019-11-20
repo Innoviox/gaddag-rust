@@ -181,6 +181,7 @@ impl Board {
     pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
                  trie: &Trie, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
         // todo: return vector of positions, not word
+        println!("Starting for {:?} {:?} {:?}", p, d, part);
         if self.is_letter(p) { return None }
         
         let mut word = Vec::new(); // todo: efficiency - make string?
@@ -205,6 +206,7 @@ impl Board {
                 if !cross_checks[curr.to_int()].contains(&part[i]) { 
                     return None
                 } else if let Some(now) = trie.can_next(trie_node, part[i]) {
+                    println!("\ta {:?}{:?}", word, trie.nexts(trie_node));
                     trie_node = now;
                     if (mutate) { self.set(curr, part[i]); }
                     word.push(part[i]);
@@ -215,6 +217,7 @@ impl Board {
             } else {
                 let stumbled = self.at_position(curr);
                 if let Some(st) = trie.can_next(trie_node, stumbled) {
+                    println!("\tb {:?}{:?}", word, trie.nexts(trie_node));
                     trie_node = st;
                     word.push(stumbled);
                 } else {
@@ -227,6 +230,7 @@ impl Board {
         while self.is_letter(curr) { // get stuff after word
             let stumbled = self.at_position(curr);
             if let Some(st) = trie.can_next(trie_node, stumbled) {
+                println!("\tc {:?}{:?}", word, trie.nexts(trie_node));
                 trie_node = st;
                 word.push(stumbled);
             } else {
@@ -237,22 +241,16 @@ impl Board {
 
         let word = word.iter().collect();
 
-        // if p.row == 7 && p.col == 9 {
-            println!("{} {}", self, word);
-        // }
-        
+        if let Some(_) = trie.can_next(trie_node, '@') {
+            return Some(Move {
+                word,
+                // part,
+                position: p,
+                direction: d
+            })
+        }
 
-        // if !dict.check_word(&word) {
-        //     return None
-        // }
-
-
-        Some(Move {
-            word,
-            // part,
-            position: p,
-            direction: d
-        })
+        None
     }
 
     pub fn score(&self, m: Move) {
