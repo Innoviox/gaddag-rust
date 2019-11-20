@@ -213,13 +213,25 @@ impl Board {
                 }
                 i += 1;
             } else {
-                word.push(self.at_position(curr));
+                let stumbled = self.at_position(curr);
+                if let Some(st) = trie.can_next(trie_node, stumbled) {
+                    trie_node = st;
+                    word.push(stumbled);
+                } else {
+                    return None
+                }
             }
             if !curr.tick(d) { return None }
         }
 
         while self.is_letter(curr) { // get stuff after word
-            word.push(self.at_position(curr));
+            let stumbled = self.at_position(curr);
+            if let Some(st) = trie.can_next(trie_node, stumbled) {
+                trie_node = st;
+                word.push(stumbled);
+            } else {
+                return None
+            }
             if !curr.tick(d) { break }
         }
 
