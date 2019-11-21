@@ -51,7 +51,7 @@ fn main() {
     // println!("{}", board);
 
 
-    println!("{:?}", board.generate_all_moves(rack, &t, &d).len());
+    println!("{:?}", board.gen_all_moves(rack, &t, &d).len());
     // board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
 
     // println!("{:?}", board.get_words());
