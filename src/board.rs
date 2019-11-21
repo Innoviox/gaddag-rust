@@ -151,10 +151,10 @@ impl Board {
         if self.is_letter(p) { return false }
 
         for n in p.neighbors() {
-            if self.is_letter(n) { return false }
+            if self.is_letter(n) { return true }
         }
 
-        true
+        false
     }
 }
 
