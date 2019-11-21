@@ -301,11 +301,17 @@ impl Board {
                 for col in 0..15 {
                     let p = Position { row, col };
                     if self.is_anchor(p) {
-                        self.left_part(p, Vec::new(), root, trie, 
-                                       &rword, &cross_checks[di_opp], 
-                                       *d, &mut result, 
-                                       (col - last_anchor_col).try_into().unwrap(), 
-                                       String::new());
+                        let mut np = p.clone();
+                        if np.tick_opp(*d) && self.is_letter(np) { 
+                            self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
+                                               *d, &mut result);
+                        } else {
+                            self.left_part(p, Vec::new(), root, trie, 
+                                        &rword, &cross_checks[di_opp], 
+                                        *d, &mut result, 
+                                        (col - last_anchor_col).try_into().unwrap(), 
+                                        String::new());
+                        }
                         last_anchor_col = col;
                     }
                 }  
@@ -313,6 +319,26 @@ impl Board {
         }
 
         result
+    }
+
+    fn left_on_board(&self, position: Position, node: NodeIndex, trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
+                     direction: Direction, moves: &mut Vec<Move>) {
+        let mut np = position.clone();
+
+        let mut word = String::new();
+
+        let new_node = node;
+
+        loop {
+            let c = self.at_position(np);
+            word.push(c);
+            let new_node = trie.follow(new_node, c).unwrap();
+
+            if !(np.tick_opp(direction) && self.is_letter(np)) { 
+                self.extend_right(&Vec::new(), new_node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word);
+            }
+        }
+        
     }
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
@@ -332,7 +358,7 @@ impl Board {
                     let mut new_part = part.clone();
                     new_part.push(next);
 
-                    let mut new_word = next.to_string() + &word;
+                    let new_word = next.to_string() + &word;
 
                     self.left_part(position, new_part, next_node, 
                                    trie, &new_rack, cross_checks, direction,

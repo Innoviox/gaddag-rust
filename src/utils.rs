@@ -31,8 +31,8 @@ pub enum Direction {
 
 impl Direction {
     pub fn iter() -> Iter<'static, Direction> {
-        static d: [Direction; 2] = [Direction::Across, Direction::Down];
-        d.iter()
+        static D: [Direction; 2] = [Direction::Across, Direction::Down];
+        D.iter()
     }
 }
 
@@ -123,10 +123,10 @@ pub fn to_word(arr: &Vec<char>) -> Vec<usize> {
         .collect()
 }
 
-static pos: Range<usize> = 0..15;
+static POS: Range<usize> = 0..15;
 
 pub fn positions() -> Vec<Position> {
-    iproduct!(pos.clone(), pos.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
+    iproduct!(POS.clone(), POS.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
 
 #[derive(Debug)]
