@@ -352,21 +352,25 @@ impl Board {
 
         if limit > 0 {
             for next in trie.nexts(node) {
-                let unext = alph.find(next).unwrap();
-                if rack[unext] > 0 {
-                    let mut new_rack = rack.clone();
-                    new_rack[unext] -= 1;
+                match alph.find(next) {
+                    Some(unext) => { 
+                        if rack[unext] > 0 {
+                            let mut new_rack = rack.clone();
+                            new_rack[unext] -= 1;
 
-                    let next_node = trie.follow(node, next).unwrap();
-                    
-                    let mut new_part = part.clone();
-                    new_part.push(next);
+                            let next_node = trie.follow(node, next).unwrap();
+                            
+                            let mut new_part = part.clone();
+                            new_part.push(next);
 
-                    let new_word = next.to_string() + &word;
+                            let new_word = next.to_string() + &word;
 
-                    self.left_part(position, new_part, next_node, 
-                                   trie, &new_rack, cross_checks, direction,
-                                   moves, limit - 1, new_word);
+                            self.left_part(position, new_part, next_node, 
+                                        trie, &new_rack, cross_checks, direction,
+                                        moves, limit - 1, new_word);
+                        }
+                    },
+                    None => break
                 }
             }
         }
@@ -380,17 +384,21 @@ impl Board {
             }
 
             for next in trie.nexts(node) {
-                let unext = alph.find(next).unwrap();
-                if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                    let mut np = part.clone();
-                    np.push(next);
-                    let mut nr = rack.clone();
-                    nr[unext] -= 1;
-                    let mut npp = position.clone();
+                match alph.find(next) {
+                    Some(unext) => { 
+                        if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
+                            let mut np = part.clone();
+                            np.push(next);
+                            let mut nr = rack.clone();
+                            nr[unext] -= 1;
+                            let mut npp = position.clone();
 
-                    if npp.tick(direction) {
-                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()));
-                    }
+                            if npp.tick(direction) {
+                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()));
+                            }
+                        }
+                    },
+                    None => break
                 }
             }
         } else {
