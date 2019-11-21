@@ -36,7 +36,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
 
     
     // println!("{:?}", t.graph);
