@@ -117,6 +117,12 @@ pub fn chars(arr: [bool; 26]) -> Vec<char> {
         .collect()
 }
 
+pub fn to_word(arr: &Vec<char>) -> Vec<u32> {
+    alph.chars()
+        .map(|x| arr.iter().filter(|&y| *y == x).count())
+        .collect()
+}
+
 static pos: Range<usize> = 0..15;
 
 pub fn positions() -> Vec<Position> {

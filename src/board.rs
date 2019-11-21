@@ -146,12 +146,23 @@ impl Board {
 
         result
     }
+
+    fn is_anchor(&self, p: Position) -> bool {
+        if self.is_letter(p) { return false }
+
+        for n in p.neighbors() {
+            if self.is_letter(n) { return false }
+        }
+
+        true
+    }
 }
 
 impl Board {
     pub fn generate_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
+        // todo crossscores
         let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
@@ -262,6 +273,7 @@ impl Board {
     pub fn gen_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
         let mut result = Vec::new();
 
+        // todo crossscores
         let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
@@ -272,10 +284,29 @@ impl Board {
         
         let root = trie.root();
 
-        for p in self.anchors() {
-            for (di, d) in Direction::iter().enumerate() {
-                let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-                self.left_part(p, Vec::new(), root, trie, &rack, &cross_checks[di_opp], *d, &mut result);
+        let rword = to_word(&rack);
+
+        // for p in self.anchors() {
+        //     for (di, d) in Direction::iter().enumerate() {
+        //         let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
+        //         self.left_part(p, Vec::new(), root, trie, rword, &cross_checks[di_opp], *d, &mut result);
+        //     }
+        // }
+
+
+        for (di, d) in Direction::iter().enumerate() {
+            let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
+            for row in 0..15 {
+                let last_anchor_col = 0;
+                for col in 0..15 {
+                    let p = Position { row col };
+                    if self.is_anchor(p) {
+                        self.last_part(p, [0; 26], root, trie, 
+                                       rword, &cross_checks[di_opp], 
+                                       *d, &mut result, col - last_anchor_col);
+                        last_anchor_col = col;
+                    }
+                }  
             }
         }
 
@@ -283,43 +314,51 @@ impl Board {
     }
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
-                 trie: &Trie, rack: &Vec<char>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction, moves: &mut Vec<Move>) {
-        // todo: calculate limit
-        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves);
-        if !self.is_letter(position) {
+                 trie: &Trie, rack: &Vec<u32>, cross_checks: &[Vec<char>; 225], 
+                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String) {
+        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, word);
+
+        if limit > 0 {
             for next in trie.nexts(node) {
-                if rack.contains(&next) {
-                    let mut np = part.clone();
-                    np.push(next);
-                    let mut nr = rack.clone();
-                    nr._remove_item(next);
-                    let mut npp = position.clone();
-                    if npp.tick_opp(direction) {
-                        self.left_part(npp, np, trie.follow(node, next).unwrap(),
-                                       trie, &nr, cross_checks, direction, moves);
-                    }
+                let unext = alph.find(next);
+                if rack[unext] > 0 {
+                    let mut new_rack = rack.clone();
+                    new_rack[unext] -= 1;
+
+                    let next_node = trie.follow(node, next);
+                    
+                    let mut new_part = part.clone();
+                    new_part.push(next);
+
+                    let mut new_word = String::from(next);
+                    new_word.push(word);
+
+                    self.left_part(position, new_part, next_node, 
+                                   trie, new_rack, cross_checks, direction,
+                                   moves, limit - 1, new_word);
                 }
             }
         }
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<char>, trie: &Trie, moves: &mut Vec<Move>) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<u32>, trie: &Trie, moves: &mut Vec<Move>, word: String) {
         if !self.is_letter(position) {
             if let Some(terminal) = trie.can_next(node, '@') {
                 // return move
-                moves.push(Move { word: String::new(), position, direction });
+                moves.push(Move { word, position, direction });
             }
 
             for next in trie.nexts(node) {
-                if rack.contains(&next) && cross_checks[position.to_int()].contains(&next) {
+                let unext = alph.find(next);
+                if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
                     let mut np = part.clone();
                     np.push(next);
                     let mut nr = rack.clone();
-                    nr._remove_item(next);
+                    nr[unext] -= 1
                     let mut npp = position.clone();
+
                     if npp.tick(direction) {
-                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves);
+                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, word + String::from(next));
                     }
                 }
             }
@@ -329,7 +368,7 @@ impl Board {
             np.push(next);
             let mut npp = position.clone();
             if npp.tick(direction) {
-                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, rack, trie, moves);
+                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, rack, trie, moves, word + String::from(next));
             }
         }
     }
