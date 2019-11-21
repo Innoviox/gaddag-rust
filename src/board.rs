@@ -407,7 +407,9 @@ impl Board {
             np.push(next);
             let mut npp = position.clone();
             if npp.tick(direction) {
-                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()));
+                if let Some(next_node) = trie.follow(node, next) {
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()));
+                }
             }
         }
     }
