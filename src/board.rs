@@ -275,7 +275,7 @@ impl Board {
                 let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
                 let word = Vec::new();
                 let root = trie.seed(&word);
-                self.left_part(p, word, root, trie, &rack, &cross_checks[di_opp], *d);
+                self.left_part(p, word, root, trie, &rack, &cross_checks[di_opp], *d, moves);
             }
         }
 
@@ -284,9 +284,9 @@ impl Board {
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  trie: &Trie, rack: &Vec<char>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction) {
+                 direction: Direction, moves: Vec<Move>) {
         // todo: calculate limit
-        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie);
+        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves);
         if !self.is_letter(position) {
             for next in trie.nexts(node) {
                 if rack.contains(&next) {
@@ -297,17 +297,18 @@ impl Board {
                     let mut npp = position.clone();
                     if npp.tick_opp(direction) {
                         self.left_part(npp, np, trie.follow(node, next).unwrap(),
-                                       trie, &nr, cross_checks, direction);
+                                       trie, &nr, cross_checks, direction, moves);
                     }
                 }
             }
         }
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<char>, trie: &Trie) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<char>, trie: &Trie, moves) {
         if !self.is_letter(position) {
             if let Some(terminal) = trie.can_next(node, '@') {
                 // return move
+                moves.push(Move { "", position, direction });
             }
 
             for next in trie.nexts(node) {
@@ -318,7 +319,7 @@ impl Board {
                     nr._remove_item(next);
                     let mut npp = position.clone();
                     if npp.tick(direction) {
-                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie);
+                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves);
                     }
                 }
             }
