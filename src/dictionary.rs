@@ -62,8 +62,6 @@ impl Trie {
         let mut trie = Trie { graph, current };
 
         for i in alph.chars() {
-            let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
-
             let i_node = trie.graph.add_node(i);
 
             trie.graph.add_edge(trie.current, i_node, i.clone());
