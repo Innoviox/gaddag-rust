@@ -297,12 +297,12 @@ impl Board {
         for (di, d) in Direction::iter().enumerate() {
             let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
             for row in 0..15 {
-                let last_anchor_col = 0;
+                let mut last_anchor_col = 0;
                 for col in 0..15 {
                     let p = Position { row, col };
                     if self.is_anchor(p) {
                         self.left_part(p, Vec::new(), root, trie, 
-                                       rword, &cross_checks[di_opp], 
+                                       &rword, &cross_checks[di_opp], 
                                        *d, &mut result, 
                                        (col - last_anchor_col).try_into().unwrap(), 
                                        String::new());
@@ -316,9 +316,9 @@ impl Board {
     }
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
-                 trie: &Trie, rack: Vec<usize>, cross_checks: &[Vec<char>; 225], 
+                 trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String) {
-        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, word);
+        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word);
 
         if limit > 0 {
             for next in trie.nexts(node) {
@@ -335,18 +335,18 @@ impl Board {
                     let mut new_word = next.to_string() + &word;
 
                     self.left_part(position, new_part, next_node, 
-                                   trie, new_rack, cross_checks, direction,
+                                   trie, &new_rack, cross_checks, direction,
                                    moves, limit - 1, new_word);
                 }
             }
         }
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: String) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String) {
         if !self.is_letter(position) {
             if let Some(terminal) = trie.can_next(node, '@') {
                 // return move
-                moves.push(Move { word, position, direction });
+                moves.push(Move { word: word.to_string(), position, direction });
             }
 
             for next in trie.nexts(node) {
@@ -359,7 +359,7 @@ impl Board {
                     let mut npp = position.clone();
 
                     if npp.tick(direction) {
-                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, word + &next.to_string());
+                        self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()));
                     }
                 }
             }
@@ -369,7 +369,7 @@ impl Board {
             np.push(next);
             let mut npp = position.clone();
             if npp.tick(direction) {
-                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, rack, trie, moves, word + &next.to_string());
+                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()));
             }
         }
     }
