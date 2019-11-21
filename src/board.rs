@@ -340,6 +340,7 @@ impl Board {
             if !(np.tick_opp(direction) && self.is_letter(np)) { 
                 word.reverse();
                 self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect());
+                return
             }
         }
         
