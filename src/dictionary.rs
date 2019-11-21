@@ -85,16 +85,9 @@ impl Trie {
                     let mut last_node = j_node;
 
                     for c in word.chars().skip(2) {
-                        let mut set = false;
-                        for a in trie.graph.edges_directed(last_node, Direction::Outgoing) {
-                            let e = &trie.graph.raw_edges()[a.id().index()];
-                            if e.weight == c {
-                                last_node = e.target();
-                                set = true;
-                                break;
-                            }
-                        }
-                        if !set { // python reigns supreme
+                        if let Some(new) = trie.follow(last_node, c) {
+                            last_node = new
+                        } else {
                             let next_node = trie.graph.add_node(c);
                             trie.graph.add_edge(last_node, next_node, c.clone());
                             last_node = next_node;
@@ -111,10 +104,14 @@ impl Trie {
 
         trie
     }
+    
+    pub fn root(&self) -> NodeIndex {
+        self.graph.node_indices().next().unwrap()
+    }
 
     pub fn seed(&self, initial: &Vec<char>) -> NodeIndex {        
         let edges = self.graph.raw_edges(); // todo: optimize away
-        let mut current = self.graph.node_indices().next().unwrap();
+        let mut current = self.root();
         
         for c in initial {
             for a in self.graph.edges_directed(current, Direction::Outgoing) {

@@ -168,7 +168,7 @@ impl Board {
                     for dist in ((-_as(part.len())+1)..1) {
                         if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
                                 // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.clone().place(pos, *d, &part, trie, &cross_checks[di_opp], true) {
+                            if let Some(mv) = self.place(pos, *d, &part, trie, &cross_checks[di_opp], false) {
                                 result.push(mv);
                             }
                         }
@@ -270,12 +270,12 @@ impl Board {
             }
         }
         
+        let root = trie.root();
+
         for p in self.anchors() {
             for (di, d) in Direction::iter().enumerate() {
                 let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-                let word = Vec::new();
-                let root = trie.seed(&word);
-                self.left_part(p, word, root, trie, &rack, &cross_checks[di_opp], *d, &mut result);
+                self.left_part(p, Vec::new(), root, trie, &rack, &cross_checks[di_opp], *d, &mut result);
             }
         }
 
