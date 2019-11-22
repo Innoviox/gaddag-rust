@@ -56,20 +56,6 @@ pub struct Trie {
 
 
 impl Trie {
-    /*
-    Note that while this implementation is not a true TRIE, it is
-    not a true DAWG either as it only begins compression after the first 
-    node (so the lexicon "CAT", "DAT", "CAG" will be compressed as
-    TRIE: C -> A -> T, D -> A -> T, C -> A -> G
-    (in between): C -> A -> TG; D -> A -> T
-    DAWG: CD -> A -> TG
-    this is to avoid the problematic "edge-eof" (e.g., "dag" is not a word even though
-    a naive traversal of the above dawg would count it as such, and therefore
-    appel and jacobsen store eows on the edge rather than on the node which is
-    inefficient in this petgraph implementation).
-    However, this implementation of a TRIE has became standard (several
-    online sources consider this a true trie even though it is technically semi-compressed).
-    */
     pub fn default() -> Trie {
         let mut graph = Graph::new();
         let current = graph.add_node(' ');
