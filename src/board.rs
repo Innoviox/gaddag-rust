@@ -413,9 +413,9 @@ impl Board {
             if position != anchor {
                 if let Some(terminal) = trie.can_next(node, '@') {
                     // return move
-                    println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     let mut m = Move { word: word.to_string(), position: start_pos, direction, score: 0 };
                     m.score = self.score(&m, cross_sums, bag);
+                    println!("Found move {:?} {:?} {:?} {}", word, start_pos, direction, m.score);
                     println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
