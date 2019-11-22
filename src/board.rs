@@ -309,17 +309,19 @@ impl Board {
                     if self.is_anchor(p) {
                         println!("Found anchor position {:?}", p);
                         let mut np = p.clone();
-                        if np.tick_opp(*d) && self.is_letter(np) { 
-                            println!("Found left-on-board; lefting");
-                            self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
-                                               *d, &mut result);
-                        } else {
-                            println!("Generating l-parts");
-                            self.left_part(p, Vec::new(), root, trie, 
-                                        &rword, &cross_checks[di_opp], 
-                                        *d, &mut result, 
-                                        (col - last_anchor_col).try_into().unwrap(), 
-                                        String::new(), p);
+                        if np.tick_opp(*d) {
+                            if self.is_letter(np) { 
+                                println!("Found left-on-board; lefting");
+                                self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
+                                                    *d, &mut result);
+                            } else {
+                                println!("Generating l-parts");
+                                self.left_part(np, Vec::new(), root, trie, 
+                                            &rword, &cross_checks[di_opp], 
+                                            *d, &mut result, 
+                                            (col - last_anchor_col).try_into().unwrap(), 
+                                            String::new(), np);
+                            }
                         }
                         last_anchor_col = col;
 
@@ -357,6 +359,8 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position) {
+        println!("Received call left with {:?} {:?} {:?} {:?}", position, part, limit, curr_pos);
+        
         /*
         self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos);
 
@@ -397,6 +401,8 @@ impl Board {
             for i in 0..26 {
                 let next = alph.chars().nth(i).unwrap();
                 if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) {
+                    println!("Lefting {}", next);
+
                     let mut new_rack = rack.clone();
                     new_rack[i] -= 1;
                     
@@ -434,11 +440,10 @@ impl Board {
             }
 
             for next in trie.nexts(node) {
-                println!("in right loop");
                 match alph.find(next) {
                     Some(unext) => { 
                         if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                            println!("\tFound nextable character {:?} {:?}", next, cross_checks[position.to_int()]);
+                            println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
