@@ -124,6 +124,22 @@ impl Trie {
         current
     }
 
+
+    pub fn nseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {        
+        let edges = self.graph.raw_edges(); // todo: optimize away
+        let mut current = self.root();
+        
+        for c in initial {
+            if let Some(next) = self.follow(current, *c) {
+                current = next;
+            } else {
+                return None
+            }
+        }
+
+        Some(current)
+    }
+
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         let edges = self.graph.raw_edges();
         for a in self.graph.edges_directed(current, Direction::Outgoing) {
