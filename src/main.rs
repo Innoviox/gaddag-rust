@@ -37,7 +37,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C'];
+    let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
 
     
     // println!("{:?}", t.graph);
@@ -52,7 +52,10 @@ fn main() {
     // println!("{}", board);
 
 
-    println!("{:?}", board.gen_all_moves(rack, &t, &d, &b).len());
+    let moves = board.gen_all_moves(rack, &t, &d, &b);
+    let best_move = moves.iter().max_by(|x, y| x.score.cmp(&y.score)).unwrap();
+    println!("Best move: {:?} \n{}", best_move, board.place_move_cloned(&best_move));
+    
     // for m in board.gen_all_moves(rack, &t, &d) {
     //     println!("{} {:?}", board.place_move_cloned(&m), m);
     // }

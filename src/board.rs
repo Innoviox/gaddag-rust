@@ -420,8 +420,8 @@ impl Board {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, direction, score: 0 };
                     m.score = self.score(&m, cross_sums, bag);
-                    println!("Found move {:?} {:?} {:?} {}", word, start_pos, direction, m.score);
-                    println!("{}", self.place_move_cloned(&m));
+                    // println!("Found move {:?} {:?} {:?} {}", word, start_pos, direction, m.score);
+                    // println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
@@ -465,6 +465,7 @@ impl Board {
         let mut true_score = 0;
         let mut total_cross_score = 0;
         let mut true_mult = 1;
+        let mut n_played = 0;
         for i in m.word.chars() {
             let mut cross_mult = 1;
             let mut cross_score = 0;
@@ -475,7 +476,7 @@ impl Board {
                       '+' => { tile_mult *= 3; },
                       '-' => { tile_mult *= 2; },
                       '.' => {},
-                        _ => { cross_mult = 0; }, // char was already there, so don't score old words
+                        _ => { cross_mult = 0; n_played += 1; }, // char was already there, so don't score old words
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
@@ -491,7 +492,13 @@ impl Board {
             curr_pos.tick(m.direction); // no check here because must be true
         }
 
-        true_mult * true_score + total_cross_score
+        let mut score = true_mult * true_score + total_cross_score;
+
+        if m.word.len() - n_played == 7 {
+            score += 50;
+        }
+
+        score
     }
 }
 
