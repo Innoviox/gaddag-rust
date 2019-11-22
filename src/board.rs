@@ -375,24 +375,26 @@ impl Board {
 
         if limit > 0 {
             let mut c = alph.chars();
+            // println!("Lefting at {:?}, considering {:?}", curr_pos, cross_checks[curr_pos.to_int()]);
             for i in 0..26 {
                 let next = c.next().unwrap();
-                if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) { 
-                    // println!("Lefting {}", next);
+                let mut cp = position.clone();
+                if cp.tick_opp(direction) { 
+                    if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
+                        // println!("Lefting {}", next);
 
-                    let mut new_rack = rack.clone();
-                    new_rack[i] -= 1;
-                    
-                    let mut new_part = part.clone();
-                    new_part.push(next);
+                        let mut new_rack = rack.clone();
+                        new_rack[i] -= 1;
+                        
+                        let mut new_part = part.clone();
+                        new_part.push(next);
 
-                    let new_word = next.to_string() + &word;
+                        let new_word = next.to_string() + &word;
 
-                    let mut cp = position.clone();
-                    if cp.tick_opp(direction) { 
+                        
                         self.left_part(cp, new_part, node, 
-                                trie, &new_rack, cross_checks, direction,
-                                moves, limit - 1, new_word, cp, real_pos, cross_sums, bag);   
+                                    trie, &new_rack, cross_checks, direction,
+                                    moves, limit - 1, new_word, cp, real_pos, cross_sums, bag);   
                     }               
                 }
             }
@@ -411,10 +413,10 @@ impl Board {
             if position != anchor {
                 if let Some(terminal) = trie.can_next(node, '@') {
                     // return move
-                    // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
+                    println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     let mut m = Move { word: word.to_string(), position: start_pos, direction, score: 0 };
                     m.score = self.score(&m, cross_sums, bag);
-                    // println!("{}", self.place_move_cloned(&m));
+                    println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
@@ -454,7 +456,6 @@ impl Board {
     }
 
     pub fn score(&self, m: &Move, cross_sums: &[i32; 225], bag: &Bag) -> i32 {
-        println!("Attempting to score: {:?} move (playment: \n{}", m, self.place_move_cloned(&m));
         let mut curr_pos = m.position.clone();
         let mut true_score = 0;
         let mut total_cross_score = 0;
@@ -469,7 +470,7 @@ impl Board {
                       '+' => { tile_mult *= 3; },
                       '-' => { tile_mult *= 2; },
                       '.' => {},
-                        _ => { cross_mult = 0; }, // char was already there
+                        _ => { cross_mult = 0; }, // char was already there, so don't score old words
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
@@ -477,7 +478,6 @@ impl Board {
 
             if cross_sum > 0 {
                 cross_score = cross_mult * (curr_score + cross_sum);
-                println!("Found cross score {}", cross_score);
                 total_cross_score += cross_mult * cross_score;
             }
 
@@ -485,8 +485,6 @@ impl Board {
 
             curr_pos.tick(m.direction); // no check here because must be true
         }
-
-        println!("Found score {}", true_mult * true_score + total_cross_score);
 
         true_mult * true_score + total_cross_score
     }
@@ -554,13 +552,13 @@ impl fmt::Display for Board {
 ------------------------------------------------------------------
 | 06 |   |TLS|   |   |   |TLS|   |   |   |TLS|   |   |   |TLS|   |
 ------------------------------------------------------------------
-| 07 |   |   |DLS|   |   |   | G |   |DLS|   |   |   |DLS|   |   |
+| 07 |   |   |DLS|   |   |   |   |   |DLS|   |   |   |DLS|   |   |
 ------------------------------------------------------------------
 | 08 |TWS|   |   |DLS|   |   |   | H | E | L | L | O |   |   |TWS|
 ------------------------------------------------------------------
-| 09 |   |   |DLS|   |   |   |DLS|   |DLS|   |   |   |DLS|   |   |
+| 09 |   |   |DLS|   |   |   |DLS| A |DLS|   |   |   |DLS|   |   |
 ------------------------------------------------------------------
-| 10 |   |TLS|   |   |   |TLS|   |   |   |TLS|   |   |   |TLS|   |
+| 10 |   |TLS|   |   |   |TLS|   | M |   |TLS|   |   |   |TLS|   |
 ------------------------------------------------------------------
 | 11 |   |   |   |   |DWS|   |   |   |   |   |DWS|   |   |   |   |
 ------------------------------------------------------------------
