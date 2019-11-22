@@ -22,7 +22,7 @@ fn main() {
     let mut board = board::Board::default();
 
     let position = utils::Position { row: 7, col: 7 };
-    let word = String::from("HELLO");
+    let word = String::from("HE");
     let dir = utils::Direction::Across;
 
     board.play_word(position, word, dir, false);
@@ -36,7 +36,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    let rack = vec!['L', 'L', 'O'];
 
     
     // println!("{:?}", t.graph);

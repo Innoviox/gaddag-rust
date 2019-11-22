@@ -347,6 +347,7 @@ impl Board {
 
             if !(np.tick_opp(direction) && self.is_letter(np)) { 
                 word.reverse();
+                println!("Seeding with {:?}", word);
                 self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), np, position);
                 return
             }
@@ -400,7 +401,7 @@ impl Board {
         if limit > 0 {
             for i in 0..26 {
                 let next = alph.chars().nth(i).unwrap();
-                if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) { // todo - dawg somehow?
+                if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) { 
                     // println!("Lefting {}", next);
 
                     let mut new_rack = rack.clone();
@@ -429,14 +430,14 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position) {
-        // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
+        println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(terminal) = trie.can_next(node, '@') {
                     // return move
                     // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     let m = Move { word: word.to_string(), position: start_pos, direction };
-                    // println!("{}", self.place_move_cloned(&m));
+                    println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
@@ -445,7 +446,7 @@ impl Board {
                 match alph.find(next) {
                     Some(unext) => { 
                         if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                            // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
+                            println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
