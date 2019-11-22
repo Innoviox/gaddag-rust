@@ -26,12 +26,13 @@ fn main() {
     let dir = utils::Direction::Across;
 
     board.play_word(position, word, dir, false);
-    // board.play_word(utils::Position { row: 8, col: 8 }, 
-    //                 String::from("HI"),
-    //                 utils::Direction::Across, false);
+    board.play_word(utils::Position { row: 8, col: 7 }, 
+                    String::from("AM"),
+                    utils::Direction::Down, false);
 
     println!("{}", board);
 
+    
     // println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
 
     // println!("{:?}", board.anchors());

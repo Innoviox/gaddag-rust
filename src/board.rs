@@ -468,7 +468,7 @@ impl Board {
                       '#' => { true_mult *= 3; cross_mult *= 3 },
                       '+' => { tile_mult *= 3; },
                       '-' => { tile_mult *= 2; },
-                      ' ' => {},
+                      '.' => {},
                         _ => { cross_mult = 0; }, // char was already there
             }
 
@@ -476,7 +476,8 @@ impl Board {
             let curr_score = bag.score(i) * tile_mult;
 
             if cross_sum > 0 {
-                cross_score = curr_score + cross_sum;
+                cross_score = cross_mult * (curr_score + cross_sum);
+                println!("Found cross score {}", cross_score);
                 total_cross_score += cross_mult * cross_score;
             }
 
