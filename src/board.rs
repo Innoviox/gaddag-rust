@@ -349,7 +349,7 @@ impl Board {
 
             if !(np.tick_opp(direction) && self.is_letter(np)) { 
                 word.reverse();
-                self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), np);
+                self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), np, position);
                 return
             }
         }
@@ -359,7 +359,7 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position) {
-        println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
+        // println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
         
         /*
         self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos);
@@ -396,14 +396,14 @@ impl Board {
         }*/
 
         if let Some(seed) = trie.nseed(&part) { 
-            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos);
+            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos, real_pos);
         }
 
         if limit > 0 {
             for i in 0..26 {
                 let next = alph.chars().nth(i).unwrap();
                 if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) {
-                    println!("Lefting {}", next);
+                    // println!("Lefting {}", next);
 
                     let mut new_rack = rack.clone();
                     new_rack[i] -= 1;
@@ -430,22 +430,24 @@ impl Board {
         */
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position) {
-        println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position) {
+        // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
-            if let Some(terminal) = trie.can_next(node, '@') {
-                // return move
-                println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
-                let m = Move { word: word.to_string(), position: start_pos, direction };
-                println!("{}", self.place_move_cloned(&m));
-                moves.push(m);
+            if position != anchor {
+                if let Some(terminal) = trie.can_next(node, '@') {
+                    // return move
+                    println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
+                    let m = Move { word: word.to_string(), position: start_pos, direction };
+                    println!("{}", self.place_move_cloned(&m));
+                    moves.push(m);
+                }
             }
 
             for next in trie.nexts(node) {
                 match alph.find(next) {
                     Some(unext) => { 
                         if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                            println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
+                            // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
@@ -453,7 +455,7 @@ impl Board {
                             let mut npp = position.clone();
 
                             if npp.tick(direction) {
-                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos);
+                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor);
                             }
                         }
                     },
@@ -467,7 +469,7 @@ impl Board {
             let mut npp = position.clone();
             if npp.tick(direction) {
                 if let Some(next_node) = trie.follow(node, next) {
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos);
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor);
                 }
             }
         }
