@@ -134,7 +134,8 @@ pub struct Move {
     pub word: String,
     // pub part: Vec<char>,
     pub position: Position,
-    pub direction: Direction
+    pub direction: Direction,
+    pub score: i32
 }
 
 pub fn gen_parts(rack: &Vec<char>) -> Vec<Vec<char>> {

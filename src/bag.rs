@@ -16,8 +16,8 @@ pub struct Bag {
 impl Bag {
     pub fn default() -> Bag {
         let mut bag = Bag {
-            alph: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '?'],
+            alph: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '?'],
             amts: [9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2],
             values: [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0],
             scores: HashMap::new(), 
@@ -38,6 +38,7 @@ impl Bag {
     }
 
     pub fn score(&self, c: char) -> i32 {
+        println!("scoring {} {:?}", c, self.scores.get(&c));
         match self.scores.get(&c) {
             Some(i) => *i,
             None => -1
