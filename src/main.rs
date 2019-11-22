@@ -6,7 +6,7 @@ mod board;
 mod dictionary;
 
 fn main() {
-    // let mut bag = bag::Bag::default();
+    let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
     // let rack = bag.draw_tiles(7);
@@ -36,7 +36,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
+    let rack = vec!['A', 'B', 'C''];
 
     
     // println!("{:?}", t.graph);
@@ -51,7 +51,7 @@ fn main() {
     // println!("{}", board);
 
 
-    println!("{:?}", board.gen_all_moves(rack, &t, &d).len());
+    println!("{:?}", board.gen_all_moves(rack, &t, &d, &b).len());
     // for m in board.gen_all_moves(rack, &t, &d) {
     //     println!("{} {:?}", board.place_move_cloned(&m), m);
     // }

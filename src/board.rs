@@ -1,6 +1,7 @@
 use crate::utils::*;
 use crate::dictionary::Dictionary;
 use crate::dictionary::Trie;
+use crate::bag::Bag;
 use std::fmt;
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -276,29 +277,32 @@ impl Board {
 }
 
 impl Board {
-    pub fn gen_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
+    pub fn gen_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary, bag: &Bag) -> Vec<Move> {
         let mut result = Vec::new();
 
         // todo crossscores
+        // todo only recalc for affected squares
         let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
+        let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
                 cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
+                let mut p_sums = p.clone();
+                let mut letters = Vec::<char>::new();
+                while p_sums.tick(*d) && self.is_letter(p_sums) {
+                    letters.push(self.at_position(p_sums));
+                }
+                p_sums = p.clone();
+                while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
+                    letters.push(self.at_position(p_sums));
+                }
+                cross_sums[di][p.to_int()] = letters.iter().map(|x| bag.score(*x)).sum();
             }
         }
-        
+
         let root = trie.root();
 
         let rword = to_word(&rack);
-
-        // for p in self.anchors() {
-        //     for (di, d) in Direction::iter().enumerate() {
-        //         let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-        //         self.left_part(p, Vec::new(), root, trie, rword, &cross_checks[di_opp], *d, &mut result);
-        //     }
-        // }
-
 
         for (di, d) in Direction::iter().enumerate() {
             let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
@@ -312,7 +316,7 @@ impl Board {
                         if np.tick_opp(*d) && self.is_letter(np) { 
                                 // println!("Found left-on-board; lefting");
                                 self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
-                                                    *d, &mut result);
+                                                    *d, &mut result, &cross_sums[di_opp]);
                             // }
                         } else {
                             // println!("Generating l-parts");
@@ -320,7 +324,7 @@ impl Board {
                                         &rword, &cross_checks[di_opp], 
                                         *d, &mut result, 
                                         (col - last_anchor_col).try_into().unwrap(), 
-                                        String::new(), p, p);
+                                        String::new(), p, p, &cross_sums[di_opp]);
                         }
                         // }
                         last_anchor_col = col;
@@ -332,8 +336,9 @@ impl Board {
         result
     }
 
+    // todo: fix ugly ass arguments
     fn left_on_board(&self, position: Position, node: NodeIndex, trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
-                     direction: Direction, moves: &mut Vec<Move>) {
+                     direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225]) {
         // println!("Received call left-board with {:?}", position);
         let mut np = position.clone();
 
@@ -348,12 +353,13 @@ impl Board {
 
             if !(np.tick_opp(direction) && self.is_letter(np)) { 
                 word.reverse();
+                //todo: what the fuck is this
                 let mut nnp = position.clone();
                 nnp.tick(direction);
                 let mut nnnp = np.clone();
                 nnnp.tick(direction);
                 // println!("Seeding with {:?} at {:?}", word, nnp);
-                self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), nnnp, nnp);
+                self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), nnnp, nnp, cross_sums);
                 return
             }
         }
@@ -362,11 +368,11 @@ impl Board {
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position) {
+                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
         // println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
 
         if let Some(seed) = trie.nrseed(&part) { 
-            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos, real_pos);
+            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos, real_pos, cross_sums);
         }
 
         if limit > 0 {
@@ -388,7 +394,7 @@ impl Board {
                     if cp.tick_opp(direction) { 
                         self.left_part(cp, new_part, node, 
                                 trie, &new_rack, cross_checks, direction,
-                                moves, limit - 1, new_word, cp, real_pos);   
+                                moves, limit - 1, new_word, cp, real_pos, cross_sums);   
                     }               
                 }
             }
@@ -401,7 +407,7 @@ impl Board {
         */
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
         // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if position != anchor {
@@ -428,7 +434,7 @@ impl Board {
                             let mut npp = position.clone();
 
                             if npp.tick(direction) {
-                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor);
+                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
                             }
                         }
                     },
@@ -442,10 +448,14 @@ impl Board {
             let mut npp = position.clone();
             if npp.tick(direction) {
                 if let Some(next_node) = trie.follow(node, next) {
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor);
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
                 }
             }
         }
+    }
+
+    pub fn score(&self, move: Move, cross_sums: &[i32; 225]) -> i32 {
+
     }
 }
 
