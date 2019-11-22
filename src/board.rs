@@ -370,8 +370,9 @@ impl Board {
         }
 
         if limit > 0 {
+            let mut c = alph.chars();
             for i in 0..26 {
-                let next = alph.chars().nth(i).unwrap();
+                let next = c.next().unwrap();
                 if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) { 
                     // println!("Lefting {}", next);
 
