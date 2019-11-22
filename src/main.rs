@@ -1,4 +1,5 @@
 #[macro_use] extern crate itertools;
+use crate::utils::ItemRemovable;
 
 mod bag;
 mod utils;
@@ -8,9 +9,6 @@ mod dictionary;
 fn main() {
     let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
-
-    let rack = b.draw_tiles(7);
-    println!("Rack is: {:?}", rack);
 
     // let mut dict = utils::Dictionary::default();
     // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
@@ -51,11 +49,24 @@ fn main() {
 
     // println!("{}", board);
 
+    let mut rack = b.draw_tiles(7);
 
-    let moves = board.gen_all_moves(rack, &t, &d, &b);
-    let best_move = moves.iter().max_by(|x, y| x.score.cmp(&y.score)).unwrap();
-    println!("Best move: {:?} \n{}", best_move, board.place_move_cloned(&best_move));
-    
+    for i in 0..20 {
+        println!("Rack is: {:?}", rack.clone());
+        let moves = board.gen_all_moves(&rack, &t, &d, &b);
+        let best_move = moves.iter().max_by(|x, y| x.score.cmp(&y.score)).unwrap();
+        println!("Best move: {:?} \n{}", best_move, board.place_move_cloned(&best_move));
+
+        let chars = board.reals(&best_move);
+        
+        board.place_move(best_move);
+        for c in chars {
+            rack._remove_item(c);
+        }
+        for c in b.draw_tiles(7 - rack.len()) {
+            rack.push(c);
+        }
+    } 
     // for m in board.gen_all_moves(rack, &t, &d) {
     //     println!("{} {:?}", board.place_move_cloned(&m), m);
     // }

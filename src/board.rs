@@ -274,7 +274,7 @@ impl Board {
 }
 
 impl Board {
-    pub fn gen_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary, bag: &Bag) -> Vec<Move> {
+    pub fn gen_all_moves(&mut self, rack: &Vec<char>, trie: &Trie, dict: &Dictionary, bag: &Bag) -> Vec<Move> {
         let mut result = Vec::new();
 
         // todo crossscores
@@ -460,6 +460,19 @@ impl Board {
                 }
             }
         }
+    }
+
+    pub fn reals(&self, m: &Move) -> Vec<char> {
+        let mut curr_pos = m.position.clone();
+        let mut result = Vec::new();
+        for i in m.word.chars() {
+            if !self.is_letter(curr_pos) {
+                result.push(i);
+            }
+            curr_pos.tick(m.direction);
+        }
+
+        result
     }
 
     pub fn score(&self, m: &Move, cross_sums: &[i32; 225], bag: &Bag) -> i32 {
