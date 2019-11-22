@@ -391,10 +391,15 @@ impl Board {
 
                         let new_word = next.to_string() + &word;
 
-                        
-                        self.left_part(cp, new_part, node, 
-                                    trie, &new_rack, cross_checks, direction,
-                                    moves, limit - 1, new_word, cp, real_pos, cross_sums, bag);   
+                        let mut ccp = cp.clone();
+                        ccp.tick_opp(direction);
+
+                        if !self.is_letter(ccp) {
+
+                            self.left_part(cp, new_part, node, 
+                                        trie, &new_rack, cross_checks, direction,
+                                        moves, limit - 1, new_word, cp, real_pos, cross_sums, bag);   
+                        }
                     }               
                 }
             }
