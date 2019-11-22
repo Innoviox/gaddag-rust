@@ -302,13 +302,15 @@ impl Board {
 
         let rword = to_word(&rack);
 
+        let n_center = !self.is_letter(Position{ row: 7, col: 7 });
+
         for (di, d) in Direction::iter().enumerate() {
             let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
             for row in 0..15 {
                 let mut last_anchor_col = 0;
                 for col in 0..15 {
                     let p = Position { row, col };
-                    if self.is_anchor(p) {
+                    if self.is_anchor(p) || (n_center && (col == 7 && row == 7)) {
                         // println!("Found anchor position {:?}", p);
                         let mut np = p.clone();
                         if np.tick_opp(*d) && self.is_letter(np) { 

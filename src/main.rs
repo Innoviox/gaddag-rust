@@ -9,8 +9,8 @@ fn main() {
     let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
-    // let rack = bag.draw_tiles(7);
-    // println!("Rack is: {:?}", rack);
+    let rack = b.draw_tiles(7);
+    println!("Rack is: {:?}", rack);
 
     // let mut dict = utils::Dictionary::default();
     // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
@@ -25,10 +25,10 @@ fn main() {
     let word = String::from("HELLO");
     let dir = utils::Direction::Across;
 
-    board.play_word(position, word, dir, false);
-    board.play_word(utils::Position { row: 8, col: 7 }, 
-                    String::from("AM"),
-                    utils::Direction::Down, false);
+    // board.play_word(position, word, dir, false);
+    // board.play_word(utils::Position { row: 8, col: 7 }, 
+    //                 String::from("AM"),
+    //                 utils::Direction::Down, false);
 
     println!("{}", board);
 
@@ -37,7 +37,7 @@ fn main() {
 
     // println!("{:?}", board.anchors());
 
-    let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
+    // let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
 
     
     // println!("{:?}", t.graph);
