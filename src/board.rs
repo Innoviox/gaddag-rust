@@ -334,7 +334,7 @@ impl Board {
 
     fn left_on_board(&self, position: Position, node: NodeIndex, trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
                      direction: Direction, moves: &mut Vec<Move>) {
-        println!("Received call left-board with {:?}", position);
+        // println!("Received call left-board with {:?}", position);
         let mut np = position.clone();
 
         let mut word = Vec::<char>::new();
@@ -350,8 +350,10 @@ impl Board {
                 word.reverse();
                 let mut nnp = position.clone();
                 nnp.tick(direction);
-                println!("Seeding with {:?} at {:?}", word, nnp);
-                self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), np, nnp);
+                let mut nnnp = np.clone();
+                nnnp.tick(direction);
+                // println!("Seeding with {:?} at {:?}", word, nnp);
+                self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), nnnp, nnp);
                 return
             }
         }
@@ -399,14 +401,14 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position) {
-        println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
+        // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(terminal) = trie.can_next(node, '@') {
                     // return move
-                    println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
+                    // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     let m = Move { word: word.to_string(), position: start_pos, direction };
-                    println!("{}", self.place_move_cloned(&m));
+                    // println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
