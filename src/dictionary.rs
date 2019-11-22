@@ -140,6 +140,12 @@ impl Trie {
         Some(current)
     }
 
+    pub fn nrseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {
+        let mut a = initial.clone();
+        a.reverse();
+        self.nseed(&a)
+    }
+
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         let edges = self.graph.raw_edges();
         for a in self.graph.edges_directed(current, Direction::Outgoing) {
