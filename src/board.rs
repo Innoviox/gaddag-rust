@@ -307,15 +307,15 @@ impl Board {
                 for col in 0..15 {
                     let p = Position { row, col };
                     if self.is_anchor(p) {
-                        println!("Found anchor position {:?}", p);
+                        // println!("Found anchor position {:?}", p);
                         let mut np = p.clone();
                         if np.tick_opp(*d) && self.is_letter(np) { 
-                                println!("Found left-on-board; lefting");
+                                // println!("Found left-on-board; lefting");
                                 self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
                                                     *d, &mut result);
                             // }
                         } else {
-                            println!("Generating l-parts");
+                            // println!("Generating l-parts");
                             self.left_part(p, Vec::new(), root, trie, 
                                         &rword, &cross_checks[di_opp], 
                                         *d, &mut result, 
@@ -436,7 +436,7 @@ impl Board {
                     // return move
                     // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     let m = Move { word: word.to_string(), position: start_pos, direction };
-                    println!("{}", self.place_move_cloned(&m));
+                    // println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
