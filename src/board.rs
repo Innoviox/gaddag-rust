@@ -82,6 +82,12 @@ impl Board {
         self.play_word(m.position, m.word.clone(), m.direction, true)
     }
 
+    pub fn place_move_cloned(&self, m: &Move) -> Board {
+        let mut c = self.clone();
+        c.place_move(m);
+        c
+    }
+
     pub fn valid_at(&mut self, p: Position, d: &Dictionary, dir: Direction) -> [bool; 26] {
         if self.is_letter(p) {
             return [false; 26];
@@ -313,9 +319,11 @@ impl Board {
                                         &rword, &cross_checks[di_opp], 
                                         *d, &mut result, 
                                         (col - last_anchor_col).try_into().unwrap(), 
-                                        String::new());
+                                        String::new(), p);
                         }
                         last_anchor_col = col;
+
+                        return result
                     }
                 }  
             }
@@ -339,7 +347,7 @@ impl Board {
 
             if !(np.tick_opp(direction) && self.is_letter(np)) { 
                 word.reverse();
-                self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect());
+                self.extend_right(&Vec::new(), trie.seed(&word), position, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), np);
                 return
             }
         }
@@ -348,46 +356,89 @@ impl Board {
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String) {
-        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word);
+                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position) {
+        /*
+        self.extend_right(&part, node, position, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos);
 
         if limit > 0 {
             for next in trie.nexts(node) {
+                println!("in left loop");
                 match alph.find(next) {
                     Some(unext) => { 
-                        if rack[unext] > 0 {
+                        if rack[unext] > 0{ //} && cross_checks[curr_pos.to_int()].contains(&next) {
+                            println!("Found usable character {:?}", alph.chars().nth(unext).unwrap());
                             let mut new_rack = rack.clone();
                             new_rack[unext] -= 1;
 
-                            let next_node = trie.follow(node, next).unwrap();
+                            let next_node = trie.follow(node, next).unwrap(); // todo optimize away
                             
                             let mut new_part = part.clone();
                             new_part.push(next);
 
                             let new_word = next.to_string() + &word;
 
-                            self.left_part(position, new_part, next_node, 
-                                        trie, &new_rack, cross_checks, direction,
-                                        moves, limit - 1, new_word);
+                            let mut cp = position.clone();
+                            if cp.tick_opp(direction) { 
+                                println!("Shifting from {:?} to {:?}", position, cp);
+                                self.left_part(position, new_part, next_node, 
+                                            trie, &new_rack, cross_checks, direction,
+                                            moves, limit - 1, new_word, cp);
+                            }
                         }
                     },
                     None => break
                 }
             }
+        }*/
+
+        self.extend_right(&part, trie.seed(&part), position, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos);
+
+        if limit > 0 {
+            for i in 0..26 {
+                let next = alph.chars().nth(i).unwrap();
+                if rack[i] > 0 && cross_checks[curr_pos.to_int()].contains(&next) {
+                    let mut new_rack = rack.clone();
+                    new_rack[i] -= 1;
+                    
+                    let mut new_part = part.clone();
+                    new_part.push(next);
+
+                    let new_word = next.to_string() + &word;
+
+                    let mut cp = position.clone();
+                    if cp.tick_opp(direction) { 
+                        self.left_part(position, new_part, node, 
+                                trie, &new_rack, cross_checks, direction,
+                                moves, limit - 1, new_word, cp);   
+                    }               
+                }
+            }
         }
+        /*
+        extend-right(trie.find(current_part))
+        if limit > 0 
+            for char on rack
+                left-part(rack - char, limit - 1, char + part)
+        */
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position) {
+        println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if let Some(terminal) = trie.can_next(node, '@') {
                 // return move
-                moves.push(Move { word: word.to_string(), position, direction });
+                println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
+                let m = Move { word: word.to_string(), position: start_pos, direction };
+                println!("{}", self.place_move_cloned(&m));
+                moves.push(m);
             }
 
             for next in trie.nexts(node) {
+                println!("in right loop");
                 match alph.find(next) {
                     Some(unext) => { 
                         if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
+                            println!("\tFound nextable character {:?} {:?}", next, cross_checks[position.to_int()]);
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
@@ -395,7 +446,7 @@ impl Board {
                             let mut npp = position.clone();
 
                             if npp.tick(direction) {
-                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()));
+                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos);
                             }
                         }
                     },
@@ -409,7 +460,7 @@ impl Board {
             let mut npp = position.clone();
             if npp.tick(direction) {
                 if let Some(next_node) = trie.follow(node, next) {
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()));
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos);
                 }
             }
         }
@@ -462,3 +513,38 @@ impl fmt::Display for Board {
         write!(f, "")
 	}
 }
+/*
+------------------------------------------------------------------
+|    | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O |
+------------------------------------------------------------------
+| 01 |TWS|   |   |DLS|   |   |   |TWS|   |   |   |DLS|   |   |TWS|
+------------------------------------------------------------------
+| 02 |   |DWS|   |   |   |TLS|   |   |   |TLS|   |   |   |DWS|   |
+------------------------------------------------------------------
+| 03 |   |   |DWS|   |   |   |DLS|   |DLS|   |   |   |DWS|   |   |
+------------------------------------------------------------------
+| 04 |DLS|   |   |DWS|   |   |   |DLS|   |   |   |DWS|   |   |DLS|
+------------------------------------------------------------------
+| 05 |   |   |   |   |DWS|   |   |   |   |   |DWS|   |   |   |   |
+------------------------------------------------------------------
+| 06 |   |TLS|   |   |   |TLS|   |   |   |TLS|   |   |   |TLS|   |
+------------------------------------------------------------------
+| 07 |   |   |DLS|   |   |   | G |   |DLS|   |   |   |DLS|   |   |
+------------------------------------------------------------------
+| 08 |TWS|   |   |DLS|   |   |   | H | E | L | L | O |   |   |TWS|
+------------------------------------------------------------------
+| 09 |   |   |DLS|   |   |   |DLS|   |DLS|   |   |   |DLS|   |   |
+------------------------------------------------------------------
+| 10 |   |TLS|   |   |   |TLS|   |   |   |TLS|   |   |   |TLS|   |
+------------------------------------------------------------------
+| 11 |   |   |   |   |DWS|   |   |   |   |   |DWS|   |   |   |   |
+------------------------------------------------------------------
+| 12 |DLS|   |   |DWS|   |   |   |DLS|   |   |   |DWS|   |   |DLS|
+------------------------------------------------------------------
+| 13 |   |   |DWS|   |   |   |DLS|   |DLS|   |   |   |DWS|   |   |
+------------------------------------------------------------------
+| 14 |   |DWS|   |   |   |TLS|   |   |   |TLS|   |   |   |DWS|   |
+------------------------------------------------------------------
+| 15 |TWS|   |   |DLS|   |   |   |TWS|   |   |   |DLS|   |   |TWS|
+------------------------------------------------------------------
+*/

@@ -52,6 +52,9 @@ fn main() {
 
 
     println!("{:?}", board.gen_all_moves(rack, &t, &d).len());
+    // for m in board.gen_all_moves(rack, &t, &d) {
+    //     println!("{} {:?}", board.place_move_cloned(&m), m);
+    // }
     // board.generate_all_moves(rack, &utils::Dictionary::default()).iter();
 
     // println!("{:?}", board.get_words());
