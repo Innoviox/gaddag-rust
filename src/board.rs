@@ -357,7 +357,9 @@ impl Board {
                 let mut nnp = position.clone();
                 nnp.tick(direction);
                 let mut nnnp = np.clone();
-                nnnp.tick(direction);
+                if !(np.row == 0 && np.col == 0) {
+                    nnnp.tick(direction);
+                }
                 // println!("Seeding with {:?} at {:?}", word, nnp);
                 self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), nnnp, nnp, cross_sums, bag);
                 return
