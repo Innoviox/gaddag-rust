@@ -330,23 +330,20 @@ impl Board {
 
             // println!("nexts: {:?}", trie.nexts(node));
             for next in self.trie.nexts(node) {
-                match alph.find(next) {
-                    Some(unext) => { 
-                        // println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);
-                        if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                            // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
-                            let mut np = part.clone();
-                            np.push(next);
-                            let mut nr = rack.clone();
-                            nr[unext] -= 1;
-                            let mut npp = position.clone();
+                if let Some(unext) = alph.find(next) {
+                    // println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);
+                    if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
+                        // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
+                        let mut np = part.clone();
+                        np.push(next);
+                        let mut nr = rack.clone();
+                        nr[unext] -= 1;
+                        let mut npp = position.clone();
 
-                            if npp.tick(direction) {
-                                self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
-                            }
+                        if npp.tick(direction) {
+                            self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
                         }
-                    },
-                    None => break
+                    }
                 }
             }
         } else {
@@ -392,7 +389,7 @@ impl Board {
         res.replace(")(", "")
     }
 
-    pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 { // todo fix
+    pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 {
         let mut curr_pos = m.position.clone();
         let mut true_score = 0;
         let mut total_cross_score = 0;
