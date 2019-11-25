@@ -30,17 +30,24 @@ fn main() {
     //                 utils::Direction::Down, false);
 
 
-    // board.place_move(&Move { word: "FJORD".to_string(), position: Position { row: 3, col: 7 }, direction: Down, score: 40 } );
-    // board.place_move(&Move { word: "JINX".to_string(), position: Position { row: 4, col: 7 }, direction: Across, score: 36 } );
-    // board.place_move(&Move { word: "ZOO".to_string(), position: Position { row: 5, col: 5 }, direction: Across, score: 32 } );
-    // board.place_move(&Move { word: "WRY".to_string(), position: Position { row: 6, col: 6 }, direction: Across, score: 26 } );
-    // board.place_move(&Move { word: "OHM".to_string(), position: Position { row: 3, col: 10 }, direction: Across, score: 25 } );
-    // board.place_move(&Move { word: "DIG".to_string(), position: Position { row: 2, col: 8 }, direction: Across, score: 18 } );
-    // board.place_move(&Move { word: "OD".to_string(), position: Position { row: 2, col: 12 }, direction: Across, score: 22 } );
-    // board.place_move(&Move { word: "UTE".to_string(), position: Position { row: 1, col: 11 }, direction: Across, score: 23 } );
-    // board.place_move(&Move { word: "TERTIAL".to_string(), position: Position { row: 1, col: 3 }, direction: Across, score: 68 } );
-    // board.place_move(&Move { word: "EAR".to_string(), position: Position { row: 0, col: 6 }, direction: Across, score: 33 } );
-    println!("{}", board);
+    board.place_move( &Move { word: "WATER".to_string(), position: Position { row: 3, col: 7 }, direction: Down, score: 24 }  );
+board.place_move( &Move { word: "FOULARDS".to_string(), position: Position { row: 4, col: 3 }, direction: Across, score: 98 }  );
+board.place_move( &Move { word: "JAVELINA".to_string(), position: Position { row: 6, col: 4 }, direction: Across, score: 73 }  );
+board.place_move( &Move { word: "JURANT".to_string(), position: Position { row: 6, col: 4 }, direction: Down, score: 26 }  );
+board.place_move( &Move { word: "BATED".to_string(), position: Position { row: 3, col: 0 }, direction: Across, score: 45 }  );
+board.place_move( &Move { word: "YAIRD".to_string(), position: Position { row: 9, col: 5 }, direction: Down, score: 38 }  );
+board.place_move( &Move { word: "YEZ".to_string(), position: Position { row: 5, col: 11 }, direction: Across, score: 40 }  );
+board.place_move( &Move { word: "ILEX".to_string(), position: Position { row: 6, col: 9 }, direction: Down, score: 27 }  );
+board.place_move( &Move { word: "QIS".to_string(), position: Position { row: 5, col: 1 }, direction: Across, score: 38 }  );
+board.place_move( &Move { word: "VOES".to_string(), position: Position { row: 3, col: 12 }, direction: Down, score: 28 }  );
+board.place_move( &Move { word: "WEET".to_string(), position: Position { row: 8, col: 8 }, direction: Down, score: 29 }  );
+board.place_move( &Move { word: "SON".to_string(), position: Position { row: 4, col: 10 }, direction: Down, score: 19 }  );
+board.place_move( &Move { word: "LEG".to_string(), position: Position { row: 7, col: 9 }, direction: Across, score: 19 }  );
+board.place_move( &Move { word: "IONIUM".to_string(), position: Position { row: 7, col: 0 }, direction: Across, score: 31 }  );
+board.place_move( &Move { word: "HER".to_string(), position: Position { row: 2, col: 1 }, direction: Across, score: 32 }  );
+board.place_move( &Move { word: "OS".to_string(), position: Position { row: 1, col: 0 }, direction: Across, score: 28 }  );
+// board.place_move( &Move { word: "BI".to_string(), position: Position { row: 2, col: 0 }, direction: Down, score: 13 }  );
+println!("{}", board);
 
     
     // println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
@@ -63,7 +70,8 @@ fn main() {
 
     let mut rack = b.draw_tiles(7);
 
-    for i in 0..20 {
+    // for i in 0..20 {
+        rack = vec!['I', 'I', 'O', 'I', 'T', 'O', 'I'];
         // rack = vec!['I', 'U', 'N', 'E', 'T', 'O', 'E'];
         println!("Rack is: {:?}", rack.clone());
         let moves = board.gen_all_moves(&rack, &t, &d, &b);
@@ -79,7 +87,7 @@ fn main() {
         for c in b.draw_tiles(7 - rack.len()) {
             rack.push(c);
         }
-    } 
+    // } 
     // for m in board.gen_all_moves(rack, &t, &d) {
     //     println!("{} {:?}", board.place_move_cloned(&m), m);
     // }
