@@ -110,7 +110,7 @@ println!("{}", board);
     println!("| {:^12} | {} | {} | {} | {} | {} |", "Move", "Position", "Direction", "Score", "Evaluation", "Time");
     println!("{}", "-".repeat(67));
     for (m, s, t) in izip!(moves.iter(), skips.iter(), times.iter()) {
-        println!("| {:<12} | {:<8} | {:<9} | {:<8} | {:<8} | {:>4} |", s, m.0.to_str(), m.1.to_str(), m.2, m.3, t);
+        println!("| {:<12} | {:<8} | {:<9} | {:<5} | {:<8} | {:>4} |", s, m.0.to_str(), m.1.to_str(), m.2, m.3, t);
     }
 
     println!("{}", board);
