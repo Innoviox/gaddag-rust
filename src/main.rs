@@ -8,15 +8,15 @@ mod board;
 mod dictionary;
 
 fn main() {
-    let mut b = bag::Bag::default();
+    // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
     // let mut dict = utils::Dictionary::default();
     // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
     // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
 
-    let t = dictionary::Trie::default();
-    let d = dictionary::Dictionary::default();
+    // let t = dictionary::Trie::default();
+    // let d = dictionary::Dictionary::default();
 
     let mut board = board::Board::default();
 
@@ -75,13 +75,13 @@ println!("{}", board);
 
     // println!("{}", board);
 
-    let mut rack = b.draw_tiles(7);
+    let mut rack = board.bag.draw_tiles(7);
 
     for i in 0..20 {
         // rack = vec!['N', 'L', 'U', 'U', 'O', 'D', 'A'];
         // rack = vec!['I', 'U', 'N', 'E', 'T', 'O', 'E'];
         println!("Rack is: {:?}", rack.clone());
-        let moves = board.gen_all_moves(&rack, &t, &d, &b);
+        let moves = board.gen_all_moves(&rack);
         let best_move = moves.iter().max_by(|x, y| x.score.cmp(&y.score)).unwrap();
         println!("Best move: {:?} (skipped: {:?})\n{}", best_move, board.put_skips(best_move), board.place_move_cloned(&best_move));
 
@@ -91,7 +91,7 @@ println!("{}", board);
         for c in chars {
             rack._remove_item(c);
         }
-        for c in b.draw_tiles(7 - rack.len()) {
+        for c in board.bag.draw_tiles(7 - rack.len()) {
             rack.push(c);
         }
     } 

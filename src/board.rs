@@ -17,7 +17,10 @@ fn _as(v: usize) -> i32 {
 }
 
 pub struct Board {
-    state: [[char; 15]; 15]
+    state: [[char; 15]; 15],
+    dict: Dictionary,
+    trie: Trie, 
+    pub bag: Bag // public so can draw tiles
 }
 
 /*
@@ -46,7 +49,7 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ] }
+        ], dict: Dictionary::default(), trie: Trie::default(), bag: Bag::default() }
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -83,13 +86,15 @@ impl Board {
         self.play_word(m.position, m.word.clone(), m.direction, true)
     }
 
-    pub fn place_move_cloned(&self, m: &Move) -> Board {
-        let mut c = self.clone();
-        c.place_move(m);
-        c
+    pub fn place_move_cloned(&mut self, m: &Move) -> String {
+        let state = self.state.clone();
+        self.place_move(m);
+        let out = format!("{}", self);
+        self.state = state;
+        out
     }
 
-    pub fn valid_at(&mut self, p: Position, d: &Dictionary, dir: Direction) -> [bool; 26] {
+    pub fn valid_at(&mut self, p: Position, dir: Direction) -> [bool; 26] {
         if self.is_letter(p) {
             return [false; 26];
         }
@@ -103,7 +108,7 @@ impl Board {
         for (i, l) in alph.chars().enumerate() {
             let old = self.at_position(p);
             self.set(p, l);
-            cross[i] = self.valid(d, &dir);
+            cross[i] = self.valid(&dir);
             self.set(p, old);
         }
 
@@ -135,8 +140,8 @@ impl Board {
         result
     }
 
-    pub fn valid(&self, d: &Dictionary, dir: &Direction) -> bool { // TODO check connectedness
-        self.get_words().iter().filter(|x| x.direction == *dir).all(|x| d.check_word(&x.word))
+    pub fn valid(&self, dir: &Direction) -> bool { // TODO check connectedness
+        self.get_words().iter().filter(|x| x.direction == *dir).all(|x| self.dict.check_word(&x.word))
     }
 
     pub fn anchors(&self) -> Vec<Position> {
@@ -166,115 +171,7 @@ impl Board {
 }
 
 impl Board {
-    pub fn generate_all_moves(&mut self, rack: Vec<char>, trie: &Trie, dict: &Dictionary) -> Vec<Move> {
-        let mut result = Vec::new();
-
-        // todo crossscores
-        let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
-        for (di, d) in Direction::iter().enumerate() {
-            for p in positions().iter() { // todo don't need to call this dumbass method
-                // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
-                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
-            }
-        }
-        
-        for p in self.anchors() {
-            for (di, d) in Direction::iter().enumerate() {
-                let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-                // for (lp, rp) in gen_parts(rack.clone()).iter() {
-                for part in gen_parts(&rack).iter() {
-                    for dist in ((-_as(part.len())+1)..1) {
-                        if let Some(pos) = p.add(dist.try_into().unwrap(), *d) {
-                                // println!("{}, {:?}, {:?}", dist, p, pos);
-                            if let Some(mv) = self.place(pos, *d, &part, trie, &cross_checks[di_opp], false) {
-                                result.push(mv);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        result
-    }
-
-    pub fn place(&mut self, p: Position, d: Direction, part: &Vec<char>, 
-                 trie: &Trie, cross_checks: &[Vec<char>; 225], mutate: bool) -> Option<Move> {
-        // todo: return vector of positions, not word
-        if self.is_letter(p) { return None }
-        
-        let mut word = Vec::new(); // todo: efficiency - make string?
-
-        let mut curr_left = p.clone();
-
-        if curr_left.tick_opp(d) {
-            while self.is_letter(curr_left) { // get stuff before word
-                word.push(self.at_position(curr_left));
-                if !curr_left.tick_opp(d) { break }
-            }
-        }
-
-        word.reverse();
-
-        let mut trie_node = trie.seed(&word);
-
-        let mut curr = p.clone(); 
-        let mut i = 0;
-        while i < part.len() {
-            if !self.is_letter(curr) { 
-                if !cross_checks[curr.to_int()].contains(&part[i]) { 
-                    return None
-                } else if let Some(now) = trie.can_next(trie_node, part[i]) {
-                    trie_node = now;
-                    if (mutate) { self.set(curr, part[i]); }
-                    word.push(part[i]);
-                } else {
-                    return None
-                }
-                i += 1;
-            } else {
-                let stumbled = self.at_position(curr);
-                if let Some(st) = trie.can_next(trie_node, stumbled) {
-                    trie_node = st;
-                    word.push(stumbled);
-                } else {
-                    return None
-                }
-            }
-            if !curr.tick(d) { return None }
-        }
-
-        while self.is_letter(curr) { // get stuff after word
-            let stumbled = self.at_position(curr);
-            if let Some(st) = trie.can_next(trie_node, stumbled) {
-                trie_node = st;
-                word.push(stumbled);
-            } else {
-                return None
-            }
-            if !curr.tick(d) { break }
-        }
-
-        let word = word.iter().collect();
-
-        if let Some(_) = trie.can_next(trie_node, '@') { // valid word checker (speed!!!!)
-            if (mutate && part.len() == 7) { println!("{} {}", self, word); }
-
-            return Some(Move {
-                word,
-                // part,
-                position: p,
-                direction: d, 
-                score: 0
-            })
-        }
-
-        None
-    }
-}
-
-impl Board {
-    pub fn gen_all_moves(&mut self, rack: &Vec<char>, trie: &Trie, dict: &Dictionary, bag: &Bag) -> Vec<Move> {
+    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
         let mut result = Vec::new();
 
         // todo only recalc for affected squares <<<<< IMPORTANT
@@ -282,7 +179,7 @@ impl Board {
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
+                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
 
                 let mut p_sums = p.clone();
                 let mut letters = Vec::<char>::new();
@@ -293,11 +190,11 @@ impl Board {
                 while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
                     letters.push(self.at_position(p_sums));
                 }
-                cross_sums[di][p.to_int()] = letters.iter().map(|x| bag.score(*x)).sum();
+                cross_sums[di][p.to_int()] = letters.iter().map(|x| self.bag.score(*x)).sum();
             }
         }
 
-        let root = trie.root();
+        let root = self.trie.root();
 
         let rword = to_word(&rack);
 
@@ -314,16 +211,16 @@ impl Board {
                         let mut np = p.clone();
                         if np.tick_opp(*d) && self.is_letter(np) { 
                                 // println!("Found left-on-board; lefting");
-                                self.left_on_board(np, root, trie, &rword, &cross_checks[di_opp], 
-                                                    *d, &mut result, &cross_sums[di_opp], bag);
+                                self.left_on_board(np, root, &rword, &cross_checks[di_opp], 
+                                                    *d, &mut result, &cross_sums[di_opp]);
                             // }
                         } else {
                             // println!("Generating l-parts");
-                            self.left_part(p, Vec::new(), root, trie, 
+                            self.left_part(p, Vec::new(), root, 
                                         &rword, &cross_checks[di_opp], 
                                         *d, &mut result, 
                                         (col - last_anchor_col).try_into().unwrap(), 
-                                        String::new(), p, p, &cross_sums[di_opp], bag);
+                                        String::new(), p, p, &cross_sums[di_opp]);
                         }
                         // }
                         last_anchor_col = col;
@@ -336,8 +233,8 @@ impl Board {
     }
 
     // todo: fix ugly ass arguments
-    fn left_on_board(&self, position: Position, node: NodeIndex, trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
-                     direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225], bag: &Bag) {
+    fn left_on_board(&self, position: Position, node: NodeIndex, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
+                     direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225]) {
         // println!("Received call left-board with {:?}", position);
         let mut np = position.clone();
 
@@ -362,7 +259,7 @@ impl Board {
                     nnnp.tick(direction);
                 }
                 // println!("Seeding with {:?} at {:?}", word, nnp);
-                self.extend_right(&Vec::new(), trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), trie, moves, &word.iter().collect(), nnnp, nnp, cross_sums, bag);
+                self.extend_right(&Vec::new(), self.trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), moves, &word.iter().collect(), nnnp, nnp, cross_sums);
                 return
             }
         }
@@ -370,12 +267,12 @@ impl Board {
     }
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
-                 trie: &Trie, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225], bag: &Bag) {
+                 rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
+                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
         // println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
 
-        if let Some(seed) = trie.nrseed(&part) { 
-            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), trie, moves, &word, curr_pos, real_pos, cross_sums, bag);
+        if let Some(seed) = self.trie.nrseed(&part) { 
+            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
 
         if limit > 0 {
@@ -402,8 +299,8 @@ impl Board {
                         if !self.is_letter(ccp) {
 
                             self.left_part(cp, new_part, node, 
-                                        trie, &new_rack, cross_checks, direction,
-                                        moves, limit - 1, new_word, cp, real_pos, cross_sums, bag);   
+                                        &new_rack, cross_checks, direction,
+                                        moves, limit - 1, new_word, cp, real_pos, cross_sums);   
                         }
                     }               
                 }
@@ -417,14 +314,14 @@ impl Board {
         */
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, trie: &Trie, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225], bag: &Bag) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
         // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if position != anchor {
-                if let Some(terminal) = trie.can_next(node, '@') {
+                if let Some(terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, direction, score: 0 };
-                    m.score = self.score(&m, cross_sums, bag);
+                    m.score = self.score(&m, cross_sums);
                     // println!("Found move {:?} {:?} {:?} {}", word, start_pos, direction, m.score);
                     // println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
@@ -432,7 +329,7 @@ impl Board {
             }
 
             // println!("nexts: {:?}", trie.nexts(node));
-            for next in trie.nexts(node) {
+            for next in self.trie.nexts(node) {
                 match alph.find(next) {
                     Some(unext) => { 
                         // println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);
@@ -445,7 +342,7 @@ impl Board {
                             let mut npp = position.clone();
 
                             if npp.tick(direction) {
-                                self.extend_right(&np, trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums, bag);
+                                self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
                             }
                         }
                     },
@@ -458,8 +355,8 @@ impl Board {
             np.push(next);
             let mut npp = position.clone();
             if npp.tick(direction) {
-                if let Some(next_node) = trie.follow(node, next) {
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, trie, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums, bag);
+                if let Some(next_node) = self.trie.follow(node, next) {
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
                 }
             }
         }
@@ -495,7 +392,7 @@ impl Board {
         res.replace(")(", "")
     }
 
-    pub fn score(&self, m: &Move, cross_sums: &[i32; 225], bag: &Bag) -> i32 {
+    pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 {
         let mut curr_pos = m.position.clone();
         let mut true_score = 0;
         let mut total_cross_score = 0;
@@ -515,7 +412,7 @@ impl Board {
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
-            let curr_score = bag.score(i) * tile_mult;
+            let curr_score = self.bag.score(i) * tile_mult;
 
             if cross_sum > 0 {
                 cross_score = cross_mult * (curr_score + cross_sum);
@@ -539,13 +436,16 @@ impl Board {
 
 }
 
-impl Board {
-    pub fn clone(&self) -> Board {
-        Board {
-            state: self.state.clone()
-        }
-    }
-}
+// impl Board {
+//     pub fn clone(&self) -> Board {
+//         Board {
+//             state: self.state.clone(),
+//             dict: self.dict,
+//             trie: self.trie,
+//             bag: self.bag
+//         }
+//     }
+// }
 
 impl fmt::Display for Board {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
