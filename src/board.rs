@@ -172,7 +172,7 @@ impl Board {
         // todo crossscores
         let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
         for (di, d) in Direction::iter().enumerate() {
-            for p in positions().iter() {
+            for p in positions().iter() { // todo don't need to call this dumbass method
                 // cross_checks.insert(*p, chars(self.valid_at(*p, dict)));
                 cross_checks[di][p.to_int()] = chars(self.valid_at(*p, dict, *d));
             }
@@ -277,8 +277,7 @@ impl Board {
     pub fn gen_all_moves(&mut self, rack: &Vec<char>, trie: &Trie, dict: &Dictionary, bag: &Bag) -> Vec<Move> {
         let mut result = Vec::new();
 
-        // todo crossscores
-        // todo only recalc for affected squares
+        // todo only recalc for affected squares <<<<< IMPORTANT
         let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
