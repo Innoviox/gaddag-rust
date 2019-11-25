@@ -30,6 +30,33 @@ fn main() {
     let mut player_1 = Player { rack: board.bag.draw_tiles(7) };
     let mut player_2 = Player { rack: board.bag.draw_tiles(7) };
 
+    let mut score_1 = 0;
+    let mut score_2 = 0;
+
+    let mut out = String::new();
+
+    let mut turn = 1;
+
+    while board.bag.distribution.len() > 0 && (player_1.rack.len() > 0 || player_2.rack.len() > 0) {
+        let rack_1: String = player_1.rack.iter().collect();
+        let (m1, sm1) = player_1.do_move(&mut board);
+        score_1 += m1.score;
+
+        let rack_2: String = player_2.rack.iter().collect();
+        let (m2, sm2) = player_2.do_move(&mut board);
+        score_2 += m2.score;
+
+        out = format!("{}\n{:<02}. {}/{:<3}: {:<12} +{:<03}/{:<03} | {}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
+                        rack_1, m1.position.to_str(), sm1, m1.score, score_1,
+                        rack_2, m2.position.to_str(), sm2, m2.score, score_2);
+        turn += 1;
+
+        println!("{}", out);
+    }
+
+    out = format!("{}\n{}", out, board);
+    println!("{}", out);
+
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");

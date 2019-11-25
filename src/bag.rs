@@ -10,7 +10,7 @@ pub struct Bag {
     amts: [i32; 27],
     values: [i32; 27],
     scores: HashMap<char, i32>,
-    distribution: Vec<char>
+    pub distribution: Vec<char>
 }
 
 impl Bag {
