@@ -5,6 +5,7 @@ use std::cmp::PartialEq;
 use std::ops::Range;
 use itertools::Itertools;
 use std::cmp::Ordering;
+use std::fmt;
 
 pub trait ItemRemovable<T> {
     fn _remove_item(&mut self, some_x: T) -> T;
@@ -34,6 +35,13 @@ impl Direction {
     pub fn iter() -> Iter<'static, Direction> {
         static D: [Direction; 2] = [Direction::Across, Direction::Down];
         D.iter()
+    }
+
+    pub fn to_str(&self) -> String {
+        match self {
+            Direction::Down => return String::from("Down"),
+            Direction::Across => return String::from("Across")
+        }
     }
 }
 
@@ -107,6 +115,12 @@ impl Position {
 
     pub fn to_int(&self) -> usize {
         self.row * 15 + self.col
+    }
+        
+    pub fn to_str(&self) -> String {
+        let mut s: String = alph.chars().nth(self.row).unwrap().to_string();
+        s += &self.col.to_string();
+        s
     }
 }
 

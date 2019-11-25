@@ -8,6 +8,7 @@ mod board;
 mod dictionary;
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::time::Duration;
+use itertools::izip;
 
 fn main() {
     // let mut b = bag::Bag::default();
@@ -82,7 +83,7 @@ println!("{}", board);
     let mut skips = Vec::<String>::new();
     let mut times = Vec::<u128>::new();
 
-    for i in 0..2 {
+    for i in 0..20 {
         // rack = vec!['N', 'L', 'U', 'U', 'O', 'D', 'A'];
         // rack = vec!['I', 'U', 'N', 'E', 'T', 'O', 'E'];
         println!("Rack is: {:?}", rack.clone());
@@ -105,7 +106,14 @@ println!("{}", board);
             rack.push(c);
         }
     } 
-    println!("{:?}\n{:?}\n{:?}\n", moves, skips, times);
+
+    println!("| {:^12} | {} | {} | {} | {} | {} |", "Move", "Position", "Direction", "Score", "Evaluation", "Time");
+    println!("{}", "-".repeat(67));
+    for (m, s, t) in izip!(moves.iter(), skips.iter(), times.iter()) {
+        println!("| {:<12} | {:<8} | {:<9} | {:<8} | {:<8} | {:>4} |", s, m.0.to_str(), m.1.to_str(), m.2, m.3, t);
+    }
+
+    println!("{}", board);
     // for m in board.gen_all_moves(rack, &t, &d) {
     //     println!("{} {:?}", board.place_move_cloned(&m), m);
     // }
