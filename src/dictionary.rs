@@ -49,6 +49,7 @@ impl Dictionary {
             i += 1;
             if i % 25000 == 0 { bar.inc(1); }
         }
+        dict.leaves.insert(vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0.0);
         bar.finish();
 
         dict
