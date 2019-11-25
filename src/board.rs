@@ -106,6 +106,7 @@ impl Board {
         let mut cross = [false; 26];
 
         for (i, l) in alph.chars().enumerate() {
+            if l == '?' { continue } 
             let old = self.at_position(p);
             self.set(p, l);
             cross[i] = self.valid(&dir);

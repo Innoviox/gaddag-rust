@@ -17,7 +17,7 @@ impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable f
     }
 }
 
-pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?";
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Position {

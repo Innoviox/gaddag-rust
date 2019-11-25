@@ -22,9 +22,11 @@ impl Dictionary {
         let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
 
         for i in alph.chars().progress() {
+            if i == '?' { continue } 
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
             for j in alph.chars() {
+                if j == '?' { continue } 
                 let dipth: String = i.to_string() + &j.to_string();
                 let filepath = format!("resources/{}.txt", dipth);
 
@@ -81,11 +83,13 @@ impl Trie {
         let mut trie = Trie { graph, current };
 
         for i in alph.chars().progress() {
+            if i == '?' { continue }
             let i_node = trie.graph.add_node(i);
 
             trie.graph.add_edge(trie.current, i_node, i.clone());
 
             for j in alph.chars() {
+                if j == '?' { continue } 
                 let j_node = trie.graph.add_node(j);
 
                 trie.graph.add_edge(i_node, j_node, j.clone());
