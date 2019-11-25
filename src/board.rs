@@ -479,6 +479,23 @@ impl Board {
         result
     }
 
+    pub fn put_skips(&self, m: &Move) -> String {
+        let mut res = String::new();
+        let mut curr_pos = m.position.clone(); // todo make move iter method
+        for i in m.word.chars() {
+            if !self.is_letter(curr_pos) {
+                res.push(i);
+            } else {
+                res.push('(');
+                res.push(i);
+                res.push(')');
+            }
+            curr_pos.tick(m.direction);
+        }
+
+        res.replace(")(", "")
+    }
+
     pub fn score(&self, m: &Move, cross_sums: &[i32; 225], bag: &Bag) -> i32 {
         let mut curr_pos = m.position.clone();
         let mut true_score = 0;
@@ -519,6 +536,8 @@ impl Board {
 
         score
     }
+
+
 }
 
 impl Board {
