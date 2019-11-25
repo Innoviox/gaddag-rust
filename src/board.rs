@@ -83,7 +83,7 @@ impl Board {
     }
 
     pub fn place_move(&mut self, m: &Move) -> bool {
-        self.play_word(m.position, m.word.clone(), m.direction, true)
+        self.play_word(m.position, m.word.clone().to_uppercase(), m.direction, true)
     }
 
     pub fn place_move_cloned(&mut self, m: &Move) -> String {
@@ -449,12 +449,13 @@ impl Board {
                         _ => { cross_mult = 0; n_played += 1; }, // char was already there, so don't score old words
             }
 
-            if i.is_lowercase() { // blank
-                tile_mult = 0;
+            let mut curr_score = 0;
+            if !i.is_lowercase() {
+                curr_score = self.bag.score(i) * tile_mult;
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
-            let curr_score = self.bag.score(i) * tile_mult;
+            
 
             if cross_sum > 0 {
                 let cross_score = curr_score + cross_sum;
