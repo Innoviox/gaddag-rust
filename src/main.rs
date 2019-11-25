@@ -29,8 +29,7 @@ fn main() {
     //                 String::from("AM"),
     //                 utils::Direction::Down, false);
 
-
-    board.place_move( &Move { word: "WATER".to_string(), position: Position { row: 3, col: 7 }, direction: Down, score: 24 }  );
+board.place_move( &Move { word: "WATER".to_string(), position: Position { row: 3, col: 7 }, direction: Down, score: 24 }  );
 board.place_move( &Move { word: "FOULARDS".to_string(), position: Position { row: 4, col: 3 }, direction: Across, score: 98 }  );
 board.place_move( &Move { word: "JAVELINA".to_string(), position: Position { row: 6, col: 4 }, direction: Across, score: 73 }  );
 board.place_move( &Move { word: "JURANT".to_string(), position: Position { row: 6, col: 4 }, direction: Down, score: 26 }  );
@@ -46,7 +45,15 @@ board.place_move( &Move { word: "LEG".to_string(), position: Position { row: 7, 
 board.place_move( &Move { word: "IONIUM".to_string(), position: Position { row: 7, col: 0 }, direction: Across, score: 31 }  );
 board.place_move( &Move { word: "HER".to_string(), position: Position { row: 2, col: 1 }, direction: Across, score: 32 }  );
 board.place_move( &Move { word: "OS".to_string(), position: Position { row: 1, col: 0 }, direction: Across, score: 28 }  );
-// board.place_move( &Move { word: "BI".to_string(), position: Position { row: 2, col: 0 }, direction: Down, score: 13 }  );
+board.place_move( &Move { word: "ZESTY".to_string(), position: Position { row: 14, col: 3 }, direction: Across, score: 91 }  );
+board.place_move( &Move { word: "WATERED".to_string(), position: Position { row: 3, col: 7 }, direction: Down, score: 28 }  );
+board.place_move( &Move { word: "TRANQ".to_string(), position: Position { row: 11, col: 8 }, direction: Across, score: 28 }  );
+board.place_move( &Move { word: "RAI".to_string(), position: Position { row: 12, col: 10 }, direction: Across, score: 54 }  );
+board.place_move( &Move { word: "OBVERSE".to_string(), position: Position { row: 7, col: 1 }, direction: Down, score: 40 }  );
+board.place_move( &Move { word: "OF".to_string(), position: Position { row: 12, col: 2 }, direction: Down, score: 23 }  );
+board.place_move( &Move { word: "HEP".to_string(), position: Position { row: 13, col: 9 }, direction: Across, score: 24 }  );
+board.place_move( &Move { word: "IF".to_string(), position: Position { row: 8, col: 11 }, direction: Across, score: 17 }  );
+board.place_move( &Move { word: "DIB".to_string(), position: Position { row: 13, col: 5 }, direction: Across, score: 15 }  );// board.place_move( &Move { word: "BI".to_string(), position: Position { row: 2, col: 0 }, direction: Down, score: 13 }  );
 println!("{}", board);
 
     
@@ -71,7 +78,7 @@ println!("{}", board);
     let mut rack = b.draw_tiles(7);
 
     // for i in 0..20 {
-        rack = vec!['I', 'I', 'O', 'I', 'T', 'O', 'I'];
+        rack = vec!['N', 'L', 'U', 'U', 'O', 'D', 'A'];
         // rack = vec!['I', 'U', 'N', 'E', 'T', 'O', 'E'];
         println!("Rack is: {:?}", rack.clone());
         let moves = board.gen_all_moves(&rack, &t, &d, &b);
