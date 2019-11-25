@@ -37,6 +37,16 @@ fn two_player_game() {
 
         score_1 += m1.score;
 
+        out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
+                        rack_1, m1.position.to_str(), sm1, m1.score, score_1);
+
+        
+        
+
+        if player_1.rack.len() == 0 {
+            break
+        }
+
         let rack_2: String = player_2.rack.iter().collect();
         let (m2, sm2) = player_2.do_move(&mut board);
 
@@ -46,12 +56,33 @@ fn two_player_game() {
 
         score_2 += m2.score;
 
-        out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
-                        rack_1, m1.position.to_str(), sm1, m1.score, score_1,
+        out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
                         rack_2, m2.position.to_str(), sm2, m2.score, score_2);
         turn += 1;
 
-        println!("{}", out);
+        // println!("{}", out);
+    }
+
+    if player_1.rack.len() == 0 {
+        let mut end = 0;
+        let mut end_s = String::new();
+        for s in player_2.rack {
+            end += board.bag.score(s);
+            end_s.push(s);
+        }
+        end *= 2;
+        score_1 += end;
+        out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, score_1);
+    } else {
+        let mut end = 0;
+        let mut end_s = String::new();
+        for s in player_1.rack {
+            end += board.bag.score(s);
+            end_s.push(s);
+        }
+        end *= 2;
+        score_2 += end;
+        out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, score_2);       
     }
 
     out = format!("{}\n{}", out, board);
@@ -59,7 +90,9 @@ fn two_player_game() {
 }
 
 fn main() {
-    two_player_game();
+    loop {
+        two_player_game();
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
