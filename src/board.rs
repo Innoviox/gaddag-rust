@@ -346,7 +346,7 @@ impl Board {
                 if let Some(terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
-                                       direction, score: 0, evaluation: *self.dict.evaluate(&rack).unwrap() }; 
+                                       direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
                     // println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.put_skips(&m), rack, m.evaluation);
                     m.score = self.score(&m, cross_sums);
                     moves.push(m);
@@ -406,7 +406,7 @@ impl Board {
         result
     }
 
-    pub fn format(&self, m: &Move, r: &Vec<char>) -> String {
+    pub fn format(&self, m: &Move, r: &Vec<char>, human: bool) -> String {
         let mut res = String::new();
         let mut curr_pos = m.position.clone(); // todo make move iter method
         for i in m.word.chars() {
@@ -417,9 +417,13 @@ impl Board {
                 //     res.push(i.to_lowercase().to_string().chars().next().unwrap());
                 // }
             } else {
-                res.push('(');
-                res.push(i);
-                res.push(')');
+                if human {
+                    res.push('(');
+                    res.push(i);
+                    res.push(')');
+                } else {
+                    res.push('.');
+                }
             }
             curr_pos.tick(m.direction);
         }

@@ -59,6 +59,7 @@ fn two_player_game() {
 }
 
 fn main() {
+    two_player_game();
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -69,20 +70,20 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    let mut board = board::Board::default();
+    // let mut board = board::Board::default();
 
-    board.place_move( &Move { word: "REWAX".to_string(), 
-                              position: Position { row: 7, col: 7 },
-                              direction: Direction::Down,
-                              score: 0, evaluation: 0.0 } );
+    // board.place_move( &Move { word: "REWAX".to_string(), 
+    //                           position: Position { row: 7, col: 7 },
+    //                           direction: Direction::Down,
+    //                           score: 0, evaluation: 0.0 } );
 
-    println!("{}", board);
+    // println!("{}", board);
 
-    let mut player_1 = Player { rack: vec!['B' ,'?', 'L', 'E', 'U', 'I', 'N'] };
+    // let mut player_1 = Player { rack: vec!['B' ,'?', 'L', 'E', 'U', 'I', 'N'] };
 
-    let (m1, sm1) = player_1.do_move(&mut board);
+    // let (m1, sm1) = player_1.do_move(&mut board);
 
-    println!("{:?} {}", m1, sm1);
+    // println!("{:?} {}", m1, sm1);
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
