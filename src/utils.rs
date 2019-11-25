@@ -167,3 +167,15 @@ impl Move {
         }
     }
 }
+
+impl Move {
+    pub fn of(m: &Move) -> Move {
+        Move {
+            word: m.word.clone(),
+            position: m.position.clone(),
+            direction: m.direction.clone(),
+            score: m.score.clone(),
+            evaluation: m.evaluation.clone()
+        }
+    }
+}
