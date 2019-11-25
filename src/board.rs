@@ -400,7 +400,6 @@ impl Board {
         let mut n_played = 0;
         for i in m.word.chars() {
             let mut cross_mult = 1;
-            let mut cross_score = 0;
             let mut tile_mult = 1;
             match self.at_position(curr_pos) {
                 '*' | '^' => { true_mult *= 2; cross_mult *= 2 },
@@ -415,7 +414,7 @@ impl Board {
             let curr_score = self.bag.score(i) * tile_mult;
 
             if cross_sum > 0 {
-                cross_score = cross_mult * (curr_score + cross_sum);
+                let cross_score = curr_score + cross_sum;
                 // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
                 total_cross_score += cross_mult * cross_score;
             }

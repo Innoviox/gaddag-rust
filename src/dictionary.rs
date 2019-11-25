@@ -145,7 +145,6 @@ impl Trie {
 
 
     pub fn nseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {        
-        let edges = self.graph.raw_edges(); // todo: optimize away
         let mut current = self.root();
         
         for c in initial {
