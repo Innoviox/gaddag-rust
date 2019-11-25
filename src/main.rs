@@ -27,7 +27,7 @@ fn two_player_game() {
 
     let mut turn = 1;
 
-    while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 || player_2.rack.len() > 0) {
+    while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 && player_2.rack.len() > 0) {
         let rack_1: String = player_1.rack.iter().collect();
         let (m1, sm1) = player_1.do_move(&mut board);
         
