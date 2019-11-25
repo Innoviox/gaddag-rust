@@ -82,7 +82,7 @@ println!("{}", board);
         // rack = vec!['I', 'U', 'N', 'E', 'T', 'O', 'E'];
         println!("Rack is: {:?}", rack.clone());
         let moves = board.gen_all_moves(&rack);
-        let best_move = moves.iter().max_by(|x, y| x.score.cmp(&y.score)).unwrap();
+        let best_move = moves.iter().max_by(Move::cmp).unwrap();
         println!("Best move: {:?} (skipped: {:?})\n{}", best_move, board.put_skips(best_move), board.place_move_cloned(&best_move));
 
         let chars = board.reals(&best_move);

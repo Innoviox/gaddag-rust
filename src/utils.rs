@@ -4,6 +4,7 @@ use std::slice::Iter;
 use std::cmp::PartialEq;
 use std::ops::Range;
 use itertools::Itertools;
+use std::cmp::Ordering;
 
 pub trait ItemRemovable<T> {
     fn _remove_item(&mut self, some_x: T) -> T;
@@ -137,6 +138,21 @@ pub struct Move {
     pub direction: Direction,
     pub score: i32,
     pub evaluation: f32
+}
+
+impl Move {
+    pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
+        let v1 = (x.score as f32) + x.evaluation;
+        let v2 = (y.score as f32) + y.evaluation;
+
+        if v1 > v2 {
+            return Ordering::Greater
+        } else if v1 < v2 {
+            return Ordering::Less
+        } else {
+            return Ordering::Equal
+        }
+    }
 }
 
 pub fn gen_parts(rack: &Vec<char>) -> Vec<Vec<char>> {

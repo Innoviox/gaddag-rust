@@ -437,8 +437,6 @@ impl Board {
 
         score
     }
-
-
 }
 
 // impl Board {
