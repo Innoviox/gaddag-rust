@@ -392,7 +392,7 @@ impl Board {
         res.replace(")(", "")
     }
 
-    pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 {
+    pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 { // todo fix
         let mut curr_pos = m.position.clone();
         let mut true_score = 0;
         let mut total_cross_score = 0;
