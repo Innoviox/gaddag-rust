@@ -12,17 +12,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use std::time::Duration;
 use itertools::izip;
 
-fn main() {
-    // let mut b = bag::Bag::default();
-    // println!("Score for z is: {}", bag.score('z'));
-
-    // let mut dict = utils::Dictionary::default();
-    // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
-    // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
-
-    // let t = dictionary::Trie::default();
-    // let d = dictionary::Dictionary::default();
-
+fn two_player_game() {
     let mut board = board::Board::default();
     println!("{}", board);
 
@@ -66,7 +56,33 @@ fn main() {
 
     out = format!("{}\n{}", out, board);
     println!("{}", out);
+}
 
+fn main() {
+    // let mut b = bag::Bag::default();
+    // println!("Score for z is: {}", bag.score('z'));
+
+    // let mut dict = utils::Dictionary::default();
+    // println!("This should be true: {}", dict.check_word("HELLO".to_string()));
+    // println!("This should be false: {}", dict.check_word("REGOIJPREGOJ".to_string()));
+
+    // let t = dictionary::Trie::default();
+    // let d = dictionary::Dictionary::default();
+
+    let mut board = board::Board::default();
+
+    board.place_move( &Move { word: "REWAX".to_string(), 
+                              position: Position { row: 7, col: 7 },
+                              direction: Direction::Down,
+                              score: 0, evaluation: 0.0 } );
+
+    println!("{}", board);
+
+    let mut player_1 = Player { rack: vec!['B' ,'?', 'L', 'E', 'U', 'I', 'N'] };
+
+    let (m1, sm1) = player_1.do_move(&mut board);
+
+    println!("{:?} {}", m1, sm1);
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");

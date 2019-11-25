@@ -317,7 +317,7 @@ impl Board {
                         let mut new_part = part.clone();
                         new_part.push(c);
 
-                        let new_word = c.to_string() + &word;
+                        let new_word = c.to_lowercase().to_string() + &word;
 
                         let mut ccp = cp.clone();
                         ccp.tick_opp(direction);
@@ -357,16 +357,25 @@ impl Board {
             for next in self.trie.nexts(node) {
                 if let Some(unext) = alph.find(next) {
                     // println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);
-                    if rack[unext] > 0 && cross_checks[position.to_int()].contains(&next) {
-                        // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
-                        let mut np = part.clone();
-                        np.push(next);
-                        let mut nr = rack.clone();
-                        nr[unext] -= 1;
-                        let mut npp = position.clone();
+                    if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
+                        if rack[unext] > 0 || rack[26] > 0 {
+                            // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
+                            let mut np = part.clone();
+                            np.push(next);
+                            let mut nr = rack.clone();
+                            let mut snext = next.to_string();
+                            if rack[unext] > 0 { 
+                                nr[unext] -= 1; 
+                            } else { 
+                                nr[26] -= 1; 
+                                snext = next.to_lowercase().to_string();
+                            }
+                            let mut npp = position.clone();
 
-                        if npp.tick(direction) {
-                            self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
+                            if npp.tick(direction) {
+                                self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, 
+                                                  &(word.to_owned() + &snext), start_pos, anchor, cross_sums);
+                            }
                         }
                     }
                 }
@@ -402,11 +411,11 @@ impl Board {
         let mut curr_pos = m.position.clone(); // todo make move iter method
         for i in m.word.chars() {
             if !self.is_letter(curr_pos) {
-                if r.contains(&i) {
-                    res.push(i);
-                } else {
-                    res.push(i.to_lowercase().to_string().chars().next().unwrap());
-                }
+                // if r.contains(&i) {
+                res.push(i);
+                // } else {
+                //     res.push(i.to_lowercase().to_string().chars().next().unwrap());
+                // }
             } else {
                 res.push('(');
                 res.push(i);
@@ -434,6 +443,10 @@ impl Board {
                       '-' => { tile_mult *= 2; },
                       '.' => {},
                         _ => { cross_mult = 0; n_played += 1; }, // char was already there, so don't score old words
+            }
+
+            if i.is_lowercase() { // blank
+                tile_mult = 0;
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
