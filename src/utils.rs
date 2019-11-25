@@ -119,7 +119,7 @@ impl Position {
         
     pub fn to_str(&self) -> String {
         let mut s: String = alph.chars().nth(self.row).unwrap().to_string();
-        s += &self.col.to_string();
+        s += &(self.col + 1).to_string();
         s
     }
 }
