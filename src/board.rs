@@ -357,7 +357,7 @@ impl Board {
                 let mut nnp = position.clone();
                 nnp.tick(direction);
                 let mut nnnp = np.clone();
-                if !(np.row == 0 && np.col == 0) {
+                if !(np.row == 0 || np.col == 0) {
                     nnnp.tick(direction);
                 }
                 // println!("Seeding with {:?} at {:?}", word, nnp);
