@@ -8,8 +8,18 @@ for i in open("resources/leaves.txt").readlines():
     y.append(b)
 
 xvar = [[j[i] for j in x] for i in range(len(alph))]
+print("loaded")
 
-from sklearn import linear_model
+from statsmodels.formula.api import ols
 import pandas as pd
 
-df = pd.DataFrame(
+X = dict(zip(alph, xvar))
+X['blank'] = X.pop('?')
+X['y'] = y
+
+data = pd.DataFrame(X)
+
+
+model = ols("y ~ " + " + ".join(alph[:-1]) + " + blank", data).fit()
+
+print(model.summary())

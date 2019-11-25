@@ -10,12 +10,13 @@ use petgraph::visit::EdgeRef;
 use petgraph::graph::Edge;
 
 pub struct Dictionary {
-    words: HashMap<char, HashMap<char, HashSet<String>>>
+    words: HashMap<char, HashMap<char, HashSet<String>>>,
+    leaves: HashMap<Vec<char>, f32>
 }
 
 impl Dictionary {
     pub fn default() -> Dictionary {
-        let mut dict = Dictionary { words: HashMap::new() };
+        let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
 
         for i in alph.chars() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
@@ -34,6 +35,13 @@ impl Dictionary {
             dict.words.insert(i, sub);
         }
 
+        for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
+            let s: Vec<&str> = line.split(" ").collect();
+            let word = s[0].chars().collect();
+            let eval = s[1].parse::<f32>().unwrap();
+            dict.leaves.insert(word, eval);
+        }
+
         dict
     }
 
@@ -46,6 +54,17 @@ impl Dictionary {
         }
         false
     }
+
+    pub fn evaluate(&self, rack: Vec<char>) -> Option<&f32> {
+        self.leaves.get(&rack)
+    }
+
+    // pub fn eval(&self, rack: Vec<usize>) -> Option<&f32> {
+    //     self.evaluate(rack.iter()
+    //         .zip(alph.chars())
+    //         .map(|(n, c)| repeat(c).take(n))
+    //         .collect().chars().collect())
+    // }
 }
 
 pub struct Trie {

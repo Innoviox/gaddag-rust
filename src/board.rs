@@ -131,7 +131,7 @@ impl Board {
                     }
                     
                     if word.len() > 1 {
-                        result.push(Move { word, direction: *d, position: *p, score: 0 });
+                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0 });
                     }
                 }
             }
@@ -182,15 +182,15 @@ impl Board {
                 cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
 
                 let mut p_sums = p.clone();
-                let mut letters = Vec::<char>::new();
+                let mut score = 0;
                 while p_sums.tick(*d) && self.is_letter(p_sums) {
-                    letters.push(self.at_position(p_sums));
+                    score += self.bag.score(self.at_position(p_sums));
                 }
                 p_sums = p.clone();
                 while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
-                    letters.push(self.at_position(p_sums));
+                    score += self.bag.score(self.at_position(p_sums));
                 }
-                cross_sums[di][p.to_int()] = letters.iter().map(|x| self.bag.score(*x)).sum();
+                cross_sums[di][p.to_int()] = score;
             }
         }
 
@@ -320,10 +320,10 @@ impl Board {
             if position != anchor {
                 if let Some(terminal) = self.trie.can_next(node, '@') {
                     // return move
-                    let mut m = Move { word: word.to_string(), position: start_pos, direction, score: 0 };
+                    let mut m = Move { word: word.to_string(), position: start_pos, 
+                                       direction, score: 0, evaluation: *self.dict.eval(rack).unwrap() };
+                    // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     m.score = self.score(&m, cross_sums);
-                    // println!("Found move {:?} {:?} {:?} {}", word, start_pos, direction, m.score);
-                    // println!("{}", self.place_move_cloned(&m));
                     moves.push(m);
                 }
             }
@@ -416,6 +416,7 @@ impl Board {
 
             if cross_sum > 0 {
                 cross_score = cross_mult * (curr_score + cross_sum);
+                // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
                 total_cross_score += cross_mult * cross_score;
             }
 
@@ -424,7 +425,11 @@ impl Board {
             curr_pos.tick(m.direction); // no check here because must be true
         }
 
+        // println!("Found true score {} {}", true_mult, true_score);
+
         let mut score = true_mult * true_score + total_cross_score;
+        
+        // println!("Final {}", score);
 
         if m.word.len() - n_played == 7 {
             score += 50;
