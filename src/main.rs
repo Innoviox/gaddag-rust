@@ -37,16 +37,26 @@ fn main() {
 
     let mut turn = 1;
 
-    while board.bag.distribution.len() > 0 && (player_1.rack.len() > 0 || player_2.rack.len() > 0) {
+    while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 || player_2.rack.len() > 0) {
         let rack_1: String = player_1.rack.iter().collect();
         let (m1, sm1) = player_1.do_move(&mut board);
+        
+        if sm1 == String::new() {
+            break
+        }
+
         score_1 += m1.score;
 
         let rack_2: String = player_2.rack.iter().collect();
         let (m2, sm2) = player_2.do_move(&mut board);
+
+        if sm2 == String::new() {
+            break
+        }
+
         score_2 += m2.score;
 
-        out = format!("{}\n{:<02}. {}/{:<3}: {:<12} +{:<03}/{:<03} | {}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
+        out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
                         rack_1, m1.position.to_str(), sm1, m1.score, score_1,
                         rack_2, m2.position.to_str(), sm2, m2.score, score_2);
         turn += 1;

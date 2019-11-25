@@ -178,4 +178,13 @@ impl Move {
             evaluation: m.evaluation.clone()
         }
     }
+
+    pub fn none() -> Move {
+        Move {
+            word: String::new(),
+            position: Position { row: 0, col: 0 },
+            direction: Direction::Down,
+            score: 0, evaluation: 0.0
+        }
+    }
 }
