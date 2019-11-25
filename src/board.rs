@@ -322,7 +322,7 @@ impl Board {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).unwrap() }; 
-                    // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
+                    // println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.put_skips(&m), rack, m.evaluation);
                     m.score = self.score(&m, cross_sums);
                     moves.push(m);
                 }
