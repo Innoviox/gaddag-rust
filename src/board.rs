@@ -131,7 +131,7 @@ impl Board {
                     }
                     
                     if word.len() > 1 {
-                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0 });
+                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0.0 });
                     }
                 }
             }
@@ -321,7 +321,7 @@ impl Board {
                 if let Some(terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
-                                       direction, score: 0, evaluation: *self.dict.eval(rack).unwrap() };
+                                       direction, score: 0, evaluation: *self.dict.evaluate(&rack).unwrap() }; 
                     // println!("Found move {:?} {:?} {:?}", word, start_pos, direction);
                     m.score = self.score(&m, cross_sums);
                     moves.push(m);

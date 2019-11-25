@@ -1,4 +1,5 @@
 use crate::utils::alph;
+use crate::utils::to_word;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
@@ -8,17 +9,19 @@ use petgraph::Direction;
 use petgraph::graph::NodeIndex;
 use petgraph::visit::EdgeRef;
 use petgraph::graph::Edge;
+use indicatif::ProgressBar;
+use indicatif::ProgressIterator;
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, HashSet<String>>>,
-    leaves: HashMap<Vec<char>, f32>
+    leaves: HashMap<Vec<usize>, f32>
 }
 
 impl Dictionary {
     pub fn default() -> Dictionary {
         let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
 
-        for i in alph.chars() {
+        for i in alph.chars().progress() {
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
             for j in alph.chars() {
@@ -31,16 +34,20 @@ impl Dictionary {
                 
                 sub.insert(j, words);
             }
-
             dict.words.insert(i, sub);
         }
 
+        let bar = ProgressBar::new(10);
+        let mut i = 0;
         for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
             let s: Vec<&str> = line.split(" ").collect();
-            let word = s[0].chars().collect();
+            let word = to_word(&s[0].chars().collect());
             let eval = s[1].parse::<f32>().unwrap();
             dict.leaves.insert(word, eval);
+            i += 1;
+            if i % 100000 == 0 { bar.inc(1); }
         }
+        bar.finish();
 
         dict
     }
@@ -55,16 +62,9 @@ impl Dictionary {
         false
     }
 
-    pub fn evaluate(&self, rack: Vec<char>) -> Option<&f32> {
-        self.leaves.get(&rack)
+    pub fn evaluate(&self, rack: &Vec<usize>) -> Option<&f32> {
+        self.leaves.get(rack)
     }
-
-    // pub fn eval(&self, rack: Vec<usize>) -> Option<&f32> {
-    //     self.evaluate(rack.iter()
-    //         .zip(alph.chars())
-    //         .map(|(n, c)| repeat(c).take(n))
-    //         .collect().chars().collect())
-    // }
 }
 
 pub struct Trie {
@@ -80,7 +80,7 @@ impl Trie {
         let current = graph.add_node(' ');
         let mut trie = Trie { graph, current };
 
-        for i in alph.chars() {
+        for i in alph.chars().progress() {
             let i_node = trie.graph.add_node(i);
 
             trie.graph.add_edge(trie.current, i_node, i.clone());
