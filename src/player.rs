@@ -15,7 +15,11 @@ impl Player {
         board.place_move(m);
 
         for c in chars {
-            self.rack._remove_item(c);
+            if self.rack.contains(&c) {
+                self.rack._remove_item(c);
+            } else {
+                self.rack._remove_item('?');
+            }
         }
         for c in board.bag.draw_tiles(7 - self.rack.len()) {
             self.rack.push(c);
