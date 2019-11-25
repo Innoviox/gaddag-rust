@@ -133,7 +133,6 @@ pub fn positions() -> Vec<Position> {
 #[derive(Debug)]
 pub struct Move {
     pub word: String,
-    // pub part: Vec<char>,
     pub position: Position,
     pub direction: Direction,
     pub score: i32,

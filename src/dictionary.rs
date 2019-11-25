@@ -37,7 +37,7 @@ impl Dictionary {
             dict.words.insert(i, sub);
         }
 
-        let bar = ProgressBar::new(10);
+        let bar = ProgressBar::new(40);
         let mut i = 0;
         for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
             let s: Vec<&str> = line.split(" ").collect();
@@ -45,7 +45,7 @@ impl Dictionary {
             let eval = s[1].parse::<f32>().unwrap();
             dict.leaves.insert(word, eval);
             i += 1;
-            if i % 100000 == 0 { bar.inc(1); }
+            if i % 25000 == 0 { bar.inc(1); }
         }
         bar.finish();
 
