@@ -297,12 +297,36 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-
                             self.left_part(cp, new_part, node, 
                                         &new_rack, cross_checks, direction,
                                         moves, limit - 1, new_word, cp, real_pos, cross_sums);   
                         }
                     }               
+                }
+            }
+
+            if rack[26] > 0 { // blank
+                let mut new_rack = rack.clone();
+                new_rack[26] -= 1;
+                
+
+                for c in alph.chars() {
+                    let mut cp = position.clone();
+                    if cp.tick_opp(direction) && cross_checks[position.to_int()].contains(&c) { 
+                        let mut new_part = part.clone();
+                        new_part.push(c);
+
+                        let new_word = c.to_string() + &word;
+
+                        let mut ccp = cp.clone();
+                        ccp.tick_opp(direction);
+
+                        if !self.is_letter(ccp) {
+                            self.left_part(cp, new_part, node, 
+                                        &new_rack, cross_checks, direction,
+                                        moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                        }
+                    }
                 }
             }
         }
@@ -372,12 +396,16 @@ impl Board {
         result
     }
 
-    pub fn put_skips(&self, m: &Move) -> String {
+    pub fn format(&self, m: &Move, r: &Vec<char>) -> String {
         let mut res = String::new();
         let mut curr_pos = m.position.clone(); // todo make move iter method
         for i in m.word.chars() {
             if !self.is_letter(curr_pos) {
-                res.push(i);
+                if r.contains(&i) {
+                    res.push(i);
+                } else {
+                    res.push(i.to_lowercase().to_string().chars().next().unwrap());
+                }
             } else {
                 res.push('(');
                 res.push(i);

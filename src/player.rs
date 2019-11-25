@@ -11,7 +11,7 @@ impl Player {
         let gen = board.gen_all_moves(&self.rack);
         let m = gen.iter().max_by(Move::cmp).unwrap();
         let chars = board.reals(&m);
-        let skips = board.put_skips(&m);
+        let skips = board.format(&m, &self.rack);
         board.place_move(m);
 
         for c in chars {
