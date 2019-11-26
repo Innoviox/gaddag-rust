@@ -106,9 +106,9 @@ fn two_player_game(gcg: bool) {
 }
 
 fn main() {
-    // loop {
-    //     two_player_game(true);
-    // }
+    loop {
+        two_player_game(true);
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -119,30 +119,30 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    let mut board = board::Board::default();
-    board.play_word(utils::Position { row: 7, col: 7 }, 
-                    String::from("ALOOF"), utils::Direction::Down, true);  
-    board.play_word(utils::Position { row: 10, col: 6 }, 
-                    String::from("BONNET"), utils::Direction::Across, true);                  
-    board.play_word(utils::Position { row: 11, col: 7 }, 
-                    String::from("FAUNA"), utils::Direction::Across, true);  
-    board.play_word(utils::Position { row: 7, col: 6 }, 
-                    String::from("QAT"), utils::Direction::Across, true);  
-    board.play_word(utils::Position { row: 10, col: 12 }, 
-                    String::from("SEI"), utils::Direction::Down, true);  
-    board.play_word(utils::Position { row: 12, col: 11 }, 
-                    String::from("VIG"), utils::Direction::Across, true);  
-    board.play_word(utils::Position { row: 5, col: 8 }, 
-                    String::from("YETI"), utils::Direction::Down, true);  
+    // let mut board = board::Board::default();
+    // board.play_word(utils::Position { row: 7, col: 7 }, 
+    //                 String::from("ALOOF"), utils::Direction::Down, true);  
+    // board.play_word(utils::Position { row: 10, col: 6 }, 
+    //                 String::from("BONNET"), utils::Direction::Across, true);                  
+    // board.play_word(utils::Position { row: 11, col: 7 }, 
+    //                 String::from("FAUNA"), utils::Direction::Across, true);  
+    // board.play_word(utils::Position { row: 7, col: 6 }, 
+    //                 String::from("QAT"), utils::Direction::Across, true);  
+    // board.play_word(utils::Position { row: 10, col: 12 }, 
+    //                 String::from("SEI"), utils::Direction::Down, true);  
+    // board.play_word(utils::Position { row: 12, col: 11 }, 
+    //                 String::from("VIG"), utils::Direction::Across, true);  
+    // board.play_word(utils::Position { row: 5, col: 8 }, 
+    //                 String::from("YETI"), utils::Direction::Down, true);  
 
-    println!("{}", board);
+    // println!("{}", board);
 
-    let mut player_1 = Player { rack: vec!['N', 'K', 'G', 'A', 'R', 'O', 'R'], name: String::new() };
+    // let mut player_1 = Player { rack: vec!['N', 'K', 'G', 'A', 'R', 'O', 'R'], name: String::new() };
 
-    let (m1, sm1) = player_1.do_move(&mut board, false);
+    // let (m1, sm1) = player_1.do_move(&mut board, false);
 
-    println!("{:?} {}", m1, sm1);
-    println!("{}", board);
+    // println!("{:?} {}", m1, sm1);
+    // println!("{}", board);
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
