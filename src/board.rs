@@ -66,7 +66,7 @@ impl Board {
 
         for c in word.chars() {
             let uc = c.to_uppercase().next().unwrap();
-            if force { self.set(current, uc); }
+            if force { if uc != '.' { self.set(current, uc); } }
             else {
                 match self.at_position(current) {
                     '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, uc),
