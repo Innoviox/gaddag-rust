@@ -147,20 +147,20 @@ impl Board {
         self.get_words().iter().filter(|x| x.direction == *dir).all(|x| self.dict.check_word(&x.word))
     }
 
-    // pub fn anchors(&self) -> Vec<Position> {
-    //     let mut result = Vec::new();
+    pub fn anchors(&self) -> Vec<Position> {
+        let mut result = Vec::new();
 
-    //     for p in positions().iter() {
-    //         if !self.is_letter(*p) { continue }
-    //         for n in p.neighbors() {
-    //             if !self.is_letter(n) {
-    //                 result.push(n);
-    //             }
-    //         }
-    //     }
+        for p in positions().iter() {
+            if !self.is_letter(*p) { continue }
+            for n in p.neighbors() {
+                if !self.is_letter(n) {
+                    result.push(n);
+                }
+            }
+        }
 
-    //     result
-    // }
+        result
+    }
 
     fn is_anchor(&self, p: Position) -> bool {
         if self.is_letter(p) { return false }
@@ -215,33 +215,68 @@ impl Board {
 
         let n_center = !self.is_letter(Position{ row: 7, col: 7 });
 
-        for (di, d) in Direction::iter().enumerate() {
-            let di_opp: usize = (-_as(di) + 1).try_into().unwrap();
-            for row in 0..15 {
-                let mut last_anchor_col = 0;
-                for col in 0..15 {
-                    let p = Position { row, col };
-                    if self.is_anchor(p) || (n_center && (col == 7 && row == 7)) {
-                        // println!("Found anchor position {:?}", p);
-                        let mut np = p.clone();
-                        if np.tick_opp(*d) && self.is_letter(np) { 
-                                // println!("Found left-on-board; lefting");
-                                self.left_on_board(np, &rword, &cross_checks[di_opp], 
-                                                    *d, &mut result, &cross_sums[di_opp]);
-                            // }
-                        } else {
-                            // println!("Generating l-parts");
-                            self.left_part(p, Vec::new(), root, 
-                                        &rword, &cross_checks[di_opp], 
-                                        *d, &mut result, 
-                                        (col - last_anchor_col).try_into().unwrap(), 
-                                        String::new(), p, p, &cross_sums[di_opp]);
-                        }
+        let mut di = 0;
+        let mut d = Direction::Across;
+        let mut di_opp: usize = (-_as(di) + 1).try_into().unwrap();
+
+        let mut last_anchor_col = 0;
+
+
+        // for (di, d) in Direction::iter().enumerate() {
+
+        for row in 0..15 {
+            last_anchor_col = 0;   
+            for col in 0..15 {
+                let p = Position { row, col };
+                if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
+                    println!("Found anchor position {:?}", p);
+                    let mut np = p.clone();
+                    if np.tick_opp(d) && self.is_letter(np) { 
+                            // println!("Found left-on-board; lefting");
+                            self.left_on_board(np, &rword, &cross_checks[di_opp], 
+                                                d, &mut result, &cross_sums[di_opp]);
                         // }
-                        last_anchor_col = col;
+                    } else {
+                        // println!("Generating l-parts");
+                        self.left_part(p, Vec::new(), root, 
+                                    &rword, &cross_checks[di_opp], 
+                                    d, &mut result, 
+                                    (p.col - last_anchor_col).try_into().unwrap(), 
+                                    String::new(), p, p, &cross_sums[di_opp]);
                     }
-                }  
-            }
+                    // }
+                    last_anchor_col = p.col;
+                }
+            }  
+        }
+
+        di = 1;
+        d = Direction::Down;
+        di_opp = (-_as(di) + 1).try_into().unwrap();
+        for col in 0..15 {
+            last_anchor_col = 0;   
+            for row in 0..15 {
+                let p = Position { row, col };
+                if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
+                    println!("Found anchor position {:?}", p);
+                    let mut np = p.clone();
+                    if np.tick_opp(d) && self.is_letter(np) { 
+                            // println!("Found left-on-board; lefting");
+                            self.left_on_board(np, &rword, &cross_checks[di_opp], 
+                                                d, &mut result, &cross_sums[di_opp]);
+                        // }
+                    } else {
+                        // println!("Generating l-parts");
+                        self.left_part(p, Vec::new(), root, 
+                                    &rword, &cross_checks[di_opp], 
+                                    d, &mut result, 
+                                    (p.col - last_anchor_col).try_into().unwrap(), 
+                                    String::new(), p, p, &cross_sums[di_opp]);
+                    }
+                    // }
+                    last_anchor_col = p.col;
+                }
+            }  
         }
 
         result
@@ -282,8 +317,9 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
+        // todo can't push move if it reaches end of board
         // if real_pos.row == 12 && real_pos.col == 14 {
-        //     println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
+        println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
@@ -293,7 +329,7 @@ impl Board {
             let mut c = alph.chars();
             // println!("Lefting at {:?}, considering {:?}", curr_pos, cross_checks[curr_pos.to_int()]);
             let mut cp = position.clone();
-            if cp.tick_opp(direction) { 
+            if cp.tick_opp(direction) {  // todo if not tick opp add check?
                 for i in 0..26 {
                     let next = c.next().unwrap();
                 
@@ -353,30 +389,21 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        // if anchor.row == 12 && anchor.col == 14 {
-        //     println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
-        // }
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
-                    // if anchor.row == 12 && anchor.col == 14 {
-                    //     println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
-                    // }
                     m.score = self.score(&m, cross_sums);
                     moves.push(m);
                 }
             }
 
-            // if anchor.row == 12 && anchor.col == 14 {println!("nexts: {:?}", self.trie.nexts(node));}
             for next in self.trie.nexts(node) {
                 if let Some(unext) = alph.find(next) {
-                    // if anchor.row == 12 && anchor.col == 14 {println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);}
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
                         if rack[unext] > 0 || rack[26] > 0 {
-                            // if anchor.row == 12 && anchor.col == 14 {println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);}
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
@@ -397,10 +424,7 @@ impl Board {
                                                   nword, start_pos, anchor, cross_sums);
                             } else if let Some(_terminal) = self.trie.can_next(nnode, '@') {
                                 let mut m = Move { word: nword.to_string(), position: start_pos, 
-                                                direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)) }; 
-                                // if anchor.row == 12 && anchor.col == 14 {
-                                //     println!("Found move {:?} {:?} {:?} {}, {:?} {}", m.word, start_pos, direction, self.format(&m, false), nr, m.evaluation);
-                                // }
+                                                direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)) };  
                                 m.score = self.score(&m, cross_sums);
                                 moves.push(m);
                             }
@@ -413,10 +437,12 @@ impl Board {
             let mut np = part.clone();
             np.push(next);
             let mut npp = position.clone();
+
+            let nword = &(word.to_owned() + &next.to_string());
             
             if let Some(next_node) = self.trie.follow(node, next) {
                 if npp.tick(direction) {
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, nword, start_pos, anchor, cross_sums);
                 }
             }
         }

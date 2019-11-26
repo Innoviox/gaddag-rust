@@ -153,8 +153,10 @@ pub struct Move {
 
 impl Move {
     pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
-        let v1 = (x.score as f32) + x.evaluation;
-        let v2 = (y.score as f32) + y.evaluation;
+
+
+        let v1 = 1.0 * (x.score as f32) + 1.0 * x.evaluation;
+        let v2 = 1.0 * (y.score as f32) + 1.0 * y.evaluation;
 
         if v1 > v2 {
             return Ordering::Greater

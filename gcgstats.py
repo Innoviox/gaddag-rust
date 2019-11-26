@@ -11,3 +11,4 @@ with open("test.txt") as file:
         s2s.append(s2)
 
 print(mean(s1s), mean(s2s))
+
