@@ -220,8 +220,6 @@ impl Board {
         let mut di_opp: usize = (-_as(di) + 1).try_into().unwrap();
 
         let mut last_anchor_col = 0;
-
-
         // for (di, d) in Direction::iter().enumerate() {
 
         for row in 0..15 {
@@ -268,11 +266,11 @@ impl Board {
                         self.left_part(p, Vec::new(), root, 
                                     &rword, &cross_checks[di_opp], 
                                     d, &mut result, 
-                                    (p.col - last_anchor_col).try_into().unwrap(), 
+                                    (p.row - last_anchor_col).try_into().unwrap(), 
                                     String::new(), p, p, &cross_sums[di_opp]);
                     }
                     // }
-                    last_anchor_col = p.col;
+                    last_anchor_col = p.row;
                 }
             }  
         }
@@ -317,7 +315,7 @@ impl Board {
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
         // todo can't push move if it reaches end of board
         // if real_pos.row == 12 && real_pos.col == 14 {
-        // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
+        println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
