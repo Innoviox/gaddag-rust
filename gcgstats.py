@@ -1,7 +1,7 @@
-from statistics import mean
+from statistics import mean, median
 
 s1s, s2s = [], []
-with open("test5.txt") as file:
+with open("testlogic.txt") as file:
     s = file.read().split("#player2 p2 p2")
     for game in s[1:]:
         game = game.split("#")[0].split("\n")
@@ -10,5 +10,5 @@ with open("test5.txt") as file:
         s1s.append(s1)
         s2s.append(s2)
 
-print(mean(s1s), mean(s2s))
+print(mean(s1s), mean(s2s), len(s1s), median(s1s), median(s2s))
 
