@@ -121,19 +121,19 @@ fn main() {
 
     let mut board = board::Board::default();
     board.play_word(utils::Position { row: 7, col: 7 }, 
-                    String::from("ALOOF"), utils::Direction::Down, false);  
-    board.play_word(utils::Position { row: 6, col: 11 }, 
-                    String::from("BONNET"), utils::Direction::Down, false);                  
-    board.play_word(utils::Position { row: 7, col: 12 }, 
-                    String::from("FAUNA"), utils::Direction::Down, false);  
-    board.play_word(utils::Position { row: 6, col: 8 }, 
-                    String::from("QAT"), utils::Direction::Down, false);  
+                    String::from("ALOOF"), utils::Direction::Down, true);  
+    board.play_word(utils::Position { row: 10, col: 6 }, 
+                    String::from("BONNET"), utils::Direction::Across, true);                  
+    board.play_word(utils::Position { row: 11, col: 7 }, 
+                    String::from("FAUNA"), utils::Direction::Across, true);  
+    board.play_word(utils::Position { row: 7, col: 6 }, 
+                    String::from("QAT"), utils::Direction::Across, true);  
+    board.play_word(utils::Position { row: 10, col: 12 }, 
+                    String::from("SEI"), utils::Direction::Down, true);  
     board.play_word(utils::Position { row: 12, col: 11 }, 
-                    String::from("SEI"), utils::Direction::Down, false);  
-    board.play_word(utils::Position { row: 11, col: 13 }, 
-                    String::from("VIG"), utils::Direction::Down, false);  
-    board.play_word(utils::Position { row: 8, col: 6 }, 
-                    String::from("YETI"), utils::Direction::Down, false);  
+                    String::from("VIG"), utils::Direction::Across, true);  
+    board.play_word(utils::Position { row: 5, col: 8 }, 
+                    String::from("YETI"), utils::Direction::Down, true);  
 
     println!("{}", board);
 
