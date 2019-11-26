@@ -1,12 +1,11 @@
 from string import ascii_uppercase as au
 gcg="""#character-encoding UTF-8
-#player1 simon simon
-#player2 james james
->simon: BEINPSU 8G PUB +14 14
->james: IINOORV 9C VIRION +21 21
->simon: EINNOSS J8 SONNIES +69 83
->james: GILLNOT E8 T.OLLING +68 89
->simon: ?ACEERS 12A CARE.EsS +76 159"""
+#player1 james james
+#player2 simon simon
+>james: EIPRS 8G SPIRE +14 14
+>simon: ENT 9I NET +11 11
+>james: AEILNST L9 SALIENT +70 84
+>simon: AOP 15K A.OP +6 17"""
 for move in gcg.split("\n")[3:]:
     player, rack, pos, word, score, total = move.split()
     if pos[0].isdigit():
