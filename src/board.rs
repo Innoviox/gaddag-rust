@@ -282,9 +282,9 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
-        if real_pos.row == 12 && real_pos.col == 14 {
-            println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
-        }
+        // if real_pos.row == 12 && real_pos.col == 14 {
+        //     println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
+        // }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
