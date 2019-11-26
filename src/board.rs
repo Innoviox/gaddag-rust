@@ -186,18 +186,26 @@ impl Board {
 
                 let mut p_sums = p.clone();
                 let mut score = 0;
+                let mut found = false;
                 while p_sums.tick(*d) && self.is_letter(p_sums) {
+                    found = true;
                     if !self.blanks.contains(&p_sums) {
                         score += self.bag.score(self.at_position(p_sums));
                     }
                 }
                 p_sums = p.clone();
                 while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
+                    found = true;
                     if !self.blanks.contains(&p_sums) {
                         score += self.bag.score(self.at_position(p_sums));
                     }
                 }
-                cross_sums[di][p.to_int()] = score;
+
+                if found {
+                    cross_sums[di][p.to_int()] = score;
+                } else {
+                    cross_sums[di][p.to_int()] = -1;
+                }
             }
         }
 
@@ -455,11 +463,12 @@ impl Board {
             }
 
             let cross_sum = cross_sums[curr_pos.to_int()];
-            
 
-            let cross_score = curr_score + cross_sum;
-            // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
-            total_cross_score += cross_mult * cross_score;
+            if cross_sum >= 0 {
+                let cross_score = curr_score + cross_sum;
+                // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
+                total_cross_score += cross_mult * cross_score;
+            }
 
             true_score += curr_score;
 
