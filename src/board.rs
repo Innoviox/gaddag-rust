@@ -16,7 +16,8 @@ pub struct Board {
     state: [[char; 15]; 15],
     dict: Dictionary,
     trie: Trie, 
-    pub bag: Bag // public so can draw tiles
+    pub bag: Bag, // public so can draw tiles
+    blanks: Vec<Position>
 }
 
 /*
@@ -45,7 +46,7 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ], dict: Dictionary::default(), trie: Trie::default(), bag: Bag::default() }
+        ], dict: Dictionary::default(), trie: Trie::default(), bag: Bag::default(), blanks: vec![] }
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -64,12 +65,17 @@ impl Board {
         let mut current = p.clone();
 
         for c in word.chars() {
-            if force { self.set(current, c); }
+            let uc = c.to_uppercase().next().unwrap();
+            if force { self.set(current, uc); }
             else {
                 match self.at_position(current) {
-                    '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, c),
+                    '.' | '*' | '-' | '+' | '^' | '#' => self.set(current, uc),
                                                    _  => return false
                 }
+            }
+
+            if c.is_lowercase() {
+                self.blanks.push(current);
             }
 
             if !(current.tick(dir)) { return false }
@@ -79,7 +85,7 @@ impl Board {
     }
 
     pub fn place_move(&mut self, m: &Move) -> bool {
-        self.play_word(m.position, m.word.clone().to_uppercase(), m.direction, true)
+        self.play_word(m.position, m.word.clone(), m.direction, true)
     }
 
     pub fn place_move_cloned(&mut self, m: &Move) -> String {
@@ -181,11 +187,15 @@ impl Board {
                 let mut p_sums = p.clone();
                 let mut score = 0;
                 while p_sums.tick(*d) && self.is_letter(p_sums) {
-                    score += self.bag.score(self.at_position(p_sums));
+                    if !self.blanks.contains(&p_sums) {
+                        score += self.bag.score(self.at_position(p_sums));
+                    }
                 }
                 p_sums = p.clone();
                 while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
-                    score += self.bag.score(self.at_position(p_sums));
+                    if !self.blanks.contains(&p_sums) {
+                        score += self.bag.score(self.at_position(p_sums));
+                    }
                 }
                 cross_sums[di][p.to_int()] = score;
             }

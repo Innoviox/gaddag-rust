@@ -4,16 +4,17 @@ use crate::utils::Move;
 
 pub struct Player {
     pub rack: Vec<char>,
+    pub name: String
 }
 
 impl Player {
-    pub fn do_move(&mut self, board: &mut Board) -> (Move, String){
+    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String){
         let gen = board.gen_all_moves(&self.rack);
         let best_m = gen.iter().max_by(Move::cmp);
 
         if let Some(m) = best_m {
             let chars = board.reals(&m);
-            let skips = board.format(&m, true);
+            let skips = board.format(&m, human);
             board.place_move(m);
 
             for c in chars {

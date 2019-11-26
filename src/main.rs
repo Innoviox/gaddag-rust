@@ -7,22 +7,27 @@ mod board;
 mod dictionary;
 mod player;
 
-fn two_player_game() {
+fn two_player_game(gcg: bool) {
     let mut board = board::Board::default();
 
-    let mut player_1 = Player { rack: board.bag.draw_tiles(7) };
-    let mut player_2 = Player { rack: board.bag.draw_tiles(7) };
+    let mut player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string() };
+    let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string() };
 
     let mut score_1 = 0;
     let mut score_2 = 0;
 
     let mut out = String::new();
+    
+    if gcg {
+        out = format!("#character-encoding UTF-8\n#player1 {n1} {n1}\n#player2 {n2} {n2}",
+                      n1=player_1.name, n2=player_2.name);
+    }
 
     let mut turn = 1;
 
     while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 && player_2.rack.len() > 0) {
         let rack_1: String = player_1.rack.iter().collect();
-        let (m1, sm1) = player_1.do_move(&mut board);
+        let (m1, sm1) = player_1.do_move(&mut board, !gcg);
         
         if sm1 == String::new() {
             break
@@ -30,24 +35,34 @@ fn two_player_game() {
 
         score_1 += m1.score;
 
-        out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
-                        rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
+        if gcg {
+            out = format!("{}\n>{}: {} {} {} +{} {}", out, player_1.name, rack_1, 
+                          m1.position.to_str(m1.direction), sm1, m1.score, score_1);
+        } else {
+            out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
+                            rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
+        }
 
         if player_1.rack.len() == 0 {
             break
         }
 
         let rack_2: String = player_2.rack.iter().collect();
-        let (m2, sm2) = player_2.do_move(&mut board);
+        let (m2, sm2) = player_2.do_move(&mut board, !gcg);
 
         if sm2 == String::new() {
             break
         }
 
         score_2 += m2.score;
-
-        out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
-                        rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+        if gcg {
+            out = format!("{}\n>{}: {} {} {} +{} {}", out, player_2.name, rack_2, 
+                          m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+        } else {
+            out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
+                            rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+        }
+        
         turn += 1;
 
         println!("{}", out);
@@ -62,7 +77,12 @@ fn two_player_game() {
         }
         end *= 2;
         score_1 += end;
-        out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, score_1);
+        if gcg {
+            out = format!("{}\n>{}:  ({}) +{} {}", out, player_1.name, 
+                          end_s, end, score_1);
+        } else {
+            out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, score_1);
+        }
     } else {
         let mut end = 0;
         let mut end_s = String::new();
@@ -72,16 +92,22 @@ fn two_player_game() {
         }
         end *= 2;
         score_2 += end;
-        out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(40), end_s, end, score_2);       
+        if gcg {
+            out = format!("{}\n>{}:  ({}) +{} {}", out, player_2.name, 
+                          end_s, end, score_2);            
+        } else {
+            out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(40), end_s, end, score_2);    
+        }   
     }
-
-    out = format!("{}\n{}", out, board);
+    if !gcg {
+        out = format!("{}\n{}", out, board);
+    }
     println!("{}", out);
 }
 
 fn main() {
     loop {
-        two_player_game();
+        two_player_game(true);
     }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
