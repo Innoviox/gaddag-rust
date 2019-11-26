@@ -108,16 +108,15 @@ fn two_player_game(gcg: bool) {
 fn test() {
     let mut board = board::Board::default();
 
-board.play_word(utils::Position { row: 7, col: 7 }, String::from("GLARY"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 9, col: 6 }, String::from("POOF"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 8, col: 8 }, String::from("AMA"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 4, col: 9 }, String::from("EQUID"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 0, col: 10 }, String::from("OGEED"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 1, col: 9 }, String::from("I.UANA"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 7, col: 6 }, String::from("PUB"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 8, col: 2 }, String::from("VIRION"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 7, col: 9 }, String::from("SONNIES"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 7, col: 4 }, String::from("T.OLLING"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 11, col: 0 }, String::from("CARE.EsS"), utils::Direction::Across, true);
 
     println!("{}", board);
 
-    let mut player_1 = Player { rack: vec!['P', 'A', 'N', 'D', 'E', 'R', 'S'], name: String::new() };
+    let mut player_1 = Player { rack: vec!['E', 'E', 'I', 'N', 'Q', 'R', 'U'], name: String::new() };
 
     let (m1, sm1) = player_1.do_move(&mut board, false);
 
@@ -126,9 +125,9 @@ board.play_word(utils::Position { row: 1, col: 9 }, String::from("I.UANA"), util
 }
 
 fn main() {
-    loop {
-        two_player_game(true);
-    }
+    // loop {
+    //     two_player_game(true);
+    // }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -139,7 +138,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    // test();
+    test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");

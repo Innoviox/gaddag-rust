@@ -1,7 +1,7 @@
 from statistics import mean
 
 s1s, s2s = [], []
-with open("test.txt") as file:
+with open("test5.txt") as file:
     s = file.read().split("#player2 p2 p2")
     for game in s[1:]:
         game = game.split("#")[0].split("\n")

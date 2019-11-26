@@ -18,7 +18,6 @@ pub struct Dictionary {
 impl Dictionary {
     pub fn default() -> Dictionary {
         let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
-
         for i in alph.chars().progress() {
             if i == '?' { continue } 
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
