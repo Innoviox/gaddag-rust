@@ -175,26 +175,43 @@ impl Board {
 
 impl Board {
     pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
-        let mut result = Vec::new();
+        /*
+        This method generates all possible moves from the current state with the given rack.
+
+        Note that the board passed must counterintuitively be mutable because this method calls valid_at, 
+        which requires mutability even though it does not mutate. Therefore, this is a non-mutating method.
+
+        This method follows the generation method outlined in https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf
+        by Appel and Jacobson with a few minor changes.
+        */
+
+        let mut result = Vec::new(); // This will store the found moves and be passed-by-reference to the recursive methods.
 
         // todo only recalc for affected squares <<<<< IMPORTANT
-        let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; // : HashMap<Position, Vec<char>> = HashMap::new();
+        /*
+        cross-checks say what letters are valid for a given space.
+        Note that these are coded by direction because different letters are necessary to check in different directions.
+        For example, if you are going across, you only care about the words that are going down, and vice-versa (hence *cross*-checks).
+        cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
+        */
+        let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; 
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
+                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d)); // note: requires mutability. also expensive method.
 
-                let mut p_sums = p.clone();
+                let mut p_sums = p.clone(); // start at position
                 let mut score = 0;
                 let mut found = false;
-                while p_sums.tick(*d) && self.is_letter(p_sums) {
-                    found = true;
-                    if !self.blanks.contains(&p_sums) {
+                while p_sums.tick(*d) && self.is_letter(p_sums) { // go forward until find non letter
+                    found = true; // found a letter so there are cross-sums. this is to distinguish finding a blank from finding nothing.
+                    
+                    if !self.blanks.contains(&p_sums) { // blanks are worth 0
                         score += self.bag.score(self.at_position(p_sums));
                     }
                 }
                 p_sums = p.clone();
-                while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
+                while p_sums.tick_opp(*d) && self.is_letter(p_sums) { // go backwards until find non letter
                     found = true;
                     if !self.blanks.contains(&p_sums) {
                         score += self.bag.score(self.at_position(p_sums));
@@ -204,52 +221,54 @@ impl Board {
                 if found {
                     cross_sums[di][p.to_int()] = score;
                 } else {
-                    cross_sums[di][p.to_int()] = -1;
+                    cross_sums[di][p.to_int()] = -1; // no tiles across, so don't need to score cross-word
                 }
             }
         }
 
+        // Initialize some necessary variables.
         let root = self.trie.root();
 
-        let rword = to_word(&rack);
+        let rword = to_word(&rack); // convert it to a vector-word (see utils.rs) for ease of insertion and deletion.
 
-        let n_center = !self.is_letter(Position{ row: 7, col: 7 });
+        let n_center = !self.is_letter(Position{ row: 7, col: 7 }); // if we need to play at the center or not
 
+        /*
+        The following algorithm starts off the left-part algorithms at each anchor square.
+        Note that it is repeated twice; the second loop is simply the same operation but on the
+        transpose of the board.
+        */
         let mut di = 0;
         let mut d = Direction::Across;
-        let mut di_opp: usize = (-_as(di) + 1).try_into().unwrap();
+        let mut di_opp = 1; // opposite direction, for indexing cross_checks
 
-        let mut last_anchor_col = 0;
-        // for (di, d) in Direction::iter().enumerate() {
+        let mut last_anchor_col = 0; // last column of the anchor to calculate the distance between current and last anchor square
 
-        for row in 0..15 {
-            last_anchor_col = 0;   
+        for row in 0..15 { // iterate over positions
+            last_anchor_col = 0; // reset last column
             for col in 0..15 {
                 let p = Position { row, col };
-                if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
+                if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) { // operate on either anchor, or middle piece *if* center is not *
                     let mut np = p.clone();
-                    if np.tick_opp(d) && self.is_letter(np) { 
-                            // println!("Found left-on-board; lefting");
+                    if np.tick_opp(d) && self.is_letter(np) { // if left is a letter, use left part already on board
                             self.left_on_board(np, &rword, &cross_checks[di_opp], 
                                                 d, &mut result, &cross_sums[di_opp]);
-                        // }
-                    } else {
-                        // println!("Generating l-parts");
+                    } else { // make left part from rack. note that these arguments are really ugly but all fairly necessary (some for debugging)
                         self.left_part(p, Vec::new(), root, 
                                     &rword, &cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.col - last_anchor_col + 1).try_into().unwrap(), 
                                     String::new(), p, p, &cross_sums[di_opp]);
                     }
-                    // }
                     last_anchor_col = p.col;
                 }
             }  
         }
 
+        // Repetition with the transpose.
         di = 1;
         d = Direction::Down;
-        di_opp = (-_as(di) + 1).try_into().unwrap();
+        di_opp = 0;
         for col in 0..15 {
             last_anchor_col = 0;   
             for row in 0..15 {
@@ -257,19 +276,15 @@ impl Board {
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { 
-                            // println!("Found left-on-board; lefting");
                             self.left_on_board(np, &rword, &cross_checks[di_opp], 
                                                 d, &mut result, &cross_sums[di_opp]);
-                        // }
                     } else {
-                        // println!("Generating l-parts");
                         self.left_part(p, Vec::new(), root, 
                                     &rword, &cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.row - last_anchor_col + 1).try_into().unwrap(), 
                                     String::new(), p, p, &cross_sums[di_opp]);
                     }
-                    // }
                     last_anchor_col = p.row;
                 }
             }  
@@ -278,31 +293,50 @@ impl Board {
         result
     }
 
-    // todo: fix ugly ass arguments
+    // todo: fix ugly arguments
     fn left_on_board(&self, position: Position, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
                      direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225]) {
+        /*
+        This method extends the current move as left as possible using only tiles on the board, and then
+        passes it on to extend-right. For example, the following situation:
+        |   | H | E |AAA|
+        where AAA is the extending anchor square, requires this method. This method will then 
+        take H and E, and generate all moves that extend right from that start.
+
+        Note that this method is called with the position of the first letter (so E in the example).
+        */
         // println!("Received call left-board with {:?}", position);
         let mut np = position.clone();
 
         let mut word = Vec::<char>::new();
 
         loop {
-            let c = self.at_position(np);
-            word.push(c);
-            // let new_node = trie.follow(new_node, c).unwrap();
+            word.push(self.at_position(np)); // add character found on board
 
-            if !(np.tick_opp(direction) && self.is_letter(np)) { 
-                word.reverse();
-                //todo: what the fuck is this
-                let mut nnp = position.clone();
+            /*
+            This method can end for two reasons.
+            1) We can go no farther left in the given direction.
+            2) We have run into a square that does not contain a letter.
+            (1) introduces an important edge case that we will discuss later.
+            */
+            if !(np.tick_opp(direction) && self.is_letter(np)) { // end method
+                word.reverse(); // reverse word - we were traversing left, so in the above example we would have found "EH", so we need to 
+                                // reverse before passing to lower methods
+                let mut nnp = position.clone(); // get position that extend-right will start at, which is one right of the given position.
                 nnp.tick(direction);
-                let mut nnnp = np.clone();
+                let mut nnnp = np.clone(); // we may need to tick the start position.
+                /*
+                In the above example, we would hit the space to the left of H and get a non-letter (case (2)). 
+                In that case, the start position of the move is H, so we need to move one right before extending right.
+                However, in case (1), if you have hit the edge of the board, you do not tick.
+                */
                 if !self.is_letter(np) ||
                     !((np.row == 0 && direction == Direction::Down) || 
                      (np.col == 0 && direction == Direction::Across)) {
                     nnnp.tick(direction);
                 }
                 // println!("Seeding with {:?} at {:?}", word, nnp);
+                // pass to extend-right
                 self.extend_right(&Vec::new(), self.trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), moves, &word.iter().collect(), nnnp, nnp, cross_sums);
                 return
             }
