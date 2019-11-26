@@ -450,7 +450,7 @@ impl Board {
             }
 
             let mut curr_score = 0;
-            if !i.is_lowercase() {
+            if !(i.is_lowercase() || self.blanks.contains(&curr_pos)) {
                 curr_score = self.bag.score(i) * tile_mult;
             }
 
