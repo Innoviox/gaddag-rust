@@ -603,7 +603,13 @@ impl fmt::Display for Board {
                         '+' => write!(f, "TLS").expect("fail"),
                         '-' => write!(f, "DLS").expect("fail"),
                         '.' => write!(f, "   ").expect("fail"),
-                        _  => write!(f, " {} ", sq).expect("fail")
+                        _  => {
+                            if self.blanks.contains(&Position{ row: num, col }) {
+                                write!(f, " {} ", sq.to_lowercase()).expect("fail")
+                            } else {
+                                write!(f, " {} ", sq).expect("fail")
+                            }
+                        }
                     };
                 // }
                 write!(f, "|").expect("fail");
