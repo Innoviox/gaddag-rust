@@ -142,19 +142,24 @@ pub fn positions() -> Vec<Position> {
     iproduct!(POS.clone(), POS.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
 }
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum Type {
+    Play,
+    Exch
+}
+
 #[derive(Debug)]
 pub struct Move {
     pub word: String,
     pub position: Position,
     pub direction: Direction,
     pub score: i32,
-    pub evaluation: f32
+    pub evaluation: f32,
+    pub typ: Type
 }
 
 impl Move {
     pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
-
-
         let v1 = 1.0 * (x.score as f32) + 1.0 * x.evaluation;
         let v2 = 1.0 * (y.score as f32) + 1.0 * y.evaluation;
 
@@ -175,7 +180,8 @@ impl Move {
             position: m.position.clone(),
             direction: m.direction.clone(),
             score: m.score.clone(),
-            evaluation: m.evaluation.clone()
+            evaluation: m.evaluation.clone(),
+            typ: m.typ.clone()
         }
     }
 
@@ -184,7 +190,7 @@ impl Move {
             word: String::new(),
             position: Position { row: 0, col: 0 },
             direction: Direction::Down,
-            score: 0, evaluation: 0.0
+            score: 0, evaluation: 0.0, typ: Type::Play
         }
     }
 }

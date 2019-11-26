@@ -7,6 +7,7 @@ use std::convert::TryFrom;
 use std::convert::TryInto;
 use array_init::array_init;
 use petgraph::graph::NodeIndex;
+use itertools::Itertools;
 
 fn _as(v: usize) -> i32 {
     i32::try_from(v).unwrap()
@@ -134,7 +135,7 @@ impl Board {
                     }
                     
                     if word.len() > 1 {
-                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0.0 });
+                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0.0, typ: Type::Play });
                     }
                 }
             }
@@ -289,6 +290,18 @@ impl Board {
                 }
             }  
         }
+        
+        if self.bag.distribution.len() > 7 { 
+            for i in 0..rack.len() {
+                for j in rack.iter().cloned().combinations(i) {
+                    let jw = to_word(&j);
+                    result.push(Move { word: j.iter().collect(), 
+                                        position: Position { row: 0, col: 0 }, direction: Direction::Down, score: 0, 
+                                        evaluation: *self.dict.evaluate(&jw).expect(&format!("{:?}", &jw)),
+                                        typ: Type::Exch });
+                }
+            }
+        }
 
         result
     }
@@ -424,7 +437,8 @@ impl Board {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
-                                       direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
+                                       direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
+                                       typ: Type::Play }; 
                     m.score = self.score(&m, cross_sums);
                     // if word.starts_with("PANDER") { println!("Found move {:?}", m); }
                     moves.push(m);
@@ -457,7 +471,8 @@ impl Board {
                                                   nword, start_pos, anchor, cross_sums);
                             } else if let Some(_terminal) = self.trie.can_next(nnode, '@') {
                                 let mut m = Move { word: nword.to_string(), position: start_pos, 
-                                                direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)) };  
+                                                direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)),
+                                                typ: Type::Play };  
                                 m.score = self.score(&m, cross_sums);
                                 moves.push(m);
                             }
