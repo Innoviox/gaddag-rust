@@ -299,7 +299,7 @@ impl Board {
         if we must include rack-pruning as well. Therefore, this is done
         on the side.
         */
-        if self.bag.distribution.len() { 
+        if self.bag.distribution.len() > 7 { 
             for i in 0..rack.len() {
                 for j in rack.iter().cloned().combinations(i) {
                     let jw = to_word(&j);

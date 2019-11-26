@@ -1,5 +1,6 @@
 #[macro_use] extern crate itertools;
 use crate::player::Player;
+use crate::utils::Type;
 
 mod bag;
 mod utils;
@@ -10,7 +11,7 @@ mod player;
 fn two_player_game(gcg: bool) {
     let mut board = board::Board::default();
 
-    let mut player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string() };
+    let mut player_1 = Player { rack: vec!['B', 'C', 'D', 'F', 'G', 'H', 'J'], name: "p1".to_string() };
     let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string() };
 
     let mut score_1 = 0;
@@ -36,8 +37,12 @@ fn two_player_game(gcg: bool) {
         score_1 += m1.score;
 
         if gcg {
-            out = format!("{}\n>{}: {} {} {} +{} {}", out, player_1.name, rack_1, 
-                          m1.position.to_str(m1.direction), sm1, m1.score, score_1);
+            out = match m1.typ {
+                Type::Play => format!("{}\n>{}: {} {} {} +{} {}", out, player_1.name, rack_1, 
+                                      m1.position.to_str(m1.direction), sm1, m1.score, score_1),
+                Type::Exch => format!("{}\n>{}: {} -{} +0 {}", out, player_1.name, rack_1,
+                                      m1.word, score_1)
+            }
         } else {
             out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
                             rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
@@ -56,8 +61,14 @@ fn two_player_game(gcg: bool) {
 
         score_2 += m2.score;
         if gcg {
-            out = format!("{}\n>{}: {} {} {} +{} {}", out, player_2.name, rack_2, 
-                          m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+            // out = format!("{}\n>{}: {} {} {} +{} {}", out, player_2.name, rack_2, 
+            //               m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+            out = match m2.typ {
+                Type::Play => format!("{}\n>{}: {} {} {} +{} {}", out, player_2.name, rack_2, 
+                                      m2.position.to_str(m1.direction), sm2, m2.score, score_2),
+                Type::Exch => format!("{}\n>{}: {} -{} +0 {}", out, player_2.name, rack_2,
+                                      m2.word, score_2)
+            }
         } else {
             out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
                             rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
@@ -65,7 +76,7 @@ fn two_player_game(gcg: bool) {
         
         turn += 1;
 
-        // println!("{}", out);
+        println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {
@@ -129,9 +140,9 @@ fn test() {
 }
 
 fn main() {
-    // loop {
-        // two_player_game(true);
-    // }
+    loop {
+        two_player_game(true);
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -142,7 +153,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    test();
+    // test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");

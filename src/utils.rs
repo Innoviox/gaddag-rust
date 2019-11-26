@@ -193,4 +193,14 @@ impl Move {
             score: 0, evaluation: 0.0, typ: Type::Play
         }
     }
+
+    pub fn complement(&self, rack: &Vec<char>) -> Vec<char> {
+        let nr = rack.clone();
+
+        for c in self.word.chars() {
+            nr._remove_item(c);
+        }
+
+        nr
+    }
 }
