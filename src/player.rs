@@ -33,13 +33,13 @@ impl Player {
                 },
                 Type::Exch => {
                     let word = m.complement(&self.rack);
-                    for c in word {
-                        self.rack._remove_item(c);
+                    for c in &word {
+                        self.rack._remove_item(*c);
                     }
 
                     self.draw_up(board);
 
-                    let nm = Move::of(m);
+                    let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
                     return (nm, String::new())

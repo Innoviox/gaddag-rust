@@ -195,7 +195,7 @@ impl Move {
     }
 
     pub fn complement(&self, rack: &Vec<char>) -> Vec<char> {
-        let nr = rack.clone();
+        let mut nr = rack.clone();
 
         for c in self.word.chars() {
             nr._remove_item(c);

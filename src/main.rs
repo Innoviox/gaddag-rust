@@ -11,7 +11,7 @@ mod player;
 fn two_player_game(gcg: bool) {
     let mut board = board::Board::default();
 
-    let mut player_1 = Player { rack: vec!['B', 'C', 'D', 'F', 'G', 'H', 'J'], name: "p1".to_string() };
+    let mut player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string() };
     let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string() };
 
     let mut score_1 = 0;
@@ -30,7 +30,7 @@ fn two_player_game(gcg: bool) {
         let rack_1: String = player_1.rack.iter().collect();
         let (m1, sm1) = player_1.do_move(&mut board, !gcg);
         
-        if sm1 == String::new() {
+        if sm1 == String::new() && m1.typ == Type::Play {
             break
         }
 
@@ -55,7 +55,7 @@ fn two_player_game(gcg: bool) {
         let rack_2: String = player_2.rack.iter().collect();
         let (m2, sm2) = player_2.do_move(&mut board, !gcg);
 
-        if sm2 == String::new() {
+        if sm2 == String::new() && m2.typ == Type::Play {
             break
         }
 
@@ -76,7 +76,7 @@ fn two_player_game(gcg: bool) {
         
         turn += 1;
 
-        println!("{}", out);
+        // println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {
@@ -140,7 +140,7 @@ fn test() {
 }
 
 fn main() {
-    loop {
+    for i in 0..2 {
         two_player_game(true);
     }
     // let mut b = bag::Bag::default();
