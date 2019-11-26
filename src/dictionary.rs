@@ -85,12 +85,14 @@ impl Trie {
             let i_node = trie.graph.add_node(i);
 
             trie.graph.add_edge(trie.current, i_node, i.clone());
+            // trie.graph.add_edge(i_node, trie.current, i.clone());
 
             for j in alph.chars() {
                 if j == '?' { continue } 
                 let j_node = trie.graph.add_node(j);
 
                 trie.graph.add_edge(i_node, j_node, j.clone());
+                // trie.graph.add_edge(j_node, i_node, j.clone());
 
                 let dipth: String = i.to_string() + &j.to_string();
                 let filepath = format!("resources/{}.txt", dipth);
@@ -102,14 +104,25 @@ impl Trie {
 
                 for word in words {
                     let mut last_node = j_node;
+                    let mut last_back_node = j_node;
 
-                    for c in word.chars().skip(2) {
-                        if let Some(new) = trie.follow(last_node, c) {
-                            last_node = new
-                        } else {
-                            let next_node = trie.graph.add_node(c);
-                            trie.graph.add_edge(last_node, next_node, c.clone());
-                            last_node = next_node;
+                    for (num, c) in word.chars().enumerate() {
+                        // if let Some(new) = trie.back_follow(last_back_node, c) {
+                        //     last_back_node = new;
+                        // } else {
+                        //     let next_node = trie.graph.add_node(c);
+                        //     trie.graph.add_edge(next_node, last_back_node, c.clone());
+                        //     last_back_node = next_node
+                        // }
+
+                        if num >= 2 {
+                            if let Some(new) = trie.follow(last_node, c) {
+                                last_node = new;
+                            } else {
+                                let next_node = trie.graph.add_node(c);
+                                trie.graph.add_edge(last_node, next_node, c.clone());
+                                last_node = next_node;
+                            }
                         }
                     }
 
@@ -178,10 +191,27 @@ impl Trie {
         None
     }
 
+    pub fn can_back(&self, current: NodeIndex, back: char) -> Option<NodeIndex> {
+        let edges = self.graph.raw_edges();
+        for a in self.graph.edges_directed(current, Direction::Incoming) {
+            let e = &edges[a.id().index()];
+            if e.weight == back {
+                return Some(e.target())
+            }
+        }
+        
+        None
+    }
+
     // for readability
     pub fn follow(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         self.can_next(current, next)
     }
+
+    pub fn back_follow(&self, current: NodeIndex, back: char) -> Option<NodeIndex> {
+        self.can_back(current, back)
+    }
+
 
     pub fn nexts(&self, current: NodeIndex) -> Vec<char> { // debugging method
         let edges = self.graph.raw_edges();

@@ -398,9 +398,11 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            self.left_part(cp, new_part, node, 
-                                        &new_rack, cross_checks, direction,
-                                        moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                            // if let Some(nnode) = self.trie.back_follow(node, next) {
+                                self.left_part(cp, new_part, node, 
+                                            &new_rack, cross_checks, direction,
+                                            moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                            // }
                         }
                     }               
                 }
@@ -422,9 +424,11 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            self.left_part(cp, new_part, node, 
-                                        &new_rack, cross_checks, direction,
-                                        moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                            // if let Some(nnode) = self.trie.back_follow(node, c) {
+                                self.left_part(cp, new_part, node, 
+                                            &new_rack, cross_checks, direction,
+                                            moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                            // }
                         }
                     }
                 }
