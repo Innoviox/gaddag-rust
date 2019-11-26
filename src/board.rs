@@ -291,7 +291,15 @@ impl Board {
             }  
         }
         
-        if self.bag.distribution.len() > 7 { 
+        /*
+        Implement exchanges (dirtily) e.g., for all possible exchanges, evaluate.
+        Note that this returns the complement; for example, rack 
+        BCDFGHQ, a move with word of "C" means "exchange everything but C".
+        This is for efficiency reasons: exchanging is quite light, but heavy
+        if we must include rack-pruning as well. Therefore, this is done
+        on the side.
+        */
+        if self.bag.distribution.len() { 
             for i in 0..rack.len() {
                 for j in rack.iter().cloned().combinations(i) {
                     let jw = to_word(&j);
