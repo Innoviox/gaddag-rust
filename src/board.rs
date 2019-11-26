@@ -282,8 +282,9 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
-        // println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
-
+        if real_pos.row == 12 && real_pos.col == 14 {
+            println!("Received call left with {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos);
+        }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
@@ -352,26 +353,30 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
+        if anchor.row == 12 && anchor.col == 14 {
+            println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
+        }
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
-                    // println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.put_skips(&m), rack, m.evaluation);
+                    if anchor.row == 12 && anchor.col == 14 {
+                        println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
+                    }
                     m.score = self.score(&m, cross_sums);
                     moves.push(m);
                 }
             }
 
-            // println!("nexts: {:?}", trie.nexts(node));
+            if anchor.row == 12 && anchor.col == 14 {println!("nexts: {:?}", self.trie.nexts(node));}
             for next in self.trie.nexts(node) {
                 if let Some(unext) = alph.find(next) {
-                    // println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);
+                    if anchor.row == 12 && anchor.col == 14 {println!("At position {:?}, cc {:?}, considering {:?}", position, cross_checks[position.to_int()], next);}
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
                         if rack[unext] > 0 || rack[26] > 0 {
-                            // println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);
+                            if anchor.row == 12 && anchor.col == 14 {println!("\tFound nextable character {:?} {:?} {:?}", next, part, position);}
                             let mut np = part.clone();
                             np.push(next);
                             let mut nr = rack.clone();
@@ -384,9 +389,20 @@ impl Board {
                             }
                             let mut npp = position.clone();
 
+                            let nnode = self.trie.follow(node, next).unwrap();
+
                             if npp.tick(direction) {
-                                self.extend_right(&np, self.trie.follow(node, next).unwrap(), npp, cross_checks, direction, nr, moves, 
+                                self.extend_right(&np, nnode, npp, cross_checks, direction, nr, moves, 
                                                   &(word.to_owned() + &snext), start_pos, anchor, cross_sums);
+                            } else if let Some(_terminal) = self.trie.can_next(nnode, '@') {
+                                // return move
+                                let mut m = Move { word: word.to_string(), position: start_pos, 
+                                                direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
+                                if anchor.row == 12 && anchor.col == 14 {
+                                    println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
+                                }
+                                m.score = self.score(&m, cross_sums);
+                                moves.push(m);
                             }
                         }
                     }
@@ -397,9 +413,19 @@ impl Board {
             let mut np = part.clone();
             np.push(next);
             let mut npp = position.clone();
-            if npp.tick(direction) {
-                if let Some(next_node) = self.trie.follow(node, next) {
+            
+            if let Some(next_node) = self.trie.follow(node, next) {
+                if npp.tick(direction) {
                     self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
+                } else if let Some(_terminal) = self.trie.can_next(next_node, '@') {
+                    // return move
+                    let mut m = Move { word: word.to_string(), position: start_pos, 
+                                    direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
+                    if anchor.row == 12 && anchor.col == 14 {
+                        println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
+                    }
+                    m.score = self.score(&m, cross_sums);
+                    moves.push(m);
                 }
             }
         }
