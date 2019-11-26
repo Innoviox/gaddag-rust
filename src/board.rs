@@ -393,7 +393,7 @@ impl Board {
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
                     m.score = self.score(&m, cross_sums);
-                     if anchor.row == 14 && anchor.col == 1 { println!("Found move {:?}", m); }
+                    // if anchor.row == 14 && anchor.col == 0 { println!("Found move {:?}", m); }
                     moves.push(m);
                 }
             }
