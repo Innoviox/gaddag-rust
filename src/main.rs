@@ -108,33 +108,16 @@ fn two_player_game(gcg: bool) {
 fn test() {
     let mut board = board::Board::default();
 
-board.play_word(utils::Position { row: 3, col: 7 }, String::from("BIPOD"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 6, col: 8 }, String::from("YAUD"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 6, col: 6 }, String::from("JoW"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 2, col: 6 }, String::from("RAG"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 10, col: 6 }, String::from("MISDOER"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 11, col: 9 }, String::from("AIL"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 3, col: 9 }, String::from("OOHS"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 11, col: 3 }, String::from("WIZEN"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 10, col: 1 }, String::from("ANOA"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 9, col: 1 }, String::from("HUT"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 1, col: 10 }, String::from("CUFF"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 1, col: 10 }, String::from(".IRRI"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 0, col: 14 }, String::from("O.DIA"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 1, col: 12 }, String::from(".EVIVE"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 0, col: 6 }, String::from("CUTES"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 7, col: 12 }, String::from("REX"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 11, col: 5 }, String::from(".EE"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 0, col: 11 }, String::from("T.T"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 3, col: 0 }, String::from("LEGIONS"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 12, col: 2 }, String::from("EYN."), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 1, col: 5 }, String::from("PAK"), utils::Direction::Down, true);
-board.play_word(utils::Position { row: 13, col: 0 }, String::from("QAT"), utils::Direction::Across, true);
-board.play_word(utils::Position { row: 4, col: 1 }, String::from("LOT"), utils::Direction::Down, true);
-    
+board.play_word(utils::Position { row: 7, col: 7 }, String::from("GLARY"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 9, col: 6 }, String::from("POOF"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 8, col: 8 }, String::from("AMA"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 4, col: 9 }, String::from("EQUID"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 0, col: 10 }, String::from("OGEED"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 1, col: 9 }, String::from("I.UANA"), utils::Direction::Across, true);
+
     println!("{}", board);
 
-    let mut player_1 = Player { rack: vec!['E', 'M', 'B', 'R', 'A', 'N', '?'], name: String::new() };
+    let mut player_1 = Player { rack: vec!['P', 'A', 'N', 'D', 'E', 'R', 'S'], name: String::new() };
 
     let (m1, sm1) = player_1.do_move(&mut board, false);
 
@@ -143,9 +126,9 @@ board.play_word(utils::Position { row: 4, col: 1 }, String::from("LOT"), utils::
 }
 
 fn main() {
-    loop {
-        two_player_game(true);
-    }
+    // loop {
+    //     two_player_game(true);
+    // }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -156,7 +139,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    // test();
+    test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
