@@ -390,16 +390,16 @@ impl Board {
                             let mut npp = position.clone();
 
                             let nnode = self.trie.follow(node, next).unwrap();
+                            let nword = &(word.to_owned() + &snext);
 
                             if npp.tick(direction) {
                                 self.extend_right(&np, nnode, npp, cross_checks, direction, nr, moves, 
-                                                  &(word.to_owned() + &snext), start_pos, anchor, cross_sums);
+                                                  nword, start_pos, anchor, cross_sums);
                             } else if let Some(_terminal) = self.trie.can_next(nnode, '@') {
-                                // return move
-                                let mut m = Move { word: word.to_string(), position: start_pos, 
-                                                direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
+                                let mut m = Move { word: nword.to_string(), position: start_pos, 
+                                                direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)) }; 
                                 if anchor.row == 12 && anchor.col == 14 {
-                                    println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
+                                    println!("Found move {:?} {:?} {:?} {}, {:?} {}", m.word, start_pos, direction, self.format(&m, false), nr, m.evaluation);
                                 }
                                 m.score = self.score(&m, cross_sums);
                                 moves.push(m);
@@ -417,15 +417,6 @@ impl Board {
             if let Some(next_node) = self.trie.follow(node, next) {
                 if npp.tick(direction) {
                     self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, &(word.to_owned() + &next.to_string()), start_pos, anchor, cross_sums);
-                } else if let Some(_terminal) = self.trie.can_next(next_node, '@') {
-                    // return move
-                    let mut m = Move { word: word.to_string(), position: start_pos, 
-                                    direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
-                    if anchor.row == 12 && anchor.col == 14 {
-                        println!("Found move {:?} {:?} {:?} {}, {:?} {}", word, start_pos, direction, self.format(&m, false), rack, m.evaluation);
-                    }
-                    m.score = self.score(&m, cross_sums);
-                    moves.push(m);
                 }
             }
         }
