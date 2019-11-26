@@ -3,12 +3,10 @@ use crate::utils::to_word;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
-// use daggy::*;
 use petgraph::Graph;
 use petgraph::Direction;
 use petgraph::graph::NodeIndex;
 use petgraph::visit::EdgeRef;
-use petgraph::graph::Edge;
 use indicatif::ProgressBar;
 use indicatif::ProgressIterator;
 

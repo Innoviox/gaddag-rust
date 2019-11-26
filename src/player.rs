@@ -13,7 +13,7 @@ impl Player {
 
         if let Some(m) = best_m {
             let chars = board.reals(&m);
-            let skips = board.format(&m, &self.rack, true);
+            let skips = board.format(&m, true);
             board.place_move(m);
 
             for c in chars {

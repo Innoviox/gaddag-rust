@@ -3,13 +3,9 @@ use crate::dictionary::Dictionary;
 use crate::dictionary::Trie;
 use crate::bag::Bag;
 use std::fmt;
-use std::collections::HashMap;
-use std::collections::HashSet;
-use std::slice::Iter;
 use std::convert::TryFrom;
 use std::convert::TryInto;
 use array_init::array_init;
-use std::ops::Sub;
 use petgraph::graph::NodeIndex;
 
 fn _as(v: usize) -> i32 {
@@ -145,20 +141,20 @@ impl Board {
         self.get_words().iter().filter(|x| x.direction == *dir).all(|x| self.dict.check_word(&x.word))
     }
 
-    pub fn anchors(&self) -> Vec<Position> {
-        let mut result = Vec::new();
+    // pub fn anchors(&self) -> Vec<Position> {
+    //     let mut result = Vec::new();
 
-        for p in positions().iter() {
-            if !self.is_letter(*p) { continue }
-            for n in p.neighbors() {
-                if !self.is_letter(n) {
-                    result.push(n);
-                }
-            }
-        }
+    //     for p in positions().iter() {
+    //         if !self.is_letter(*p) { continue }
+    //         for n in p.neighbors() {
+    //             if !self.is_letter(n) {
+    //                 result.push(n);
+    //             }
+    //         }
+    //     }
 
-        result
-    }
+    //     result
+    // }
 
     fn is_anchor(&self, p: Position) -> bool {
         if self.is_letter(p) { return false }
@@ -212,7 +208,7 @@ impl Board {
                         let mut np = p.clone();
                         if np.tick_opp(*d) && self.is_letter(np) { 
                                 // println!("Found left-on-board; lefting");
-                                self.left_on_board(np, root, &rword, &cross_checks[di_opp], 
+                                self.left_on_board(np, &rword, &cross_checks[di_opp], 
                                                     *d, &mut result, &cross_sums[di_opp]);
                             // }
                         } else {
@@ -234,14 +230,12 @@ impl Board {
     }
 
     // todo: fix ugly ass arguments
-    fn left_on_board(&self, position: Position, node: NodeIndex, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
+    fn left_on_board(&self, position: Position, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
                      direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225]) {
         // println!("Received call left-board with {:?}", position);
         let mut np = position.clone();
 
         let mut word = Vec::<char>::new();
-
-        let new_node = node;
 
         loop {
             let c = self.at_position(np);
@@ -343,7 +337,7 @@ impl Board {
         // println!("extending right at {:?} with part {:?}, {} (real: {:?})", position, part, word, start_pos);
         if !self.is_letter(position) {
             if position != anchor {
-                if let Some(terminal) = self.trie.can_next(node, '@') {
+                if let Some(_terminal) = self.trie.can_next(node, '@') {
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
@@ -406,16 +400,12 @@ impl Board {
         result
     }
 
-    pub fn format(&self, m: &Move, r: &Vec<char>, human: bool) -> String {
+    pub fn format(&self, m: &Move, human: bool) -> String {
         let mut res = String::new();
         let mut curr_pos = m.position.clone(); // todo make move iter method
         for i in m.word.chars() {
             if !self.is_letter(curr_pos) {
-                // if r.contains(&i) {
                 res.push(i);
-                // } else {
-                //     res.push(i.to_lowercase().to_string().chars().next().unwrap());
-                // }
             } else {
                 if human {
                     res.push('(');

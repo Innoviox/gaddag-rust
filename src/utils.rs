@@ -1,11 +1,6 @@
-use std::collections::HashMap;
-use std::collections::HashSet;
 use std::slice::Iter;
-use std::cmp::PartialEq;
 use std::ops::Range;
-use itertools::Itertools;
 use std::cmp::Ordering;
-use std::fmt;
 
 pub trait ItemRemovable<T> {
     fn _remove_item(&mut self, some_x: T) -> T;
@@ -86,20 +81,20 @@ impl Position {
         true
     }
 
-    pub fn add(&self, n: i32, d: Direction) -> Option<Position> {
-        let mut p = self.clone();
-        if n < 0 {
-            for i in 0..(-n) {
-                if !p.tick_opp(d) { return None }
-            }
-        } else {
-            for i in 0..n {
-                if !p.tick(d) { return None }
-            }
-        }
+    // pub fn add(&self, n: i32, d: Direction) -> Option<Position> {
+    //     let mut p = self.clone();
+    //     if n < 0 {
+    //         for _ in 0..(-n) {
+    //             if !p.tick_opp(d) { return None }
+    //         }
+    //     } else {
+    //         for _ in 0..n {
+    //             if !p.tick(d) { return None }
+    //         }
+    //     }
 
-        Some(p)
-    }
+    //     Some(p)
+    // }
 
     pub fn neighbors(&self) -> Vec<Position> {
         let mut result = Vec::new();
@@ -117,18 +112,21 @@ impl Position {
         self.row * 15 + self.col
     }
         
-    pub fn to_str(&self) -> String {
-        let mut s: String = alph.chars().nth(self.col).unwrap().to_string();
-        s += &(self.row + 1).to_string();
-        s
+    pub fn to_str(&self, dir: Direction) -> String {
+        let a = alph.chars().nth(self.col).unwrap().to_string();
+        let b = (self.row + 1).to_string();
+        match dir {
+            Direction::Across => return b + &a,
+            Direction::Down   => return a + &b
+        }
     }
 }
 
 pub fn chars(arr: [bool; 26]) -> Vec<char> {
     alph.chars()
         .zip(arr.iter())
-        .filter(|&(a, b)| *b)
-        .map(|(a, b)| a)
+        .filter(|&(_, b)| *b)
+        .map(|(a, _)| a)
         .collect()
 }
 

@@ -1,21 +1,14 @@
 #[macro_use] extern crate itertools;
-use crate::utils::ItemRemovable;
-use crate::utils::Direction::{Across, Down};
-use crate::utils::{Move, Position, Direction};
 use crate::player::Player;
+
 mod bag;
 mod utils;
 mod board;
 mod dictionary;
 mod player;
-use std::time::{SystemTime, UNIX_EPOCH};
-use std::time::Duration;
-use itertools::izip;
 
 fn two_player_game() {
     let mut board = board::Board::default();
-    println!("{}", board);
-
 
     let mut player_1 = Player { rack: board.bag.draw_tiles(7) };
     let mut player_2 = Player { rack: board.bag.draw_tiles(7) };
@@ -38,10 +31,7 @@ fn two_player_game() {
         score_1 += m1.score;
 
         out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
-                        rack_1, m1.position.to_str(), sm1, m1.score, score_1);
-
-        
-        
+                        rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
 
         if player_1.rack.len() == 0 {
             break
@@ -57,10 +47,10 @@ fn two_player_game() {
         score_2 += m2.score;
 
         out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
-                        rack_2, m2.position.to_str(), sm2, m2.score, score_2);
+                        rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
         turn += 1;
 
-        // println!("{}", out);
+        println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {
@@ -82,7 +72,7 @@ fn two_player_game() {
         }
         end *= 2;
         score_2 += end;
-        out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, score_2);       
+        out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(40), end_s, end, score_2);       
     }
 
     out = format!("{}\n{}", out, board);

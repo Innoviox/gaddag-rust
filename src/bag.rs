@@ -2,7 +2,6 @@ use crate::utils::*;
 use std::collections::HashMap;
 use std::vec::Vec;
 use rand::seq::SliceRandom; 
-use std::cmp::PartialEq;
 
 #[derive(Debug)]
 pub struct Bag {
