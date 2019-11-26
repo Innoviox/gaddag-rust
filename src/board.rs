@@ -229,7 +229,6 @@ impl Board {
             for col in 0..15 {
                 let p = Position { row, col };
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
-                    println!("Found anchor position {:?}", p);
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { 
                             // println!("Found left-on-board; lefting");
@@ -258,7 +257,6 @@ impl Board {
             for row in 0..15 {
                 let p = Position { row, col };
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
-                    println!("Found anchor position {:?}", p);
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { 
                             // println!("Found left-on-board; lefting");
@@ -319,7 +317,7 @@ impl Board {
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
         // todo can't push move if it reaches end of board
         // if real_pos.row == 12 && real_pos.col == 14 {
-        println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
+        // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
