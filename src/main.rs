@@ -108,26 +108,26 @@ fn two_player_game(gcg: bool) {
 fn test() {
     let mut board = board::Board::default();
 
-    board.play_word(utils::Position { row: 7, col: 7 }, String::from("IF"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 5, col: 6 }, String::from("RAX"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 7, col: 5 }, String::from("I..A"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 6, col: 5 }, String::from("Z.N"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 8, col: 4 }, String::from("OI"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 7, col: 3 }, String::from("RESEWED"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 1, col: 9 }, String::from("RANDIES"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 1, col: 7 }, String::from("KO.AI"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 11, col: 0 }, String::from("OUT.ASTE"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 10, col: 7 }, String::from("R.VIEW"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 3, col: 5 }, String::from("UNBO.NET"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 13, col: 6 }, String::from("Q."), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 10, col: 0 }, String::from("R.PERY"), utils::Direction::Down, true);
-    board.play_word(utils::Position { row: 5, col: 8 }, String::from("P.NON"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 8, col: 7 }, String::from(".ATTEnED"), utils::Direction::Across, true);
-    board.play_word(utils::Position { row: 9, col: 3 }, String::from("..GH"), utils::Direction::Across, true); 
+board.play_word(utils::Position { row: 6, col: 7 }, String::from("IF"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 4, col: 6 }, String::from("RAX"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 6, col: 5 }, String::from("I..A"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 5, col: 5 }, String::from("Z.N"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 7, col: 4 }, String::from("OI"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 6, col: 3 }, String::from("RESEWED"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 0, col: 9 }, String::from("RANDIES"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 0, col: 7 }, String::from("KO.AI"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 10, col: 0 }, String::from("OUT.ASTE"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 9, col: 7 }, String::from("R.VIEW"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 2, col: 5 }, String::from("UNBO.NET"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 12, col: 6 }, String::from("Q."), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 9, col: 0 }, String::from("R.PERY"), utils::Direction::Down, true);
+board.play_word(utils::Position { row: 4, col: 8 }, String::from("P.NON"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 7, col: 7 }, String::from(".ATTEnED"), utils::Direction::Across, true);
+board.play_word(utils::Position { row: 8, col: 3 }, String::from("..GH"), utils::Direction::Across, true);
 
     println!("{}", board);
 
-    let mut player_1 = Player { rack: vec!['E', 'I', 'I', 'N', 'N', 'P', 'T'], name: String::new() };
+    let mut player_1 = Player { rack: vec!['A', 'B', 'D', 'E', 'H', 'I', 'L'], name: String::new() };
 
     let (m1, sm1) = player_1.do_move(&mut board, false);
 
@@ -136,9 +136,9 @@ fn test() {
 }
 
 fn main() {
-    loop {
-        two_player_game(true);
-    }
+    // loop {
+    //     two_player_game(true);
+    // }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 

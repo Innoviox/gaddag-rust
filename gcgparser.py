@@ -39,6 +39,7 @@ for move in gcg.split("\n")[3:]:
     else:
         direc = "utils::Direction::Down"
         col, row = pos[0], pos[1:]
+    row = str(int(row) - 1)
     col = au.index(col)
 
     print('board.play_word(utils::Position { row: %s, col: %s }, String::from("%s"), %s, true);' % (row, col, word, direc))
