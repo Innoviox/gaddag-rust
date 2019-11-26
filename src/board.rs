@@ -384,7 +384,7 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        if word.starts_with("PANDER") { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
+        // if word.starts_with("PANDER") { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
@@ -392,16 +392,16 @@ impl Board {
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
                     m.score = self.score(&m, cross_sums);
-                    if word.starts_with("PANDER") { println!("Found move {:?}", m); }
+                    // if word.starts_with("PANDER") { println!("Found move {:?}", m); }
                     moves.push(m);
                 }
             }
 
             for next in self.trie.nexts(node) {
-                if word.starts_with("PANDER") { println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]); }
+                // if word.starts_with("PANDER") { println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]); }
                 if let Some(unext) = alph.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
-                        if word.starts_with("PANDER") { println!("\tvalid next"); }
+                        // if word.starts_with("PANDER") { println!("\tvalid next"); }
                         if rack[unext] > 0 || rack[26] > 0 {
                             let mut np = part.clone();
                             np.push(next);
