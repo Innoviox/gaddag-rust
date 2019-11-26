@@ -315,7 +315,7 @@ impl Board {
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
         // todo can't push move if it reaches end of board
         // if real_pos.row == 12 && real_pos.col == 14 {
-        println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
+        // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
         if let Some(seed) = self.trie.nrseed(&part) { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
@@ -358,7 +358,7 @@ impl Board {
                 
                 let mut cp = position.clone();
                 if cp.tick_opp(direction) {
-                    for c in cross_checks[position.to_int()].clone() {
+                    for c in cross_checks[cp.to_int()].clone() {
                         let mut new_part = part.clone();
                         new_part.push(c);
 
@@ -385,6 +385,7 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
+        // if anchor.row == 14 && anchor.col == 1 { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
@@ -392,13 +393,16 @@ impl Board {
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)) }; 
                     m.score = self.score(&m, cross_sums);
+                     if anchor.row == 14 && anchor.col == 1 { println!("Found move {:?}", m); }
                     moves.push(m);
                 }
             }
 
             for next in self.trie.nexts(node) {
+                // if anchor.row == 14 && anchor.col == 1 { println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]); }
                 if let Some(unext) = alph.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
+                        // if anchor.row == 14 && anchor.col == 1 { println!("\tvalid next"); }
                         if rack[unext] > 0 || rack[26] > 0 {
                             let mut np = part.clone();
                             np.push(next);
