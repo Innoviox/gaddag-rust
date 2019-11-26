@@ -291,10 +291,11 @@ impl Board {
         if limit > 0 {
             let mut c = alph.chars();
             // println!("Lefting at {:?}, considering {:?}", curr_pos, cross_checks[curr_pos.to_int()]);
-            for i in 0..26 {
-                let next = c.next().unwrap();
-                let mut cp = position.clone();
-                if cp.tick_opp(direction) { 
+            let mut cp = position.clone();
+            if cp.tick_opp(direction) { 
+                for i in 0..26 {
+                    let next = c.next().unwrap();
+                
                     if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
                         // println!("Lefting {}", next);
 
@@ -322,10 +323,9 @@ impl Board {
                 let mut new_rack = rack.clone();
                 new_rack[26] -= 1;
                 
-
-                for c in alph.chars() {
-                    let mut cp = position.clone();
-                    if cp.tick_opp(direction) && cross_checks[position.to_int()].contains(&c) { 
+                let mut cp = position.clone();
+                if cp.tick_opp(direction) {
+                    for c in cross_checks[position.to_int()].clone() {
                         let mut new_part = part.clone();
                         new_part.push(c);
 
