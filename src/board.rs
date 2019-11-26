@@ -457,11 +457,9 @@ impl Board {
             let cross_sum = cross_sums[curr_pos.to_int()];
             
 
-            if cross_sum > 0 {
-                let cross_score = curr_score + cross_sum;
-                // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
-                total_cross_score += cross_mult * cross_score;
-            }
+            let cross_score = curr_score + cross_sum;
+            // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
+            total_cross_score += cross_mult * cross_score;
 
             true_score += curr_score;
 
