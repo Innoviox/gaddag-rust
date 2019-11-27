@@ -377,15 +377,15 @@ impl Board {
         }
 
         if limit > 0 {
-            let mut c = alph.chars();
+            // let mut c = alph.chars();
             // println!("Lefting at {:?}, considering {:?}", curr_pos, cross_checks[curr_pos.to_int()]);
             let mut cp = position.clone();
             if cp.tick_opp(direction) {  // todo if not tick opp add check?
-                for i in 0..26 {
-                    let next = c.next().unwrap();
+                // for (i, next) in alph.chars().enumerate() {
+                    // let next = c.next().unwrap();
 
-                // for (next, nnode) in self.trie.nexts(node) {
-                    // if let Some(i) = alph.find(next) {
+                for (next, nnode) in self.trie.nexts(node) {
+                    if let Some(i) = alph.find(next) {
                         if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
                             // println!("Lefting {}", next);
 
@@ -409,7 +409,7 @@ impl Board {
                                 }
                             }
                         }
-                    // }               
+                    }               
                 }
             }
 
