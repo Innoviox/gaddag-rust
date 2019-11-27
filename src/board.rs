@@ -8,6 +8,8 @@ use std::convert::TryInto;
 use array_init::array_init;
 use petgraph::graph::NodeIndex;
 use itertools::Itertools;
+use std::io;
+use std::io::*;
 
 fn _as(v: usize) -> i32 {
     i32::try_from(v).unwrap()
@@ -179,23 +181,46 @@ impl Board {
 
     pub fn valid(&self, d: &Direction) -> bool { // TODO check connectedness
         // self.get_words(*dir).iter().all(|x| self.dict.check_word(&x.word))
+        // println!("chekin {}", self);
         let mut marked: [bool; 225] = [false; 225];
-
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
                 if !marked[p.to_int()] && self.is_letter(p) {   
                     let mut curr = p.clone();
+                    // let mut node = self.trie.hashroot();
+                    // let mut len = 0;
+                    // let mut c = self.at_position(curr);
+                    // while !"#^+-*.".contains(c) {
+                    //     // println!("Following {}", c);
+                    //     if let Some(nnode) = self.trie.follow(node, c) {
+                    //         // println!("\tfound");
+                    //         node = nnode;
+                    //         len += 1;
+                    //     } else {`
+                    //         // println!("\tnot found");
+                    //         return false
+                    //     }
                     let mut word = String::new();
                     while self.is_letter(curr) {
                         word.push(self.at_position(curr));
                         marked[curr.to_int()] = true;
                         if !curr.tick(*d) { break }
+                        // c = self.at_position(curr);
                     }
-                    
+
                     if word.len() > 1 {
                         if !self.dict.check_word(&word) { return false }
                     }
+                    
+                    // if len > 1 {
+                    //     if let Some(_terminal) = self.trie.follow(node, '@') {
+                    //         // println!("\t terminal");    
+                    //     } else { 
+                    //         // println!("\t not terminal");    
+                    //         return false
+                    //     }
+                    // }
                 }
             }
         }

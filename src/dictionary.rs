@@ -152,7 +152,7 @@ impl Trie {
             }
         }
 
-        // println!("{:?}", trie.nseed(&vec!['D', 'R', 'A', 'A', '#', 'V', 'A', 'R', 'K', 'S']));
+        // println!("{:?}", trie.nseed(&vec!['T', 'R', 'E', 'E', '@']));
         // println!("{:?}", trie.nseed(&vec!['R', 'E', 'T', 'A', 'E', '#', 'I', 'E', 'S']));
 
         trie
@@ -162,9 +162,13 @@ impl Trie {
         self.graph.node_indices().next().unwrap()
     }
 
+    pub fn hashroot(&self) -> NodeIndex {
+        self.follow(self.root(), '#').unwrap()
+    }
+
     pub fn seed(&self, initial: &Vec<char>) -> NodeIndex {        
         let edges = self.graph.raw_edges(); // todo: optimize away
-        let mut current = self.follow(self.root(), '#').unwrap();
+        let mut current = self.hashroot();
         
         for c in initial {
             for a in self.graph.edges_directed(current, Direction::Outgoing) {
@@ -181,7 +185,7 @@ impl Trie {
 
 
     pub fn nseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {        
-        let mut current = self.root();
+        let mut current = self.hashroot();
         
         for c in initial {
             if let Some(next) = self.follow(current, *c) {
