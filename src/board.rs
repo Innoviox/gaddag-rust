@@ -446,7 +446,7 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        // println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word);
+        // if anchor.row == 11 && anchor.col == 1 { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
@@ -455,7 +455,7 @@ impl Board {
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
                                        typ: Type::Play }; 
                     m.score = self.score(&m, cross_sums);
-                    // if m.word == "EPOXY".to_string() { println!("Found move {:?}", m); }
+                    // if anchor.row == 11 && anchor.col == 1 { println!("Found move {:?}", m); }
                     moves.push(m);
                 }
             }
@@ -496,6 +496,7 @@ impl Board {
                 }
             }
         } else {
+            
             let next = self.at_position(position);
             let mut np = part.clone();
             np.push(next);
@@ -506,6 +507,12 @@ impl Board {
             if let Some(next_node) = self.trie.follow(node, next) {
                 if npp.tick(direction) {
                     self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, nword, start_pos, anchor, cross_sums);
+                } else if let Some(_terminal) = self.trie.can_next(next_node, '@') {
+                    let mut m = Move { word: nword.to_string(), position: start_pos, 
+                                    direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)),
+                                    typ: Type::Play };  
+                    m.score = self.score(&m, cross_sums);
+                    moves.push(m);
                 }
             }
         }

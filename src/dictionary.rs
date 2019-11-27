@@ -214,27 +214,10 @@ impl Trie {
         None
     }
 
-    pub fn can_back(&self, current: NodeIndex, back: char) -> Option<NodeIndex> {
-        let edges = self.graph.raw_edges();
-        for a in self.graph.edges_directed(current, Direction::Incoming) {
-            let e = &edges[a.id().index()];
-            if e.weight == back {
-                return Some(e.target())
-            }
-        }
-        
-        None
-    }
-
     // for readability
     pub fn follow(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         self.can_next(current, next)
     }
-
-    pub fn back_follow(&self, current: NodeIndex, back: char) -> Option<NodeIndex> {
-        self.can_back(current, back)
-    }
-
 
     pub fn nexts(&self, current: NodeIndex) -> Vec<char> { // debugging method
         let edges = self.graph.raw_edges();
