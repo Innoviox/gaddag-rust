@@ -1,60 +1,48 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: B?EEIIA -EII +0 0
-#note Time: 243
->p2: VIITITO H6 TITI +8 8
-#note Time: 11
->p1: B?EAIAA G7 BAA +21 21
-#note Time: 574
->p2: VIOOBEU I5 VIBE +27 35
-#note Time: 117
->p1: ?EIAOOO -IOOO +0 21
-#note Time: 502
->p2: OOUWJOD 5I .ODOU +18 53
-#note Time: 104
->p1: ?EADGWZ J4 D.ZE +74 95
-#note Time: 864
->p2: WJOIOAT 3I JAW +36 89
-#note Time: 160
->p1: ?AGWLOV 2K AVOW +25 120
-#note Time: 887
->p2: OIOTREE 1N OE +11 100
-#note Time: 198
->p1: ?GLKYAE 1G LEAKY +45 165
-#note Time: 977
->p2: IOTREFD M4 O.TFIRED +67 167
-#note Time: 256
->p1: ?GOIGRT 4L G.GO +20 185
-#note Time: 1441
->p2: RPAAEUP L8 PAREU +34 201
+>p1: TFGYORE H4 FOGEY +32 32
+#note Time: 45
+>p2: ?SIDDNN 6A SNeDDIN. +64 64
+#note Time: 458
+>p1: TRLXMGE C3 REM.X +42 74
+#note Time: 125
+>p2: OPEONEC A2 POCO.EN +42 106
+#note Time: 137
+>p1: TLGLURN 4C .NGUL. +20 94
+#note Time: 70
+>p2: EII?LVE D6 .IVE +21 127
 #note Time: 251
->p1: ?IRTCIS O4 .RChITIS +77 262
-#note Time: 1491
->p2: APSILUU K9 LIP +28 229
-#note Time: 352
->p1: ?LOQNDH J10 HOLD +38 300
-#note Time: 820
->p2: ASUUYRM 14J SAURY +31 260
-#note Time: 288
->p1: ?QNSENL -QN +0 300
-#note Time: 984
->p2: UMNHERF F8 FRENUM +23 283
-#note Time: 351
->p1: ?SENLRE 14B fLENSER +80 380
-#note Time: 1746
->p2: HSIGTNX D14 .X +17 300
-#note Time: 365
->p1: QCAANNN D11 ANN.. +24 404
-#note Time: 165
->p2: HSIGTNE C5 NIGHEST +66 366
-#note Time: 471
->p1: QCANIOM 6B Q. +31 435
-#note Time: 444
->p2: EET 8A ET. +18 384
-#note Time: 150
->p1: CANIOM H12 CO.M +33 468
-#note Time: 299
->p2: E K9 ...E +9 393
-#note Time: 302
->p2:  (ANI) +6 399
+>p1: TLRAALR 10B LAR +14 108
+#note Time: 67
+>p2: I?LEUNP 11D sPINULE +75 202
+#note Time: 339
+>p1: TALRTUF J5 AFLUTT.R +71 179
+#note Time: 149
+>p2: OCEIIJE 12C JEE +44 246
+#note Time: 124
+>p1: IIDATHE 12H HI.ED +37 216
+#note Time: 143
+>p2: OCIITSA C12 .IAO +22 268
+#note Time: 200
+>p1: IATQIOE 10F QI +64 280
+#note Time: 144
+>p2: CITSWNO 14B W.INSCOT +80 348
+#note Time: 215
+>p1: ATIOEIR I8 OI +12 292
+#note Time: 249
+>p2: SAOGRVU 15H SAVOUR +38 386
+#note Time: 188
+>p1: ATEIRAT 12B A... +11 303
+#note Time: 169
+>p2: GZARYME N12 MAZY +49 435
+#note Time: 193
+>p1: TEIRATA O6 ARIETTA +79 382
+#note Time: 182
+>p2: GREKEHA N2 GREEK +56 491
+#note Time: 186
+>p1: OTBESDW 15A WO.D +40 422
+#note Time: 217
+>p2: HAB K3 BAH +26 517
+#note Time: 93
+>p2:  (TBES) +12 529

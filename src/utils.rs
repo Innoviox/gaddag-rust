@@ -159,9 +159,9 @@ pub struct Move {
 }
 
 impl Move {
-    pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
-        let v1 = 1.0 * (x.score as f32) + 1.0 * x.evaluation;
-        let v2 = 1.0 * (y.score as f32) + 1.0 * y.evaluation;
+    fn _cmp(x: &&Move, y: &&Move, w1: &f32, w2: &f32) -> Ordering {
+        let v1 = w1 * (x.score as f32) + w2 * x.evaluation;
+        let v2 = w1 * (y.score as f32) + w2 * y.evaluation;
 
         if v1 > v2 {
             return Ordering::Greater
@@ -170,6 +170,14 @@ impl Move {
         } else {
             return Ordering::Equal
         }
+    }
+
+    pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
+        Move::_cmp(x, y, &1.0, &1.0)
+    }
+    
+    pub fn cmp_with(a: f32, b: f32) -> impl Fn(&&Move, &&Move) -> Ordering {
+        move |x: &&Move, y: &&Move| Move::_cmp(x, y, &a, &b)
     }
 }
 
