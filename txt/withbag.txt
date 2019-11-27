@@ -1,0 +1,60 @@
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: SDLAN?A H8 ScANDAL +68 68
+#note Time: 517
+>p2: UEMSRAC 15H SUMAC +60 60
+#note Time: 491
+>p1: ZEPFTIR 12C FRIZE. +38 106
+#note Time: 451
+>p2: EROENFO 13A FOE +22 82
+#note Time: 410
+>p1: PTOYANI 14B PYA +33 139
+#note Time: 691
+>p2: RENOULM 13G M.UL +17 99
+#note Time: 841
+>p1: TONIREB 8A BORNITE. +83 222
+#note Time: 840
+>p2: RENOEAU C6 EU.O +6 105
+#note Time: 634
+>p1: BATILWV B4 VAW +30 252
+#note Time: 659
+>p2: RNEANEA 4B .ANE +14 119
+#note Time: 560
+>p1: BTILGTO 3C BOTT +24 276
+#note Time: 717
+>p2: RNEAOEH 2B HOE +20 139
+#note Time: 710
+>p1: ILGAKUR 10H .UK +17 293
+#note Time: 735
+>p2: RNAEDII 5E DENARII +90 229
+#note Time: 803
+>p1: ILGAR?D H1 GARD.I +30 323
+#note Time: 2327
+>p2: TVYNIEQ 4K QI +33 262
+#note Time: 1014
+>p1: L?JSDLE 14F JE.L +35 358
+#note Time: 1471
+>p2: TVYNERO J5 .VY +17 279
+#note Time: 984
+>p1: ?SDLEXA 11D AX +38 396
+#note Time: 1909
+>p2: TNEROIH 2H .NTIHERO +76 355
+#note Time: 1060
+>p1: ?SDLEWO O1 W.ODLESs +167 563
+#note Time: 1904
+>p2: ICPTSRN M1 C.P +14 369
+#note Time: 1203
+>p1: ETOGGIE J12 G.O. +23 586
+#note Time: 1188
+>p2: ITSRN M1 ...S +20 389
+#note Time: 1116
+>p1: ETGIE 1K TE. +14 600
+#note Time: 1103
+>p2: ITRN 7E TIN +11 400
+#note Time: 1105
+>p1: GIE 15D GI +10 610
+#note Time: 1142
+>p2: R 6N R. +4 404
+#note Time: 2187
+>p2:  (E) +2 406

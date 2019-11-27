@@ -385,30 +385,31 @@ impl Board {
                     let next = c.next().unwrap();
 
                 // for (next, nnode) in self.trie.nexts(node) {
-                
-                    if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
-                        // println!("Lefting {}", next);
+                    // if let Some(i) = alph.find(next) {
+                        if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
+                            // println!("Lefting {}", next);
 
-                        let mut new_rack = rack.clone();
-                        new_rack[i] -= 1;
-                        
-                        let mut new_part = part.clone();
-                        new_part.push(next);
+                            let mut new_rack = rack.clone();
+                            new_rack[i] -= 1;
+                            
+                            let mut new_part = part.clone();
+                            new_part.push(next);
 
-                        let new_word = next.to_string() + &word;
+                            let new_word = next.to_string() + &word;
 
-                        let mut ccp = cp.clone();
-                        ccp.tick_opp(direction);
+                            let mut ccp = cp.clone();
+                            ccp.tick_opp(direction);
 
-                        if !self.is_letter(ccp) {
-                            if let Some(nnode) = self.trie.follow(node, next) {
-                                self.left_part(cp, new_part, nnode, 
-                                // self.left_part(cp, new_part, node, 
-                                            &new_rack, cross_checks, direction,
-                                            moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                            if !self.is_letter(ccp) {
+                                if let Some(nnode) = self.trie.follow(node, next) {
+                                    self.left_part(cp, new_part, nnode, 
+                                    // self.left_part(cp, new_part, node, 
+                                                &new_rack, cross_checks, direction,
+                                                moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                                }
                             }
                         }
-                    }               
+                    // }               
                 }
             }
 

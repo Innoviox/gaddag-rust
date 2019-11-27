@@ -9,7 +9,8 @@ pub struct Bag {
     amts: [i32; 27],
     values: [i32; 27],
     scores: HashMap<char, i32>,
-    pub distribution: Vec<char>
+    pub distribution: Vec<char>,
+    random: bool
 }
 
 impl Bag {
@@ -20,7 +21,8 @@ impl Bag {
             amts: [9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2], // todo: '?' -> 2
             values: [1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0],
             scores: HashMap::new(), 
-            distribution: Vec::new()
+            distribution: Vec::new(),
+            random: true
         };
 
         for (i, &c) in bag.alph.iter().enumerate() {
@@ -36,6 +38,13 @@ impl Bag {
         bag
     }
 
+    pub fn with(order: &Vec<char>) -> Bag {
+        let mut b = Bag::default();
+        b.distribution = order.to_vec();
+        b.random = false;
+        b
+    }
+
     pub fn score(&self, c: char) -> i32 {
         match self.scores.get(&c) {
             Some(i) => *i,
@@ -44,9 +53,14 @@ impl Bag {
     }
     
     pub fn draw_tiles(&mut self, n: usize) -> Vec<char> {
-        let tiles: Vec<char> = self.distribution
-                                .choose_multiple(&mut rand::thread_rng(), n)
-                                .cloned().collect();
+        let tiles: Vec<char>;
+        if self.random {
+            tiles = self.distribution
+                        .choose_multiple(&mut rand::thread_rng(), n)
+                        .cloned().collect();
+        } else {
+            tiles = self.distribution.iter().take(n).cloned().collect(); 
+        }
         for i in tiles.iter() {
             self.distribution._remove_item(*i);
         }
