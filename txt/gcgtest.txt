@@ -1,54 +1,50 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: TVEEAIE H4 VITAE +24 24
-#note Time: 27
->p2: GUYEOPA G5 GUY +25 25
+>p1: TRELIHA H6 LATHIER +72 72
+#note Time: 104
+>p2: URDEELE G7 DUEL +23 23
+#note Time: 179
+>p1: UOIAPOZ F4 OUZO +37 109
+#note Time: 158
+>p2: REEUWTO 4F .UTWORE +22 45
+#note Time: 231
+>p1: IAPAEJA 3J JAPE +41 150
+#note Time: 200
+>p2: EEIULAT 5K ETUI +19 64
+#note Time: 259
+>p1: IAAGRXT N2 ART.GI +36 186
+#note Time: 228
+>p2: ELAEYVA O1 LAY +38 102
+#note Time: 233
+>p1: AXNMOCE M7 MOXA +31 217
+#note Time: 261
+>p2: EEVAGNA L8 GENEVA +40 142
+#note Time: 228
+>p1: NCEIIEE O6 ICE +25 242
+#note Time: 278
+>p2: ADRAO?I 12A RADIAtO. +68 210
+#note Time: 1599
+>p1: NIEERID 13B DENIER +33 275
+#note Time: 405
+>p2: RWGDEBT 14F WEB +32 242
+#note Time: 402
+>p1: IQB?SLS B10 Qu..S +68 343
+#note Time: 941
+>p2: RGDTAPO N10 PAGOD +41 283
+#note Time: 357
+>p1: IBLSECK D7 ICEBL..KS +71 414
+#note Time: 434
+>p2: RTNVSFH 13K F.V.R +22 305
+#note Time: 450
+>p1: FYIISTN 15H YIN +39 453
+#note Time: 337
+>p2: TNSHOON 8A NOT.H +30 335
+#note Time: 235
+>p1: FISTMN 15L FIST +43 496
+#note Time: 410
+>p2: SON O11 NO. +10 345
 #note Time: 186
->p1: EETARHE I6 EH +25 49
-#note Time: 192
->p2: EOPATOH F7 ATOP +22 47
-#note Time: 187
->p1: ETAREOJ E9 JOE +33 82
-#note Time: 237
->p2: EOHESXO 12A HEXOSE +51 98
-#note Time: 199
->p1: TARENKO A12 .ONK +33 115
-#note Time: 511
->p2: OWUTIFC 13C IF +33 131
-#note Time: 377
->p1: TAREIOA G9 TAO +20 135
-#note Time: 449
->p2: OWUTCRL 11G .UTCROW +24 155
-#note Time: 447
->p1: REIAAAD B14 AA +14 149
-#note Time: 491
->p2: LI?SNNM N8 NIMS +25 180
-#note Time: 2353
->p1: REIADDN O3 DRAINED +89 238
-#note Time: 797
->p2: L?NAEIB L6 tAILB.NE +70 250
-#note Time: 9815
->p1: TSELAIA M10 A. +12 250
-#note Time: 1203
->p2: BOWEOIV 3K VOWE. +24 274
-#note Time: 867
->p1: TSELIAE J3 AE +15 265
-#note Time: 1211
->p2: BOILSNI 14J BISON +36 310
-#note Time: 1072
->p1: TSLIEZD O12 ZEST +77 342
-#note Time: 1088
->p2: LIPIRNY 15G PILY +34 344
-#note Time: 971
->p1: LIDCULR K5 CULL +17 359
-#note Time: 1023
->p2: IRNQMEG 6N Q. +31 375
-#note Time: 1335
->p1: IDRRURE E4 DURR +21 380
-#note Time: 1176
->p2: IRNMEGD M13 M. +16 391
-#note Time: 1346
->p1: IREFTG? 2D REFIGhT +75 455
-#note Time: 3008
->p1:  (IRNEGD) +16 471
+>p1: MN 5E M.N +12 508
+#note Time: 160
+>p1:  (S) +2 510

@@ -239,11 +239,10 @@ impl Board {
         For example, if you are going across, you only care about the words that are going down, and vice-versa (hence *cross*-checks).
         cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
         */
-        // let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; 
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                if self.affected.contains(p) {
+                if self.affected.contains(p) { // only reevaluate for newly affected squares
                     self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d)); // note: requires mutability. also expensive method.
                 }
 
@@ -512,7 +511,6 @@ impl Board {
             }
 
             for (next, nnode) in self.trie.nexts(node) {
-                // println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]);
                 if let Some(unext) = alph.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
                         // println!("\tvalid next");
