@@ -177,24 +177,22 @@ impl Board {
         cross
     }
 
-    pub fn get_words(&self) -> Vec<Move> {
+    pub fn get_words(&self, d: Direction) -> Vec<Move> {
         let mut result = Vec::new();
-        let mut marked: [[bool; 225]; 2] = [[false; 225]; 2];
+        let mut marked: [bool; 225] = [false; 225];
 
         for p in positions().iter() {
-            for (di, d) in Direction::iter().enumerate() {
-                if !marked[di][p.to_int()] && self.is_letter(*p) {   
-                    let mut curr = p.clone();
-                    let mut word = String::new();
-                    while self.is_letter(curr) {
-                        word.push(self.at_position(curr));
-                        marked[di][curr.to_int()] = true;
-                        if !curr.tick(*d) { break }
-                    }
-                    
-                    if word.len() > 1 {
-                        result.push(Move { word, direction: *d, position: *p, score: 0, evaluation: 0.0, typ: Type::Play });
-                    }
+            if !marked[p.to_int()] && self.is_letter(*p) {   
+                let mut curr = p.clone();
+                let mut word = String::new();
+                while self.is_letter(curr) {
+                    word.push(self.at_position(curr));
+                    marked[curr.to_int()] = true;
+                    if !curr.tick(d) { break }
+                }
+                
+                if word.len() > 1 {
+                    result.push(Move { word, direction: d, position: *p, score: 0, evaluation: 0.0, typ: Type::Play });
                 }
             }
         }
@@ -203,7 +201,7 @@ impl Board {
     }
 
     pub fn valid(&self, dir: &Direction) -> bool { // TODO check connectedness
-        self.get_words().iter().filter(|x| x.direction == *dir).all(|x| self.dict.check_word(&x.word))
+        self.get_words(*dir).iter().all(|x| self.dict.check_word(&x.word))
     }
 
     pub fn anchors(&self) -> Vec<Position> {

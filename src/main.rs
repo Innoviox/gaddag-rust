@@ -152,10 +152,10 @@ board.play_word(utils::Position { row: 14, col: 0 }, String::from("BE.G"), utils
 
 fn main() {
     let mut board = board::Board::default();
-    for i in 0..10 {
+    // for i in 0..10 {
         two_player_game(&mut board, true);
         board.reset();
-    }
+    // }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
