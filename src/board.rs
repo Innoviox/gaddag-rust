@@ -18,7 +18,9 @@ pub struct Board {
     dict: Dictionary,
     trie: Trie, 
     pub bag: Bag, // public so can draw tiles
-    blanks: Vec<Position>
+    blanks: Vec<Position>,
+    cross_checks: [[Vec<char>; 225]; 2],
+    affected: Vec<Position>
 }
 
 /*
@@ -31,7 +33,7 @@ pub struct Board {
 
 impl Board {
     pub fn default() -> Board {
-        Board { state: [
+        let mut b = Board { state: [
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
@@ -47,7 +49,15 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ], trie: Trie::default(), dict: Dictionary::default(), bag: Bag::default(), blanks: vec![] }
+        ], trie: Trie::default(), dict: Dictionary::default(), bag: Bag::default(), 
+        blanks: vec![], cross_checks: [array_init(|_| Vec::new()), array_init(|_| Vec::new())], 
+        affected: vec![] };
+        for di in 0..2 {
+            for p in positions().iter() {
+                b.cross_checks[di][p.to_int()] = chars([true; 26]);
+            }
+        }
+        b
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -63,7 +73,9 @@ impl Board {
     }
 
     pub fn play_word(&mut self, p: Position, word: String, dir: Direction, force: bool) -> bool {
+        // self.affected.clear();
         let mut current = p.clone();
+        let mut aff = Vec::new();
 
         for c in word.chars() {
             let uc = c.to_uppercase().next().unwrap();
@@ -79,8 +91,39 @@ impl Board {
                 self.blanks.push(current);
             }
 
-            if !(current.tick(dir)) { return false }
+            for p in current.neighbors() {
+                aff.push(p);
+            }
+
+            if !(current.tick(dir)) && !force { return false }
         }
+
+        self.affected.clear();
+
+        for p in aff {
+            for d in Direction::iter() {
+                let mut np = p.clone();
+                self.affected.push(np);
+                while np.tick(*d) && self.is_letter(np) {
+                    self.affected.push(np);
+                }
+
+                for c in np.neighbors() {
+                    self.affected.push(c);
+                }
+
+                np = p.clone();
+                while np.tick_opp(*d) && self.is_letter(np) {
+                    self.affected.push(np);
+                }
+
+                for c in np.neighbors() {
+                    self.affected.push(c);
+                }
+            }
+        }
+
+        self.affected = self.affected.iter().filter(|x| !self.is_letter(**x)).cloned().collect();
 
         true
     }
@@ -176,6 +219,7 @@ impl Board {
 
 impl Board {
     pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
+        // println!("{:?}", self.affected);
         /*
         This method generates all possible moves from the current state with the given rack.
 
@@ -195,11 +239,13 @@ impl Board {
         For example, if you are going across, you only care about the words that are going down, and vice-versa (hence *cross*-checks).
         cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
         */
-        let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; 
+        // let mut cross_checks: [[Vec<char>; 225]; 2] = [array_init(|_| Vec::new()), array_init(|_| Vec::new())]; 
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d)); // note: requires mutability. also expensive method.
+                if self.affected.contains(p) {
+                    self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d)); // note: requires mutability. also expensive method.
+                }
 
                 let mut p_sums = p.clone(); // start at position
                 let mut score = 0;
@@ -227,12 +273,14 @@ impl Board {
             }
         }
 
+        // println!("{}", self);
+
         // Initialize some necessary variables.
         let root = self.trie.root();
 
         let rword = to_word(&rack); // convert it to a vector-word (see utils.rs) for ease of insertion and deletion.
 
-        let n_center = !self.is_letter(Position{ row: 7, col: 7 }); // if we need to play at the center or not
+        let n_center = !self.is_letter(Position { row: 7, col: 7 }); // if we need to play at the center or not
 
         /*
         The following algorithm starts off the left-part algorithms at each anchor square.
@@ -252,11 +300,11 @@ impl Board {
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) { // operate on either anchor, or middle piece *if* center is not *
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { // if left is a letter, use left part already on board
-                            self.left_on_board(np, &rword, &cross_checks[di_opp], 
+                            self.left_on_board(np, &rword, &self.cross_checks[di_opp], 
                                                 d, &mut result, &cross_sums[di_opp]);
                     } else { // make left part from rack. note that these arguments are really ugly but all fairly necessary (some for debugging)
                         self.left_part(p, Vec::new(), root, 
-                                    &rword, &cross_checks[di_opp], 
+                                    &rword, &self.cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.col - last_anchor_col + 1).try_into().unwrap(), 
                                     String::new(), p, p, &cross_sums[di_opp]);
@@ -277,11 +325,11 @@ impl Board {
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { 
-                            self.left_on_board(np, &rword, &cross_checks[di_opp], 
+                            self.left_on_board(np, &rword, &self.cross_checks[di_opp], 
                                                 d, &mut result, &cross_sums[di_opp]);
                     } else {
                         self.left_part(p, Vec::new(), root, 
-                                    &rword, &cross_checks[di_opp], 
+                                    &rword, &self.cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.row - last_anchor_col + 1).try_into().unwrap(), 
                                     String::new(), p, p, &cross_sums[di_opp]);
@@ -419,17 +467,17 @@ impl Board {
                 
                 let mut cp = position.clone();
                 if cp.tick_opp(direction) {
-                    for c in cross_checks[cp.to_int()].clone() {
-                        let mut new_part = part.clone();
-                        new_part.push(c);
+                    let mut ccp = cp.clone();
+                    ccp.tick_opp(direction);
+                    if !self.is_letter(ccp) {
+                        for (c, nnode) in self.trie.nexts(node) {
+                            if cross_checks[cp.to_int()].contains(&c) { // todo make bools?
+                                let mut new_part = part.clone();
+                                new_part.push(c);
 
-                        let new_word = c.to_lowercase().to_string() + &word;
-
-                        let mut ccp = cp.clone();
-                        ccp.tick_opp(direction);
-
-                        if !self.is_letter(ccp) {
-                            if let Some(nnode) = self.trie.follow(node, c) {
+                                let new_word = c.to_lowercase().to_string() + &word;
+                            
+                            // if let Some(nnode) = self.trie.follow(node, c) {
                                 self.left_part(cp, new_part, nnode, 
                                 // self.left_part(cp, new_part, node, 
                                             &new_rack, cross_checks, direction,
@@ -627,7 +675,7 @@ impl fmt::Display for Board {
         }
         write!(f, "\n{}\n", sep).expect("fail");
 
-        // let a = self.anchors();
+        // let a = &self.affected;
 
         for (num, row) in self.state.iter().enumerate() {
             write!(f, "| {} |", format!("{:0>2}", num+1)).expect("fail");
