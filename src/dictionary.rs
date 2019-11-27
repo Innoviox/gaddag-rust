@@ -118,6 +118,9 @@ impl Trie {
                         last_node = extend(&mut trie, last_node, c);
                     }
 
+                    let end_node = trie.graph.add_node('@'); // EOW
+                    trie.graph.add_edge(last_node, end_node, '@');
+
                     last_node = j_node;
 
                     for l in 0..word.len() {
@@ -132,9 +135,6 @@ impl Trie {
                             last_node = extend(&mut trie, last_node, c);
                         }
                     }
-
-                    let end_node = trie.graph.add_node('@'); // EOW
-                    trie.graph.add_edge(last_node, end_node, '@');
                 }
 
                 // return trie;
