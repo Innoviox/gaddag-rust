@@ -94,11 +94,11 @@ impl Trie {
             }
         };
 
-        extend(&mut trie, current, '#');
+        let dummy = extend(&mut trie, current, '#');
 
         for i in alph.chars().progress() {
             if i == '?' { continue }
-            let i_node = extend(&mut trie, current, i);
+            let i_node = extend(&mut trie, dummy, i);
 
             for j in alph.chars() {
                 if j == '?' { continue } 

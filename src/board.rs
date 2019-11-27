@@ -455,7 +455,7 @@ impl Board {
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
                                        typ: Type::Play }; 
                     m.score = self.score(&m, cross_sums);
-                    // println!("Found move {:?}", m);
+                    // if m.word == "EPOXY".to_string() { println!("Found move {:?}", m); }
                     moves.push(m);
                 }
             }

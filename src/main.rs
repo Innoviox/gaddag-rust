@@ -76,7 +76,7 @@ fn two_player_game(gcg: bool) {
         
         turn += 1;
 
-        println!("{}", out);
+        // println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {
@@ -140,9 +140,9 @@ fn test() {
 }
 
 fn main() {
-    // for i in 0..20 {
-    //     two_player_game(true);
-    // }
+    for i in 0..20 {
+        two_player_game(true);
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -153,7 +153,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    test();
+    // test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
