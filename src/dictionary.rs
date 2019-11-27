@@ -219,12 +219,12 @@ impl Trie {
         self.can_next(current, next)
     }
 
-    pub fn nexts(&self, current: NodeIndex) -> Vec<char> { // debugging method
+    pub fn nexts(&self, current: NodeIndex) -> Vec<(char, NodeIndex)> { // debugging method
         let edges = self.graph.raw_edges();
         let mut res = Vec::new();
         for a in self.graph.edges_directed(current, Direction::Outgoing) {
             let e = &edges[a.id().index()];
-            res.push(e.weight);
+            res.push((e.weight, e.target()));
         }
 
         res

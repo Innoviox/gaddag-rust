@@ -383,6 +383,8 @@ impl Board {
             if cp.tick_opp(direction) {  // todo if not tick opp add check?
                 for i in 0..26 {
                     let next = c.next().unwrap();
+
+                // for (next, nnode) in self.trie.nexts(node) {
                 
                     if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
                         // println!("Lefting {}", next);
@@ -460,7 +462,7 @@ impl Board {
                 }
             }
 
-            for next in self.trie.nexts(node) {
+            for (next, nnode) in self.trie.nexts(node) {
                 // println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]);
                 if let Some(unext) = alph.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
@@ -478,7 +480,7 @@ impl Board {
                             }
                             let mut npp = position.clone();
 
-                            let nnode = self.trie.follow(node, next).unwrap();
+                            // let nnode = self.trie.follow(node, next).unwrap();
                             let nword = &(word.to_owned() + &snext);
 
                             if npp.tick(direction) {
