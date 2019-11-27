@@ -1,6 +1,7 @@
 #[macro_use] extern crate itertools;
 use crate::player::Player;
 use crate::utils::Type;
+use crate::board::Board;
 use std::time::SystemTime;
 
 mod bag;
@@ -9,12 +10,11 @@ mod board;
 mod dictionary;
 mod player;
 
-fn two_player_game(gcg: bool) {
-    let mut board = board::Board::default();
-    // board.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
+fn two_player_game(mut b: &mut Board, gcg: bool) {
+    // b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
 
-    let mut player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string() };
-    let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string() };
+    let mut player_1 = Player { rack: b.bag.draw_tiles(7), name: "p1".to_string() };
+    let mut player_2 = Player { rack: b.bag.draw_tiles(7), name: "p2".to_string() };
 
     let mut score_1 = 0;
     let mut score_2 = 0;
@@ -28,10 +28,10 @@ fn two_player_game(gcg: bool) {
 
     let mut turn = 1;
 
-    while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 && player_2.rack.len() > 0) {
+    while b.bag.distribution.len() > 0 || (player_1.rack.len() > 0 && player_2.rack.len() > 0) {
         let rack_1: String = player_1.rack.iter().collect();
         let start1 = SystemTime::now();
-        let (m1, sm1) = player_1.do_move(&mut board, !gcg);
+        let (m1, sm1) = player_1.do_move(&mut b, !gcg);
         let time1 = start1.elapsed().expect("Time went backwards").as_millis();
         
         if sm1 == String::new() && m1.typ == Type::Play {
@@ -60,7 +60,7 @@ fn two_player_game(gcg: bool) {
 
         let rack_2: String = player_2.rack.iter().collect();
         let start2 = SystemTime::now();
-        let (m2, sm2) = player_2.do_move(&mut board, !gcg);
+        let (m2, sm2) = player_2.do_move(&mut b, !gcg);
         let time2 = start2.elapsed().expect("Time went backwards").as_millis();
 
         if sm2 == String::new() && m2.typ == Type::Play {
@@ -86,14 +86,14 @@ fn two_player_game(gcg: bool) {
         
         turn += 1;
 
-        println!("{}", out);
+        // println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {
         let mut end = 0;
         let mut end_s = String::new();
         for s in player_2.rack {
-            end += board.bag.score(s);
+            end += b.bag.score(s);
             end_s.push(s);
         }
         end *= 2;
@@ -108,7 +108,7 @@ fn two_player_game(gcg: bool) {
         let mut end = 0;
         let mut end_s = String::new();
         for s in player_1.rack {
-            end += board.bag.score(s);
+            end += b.bag.score(s);
             end_s.push(s);
         }
         end *= 2;
@@ -121,7 +121,7 @@ fn two_player_game(gcg: bool) {
         }   
     }
     if !gcg {
-        out = format!("{}\n{}", out, board);
+        out = format!("{}\n{}", out, b);
     }
     println!("{}", out);
 }
@@ -151,8 +151,10 @@ board.play_word(utils::Position { row: 14, col: 0 }, String::from("BE.G"), utils
 }
 
 fn main() {
+    let mut board = board::Board::default();
     for i in 0..10 {
-        two_player_game(true);
+        two_player_game(&mut board, true);
+        board.reset();
     }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
