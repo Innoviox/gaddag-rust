@@ -76,7 +76,7 @@ fn two_player_game(gcg: bool) {
         
         turn += 1;
 
-        // println!("{}", out);
+        println!("{}", out);
     }
 
     if player_1.rack.len() == 0 {

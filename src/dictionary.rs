@@ -164,7 +164,7 @@ impl Trie {
 
     pub fn seed(&self, initial: &Vec<char>) -> NodeIndex {        
         let edges = self.graph.raw_edges(); // todo: optimize away
-        let mut current = self.root();
+        let mut current = self.follow(self.root(), '#').unwrap();
         
         for c in initial {
             for a in self.graph.edges_directed(current, Direction::Outgoing) {

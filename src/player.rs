@@ -35,6 +35,7 @@ impl Player {
                     let word = m.complement(&self.rack);
                     for c in &word {
                         self.rack._remove_item(*c);
+                        board.bag.distribution.push(*c);
                     }
 
                     self.draw_up(board);
