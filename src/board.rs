@@ -371,8 +371,8 @@ impl Board {
         // if real_pos.row == 13 && real_pos.col == 6 {
         // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
-        if let Some(seed) = self.trie.nrseed(&part) {
-        // if let Some(seed) = self.trie.follow(node, '#') { 
+        // if let Some(seed) = self.trie.nrseed(&part) {
+        if let Some(seed) = self.trie.follow(node, '#') { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
 
@@ -399,11 +399,12 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            // if let Some(nnode) = self.trie.follow(node, next) {
-                                self.left_part(cp, new_part, node, 
+                            if let Some(nnode) = self.trie.follow(node, next) {
+                                self.left_part(cp, new_part, nnode, 
+                                // self.left_part(cp, new_part, node, 
                                             &new_rack, cross_checks, direction,
                                             moves, limit - 1, new_word, cp, real_pos, cross_sums);   
-                            // }
+                            }
                         }
                     }               
                 }
@@ -425,11 +426,12 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            // if let Some(nnode) = self.trie.follow(node, c) {
-                                self.left_part(cp, new_part, node, 
+                            if let Some(nnode) = self.trie.follow(node, c) {
+                                self.left_part(cp, new_part, nnode, 
+                                // self.left_part(cp, new_part, node, 
                                             &new_rack, cross_checks, direction,
                                             moves, limit - 1, new_word, cp, real_pos, cross_sums);   
-                            // }
+                            }
                         }
                     }
                 }

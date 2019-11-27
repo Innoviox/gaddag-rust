@@ -121,24 +121,26 @@ impl Trie {
                     extend(&mut trie, last_node, '@'); // EOW
 
                     // // println!("gaddagging {}", word);
-                    // for l in 1..word.len() {
-                    //     last_node = current;
-                    //     let v: Vec<char> = word.chars().take(l).collect();
-                    //     // println!("\t recced {} found {:?}", l, v);
-                    //     for c in v.iter().rev() {
-                    //         // print!("{}", c);
-                    //         last_node = extend(&mut trie, last_node, *c);
-                    //     }
-                    //     // println!("");
+                    for l in 1..word.len() {
+                        last_node = current;
+                        let v: Vec<char> = word.chars().take(l).collect();
+                        // println!("\t recced {} found {:?}", l, v);
+                        for c in v.iter().rev() {
+                            // print!("{}", c);
+                            last_node = extend(&mut trie, last_node, *c);
+                        }
+                        // println!("");
 
-                    //     last_node = extend(&mut trie, last_node, '#');
+                        last_node = extend(&mut trie, last_node, '#');
 
-                    //     for c in word.chars().skip(l) {
-                    //         // print!("{}", c);
-                    //         last_node = extend(&mut trie, last_node, c);
-                    //     }
-                    //     // println!("");
-                    // }
+                        for c in word.chars().skip(l) {
+                            // print!("{}", c);
+                            last_node = extend(&mut trie, last_node, c);
+                        }
+
+                        extend(&mut trie, last_node, '@');
+                        // println!("");
+                    }
                     // let mut guess = String::new();
                     // io::stdin().read_line(&mut guess).expect("Failed to read line");
 
