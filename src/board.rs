@@ -176,9 +176,9 @@ impl Board {
 
         cross
     }
-
-    pub fn get_words(&self, d: Direction) -> Vec<Move> {
-        let mut result = Vec::new();
+    
+    pub fn valid(&self, d: &Direction) -> bool { // TODO check connectedness
+        // self.get_words(*dir).iter().all(|x| self.dict.check_word(&x.word))
         let mut marked: [bool; 225] = [false; 225];
 
         for p in positions().iter() {
@@ -188,20 +188,16 @@ impl Board {
                 while self.is_letter(curr) {
                     word.push(self.at_position(curr));
                     marked[curr.to_int()] = true;
-                    if !curr.tick(d) { break }
+                    if !curr.tick(*d) { break }
                 }
                 
                 if word.len() > 1 {
-                    result.push(Move { word, direction: d, position: *p, score: 0, evaluation: 0.0, typ: Type::Play });
+                    if !self.dict.check_word(&word) { return false }
                 }
             }
         }
 
-        result
-    }
-
-    pub fn valid(&self, dir: &Direction) -> bool { // TODO check connectedness
-        self.get_words(*dir).iter().all(|x| self.dict.check_word(&x.word))
+        true
     }
 
     pub fn anchors(&self) -> Vec<Position> {
