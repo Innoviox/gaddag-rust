@@ -65,7 +65,7 @@ fn two_player_game(gcg: bool) {
             //               m2.position.to_str(m2.direction), sm2, m2.score, score_2);
             out = match m2.typ {
                 Type::Play => format!("{}\n>{}: {} {} {} +{} {}", out, player_2.name, rack_2, 
-                                      m2.position.to_str(m1.direction), sm2, m2.score, score_2),
+                                      m2.position.to_str(m2.direction), sm2, m2.score, score_2),
                 Type::Exch => format!("{}\n>{}: {} -{} +0 {}", out, player_2.name, rack_2,
                                       m2.word, score_2)
             }
@@ -140,9 +140,9 @@ fn test() {
 }
 
 fn main() {
-    // for i in 0..2 {
-    //     two_player_game(true);
-    // }
+    for i in 0..20 {
+        two_player_game(true);
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
@@ -153,7 +153,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    test();
+    // test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
