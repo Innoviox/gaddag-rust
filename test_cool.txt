@@ -1,0 +1,2882 @@
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: IOEXAIN H4 XENIA +40 40
+#note Time: 29
+>p2: AHSVANC G3 VAN +21 21
+#note Time: 92
+>p1: OIWSMLI F4 MOW +31 71
+#note Time: 99
+>p2: HSACOAE E5 HAO +31 52
+#note Time: 114
+>p1: ISLIPRE I3 PI +20 91
+#note Time: 131
+>p2: SCAEYGE 3I .ACEY +24 76
+#note Time: 85
+>p1: SLIREZT M1 ST.LIZER +71 162
+#note Time: 168
+>p2: SGESJGE 1K JE.SE +39 115
+#note Time: 87
+>p1: UIO?NDF L8 OUtFIND +75 237
+#note Time: 1691
+>p2: GSGWKLF 8K W..KS +36 151
+#note Time: 201
+>p1: TSOIBBA 15G ABBOTS +45 282
+#note Time: 430
+>p2: GGLFDRO 4L F.OG +30 181
+#note Time: 353
+>p1: IQDAAOL G7 QADI +49 331
+#note Time: 252
+>p2: GLDRAEE 14A REGALED +75 256
+#note Time: 373
+>p1: AOLECNN D8 ANCONE.L +74 405
+#note Time: 623
+>p2: UUTTREE A8 UTTERE. +24 280
+#note Time: 274
+>p1: VDIRNLM J2 D.MN +27 432
+#note Time: 299
+>p2: UR?AURE N8 .URU +10 290
+#note Time: 1475
+>p1: VIRLEPT 10D .IV.L +18 450
+#note Time: 346
+>p2: ?AREITY C2 dIETARY +75 365
+#note Time: 2443
+>p1: REPTGOO 14J PE.RO +40 490
+#note Time: 252
+>p2: HII 15N HI +20 385
+#note Time: 110
+>p1: TGO B1 TOG +13 503
+#note Time: 70
+>p1:  (I) +2 505
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TSSENET H3 TENSEST +66 66
+#note Time: 29
+>p2: EADDENE G7 DEE +17 17
+#note Time: 89
+>p1: ATGRWRI 5F RI.GTAW +22 88
+#note Time: 133
+>p2: ADNEPZP 4K ZAP +49 66
+#note Time: 139
+>p1: RROOALE 3L ROO +20 108
+#note Time: 121
+>p2: DNEPAMY O1 DEMY +48 114
+#note Time: 168
+>p1: RALEXNO I5 .OX +40 148
+#note Time: 185
+>p2: NPADMGN N2 M.P +43 157
+#note Time: 105
+>p1: RALENES 10A LEANERS +66 214
+#note Time: 178
+>p2: NADGNSJ C9 G.NJA +30 187
+#note Time: 144
+>p1: FICLIIO A8 FO.IC +39 253
+#note Time: 142
+>p2: DNSOYEI D12 OY +33 220
+#note Time: 273
+>p1: LIIAARB B4 LABIA +18 271
+#note Time: 164
+>p2: DNSEIHF 14A FEH +35 255
+#note Time: 192
+>p1: IRQVANH 15A AH +35 306
+#note Time: 143
+>p2: DNSICVI 2J VID +23 278
+#note Time: 91
+>p1: IRQVNIL C3 QI +24 330
+#note Time: 89
+>p2: NSCIR?U D1 CRINUmS +89 367
+#note Time: 791
+>p1: RVNILUU 6L LUV +23 353
+#note Time: 141
+>p2: UOEI?WO E10 .EW +25 392
+#note Time: 343
+>p1: RNIUADT 1A IRA.UND +30 383
+#note Time: 179
+>p2: UOI?OGR N6 .IGOROUs +63 455
+#note Time: 161
+>p1: TEOTIKN O12 TOKE +31 414
+#note Time: 208
+>p2: ELTBEA 8K BEL.A +27 482
+#note Time: 143
+>p1: TIN K8 .INT +12 426
+#note Time: 155
+>p1:  (TE) +4 430
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ELACUIU H3 ACULEI +22 22
+#note Time: 38
+>p2: DNSNAKQ 5G Q.ADS +30 30
+#note Time: 73
+>p1: UINEOON 4J IONONE +19 41
+#note Time: 104
+>p2: NNKETTY M2 KN.TTY +34 64
+#note Time: 88
+>p1: USCAAER F2 CAESURA +83 124
+#note Time: 257
+>p2: NELAUND 9A UNLADEN +70 134
+#note Time: 246
+>p1: IUOHER? B8 U.HEROIc +86 210
+#note Time: 2360
+>p2: EOWWEMM O1 WOW.E +33 167
+#note Time: 142
+>p1: FBTJEIE 4C JEF. +28 238
+#note Time: 154
+>p2: EMMONLG A8 M.ON +37 204
+#note Time: 204
+>p1: BTIEEIG 6C BEG.I.E +23 261
+#note Time: 136
+>p2: EMLGIAS L7 MILAGES +79 283
+#note Time: 275
+>p1: TISGIOO 15B .OGITOS +27 288
+#note Time: 267
+>p2: ?XRRTFR 13A F.X +26 309
+#note Time: 574
+>p1: IYOPRDA D8 P.RODY +47 335
+#note Time: 427
+>p2: ?RRTRBZ 10J TZ.R +15 324
+#note Time: 464
+>p1: IAPLDAE 13H PALI.ADE +74 409
+#note Time: 287
+>p2: ?RRBAIV O12 V.RB +39 363
+#note Time: 1123
+>p1: HETTVI 2A THETI. +22 431
+#note Time: 145
+>p2: ?RAI K10 .A +28 391
+#note Time: 533
+>p1: V 3F .V. +10 441
+#note Time: 102
+>p1:  (?RI) +4 445
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ZV?IGIE H6 ZIG +26 26
+#note Time: 155
+>p2: OTAASEV I4 OVA +17 17
+#note Time: 85
+>p1: V?IEXLA J6 XI +60 86
+#note Time: 976
+>p2: TASETOE H1 TEAT +18 35
+#note Time: 131
+>p1: V?ELAHA G7 HAVE +30 116
+#note Time: 908
+>p2: SOESNPT 4D POTS..NES +94 129
+#note Time: 230
+>p1: ?LACBUJ 10D BLU.JACk +76 192
+#note Time: 1107
+>p2: RBFOLTL 5K FORB +30 159
+#note Time: 175
+>p1: NWIAISE O1 WAINS +37 229
+#note Time: 288
+>p2: LTLQIGO I9 Q.T +22 181
+#note Time: 179
+>p1: IEIRKND E6 KIND.IER +76 305
+#note Time: 260
+>p2: LLIGOFN 2E LIF.LONG +66 247
+#note Time: 281
+>p1: UHORNCM 13D C.UMHORN +69 374
+#note Time: 274
+>p2: DLIEG?E N5 .EGIrDLE +67 314
+#note Time: 893
+>p1: OEUTEEW H12 W.EE +42 416
+#note Time: 190
+>p2: RMNOASD 15B MADRON.S +63 377
+#note Time: 305
+>p1: OUTEEDU 1A ETUDE +26 442
+#note Time: 172
+>p2: RAIITYR 8A TIYI. +27 404
+#note Time: 115
+>p1: OUEOEPA B1 .OUPEE +20 462
+#note Time: 174
+>p2: RARAY 14A RAYA +33 437
+#note Time: 120
+>p1: OA 6D O.A +9 471
+#note Time: 83
+>p1:  (R) +2 473
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: LIDEEAU H7 AUDILE +16 16
+#note Time: 43
+>p2: OOHQGSK 8G Q.OHOG +21 21
+#note Time: 70
+>p1: ENTRONI L3 NITRO.EN +68 84
+#note Time: 328
+>p2: SKWMVYO M8 SMOKY +46 67
+#note Time: 131
+>p1: EN?LNRU 5E UNLEaRN. +78 162
+#note Time: 1981
+>p2: WVEASEE H1 WEAV. +45 112
+#note Time: 158
+>p1: RTGOEOI N10 GIE +27 189
+#note Time: 289
+>p2: SEEUGIN 3B EUGENI.S +72 184
+#note Time: 266
+>p1: RTOOAAB O11 TABOO +38 227
+#note Time: 254
+>p2: RORIMLD B2 R.MORID +24 208
+#note Time: 225
+>p1: RAPLCVE A7 PERV +40 267
+#note Time: 368
+>p2: LTFAAEI 9G I.EA +27 235
+#note Time: 293
+>p1: ALCSXEU C6 EX +39 306
+#note Time: 277
+>p2: LTFAEJZ J8 ..J +29 264
+#note Time: 162
+>p1: ALCSUNO 12A LACUNOS. +72 378
+#note Time: 295
+>p2: LTFAEZY A12 .AZY +48 312
+#note Time: 245
+>p1: IPTATRS 14A .IT +24 402
+#note Time: 235
+>p2: LTFE?AD E8 FLAu.TED +72 384
+#note Time: 1504
+>p1: PATRSIT 15E .IPT +21 423
+#note Time: 304
+>p2: CAFEIHB M1 CHEF +33 417
+#note Time: 188
+>p1: ARSTWD N2 AW +26 449
+#note Time: 141
+>p2: AIB J7 B...I +17 434
+#note Time: 66
+>p1: RSTD C5 D.. +14 463
+#note Time: 152
+>p2: A C12 .A. +10 444
+#note Time: 97
+>p2:  (RST) +6 450
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: FEIULNR H6 FLU +12 12
+#note Time: 75
+>p2: VSEEDLR 9D DELVERS +73 73
+#note Time: 85
+>p1: EINRTRI 6H .ERRITIN +65 77
+#note Time: 157
+>p2: TOSGQLI 5N QI +24 97
+#note Time: 200
+>p1: UEXDTGL O1 EXUD..G +54 131
+#note Time: 143
+>p2: TOSGLOE 2M GO. +22 119
+#note Time: 231
+>p1: TLIIIDM 8A TIMID +34 165
+#note Time: 118
+>p2: TSLOEAM B4 LOAM.EST +64 183
+#note Time: 455
+>p1: LIBEDHS 10J HI +26 191
+#note Time: 266
+>p2: GTAHORY C10 HOAGY +31 214
+#note Time: 267
+>p1: LBEDSEU A1 LUBED +33 224
+#note Time: 232
+>p2: TRIAICR D11 TRIAC +35 249
+#note Time: 179
+>p1: SEEEKAN E11 EKE +33 257
+#note Time: 195
+>p2: IROTNVO 15D .OVIN +30 279
+#note Time: 222
+>p1: SEANPEW 14G PAWNEES +70 327
+#note Time: 277
+>p2: RTOAEZA 3K AZO +30 309
+#note Time: 298
+>p1: UNONANO 4I NONA +32 359
+#note Time: 131
+>p2: RTEAORB 2E ABORTER +70 379
+#note Time: 344
+>p1: UNOYIWJ 1G JOIN +52 411
+#note Time: 199
+>p2: ASFAT?C L8 CATFAc.S +88 467
+#note Time: 1008
+>p2:  (UYW?PE) +26 493
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: RIIKDFN H4 FIRKIN +34 34
+#note Time: 24
+>p2: OELEAMW 6D MOWE. +18 18
+#note Time: 121
+>p1: DEORUHA 5D UH +24 58
+#note Time: 211
+>p2: LEAUEUO 4C ALOE +24 42
+#note Time: 73
+>p1: DEORAN? 4H .ORElAND +76 134
+#note Time: 1302
+>p2: UEUEQNC K2 QU.UE +28 70
+#note Time: 91
+>p1: IATTPOB 3C TAB +29 163
+#note Time: 161
+>p2: ENCSBXN 6J X.BEC +38 108
+#note Time: 81
+>p1: ITPOOAI 3M POI +23 186
+#note Time: 123
+>p2: NSNTTFE O6 STENT +32 140
+#note Time: 83
+>p1: TOAIRNI 7J IRON +36 222
+#note Time: 225
+>p2: NFOLORS 2M OF +27 167
+#note Time: 147
+>p1: TAIUEAO N9 AUTO +12 234
+#note Time: 116
+>p2: NLORSVI 10F VISOR +32 199
+#note Time: 201
+>p1: IEADERA O12 IDEA +21 255
+#note Time: 184
+>p2: NLTGIGY L6 ..GY +12 211
+#note Time: 121
+>p1: ERANIDG 15H GARDENI. +83 338
+#note Time: 355
+>p2: NLTIGWH I13 WH. +13 224
+#note Time: 172
+>p1: TERYCJ? 3I JE. +37 375
+#note Time: 1049
+>p2: NLTIGIA J14 A. +11 235
+#note Time: 236
+>p1: TRYC?AE 8B ApYRET.C +66 441
+#note Time: 1939
+>p2: NLTIGIA C8 .LAITING +68 303
+#note Time: 322
+>p1: DESPSML 14L DEM. +27 468
+#note Time: 245
+>p2: ZVEL 10B Z. +31 334
+#note Time: 87
+>p1: SPSL 10B ..P +14 482
+#note Time: 121
+>p2: VEL 15A VE. +21 355
+#note Time: 144
+>p1: SSL 10F .....S +9 491
+#note Time: 73
+>p2: L B7 L. +2 357
+#note Time: 159
+>p2:  (SL) +4 361
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: NCNAAUA H4 CANNA +20 20
+#note Time: 15
+>p2: WEAEITB 5G B.WTIE +22 22
+#note Time: 109
+>p1: UAKAINL G5 .AULK +24 44
+#note Time: 144
+>p2: AEAHSFC 4L HAAF +38 60
+#note Time: 131
+>p1: AINERPD O1 PAN.RIED +176 220
+#note Time: 283
+>p2: ESCSJDE 6F J..E +32 92
+#note Time: 90
+>p1: ONLQLTE 6N Q. +31 251
+#note Time: 128
+>p2: SCSDEIR M3 D.S +20 112
+#note Time: 177
+>p1: ONLLTEU N1 OLE. +20 271
+#note Time: 181
+>p2: CSEIROX I8 XI +20 132
+#note Time: 213
+>p1: NLTUDII 7K NUDI. +19 290
+#note Time: 156
+>p2: CSEROEI 4H .EE +13 145
+#note Time: 217
+>p1: LTIAYTE 10C LAITY +25 315
+#note Time: 158
+>p2: CSROIO? C7 COu.OIRS +74 219
+#note Time: 1651
+>p1: TEGSVAT 8A ST.VE +36 351
+#note Time: 215
+>p2: EOEOOMR B12 MOO +20 239
+#note Time: 146
+>p1: GAT?IBU J9 TABUInG +63 414
+#note Time: 1375
+>p2: EEORISW M7 .OWERIES +82 321
+#note Time: 297
+>p1: GGDTEZE D12 GEEZ +66 480
+#note Time: 203
+>p2: NHRUMNP 15H PU.H +30 351
+#note Time: 158
+>p1: GDTAYRL A13 DRY +30 510
+#note Time: 238
+>p2: NRMNVIO K10 MON +24 375
+#note Time: 175
+>p1: GTALEFR 1H TERAFL.. +51 561
+#note Time: 342
+>p2: RNVITO A4 VINO. +12 387
+#note Time: 167
+>p1: G 12B ...G +8 569
+#note Time: 63
+>p1:  (RT) +4 573
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TFGYORE H4 FOGEY +32 32
+#note Time: 45
+>p2: ?SIDDNN 6A SNeDDIN. +64 64
+#note Time: 458
+>p1: TRLXMGE C3 REM.X +42 74
+#note Time: 125
+>p2: OPEONEC A2 POCO.EN +42 106
+#note Time: 137
+>p1: TLGLURN 4C .NGUL. +20 94
+#note Time: 70
+>p2: EII?LVE D6 .IVE +21 127
+#note Time: 251
+>p1: TLRAALR 10B LAR +14 108
+#note Time: 67
+>p2: I?LEUNP 11D sPINULE +75 202
+#note Time: 339
+>p1: TALRTUF J5 AFLUTT.R +71 179
+#note Time: 149
+>p2: OCEIIJE 12C JEE +44 246
+#note Time: 124
+>p1: IIDATHE 12H HI.ED +37 216
+#note Time: 143
+>p2: OCIITSA C12 .IAO +22 268
+#note Time: 200
+>p1: IATQIOE 10F QI +64 280
+#note Time: 144
+>p2: CITSWNO 14B W.INSCOT +80 348
+#note Time: 215
+>p1: ATIOEIR I8 OI +12 292
+#note Time: 249
+>p2: SAOGRVU 15H SAVOUR +38 386
+#note Time: 188
+>p1: ATEIRAT 12B A... +11 303
+#note Time: 169
+>p2: GZARYME N12 MAZY +49 435
+#note Time: 193
+>p1: TEIRATA O6 ARIETTA +79 382
+#note Time: 182
+>p2: GREKEHA N2 GREEK +56 491
+#note Time: 186
+>p1: OTBESDW 15A WO.D +40 422
+#note Time: 217
+>p2: HAB K3 BAH +26 517
+#note Time: 93
+>p2:  (TBES) +12 529
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: WKRYAIA H7 AIRWAY +32 32
+#note Time: 28
+>p2: SXENLOD I5 LOX +35 35
+#note Time: 186
+>p1: KYOAENO J3 OKAY +34 66
+#note Time: 129
+>p2: SENDVON 13C DOVENS +35 70
+#note Time: 207
+>p1: ENOEBR? G1 dEBONER +73 139
+#note Time: 2250
+>p2: NSIGATI 11E IGN.TIAS +86 156
+#note Time: 307
+>p1: HEUITIN F5 UH +28 167
+#note Time: 288
+>p2: AROLNET 2J TALON +28 184
+#note Time: 491
+>p1: EITINPA 9A PAINTIE. +62 229
+#note Time: 336
+>p2: REONCPU L4 POUNCER. +80 264
+#note Time: 435
+>p1: IROMJEG 1M JOG +44 273
+#note Time: 305
+>p2: DR?ELSA A8 S.AnDREL +158 422
+#note Time: 2776
+>p1: IRMESEO 1A EMEROI.S +140 413
+#note Time: 293
+>p2: MEGUIII 3M GEM +37 459
+#note Time: 117
+>p1: QFLERHC J10 Q. +31 444
+#note Time: 131
+>p2: UIIIATV J10 ..VIUT +20 479
+#note Time: 140
+>p1: FLERHCD 15G FLE.CH +54 498
+#note Time: 267
+>p2: IIAFATW E3 WAFT +38 517
+#note Time: 154
+>p1: RDUEBET 8L .UBE +24 522
+#note Time: 178
+>p2: IIAZD 4A ZAID. +50 567
+#note Time: 136
+>p1: RDET 2A TED +21 543
+#note Time: 153
+>p2: I 4J .I. +9 576
+#note Time: 75
+>p2:  (R) +2 578
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: AULLYKI H6 YUK +20 20
+#note Time: 26
+>p2: NTADQNR 7G Q.ANT +25 25
+#note Time: 51
+>p1: ALLIII? L4 ILIA +23 43
+#note Time: 490
+>p2: DNRASUT 9B TUNDRAS +71 96
+#note Time: 213
+>p1: LI?S?IH E4 ceILI.HS +90 133
+#note Time: 5703
+>p2: EOCETAA 8K ACETA +42 138
+#note Time: 178
+>p1: STUELAE 8G U.E +21 154
+#note Time: 304
+>p2: OEZALRG B6 ZLO.E +36 174
+#note Time: 313
+>p1: STLAEPR O1 PALESTR. +83 237
+#note Time: 461
+>p2: ARGHJDO F11 HADJ +36 210
+#note Time: 190
+>p1: EIOEFTN 15D FEINT +52 289
+#note Time: 255
+>p2: RGOSBWE A10 BOWSER +49 259
+#note Time: 271
+>p1: OEBNXPO 8A B.X +45 334
+#note Time: 178
+>p2: GVEWDAM N2 MAW +31 290
+#note Time: 196
+>p1: OENPOOA 14C POO.A +23 357
+#note Time: 152
+>p2: GVEDDIR 11E ..RIVED +28 318
+#note Time: 194
+>p1: ENOETIR N8 .ENORITE +70 427
+#note Time: 352
+>p2: GDGNROE 15J NOGG.D +33 351
+#note Time: 307
+>p1: OFECIMO 10J FOO +30 457
+#note Time: 224
+>p2: REVIYNG 12L VE.Y +28 379
+#note Time: 282
+>p1: ECIMUE 4C CE.UM +16 473
+#note Time: 180
+>p2: RING 12A .ING +16 395
+#note Time: 118
+>p1: IE K10 ..E +15 488
+#note Time: 113
+>p2: R J10 ..R +18 413
+#note Time: 134
+>p2:  (I) +2 415
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: IETLUOE H4 OUTLIE +14 14
+#note Time: 41
+>p2: ETAANHN I5 NEATH +31 31
+#note Time: 114
+>p1: EYEAAIU G8 AYE +26 40
+#note Time: 58
+>p2: AN?ODZA 6E AZO..D +40 71
+#note Time: 752
+>p1: EAIU?GD 11A GAUDIEs +72 112
+#note Time: 1629
+>p2: N?AROON A9 OR.ANON +27 98
+#note Time: 1250
+>p1: TPOFWOC F10 F.W +30 142
+#note Time: 118
+>p2: ?OUISIR D11 .UI +8 106
+#note Time: 1480
+>p1: TPOOCNT B11 .TOP +24 166
+#note Time: 121
+>p2: ?OSIRIR J4 RI. +7 113
+#note Time: 1009
+>p1: OCNTUHW H11 TOUCH +42 208
+#note Time: 167
+>p2: ?OSIRTR 15H .eRITORS +83 196
+#note Time: 1694
+>p1: NWEABRE N10 BRAWE. +34 242
+#note Time: 327
+>p2: RPDGSQL 13G S.Q +23 219
+#note Time: 131
+>p1: NEAMECB O5 BECAME +40 282
+#note Time: 286
+>p2: RPDGLEJ 5G J...PER +41 260
+#note Time: 210
+>p1: NGEIKXE 7C KEX +28 310
+#note Time: 246
+>p2: DGLASAF M12 FAD. +34 294
+#note Time: 198
+>p1: NGIEENI 8B NINE +24 334
+#note Time: 165
+>p2: GLSAEYD O12 GAY. +32 326
+#note Time: 303
+>p1: GEIILTL 5A LEGIT +34 368
+#note Time: 157
+>p2: LSEDVOI 3I VIDEO +31 357
+#note Time: 312
+>p1: ILSNVM B2 VIM.N +24 392
+#note Time: 148
+>p2: LS 13G ...S +13 370
+#note Time: 68
+>p1: LS E5 ....S +12 404
+#note Time: 87
+>p2: L D4 L. +4 374
+#note Time: 109
+>p2:  (L) +2 376
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: GZRELAB H4 ZEBRA +52 52
+#note Time: 60
+>p2: EFOFN?A I1 OFFA +25 25
+#note Time: 977
+>p1: GLOAERE I6 AEROGEL +69 121
+#note Time: 192
+>p2: EN?ONXE J3 EXON +44 69
+#note Time: 1019
+>p1: UANCTHA 11E CHAT.AU +48 169
+#note Time: 193
+>p2: ?NEDIAC 1H C.mEDIAN +158 227
+#note Time: 3398
+>p1: NPMORDH 12K MORPH +36 205
+#note Time: 157
+>p2: EVEWIPE O11 W.EEP +39 266
+#note Time: 129
+>p1: NDWIELA N12 .AW +28 233
+#note Time: 448
+>p2: VIEJERI M7 JIVIE. +28 294
+#note Time: 131
+>p1: NDIELLO 8L D.OL +21 254
+#note Time: 374
+>p2: ERSREMI 5A MISERER. +70 364
+#note Time: 254
+>p1: NIELTIS 13D LINIEST +69 323
+#note Time: 399
+>p2: TEBU?IN A1 BITU.ENs +158 522
+#note Time: 2910
+>p1: INOGYNQ C3 QI. +24 347
+#note Time: 155
+>p2: SYOATDK 10F STA.Y +43 565
+#note Time: 244
+>p1: NOGYNTT 2K TONY +31 378
+#note Time: 179
+>p2: ODKOVLD F2 VOL.D +21 586
+#note Time: 96
+>p1: GNTIUSR L1 ..UT +10 388
+#note Time: 252
+>p2: KODAUG 14A KUDO +20 606
+#note Time: 127
+>p1: GNISR A11 GIN.S +33 421
+#note Time: 146
+>p2: AG 15C AG +14 620
+#note Time: 85
+>p2:  (R) +2 622
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: DOPDOIT H5 POOD +14 14
+#note Time: 24
+>p2: UPOGSIL G4 GULP +23 23
+#note Time: 153
+>p1: DITGSIO I7 DOIT +19 33
+#note Time: 92
+>p2: OSIEREN 10B ONERIES. +62 85
+#note Time: 205
+>p1: GSIMUOE C8 GO.IUM +20 53
+#note Time: 249
+>p2: EVADEIQ 12A EQ.ID +32 117
+#note Time: 123
+>p1: SEHYIFM 11G FISHY +41 94
+#note Time: 158
+>p2: VAETJLL H10 ..LVAE +30 147
+#note Time: 145
+>p1: EMEEYIE E10 .E.EYE +20 114
+#note Time: 110
+>p2: TJLTRT? 15A TRiJ.T +60 207
+#note Time: 384
+>p1: MIEIUBN 8A BE.UM +33 147
+#note Time: 174
+>p2: LTEFWSI 14G W.IF +18 225
+#note Time: 245
+>p1: IINN?AC K4 CANINIt. +74 221
+#note Time: 1087
+>p2: LTESNCV 5J V.C +8 233
+#note Time: 249
+>p1: AALXNEA E5 EXA. +26 247
+#note Time: 108
+>p2: LTESNHE D4 THE +26 259
+#note Time: 176
+>p1: ALNAKWA B4 AWAK. +14 261
+#note Time: 97
+>p2: LSNEZOR A2 REZ +43 302
+#note Time: 159
+>p1: LNASDUE L5 .UD +11 272
+#note Time: 127
+>p2: LSNOAOR 13G A.O +17 319
+#note Time: 116
+>p1: LNASEAT M7 SEALANT +73 345
+#note Time: 159
+>p2: LSNORRO N9 LOR +13 332
+#note Time: 173
+>p1: NABTRIG O8 GARB +32 377
+#note Time: 181
+>p2: SNRO 9F OR +12 344
+#note Time: 80
+>p1: NTI 13A NI. +18 395
+#note Time: 97
+>p2: SN 12A .....S +16 360
+#note Time: 93
+>p1: T A11 T.. +3 398
+#note Time: 130
+>p1:  (N) +2 400
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EI?OLDA H6 IsOLEAD +68 68
+#note Time: 800
+>p2: L?ISZDN 11E LIZ.rDS +64 64
+#note Time: 1104
+>p1: ADAVETJ 10B JAVA +32 100
+#note Time: 133
+>p2: NSFKIRN 12A FINKS +35 99
+#note Time: 132
+>p1: DETEPAG G6 GAPE +21 121
+#note Time: 181
+>p2: RNGREIQ -RQ +0 99
+#note Time: 143
+>p1: DTEOECI J8 COE.ITED +66 187
+#note Time: 208
+>p2: NGREIRR 15D REGRIN. +30 129
+#note Time: 183
+>p1: UHXUSVY 8G ..U.HY +20 207
+#note Time: 96
+>p2: RIISTWO A12 .ROW +30 159
+#note Time: 281
+>p1: XUSVNNW -XUVNW +0 207
+#note Time: 79
+>p2: IISTFNA K1 FAINTIS. +78 237
+#note Time: 236
+>p1: SNELTRE 3F REENL.ST +70 277
+#note Time: 327
+>p2: EVRWMEE 2B WEEVER +34 271
+#note Time: 149
+>p1: NODEGNO 1A GOON +28 305
+#note Time: 175
+>p2: MXHOROI 1F HOMO +36 307
+#note Time: 113
+>p1: DENAQCI 6J Q. +31 336
+#note Time: 199
+>p2: XRITTYT 1K .RITT +27 334
+#note Time: 99
+>p1: DENACIA G11 .A +14 350
+#note Time: 197
+>p2: XYTMUEA 13F EX +44 378
+#note Time: 182
+>p1: DENCIAB 4D CAB +23 373
+#note Time: 285
+>p2: YTMUAOU 5E MY +35 413
+#note Time: 139
+>p1: DENIBUP 6B BEDU +18 391
+#note Time: 166
+>p2: TUAOUAL 5B ATO.. +22 435
+#note Time: 143
+>p1: NIP 14H PI. +11 402
+#note Time: 100
+>p2: UUAL 7K .AU +9 444
+#note Time: 105
+>p1: N F13 .N. +6 408
+#note Time: 92
+>p1:  (UL) +4 412
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TAFVCGE H4 FACET +28 28
+#note Time: 29
+>p2: IZONASC 6H .OZ +34 34
+#note Time: 144
+>p1: VGUAEEV 9D VAGUE +21 49
+#note Time: 60
+>p2: INASCON 7A CANONIS. +62 96
+#note Time: 205
+>p1: EVWKMTE A7 .WM +30 79
+#note Time: 111
+>p2: E?ITOED 8H .OIlETED +77 173
+#note Time: 1407
+>p1: EVKTEOR B9 EVOKER +46 125
+#note Time: 262
+>p2: OTEAEEO 12A A.EE +18 191
+#note Time: 123
+>p1: TDANXIJ 6D TAX +55 180
+#note Time: 199
+>p2: OTEOIBI M3 BIOTI.E +22 213
+#note Time: 147
+>p1: DNIJDIN N1 DJINNI +44 224
+#note Time: 118
+>p2: OTRIMAU 1K AMI.O +33 246
+#note Time: 332
+>p1: DLRU?IG 4C DIRGe.UL +74 298
+#note Time: 1473
+>p2: TRUENHL 13D LUTHERN +67 313
+#note Time: 240
+>p1: LYARYBW A12 .WAY +37 335
+#note Time: 214
+>p2: RHDSELR H12 H.RD +36 349
+#note Time: 137
+>p1: LRYBNEO K5 BYR. +34 369
+#note Time: 267
+>p2: SELRIPS O8 .RIPLESS +86 435
+#note Time: 236
+>p1: LNEOUTP 2E OPULENT +69 438
+#note Time: 313
+>p1:  (QAFAOSG) +40 478
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: VZARRUD H7 ADZ +26 26
+#note Time: 17
+>p2: EAQESDL I7 DEAL +28 28
+#note Time: 81
+>p1: VRRUOFE G1 FERVOUR +70 96
+#note Time: 96
+>p2: QESYNOI F1 OY +31 59
+#note Time: 161
+>p1: MPAIENT 5E PT.MAINE +98 194
+#note Time: 270
+>p2: QESNIIR 4J QI +24 83
+#note Time: 155
+>p1: XD?RJCS L4 S.X +44 238
+#note Time: 402
+>p2: ESNIRUU 6L .U +9 92
+#note Time: 159
+>p1: D?RJCSG K2 DJ.. +12 250
+#note Time: 410
+>p2: ESNIRUG E5 .ERUSING +72 164
+#note Time: 248
+>p1: ?RCSGIN J9 SaCRING +74 324
+#note Time: 1062
+>p2: OORIAIH D9 OHIA +29 193
+#note Time: 172
+>p1: NKOANOU 12H KO.UNA +30 354
+#note Time: 156
+>p2: ORIEHTD C3 THEROID +84 277
+#note Time: 371
+>p1: NO?VSBW 1D WO..S +45 399
+#note Time: 847
+>p2: EATTLEB 15H BE.AT +27 304
+#note Time: 153
+>p1: N?VBEAG M9 VEG.N +26 425
+#note Time: 969
+>p2: TLEIOTA B3 IOTA +19 323
+#note Time: 217
+>p1: ?BAEELC A6 BELACEd +85 510
+#note Time: 776
+>p2: LETPINO A1 LIPO +33 356
+#note Time: 221
+>p1: FMRALIE F9 AM +29 539
+#note Time: 159
+>p2: ETNWEYT C11 WYTE +33 389
+#note Time: 148
+>p1: FRLIE B13 IF +22 561
+#note Time: 141
+>p2: NET 10H E..N +17 406
+#note Time: 86
+>p1: RLE L4 ...ER +13 574
+#note Time: 152
+>p2: T F8 T.. +7 413
+#note Time: 126
+>p2:  (L) +2 415
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: VSIXNEA H4 VIXEN +38 38
+#note Time: 52
+>p2: IDMETST 5E TIM.DEST +94 94
+#note Time: 125
+>p1: SAAEWRO G5 .AW +30 68
+#note Time: 187
+>p2: BOIIM?I 6J MOI +25 119
+#note Time: 529
+>p1: SAEROLU 8H .EUROSAL +77 145
+#note Time: 230
+>p2: BI?IOPH 9L PHI +27 146
+#note Time: 864
+>p1: ONOSDWC 9E DOWS +28 173
+#note Time: 126
+>p2: B?IOLRE O1 OvERBIL. +80 226
+#note Time: 2233
+>p1: NOCHPEY 8A PHONEY +53 226
+#note Time: 224
+>p2: OGOCGOF F3 CO.F +38 264
+#note Time: 108
+>p1: CRNDNEU M8 ..UNNED +22 248
+#note Time: 193
+>p2: GOGOSUT 3K GOUG. +14 278
+#note Time: 190
+>p1: CRT?NAB C7 C.RyBANT +80 328
+#note Time: 1958
+>p2: OSTAQYL 2J QAT +37 315
+#note Time: 263
+>p1: ALEEERR A6 RE.EALER +61 389
+#note Time: 134
+>p2: OSYLTER J8 .ROSTYLE +65 380
+#note Time: 325
+>p1: IGKIFAA 15F FAKI. +36 425
+#note Time: 202
+>p2: ZIUITDE 11C .IZ +28 408
+#note Time: 194
+>p1: GIANVJA 13G JIV. +29 454
+#note Time: 207
+>p2: UITDEAE 14B E.UDE +23 431
+#note Time: 262
+>p1: GANA 11C ...NAGA. +20 474
+#note Time: 151
+>p1:  (ITA) +6 480
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: DJQMGAD -JQGD +0 0
+#note Time: 11
+>p2: OIOPOEN H4 OPINE +16 16
+#note Time: 24
+>p1: MADOTEE 7H .EMATODE +63 63
+#note Time: 141
+>p2: OOTEAKI J5 OO.IAK +24 40
+#note Time: 161
+>p1: UEVOAYW O4 WAV.Y +54 117
+#note Time: 152
+>p2: TEGIRDN H4 .....D +9 49
+#note Time: 323
+>p1: UEOGECA N7 .OUCE +19 136
+#note Time: 160
+>p2: TEGIRNH O11 THING +41 90
+#note Time: 332
+>p1: GEAPHSG 11E PHAGES +37 173
+#note Time: 206
+>p2: ERAYOS? L2 fORES.AY +72 162
+#note Time: 4755
+>p1: GIMRNUL E8 RUM.LING +63 236
+#note Time: 353
+>p2: UBLIZER F2 BRULZIE +96 258
+#note Time: 374
+>p1: FEJFUA? H11 .AFFE +39 275
+#note Time: 1221
+>p2: INIRAVN 12A VINA. +24 282
+#note Time: 216
+>p1: JU?TBLE M11 JUBE +36 311
+#note Time: 1970
+>p2: IRNTSQR 11B QI +24 306
+#note Time: 185
+>p1: ?TLDTLR 3K D.LT +10 321
+#note Time: 656
+>p2: RNTSREO K3 .OR +16 322
+#note Time: 320
+>p1: ?TLRSAD 15A STRA.gL.D +83 404
+#note Time: 2147
+>p2: NTSRECE 8A CENT.. +27 349
+#note Time: 282
+>p1: OEIITAW C7 I.TW..E +24 428
+#note Time: 247
+>p2: SRENX I11 .X +18 367
+#note Time: 221
+>p1: OIA G13 OI. +15 443
+#note Time: 195
+>p2: SREN F2 .......S +21 388
+#note Time: 192
+>p1: A F14 A. +12 455
+#note Time: 207
+>p1:  (REN) +6 461
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: BONEEOY H8 BONEY +28 28
+#note Time: 32
+>p2: LIA?NET 8H .IdENTAL +80 80
+#note Time: 3519
+>p1: EOEAFRM L4 FORE.AME +76 104
+#note Time: 296
+>p2: IAOILTN J8 .ILATION +61 141
+#note Time: 434
+>p1: NTJBZOE 13I Z.BET +52 156
+#note Time: 420
+>p2: UQLTEAD 15G QUA.TED +54 195
+#note Time: 309
+>p1: NJOTAII G9 JIAO +45 201
+#note Time: 249
+>p2: LDG?AWK 5K G.WK +24 219
+#note Time: 1357
+>p1: NTIXRSA K10 AX +43 244
+#note Time: 325
+>p2: LD?ADRG M8 .RAD +27 246
+#note Time: 1448
+>p1: NTIRSAR M3 RA. +17 261
+#note Time: 384
+>p2: L?DGPSO 2I SPLODGe +90 336
+#note Time: 1606
+>p1: NTISROU J1 U. +4 265
+#note Time: 529
+>p2: DHAIEVE N13 HE +30 366
+#note Time: 183
+>p1: NTISROC O11 ROSTI +41 306
+#note Time: 429
+>p2: DAIVEEG O1 V.GA +24 390
+#note Time: 199
+>p1: NCRPINW 6J PI.N +24 330
+#note Time: 110
+>p2: DIEEUFR 1H FE.ED +42 432
+#note Time: 234
+>p1: CRNWELI 10F W.. +14 344
+#note Time: 234
+>p2: IURSICU -UIU +0 432
+#note Time: 161
+>p1: CRNELIO 14H NO. +17 361
+#note Time: 452
+>p2: RSICVTO 3C VICTORS +82 514
+#note Time: 290
+>p1: CRELIEU F1 RE.ICULE +64 425
+#note Time: 243
+>p2: YMNIEUS B2 MEINY +49 563
+#note Time: 307
+>p1: H G2 H. +10 435
+#note Time: 84
+>p1:  (US) +4 439
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TAAFEEN H4 FAENA +24 24
+#note Time: 28
+>p2: IARCGRT I5 TRAGIC +21 21
+#note Time: 139
+>p1: TEATAII G3 AIT +12 36
+#note Time: 78
+>p2: RSIELBH 10F BIR.H +26 47
+#note Time: 182
+>p1: ETAIGS? 11C InGATES +82 118
+#note Time: 2918
+>p2: SELEDEZ J2 ZEES +37 84
+#note Time: 137
+>p1: ROAAIDN 2J .AIDA +30 148
+#note Time: 301
+>p2: LDENNUX 1L XED +42 126
+#note Time: 172
+>p1: RON?IND 2A DRONINg +71 219
+#note Time: 1984
+>p2: LNNUVRH 3C HUN +26 152
+#note Time: 114
+>p1: ILWRPIS 3I P.WS +27 246
+#note Time: 152
+>p2: LNVRIKM H10 ..LINK +33 185
+#note Time: 145
+>p1: ILRIOMO A1 I.IOM +27 273
+#note Time: 243
+>p2: VRMAGUO C10 V.GOUR +20 205
+#note Time: 286
+>p1: LROCERU 15A CU.LER +27 300
+#note Time: 245
+>p2: MATEAFT B5 AFT +18 223
+#note Time: 177
+>p1: OROJYOO 5A ..JOR +28 328
+#note Time: 83
+>p2: MEATDLO D11 .OM +18 241
+#note Time: 249
+>p1: OYOOBEY 6B .OY +23 351
+#note Time: 137
+>p2: EATDLEL A7 ELATED +29 270
+#note Time: 136
+>p1: OOBEYEE 9E YOB +24 375
+#note Time: 127
+>p2: LENUTQP 13G P.QUET +30 300
+#note Time: 176
+>p1: OEEESWV M10 VOWS +56 431
+#note Time: 191
+>p2: LN K2 ..L +8 308
+#note Time: 137
+>p1: EEE 12L E.E +16 447
+#note Time: 57
+>p2: N B14 N. +8 316
+#note Time: 134
+>p2:  (E) +2 318
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EUBRWXA H8 BEAUX +44 44
+#note Time: 43
+>p2: LAARPNG 11E ANG.LAR +32 32
+#note Time: 148
+>p1: RWIJAON 12A JOWAR +48 92
+#note Time: 236
+>p2: PIFMDRN A12 .IMP +45 77
+#note Time: 165
+>p1: INRDOEI B14 OI +16 108
+#note Time: 320
+>p2: FDRNAEG 10J FAG +30 107
+#note Time: 341
+>p1: NRDEISN M4 DINNERS +68 176
+#note Time: 304
+>p2: DRNETBU 8L B.DU +30 137
+#note Time: 526
+>p1: YPEETWO L1 YOWE +34 210
+#note Time: 242
+>p2: RNETDEE I3 ENTERED +71 208
+#note Time: 254
+>p1: PET?CTR 2D PRoTECT +73 283
+#note Time: 2116
+>p2: LUTCLTZ 1L .UTZ +48 256
+#note Time: 139
+>p1: VQNEKIR 3C QI +26 309
+#note Time: 199
+>p2: LCLTSOV H1 V.TO +29 285
+#note Time: 175
+>p1: VNEKRSI 4A VEIN +43 352
+#note Time: 343
+>p2: LCLSILO F6 COLLI.S +33 318
+#note Time: 188
+>p1: KRSIGFE 12K KIF +27 379
+#note Time: 322
+>p2: LTHAHYS C11 H.YL +31 349
+#note Time: 208
+>p1: RSGEUDI I11 .UG +15 394
+#note Time: 272
+>p2: TAHSMEI 14F ATHEISM +71 420
+#note Time: 427
+>p1: RSEDINE 15D DENIERS +107 501
+#note Time: 387
+>p2: AEO?AOO O1 .OEA +14 434
+#note Time: 606
+>p1: A M12 .A +10 511
+#note Time: 71
+>p1:  (?AOO) +6 517
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: OTREVWR H4 VOWER +30 30
+#note Time: 54
+>p2: LYQIIIG 4H .IGIL +18 18
+#note Time: 50
+>p1: TRKNUFT K3 F.NK +22 52
+#note Time: 92
+>p2: YQIOZOU G7 OOZY +32 50
+#note Time: 69
+>p1: TRUTSFI 9D FUT. +16 68
+#note Time: 202
+>p2: QIUOEDG D9 .IQUE +34 84
+#note Time: 161
+>p1: RTSIHRI 14B RISHI +38 106
+#note Time: 146
+>p2: ODGEOIR J2 GO.O +17 101
+#note Time: 266
+>p1: TRVTONA 13A VOT. +20 126
+#note Time: 206
+>p2: DEIRNOE E9 .NI +30 131
+#note Time: 335
+>p1: RTNADEA 3G DA +17 143
+#note Time: 313
+>p2: DEROEJR F2 JO +29 160
+#note Time: 126
+>p1: RTNEAUN 4A NATURE +24 167
+#note Time: 258
+>p2: DERERDU A1 DUR.EDER +140 300
+#note Time: 125
+>p1: NYHTECL 15E ETHYL +40 207
+#note Time: 169
+>p2: ONE?DC? 14I ECDysON +80 380
+#note Time: 4821
+>p1: NCIAAEA O10 ENCI.A +33 240
+#note Time: 230
+>p2: AILPETM M8 PALMIE.T +74 454
+#note Time: 529
+>p1: AAEBXSA 8L A.EX +42 282
+#note Time: 235
+>p2: TASGNEW N14 .W +11 465
+#note Time: 408
+>p1: ABSAPRS 15A BAP +29 311
+#note Time: 276
+>p2: TASGNEA L11 AG +16 481
+#note Time: 322
+>p1: SARSMBL M1 BAMS +26 337
+#note Time: 250
+>p2: TSNEAEI O7 E. +9 490
+#note Time: 341
+>p1: RSL O6 L.. +10 347
+#note Time: 64
+>p2: TSNAEI O5 I... +11 501
+#note Time: 315
+>p1: RS 11K R.. +10 357
+#note Time: 103
+>p2: TSNAE 5A .NATES +33 534
+#note Time: 305
+>p2:  (S) +2 536
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EUEENTR H3 NEUTER +14 14
+#note Time: 51
+>p2: DUOYNFV G7 FONDU +25 25
+#note Time: 123
+>p1: EVDADMT I7 DEV +25 39
+#note Time: 183
+>p2: YVOEGDG 12D GYVED +40 65
+#note Time: 135
+>p1: ADMTSYE 11C YAM +33 72
+#note Time: 348
+>p2: OGBTWIO 10B BOW +26 91
+#note Time: 171
+>p1: DTSELOH 4B HOSTEL.D +74 146
+#note Time: 262
+>p2: GTIOAAB 3B OBIA +29 120
+#note Time: 167
+>p1: TUIAESI 10G .UI +12 158
+#note Time: 175
+>p2: GTAH?OC B2 C..OG +30 150
+#note Time: 1179
+>p1: TAESIGP A5 PAGE +28 186
+#note Time: 217
+>p2: TAH?AON 9B AH +26 176
+#note Time: 723
+>p1: TSIMENJ H12 .JIN +36 222
+#note Time: 131
+>p2: T?AONCA 14B CONTAg.A +72 248
+#note Time: 924
+>p1: TSMEUEA 2E EMU +14 236
+#note Time: 208
+>p2: SLITT?R 11I LITTeRS +71 319
+#note Time: 514
+>p1: TSEAWEI N8 WEA.IEST +76 312
+#note Time: 327
+>p2: IIRLQEI O6 LIER +29 348
+#note Time: 173
+>p1: ZARFONS 13J FROZ. +34 346
+#note Time: 250
+>p2: IQIALEX 15K AXI.E +60 408
+#note Time: 232
+>p1: ANSERNP 1D SPANNER +92 438
+#note Time: 283
+>p1:  (QILKIRO) +40 478
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: CKNDHEY H4 KENCH +38 38
+#note Time: 26
+>p2: PYREVIE 6F PI.EY +24 24
+#note Time: 105
+>p1: DYTASOO 5E SOO.Y +27 65
+#note Time: 129
+>p2: RVEEEBI 4H .EEVE +30 54
+#note Time: 92
+>p1: DTAUR?D 3L DUD +13 78
+#note Time: 990
+>p2: RBIOTET 4C OBIT +19 73
+#note Time: 208
+>p1: TAR?SIU 8H .AIRcUTS +80 158
+#note Time: 1389
+>p2: RETUWAL 3C WAT +29 102
+#note Time: 236
+>p1: HRQDAMM N6 QA. +32 190
+#note Time: 139
+>p2: REULNI? O6 IN.ULtER +71 173
+#note Time: 1462
+>p1: HRDMMEZ 12L MEZ. +30 220
+#note Time: 114
+>p2: SPRNING M7 P.N +17 190
+#note Time: 140
+>p1: HRDMOEN 13I HOMED +40 260
+#note Time: 250
+>p2: SRINGAU I12 U. +5 195
+#note Time: 322
+>p1: RNIBDRN 14J RIN +18 278
+#note Time: 102
+>p2: SRINGAW 10M AW. +20 215
+#note Time: 265
+>p1: BDRNIOF 15G FORB +32 310
+#note Time: 203
+>p2: SRINGVG 14F VIG +23 238
+#note Time: 190
+>p1: DNIFGET 15L DEFT +39 349
+#note Time: 230
+>p2: SRNGOAA 11J GOA +16 254
+#note Time: 221
+>p1: NIGEOCT M12 ..G. +11 360
+#note Time: 333
+>p2: SRNALLI 2M NIL +14 268
+#note Time: 220
+>p1: NIEOCTA O1 A.EC +33 393
+#note Time: 424
+>p2: SRALXET H10 LAX +35 303
+#note Time: 269
+>p1: NIOTRAA 10A NOTARIA. +62 455
+#note Time: 354
+>p2: SRETJOL J2 JO. +26 329
+#note Time: 407
+>p1: SEI N10 .I. +16 471
+#note Time: 97
+>p2: SRETL N1 L.. +6 335
+#note Time: 178
+>p1: SE M2 ..S +16 487
+#note Time: 44
+>p2: SRET C3 ..T +6 341
+#note Time: 105
+>p1: E F4 ...E +6 493
+#note Time: 59
+>p1:  (SRE) +6 499
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: RRIWITV H5 WRIT +14 14
+#note Time: 16
+>p2: ELITUEF I7 FEU +22 22
+#note Time: 136
+>p1: RIVTDOM 10F VOID +24 38
+#note Time: 132
+>p2: LITENEH 5H .HILE +22 44
+#note Time: 195
+>p1: RTMFWII 6J FIRM +34 72
+#note Time: 124
+>p2: TNEMCTA H10 .NMATE +33 77
+#note Time: 231
+>p1: TWIUSIG N2 TWIGS +34 106
+#note Time: 198
+>p2: CTVELNE 13G V.LENCE +34 111
+#note Time: 221
+>p1: UILEIAE M6 .ILIEU +10 116
+#note Time: 230
+>p2: TRDOEET E6 TETRODE +75 186
+#note Time: 305
+>p1: AEZIPOO L1 ZOOI.. +50 166
+#note Time: 352
+>p2: KRRNYTJ 15G J.RKY +19 205
+#note Time: 143
+>p1: AEP?SHE D2 rESHAPE +83 249
+#note Time: 2753
+>p2: RNTNCQ? 9L C.NQ +15 220
+#note Time: 953
+>p1: OAOBONU O1 BOON +31 280
+#note Time: 221
+>p2: RTN?ALG C6 TANGLeR +72 292
+#note Time: 2219
+>p1: AOUNEGD G4 GAED +31 311
+#note Time: 426
+>p2: ASAPASD 13B ASPS +37 329
+#note Time: 172
+>p1: OUNBAIO O7 NI.AB +48 359
+#note Time: 251
+>p2: AADUXRE 14A AX +36 365
+#note Time: 197
+>p1: OUOAY C3 YO +22 381
+#note Time: 101
+>p2: ADURE 15A READ +37 402
+#note Time: 144
+>p1: UOA D12 U. +14 395
+#note Time: 80
+>p2: U I4 U. +5 407
+#note Time: 110
+>p2:  (OA) +4 411
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EPR?RNE H4 PREeNER +72 72
+#note Time: 360
+>p2: EIYICOA G7 YEA +24 24
+#note Time: 119
+>p1: ETJAUAD 5D ADJU.E +28 100
+#note Time: 106
+>p2: IICOVIA 6C CIAO +24 48
+#note Time: 86
+>p1: TAOCOGN 4H .ONGO +18 118
+#note Time: 135
+>p2: IVIDQOI D4 Q..D +28 76
+#note Time: 69
+>p1: TACIRAS 11B CARITAS +77 195
+#note Time: 167
+>p2: IVIOIRL B11 .IVIL +20 96
+#note Time: 137
+>p1: TOZLLUH 3L LUTZ +28 223
+#note Time: 133
+>p2: OIRIERF O1 FO.IER +57 153
+#note Time: 117
+>p1: OLHYETX N6 ETHOXYL +92 315
+#note Time: 176
+>p2: IRVPSO? 15A S.IPOVeR +185 338
+#note Time: 2109
+>p1: WDHGOBT M9 GOB +29 344
+#note Time: 235
+>p2: DUOESEI 8A DOUSE +37 375
+#note Time: 262
+>p1: WDHTKBA L10 BAWK +46 390
+#note Time: 226
+>p2: EILUNGI O12 IGLU +21 396
+#note Time: 279
+>p1: DHTMEEE J1 EME.D +30 420
+#note Time: 180
+>p2: ENIMIAF 1D FEMINI. +48 444
+#note Time: 302
+>p1: HTESNWR F5 ..W +21 441
+#note Time: 257
+>p2: ATTAEAN O8 AA +25 469
+#note Time: 187
+>p1: HTESNRN N2 N.H +21 462
+#note Time: 202
+>p2: TTEAN M13 AT +16 485
+#note Time: 128
+>p1: TESRN C11 .N +4 466
+#note Time: 164
+>p2: TEN 13B .ENT +20 505
+#note Time: 157
+>p2:  (TESR) +8 513
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: RAGVOOW H7 AVOW +20 20
+#note Time: 31
+>p2: QTOLEKI 7G Q.T +23 23
+#note Time: 111
+>p1: RGOETAH I9 HOG +25 45
+#note Time: 258
+>p2: OLEKIII J10 KOI +40 63
+#note Time: 84
+>p1: RETASOS K4 OSETRAS +75 120
+#note Time: 348
+>p2: LEIIPEG L1 PILEI +26 89
+#note Time: 177
+>p1: ODRJNNO 2J JO.N +27 147
+#note Time: 126
+>p2: EGNTNSU N2 TUNG +34 123
+#note Time: 211
+>p1: DRNOERX O5 OXER +36 183
+#note Time: 177
+>p2: ENS?ETI 13G ETESIaN +74 197
+#note Time: 3006
+>p1: DNRMODC 12L DORM +26 209
+#note Time: 219
+>p2: BAENEUY O11 E.BAY +36 233
+#note Time: 253
+>p1: NDCIDIR 14G DID +13 222
+#note Time: 164
+>p2: NEU?PLL 12D PULL +16 249
+#note Time: 2114
+>p1: NCIRDIE 15F REC +35 257
+#note Time: 392
+>p2: NE?IAZA N14 ZA +49 298
+#note Time: 2510
+>p1: NIDIAAA 8J A.IA +5 262
+#note Time: 138
+>p2: NE?IAHO 7M HO. +19 317
+#note Time: 3842
+>p1: NDIALET M7 ..D +9 271
+#note Time: 599
+>p2: NE?IAWR J2 .AW +19 336
+#note Time: 4029
+>p1: NIALETT 6J T. +4 275
+#note Time: 532
+>p2: NE?IREU D8 REsU.INE +61 397
+#note Time: 2932
+>p1: NIALETE C2 LINEATE +68 343
+#note Time: 431
+>p2: ESYGAVB B3 GABY +40 437
+#note Time: 278
+>p1: RMFCIFN 4A F..FIC +36 379
+#note Time: 150
+>p2: ESVU 8A EV.. +21 458
+#note Time: 113
+>p1: RMN E11 M.N +20 399
+#note Time: 114
+>p2: SU O1 US +19 477
+#note Time: 131
+>p2:  (R) +2 479
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: SNFUEVI H4 FIVES +30 30
+#note Time: 51
+>p2: RWNNANA G7 WARN +23 23
+#note Time: 60
+>p1: NUESOAW F6 WO +19 49
+#note Time: 186
+>p2: NNAIDON 8A NANDIN.. +39 62
+#note Time: 102
+>p1: NUESA?T 11E UNSATEd +82 131
+#note Time: 2848
+>p2: OXLBYSS 10J BOXY +33 95
+#note Time: 142
+>p1: VATAEZT E3 ZETA +31 162
+#note Time: 132
+>p2: LSSITEO B4 ISOL.TES +62 157
+#note Time: 304
+>p1: VATPEFI D4 PAVI. +41 203
+#note Time: 218
+>p2: OOA?TUR M5 AUTOg.RO +61 218
+#note Time: 1275
+>p1: TEFKEEM A1 MEEK +56 259
+#note Time: 154
+>p2: EGTLGIR A10 REGILT +31 249
+#note Time: 167
+>p1: TFEYACL 8L C.FT +36 295
+#note Time: 218
+>p2: GDIHODI 12H HID +28 277
+#note Time: 138
+>p1: EYALDUP L12 YAUP +34 329
+#note Time: 257
+>p2: GODIRGO 15L .OGO +21 298
+#note Time: 213
+>p1: ELDJLEI 4H .JELD +32 361
+#note Time: 171
+>p2: DIRGAEE F2 GAE +24 322
+#note Time: 410
+>p1: LEIQCEO 13G QI +27 388
+#note Time: 428
+>p2: DIRENIR N13 RI. +8 330
+#note Time: 230
+>p1: LECEOAR O2 CORELA.E +61 449
+#note Time: 320
+>p2: DENIRMU B1 UM +20 350
+#note Time: 315
+>p1: HB 6L B.H. +17 466
+#note Time: 44
+>p1:  (DENIR) +12 478
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ATRLETS H6 RATTLES +66 66
+#note Time: 96
+>p2: TEOEUSE 6H .OUE +6 6
+#note Time: 124
+>p1: OROKOVN 5J NOOK +22 88
+#note Time: 80
+>p2: TESELVM 10H .EV +14 20
+#note Time: 156
+>p1: ROVYAEP 12A OVERPAY. +84 172
+#note Time: 246
+>p2: TSELMPM 7G M.M +20 40
+#note Time: 209
+>p1: JUS?NFE C9 JEF.S +46 218
+#note Time: 1466
+>p2: TSELPER N5 SPELTER +76 116
+#note Time: 267
+>p1: U?NDOCI A7 NOCtU.ID +80 298
+#note Time: 2735
+>p2: OXCBLEA 8L CA.X +48 164
+#note Time: 305
+>p1: TTDALGI F6 GILT +17 315
+#note Time: 218
+>p2: OBLENII L3 BI.NI. +25 189
+#note Time: 254
+>p1: TDAUTRZ B5 TZAR +37 352
+#note Time: 173
+>p2: OLERBEI O10 REBOIL +37 226
+#note Time: 242
+>p1: DUTHNNA M1 THAN. +34 386
+#note Time: 180
+>p2: EONIWSD 1F DOWNIES. +89 315
+#note Time: 350
+>p1: DUNA?OE 15H DUOdENA. +77 463
+#note Time: 2322
+>p2: GFAYGRI K9 RAGGY +27 342
+#note Time: 211
+>p1: IQHAEEI A4 QI +23 486
+#note Time: 209
+>p2: FIWAUD C6 AW +30 372
+#note Time: 104
+>p1: HAEEI N2 EH +28 514
+#note Time: 97
+>p2: FIUD M13 FU. +12 384
+#note Time: 73
+>p1: AEI 2F AI +11 525
+#note Time: 100
+>p2: ID E10 DI. +12 396
+#note Time: 46
+>p2:  (E) +2 398
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: VGUUIAC H7 GUV +14 14
+#note Time: 19
+>p2: WRAQXHE G4 REWAX +29 29
+#note Time: 54
+>p1: UIACLNI 4D CAU.I +16 30
+#note Time: 136
+>p2: QHJDTGO H1 GOJ. +36 65
+#note Time: 60
+>p1: LNIASIE E4 .I +4 34
+#note Time: 167
+>p2: QHDTLTB 2G B.TH +17 82
+#note Time: 39
+>p1: LNASIEB 10F LESBIAN +71 105
+#note Time: 192
+>p2: QDLTALO 11E QAT +28 110
+#note Time: 153
+>p1: DIOEROA 1J OROIDE +29 134
+#note Time: 235
+>p2: DLLOSEM K8 SL.LOMED +72 182
+#note Time: 183
+>p1: A?FIGON 13H FlA.INGO +76 210
+#note Time: 2414
+>p2: UWEAPIR 8K .WIPE +42 224
+#note Time: 351
+>p1: ZVHEMNN O12 Z.NE +69 279
+#note Time: 134
+>p2: UARTEYO 15H TOA.Y +39 263
+#note Time: 357
+>p1: VHMNASO 3J MOSHAV +36 315
+#note Time: 285
+>p2: UREELOR O8 .URO.... +17 280
+#note Time: 168
+>p1: NAKDIIS 12D KID +31 346
+#note Time: 249
+>p2: EELRDAY N1 .E.DLY +38 318
+#note Time: 246
+>p1: NAISERT C9 ANESTRI +75 421
+#note Time: 510
+>p2: ERA?CEN B5 RECANEd +69 387
+#note Time: 1677
+>p1: TUIEERP 4K PIE. +27 448
+#note Time: 263
+>p2: TNF 8A F. +15 402
+#note Time: 85
+>p1: TUER N13 .UT +14 462
+#note Time: 116
+>p2: TN 12J N.T +12 414
+#note Time: 81
+>p2:  (ER) +4 418
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: SBADDPE H4 BEDAD +24 24
+#note Time: 36
+>p2: FEIT?GI 8H .IGEsTIF +86 86
+#note Time: 732
+>p1: SPOLRRQ -LRQ +0 24
+#note Time: 110
+>p2: NEEHOTL M8 .ELETHON +74 160
+#note Time: 216
+>p1: SPORUW? J8 .ROWnUPS +71 95
+#note Time: 2307
+>p2: REAOFRR 6C FORRA.ER +66 226
+#note Time: 229
+>p1: OEIOURT 15D RIOTOU. +24 119
+#note Time: 352
+>p2: MYIHOAZ N11 HOMY +48 274
+#note Time: 278
+>p1: EONVPKA G5 P.K +29 148
+#note Time: 355
+>p2: IAZETAA 4H .AIZA +32 306
+#note Time: 159
+>p1: EONVASL C6 .LAVONES +88 236
+#note Time: 446
+>p2: ETAUOLG 5K AGLU +35 341
+#note Time: 511
+>p1: QADECCT N2 CAD.CE. +36 272
+#note Time: 195
+>p2: ETOLIEW 14E OWE +31 372
+#note Time: 306
+>p1: QTNUDRI 8A QU.D +48 320
+#note Time: 252
+>p2: TLIEETI B10 LITE +16 388
+#note Time: 180
+>p1: TNRIYNN 12B ..NNY +16 336
+#note Time: 163
+>p2: ETIXIBG 11E IBEX +37 425
+#note Time: 192
+>p1: TRINSEI A8 .I +11 347
+#note Time: 321
+>p2: TIGNAVJ A13 TAJ +33 458
+#note Time: 173
+>p1: TRNSEIE 2H ENTERI.S +62 409
+#note Time: 257
+>p1:  (IGNVASM) +26 435
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EAVEMRE H6 VEE +12 12
+#note Time: 26
+>p2: ISYM?DO G7 DaIMYOS +72 72
+#note Time: 839
+>p1: AMREESC 12B RACEM.SE +76 88
+#note Time: 214
+>p2: ISRTIER H1 TIRRI... +36 108
+#note Time: 204
+>p1: WOAIGUH 11E WH. +41 129
+#note Time: 199
+>p2: SENILWA 13I LAWINES +75 183
+#note Time: 414
+>p1: OAIGUNU O8 UNGUI. +24 153
+#note Time: 289
+>p2: BLZYTEU L11 BL.TZ +52 235
+#note Time: 297
+>p1: OALGHRS 7A GASHOL..R +66 219
+#note Time: 575
+>p2: YEUNAAD 15L .ANY +48 283
+#note Time: 303
+>p1: BXIOINA 8A IXIA +62 281
+#note Time: 250
+>p2: EUADOET 5E AUD.TEE +32 315
+#note Time: 294
+>p1: BONEAIQ 4K NIQAB +40 321
+#note Time: 337
+>p2: ORNFNCE 2D CONF.NER +67 382
+#note Time: 277
+>p1: OEURPTG 1J POUTER +33 354
+#note Time: 378
+>p2: DTOO?JO 10B DOJO +22 404
+#note Time: 636
+>p1: GFAEVKI K8 KIVA +30 384
+#note Time: 248
+>p2: T?OLPEA B6 P.. +18 422
+#note Time: 1764
+>p1: GFETOED 6J FETED +37 421
+#note Time: 204
+>p2: T?OLEA 14J TO. +14 436
+#note Time: 980
+>p1: GO D2 .OG +12 433
+#note Time: 96
+>p1:  (?LEA) +6 439
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: XEMRDNC H6 DEX +22 22
+#note Time: 21
+>p2: SNOSONZ 7C SNOOZ. +26 26
+#note Time: 38
+>p1: MRNCNAD I5 MAD +30 52
+#note Time: 93
+>p2: SNAIIPI 8A INIA +20 46
+#note Time: 95
+>p1: RNCNLNG F6 C.NN +12 64
+#note Time: 49
+>p2: SPITVRQ -VQ +0 46
+#note Time: 97
+>p1: RLNGIHP A3 HIRPL.NG +65 129
+#note Time: 121
+>p2: SPITRWE 6H ..W +15 61
+#note Time: 179
+>p1: IOQEA?C B2 QI +27 156
+#note Time: 924
+>p2: SPITRET K3 SPITTER +76 137
+#note Time: 143
+>p1: OEA?CEF H4 FE... +24 180
+#note Time: 961
+>p2: TMONEOT 8K .MOTE +30 167
+#note Time: 144
+>p1: OA?CEYU J2 YOU +20 200
+#note Time: 1481
+>p2: NOTRWLB M7 L.WBORN +34 201
+#note Time: 162
+>p1: A?CEBYH 11G bEACHB.Y +84 284
+#note Time: 1637
+>p2: TIIEVEE C1 VIE +35 236
+#note Time: 173
+>p1: ERTOUVU H10 O.UVRE +30 314
+#note Time: 161
+>p2: TIEETLD 14C LITTE.ED +65 301
+#note Time: 225
+>p1: TUSO?OJ N6 JO. +28 342
+#note Time: 1166
+>p2: KAAEAIA 12L A.AK +39 340
+#note Time: 109
+>p1: TUS?OEG B14 GO +28 370
+#note Time: 2012
+>p2: EAIAAAU 13C EAU +14 354
+#note Time: 86
+>p1: TUS?EGE O11 S.EET +45 415
+#note Time: 1092
+>p2: IAAALRD 13G A.AIL +19 373
+#note Time: 151
+>p1: U?GSIFR 4D GRUF. +24 439
+#note Time: 1262
+>p2: ARD 9M .AD +21 394
+#note Time: 129
+>p1: ?SI B2 ..S +14 453
+#note Time: 252
+>p2: R 8J R..... +8 402
+#note Time: 49
+>p2:  (?I) +2 404
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: UPOHIRO H4 HOURI +24 24
+#note Time: 34
+>p2: DCRERGU 4G C.URRED +26 26
+#note Time: 88
+>p1: POTAINI 3L POI +20 44
+#note Time: 170
+>p2: GA?UQAB 2J QUAGgA +82 108
+#note Time: 550
+>p1: TANIAIU 7E ANU.IA +8 52
+#note Time: 107
+>p2: BAPNAMN 6G N.MB +30 138
+#note Time: 106
+>p1: TISEOBI F7 .IOBITES +68 120
+#note Time: 168
+>p2: APANNHY E9 YAH +37 175
+#note Time: 156
+>p1: NJVARES E4 JAV. +28 148
+#note Time: 209
+>p2: PANNILY D11 PINNY +36 211
+#note Time: 176
+>p1: NRESEWE 12F .WEENERS +74 222
+#note Time: 135
+>p2: ALEFEOO 11K FOE +26 237
+#note Time: 219
+>p1: EDEOZRI 8J DOZIER +84 306
+#note Time: 197
+>p2: ALEOFAT 9L AFT +32 269
+#note Time: 250
+>p1: EROOTGW 15A TOW. +30 336
+#note Time: 202
+>p2: LEOAECS 14F .ECALOSE +62 331
+#note Time: 229
+>p1: EROGEAN 14A AGO. +23 359
+#note Time: 354
+>p2: T?LIETS N13 EST +28 359
+#note Time: 1460
+>p1: ERENLLD L1 L...L +8 367
+#note Time: 172
+>p2: ?LITGKT O1 K. +18 377
+#note Time: 742
+>p1: ERENDMX I3 X. +17 384
+#note Time: 138
+>p2: ?LITGTV 5D T.V +6 383
+#note Time: 662
+>p1: ERENDMI C12 ME.. +26 410
+#note Time: 209
+>p2: ?LIGTD K8 .D +11 394
+#note Time: 703
+>p1: RENDI H11 D.I.E +24 434
+#note Time: 155
+>p2: ?LIGT M7 G.. +9 403
+#note Time: 544
+>p1: RN M11 ..N. +12 446
+#note Time: 78
+>p2: ?LIT I12 .T. +7 410
+#note Time: 394
+>p1: R G14 .R +4 450
+#note Time: 115
+>p1:  (?LI) +4 454
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: GUROPDI H3 UPGIRD +26 26
+#note Time: 53
+>p2: AIIBHRA I2 AHI +23 23
+#note Time: 76
+>p1: OROSIWG J1 OW +26 52
+#note Time: 94
+>p2: IBRAG?E 8A BRIGAdE. +89 112
+#note Time: 1750
+>p1: ROSIGNT E5 ORG.NIST +86 138
+#note Time: 355
+>p2: MYETEYU 6C EY.Y +18 130
+#note Time: 133
+>p1: KRBTFDP C5 B.F.T +15 153
+#note Time: 85
+>p2: MTEUNIO B8 .EMOUNT +32 162
+#note Time: 236
+>p1: KRDPNAC J4 PACK +25 178
+#note Time: 148
+>p2: IINALI? K7 INItIAL +68 230
+#note Time: 691
+>p1: RDNEAJE L4 JEANED +43 221
+#note Time: 237
+>p2: TSCRAZE 11G CRAZ.EST +69 299
+#note Time: 311
+>p1: RHEEUAA 13I HA.ERU +26 247
+#note Time: 230
+>p2: OWUTFOO M2 WOOF +34 333
+#note Time: 167
+>p1: EAOIVNL 12K .VIAN +36 283
+#note Time: 288
+>p2: UTORDME A12 MOUE +38 371
+#note Time: 290
+>p1: EOLEEAL N1 LEE +18 301
+#note Time: 122
+>p2: TRDEQDS 10D Q. +11 382
+#note Time: 112
+>p1: OEALLVT 14F VALET +27 328
+#note Time: 202
+>p2: TRDEDSS 8J S..D +18 400
+#note Time: 196
+>p1: OLIXNO 15G LOX +51 379
+#note Time: 137
+>p2: TREDS N1 ...T +14 414
+#note Time: 133
+>p1: INO O1 ON +18 397
+#note Time: 77
+>p2: REDS D4 DR. +19 433
+#note Time: 50
+>p1: I D10 .I +13 410
+#note Time: 76
+>p1:  (ES) +4 414
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: OARAESI -OA +0 0
+#note Time: 47
+>p2: FDUAAOC H6 FADO +16 16
+#note Time: 23
+>p1: RAESI?R 8H .ISARmER +77 77
+#note Time: 1636
+>p2: UACIXEO I8 .XIA +36 52
+#note Time: 169
+>p1: NEIUTTV G9 VET +27 104
+#note Time: 203
+>p2: UCEOOAG 12C GUACO +23 75
+#note Time: 159
+>p1: NIUTAKU J10 TANUKI +28 132
+#note Time: 223
+>p2: EOITWEB 12J .EWBIE +24 99
+#note Time: 235
+>p1: UYHRPOG 15H GR.PY +45 177
+#note Time: 292
+>p2: OTATIBZ G5 TIZ +48 147
+#note Time: 226
+>p1: UHOIILN F10 HI. +31 208
+#note Time: 214
+>p2: OATBOHE 13I B.TEO +35 182
+#note Time: 281
+>p1: UOILNOD F4 OUD +21 229
+#note Time: 323
+>p2: AOHELTE C6 HELOTA.E +78 260
+#note Time: 297
+>p1: ILNOMME 8A OI.MEN +33 262
+#note Time: 339
+>p2: DEGY?NQ O10 Qu.ENY +51 311
+#note Time: 1105
+>p1: LMNRRLV -LMNRLV +0 262
+#note Time: 122
+>p2: DGEWCIU E11 W.GED +32 343
+#note Time: 217
+>p1: ROLEADI 3A DARIOLE +73 335
+#note Time: 496
+>p2: CIUMNSL 15A MUCI. +33 376
+#note Time: 245
+>p1: RAPRFEA A1 FA.ER +30 365
+#note Time: 180
+>p2: NSLSLNT D2 N.LL +8 384
+#note Time: 85
+>p1: PRAJOSN N6 JO. +26 391
+#note Time: 223
+>p2: SSNTV 14D S.V +16 400
+#note Time: 85
+>p1: PRASN H1 RASP +36 427
+#note Time: 150
+>p2: SNT B2 T.N +12 412
+#note Time: 74
+>p1: N G2 N. +4 431
+#note Time: 57
+>p1:  (S) +2 433
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: RADEARN H7 AR +4 4
+#note Time: 36
+>p2: CTEWGAA 6F WAG +19 19
+#note Time: 74
+>p1: DEARNZS 5G ZANDERS +100 104
+#note Time: 146
+>p2: CTEAUAI L3 CU.IAE +18 37
+#note Time: 163
+>p1: RERCAFW 8K F.WER +33 137
+#note Time: 154
+>p2: TAOAEVL 3I AVO.ET +24 61
+#note Time: 175
+>p1: RCATOOI K7 A.OOT +18 155
+#note Time: 220
+>p2: ALOSRRA 2M OAR +12 73
+#note Time: 162
+>p1: RCIBNDH J10 BIRCH +38 193
+#note Time: 142
+>p2: LSRAIEF 14F FLAS.IER +72 145
+#note Time: 433
+>p1: NDEOENM 15L MENO +36 229
+#note Time: 255
+>p2: PLAO?TN 1G hAPLONT +80 225
+#note Time: 3441
+>p1: DENLUEE O6 UN.EELED +60 289
+#note Time: 196
+>p2: GIDISES 15H GI +20 245
+#note Time: 213
+>p1: ?KNIJOI 13C KOJI +35 324
+#note Time: 1344
+>p2: DISESPT 7G P.S +26 271
+#note Time: 407
+>p1: ?NIYXMH 14B MIX +39 363
+#note Time: 1356
+>p2: DIESTEI 2B DEITIES +73 344
+#note Time: 306
+>p1: ?NYHUQL 15A LUNY +61 424
+#note Time: 1785
+>p2: BUEYOGD 1A BOY +32 376
+#note Time: 283
+>p1: ?HQTVTN N8 .TH +29 453
+#note Time: 366
+>p2: UEGDI D11 DE... +32 408
+#note Time: 178
+>p1: ?QVTN 3A QaT +37 490
+#note Time: 290
+>p2: UGI 13L GI +18 426
+#note Time: 56
+>p1: VN K3 .N. +5 495
+#note Time: 111
+>p2: U J1 .U. +8 434
+#note Time: 96
+>p2:  (V) +8 442
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ANAUEEE H6 EAU +6 6
+#note Time: 12
+>p2: DOSUEWO G4 WOOD +17 17
+#note Time: 74
+>p1: NAEEASU H1 EASE +21 27
+#note Time: 80
+>p2: SUERBER F1 RUBE +14 31
+#note Time: 98
+>p1: NAU?ICG 3H .CUbAING +76 103
+#note Time: 1294
+>p2: SERD?HA O1 HA.RiDES +167 198
+#note Time: 2154
+>p1: RZPEOGO 1A GROPE. +36 139
+#note Time: 177
+>p2: ILSANOR N6 OR +11 209
+#note Time: 354
+>p1: ZOVIGYN F6 VOG +33 172
+#note Time: 148
+>p2: ILSANFT L2 F.NTAILS +74 283
+#note Time: 307
+>p1: ZIYNNIA D1 .INY +18 190
+#note Time: 146
+>p2: HNTMTTE J2 H.TMENT +22 305
+#note Time: 95
+>p1: ZNIAECA 3A AZA. +26 216
+#note Time: 180
+>p2: TEIBLAV A3 .BLATIVE +98 403
+#note Time: 129
+>p1: NIECLEW B6 WE +28 244
+#note Time: 99
+>p2: TJDEXRI B10 XI +50 453
+#note Time: 81
+>p1: NICLEEO B1 .E. +24 268
+#note Time: 83
+>p2: TJDERIT C5 JET +21 474
+#note Time: 74
+>p1: NICLEOY A3 ........LY +24 292
+#note Time: 147
+>p2: DRITOIQ C11 DROIT +16 490
+#note Time: 94
+>p1: NICEOIS K8 EOSINIC +73 365
+#note Time: 140
+>p2: IQMRFPD B14 QI +46 536
+#note Time: 184
+>p1: AULNKO 14I UN.LOAK +30 395
+#note Time: 125
+>p1:  (MRFPD) +26 421
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: GGOUYIS H8 SOGGY +28 28
+#note Time: 23
+>p2: LVLEACI 12C EVILL. +24 24
+#note Time: 155
+>p1: UIAATMN 8A AMIANTU. +83 111
+#note Time: 216
+>p2: ACAOSIE B6 CA.EO +17 41
+#note Time: 200
+>p1: UKE?RTZ C11 Z.K +32 143
+#note Time: 915
+>p2: ASI?HIO F3 HOSpI.IA +62 103
+#note Time: 1166
+>p1: UE?RTXM D3 TRuME.UX +82 225
+#note Time: 1028
+>p2: EUIIFEE C2 FIE +18 121
+#note Time: 107
+>p1: ABTITDR B1 BIT +23 248
+#note Time: 95
+>p2: UIEENER 3F .UE +7 128
+#note Time: 61
+>p1: ATDRLGE A1 AG +28 276
+#note Time: 110
+>p2: IENERAU 11H .UINEA +14 142
+#note Time: 61
+>p1: TDRLENV M7 VERD.NT +32 308
+#note Time: 219
+>p2: EROSSJD 8L J.ED +60 202
+#note Time: 209
+>p1: LEOWRHN A10 HOWLER +53 361
+#note Time: 203
+>p2: ROSSDRC H1 CR.DOS +33 235
+#note Time: 121
+>p1: NREIAYO 12K AN.OY +30 391
+#note Time: 259
+>p2: SRPAEET O1 TRAPESE. +92 327
+#note Time: 270
+>p1: REITOWI 2J WIRIE. +34 425
+#note Time: 205
+>p2: ANPLNDB L1 B.AND +22 349
+#note Time: 149
+>p1: TOFQO J10 Q. +31 456
+#note Time: 126
+>p2: PLN 7A N.P. +18 367
+#note Time: 194
+>p1: TOFO O12 .OOF +30 486
+#note Time: 102
+>p2: L N2 .L +4 371
+#note Time: 102
+>p2:  (T) +2 373
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EXINKGO H6 KEX +28 28
+#note Time: 67
+>p2: PAOMIDI I6 IMIDO +35 35
+#note Time: 122
+>p1: INGOTEH H10 HOGTIE +41 69
+#note Time: 242
+>p2: PATINEO 12B PINOTA.E +72 107
+#note Time: 445
+>p1: NTGSESW C8 WEST.NGS +76 145
+#note Time: 185
+>p2: I?FUEUA 14A FU.UE +18 125
+#note Time: 1154
+>p1: EAERLWQ F10 QA. +32 177
+#note Time: 162
+>p2: I?ATSAU A14 .A +15 140
+#note Time: 1533
+>p1: EERLWAG J10 WE +30 207
+#note Time: 225
+>p2: I?TSAUA K4 yAUTIAS +72 212
+#note Time: 1845
+>p1: ERLAGBL 8A BA.LER +36 243
+#note Time: 281
+>p2: YENEEEO L4 EYNE +25 237
+#note Time: 152
+>p1: GLNRRJT 11E J.T. +42 285
+#note Time: 103
+>p2: EEOUVID J2 VIED +25 262
+#note Time: 254
+>p1: GLNRRHR M7 GRRRL +15 300
+#note Time: 86
+>p2: EOUMLYN 2J .OLUME +22 284
+#note Time: 291
+>p1: NHIDCDZ O1 Z.CHIN +72 372
+#note Time: 149
+>p2: YNTV?AS 14H .VY +17 301
+#note Time: 1639
+>p1: DDAOROP F14 DO +22 394
+#note Time: 189
+>p2: NT?ASEN 1F STANiNE +84 385
+#note Time: 2241
+>p1: DAROPBL 3M PA. +26 420
+#note Time: 269
+>p2: IOOAFRI D2 AIRFOI. +20 405
+#note Time: 144
+>p1: DROBLC 13J BLOC +23 443
+#note Time: 237
+>p2: O 5C O. +5 410
+#note Time: 180
+>p2:  (DR) +6 416
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ONETAMX H7 OX +18 18
+#note Time: 66
+>p2: EDRREOQ G5 ORDER +23 23
+#note Time: 50
+>p1: NETAMTL I1 MANTLET +66 84
+#note Time: 154
+>p2: EQI?HJG 2H H.J +29 52
+#note Time: 701
+>p1: AAFAAUS H1 A.A +32 116
+#note Time: 44
+>p2: EQI?GIO K1 QI +25 77
+#note Time: 638
+>p1: FAAUSEN 1K .UEAN +45 161
+#note Time: 138
+>p2: E?GIOTS 5E GO.d.IEST +86 163
+#note Time: 1991
+>p1: FASUOHL 4I .OFU +25 186
+#note Time: 247
+>p2: ACTCOEI 4A OCICAT +27 190
+#note Time: 193
+>p1: ASHLE?I A2 SH.ALIEr +80 266
+#note Time: 1866
+>p2: EWDKSWP 6I .KE +40 230
+#note Time: 106
+>p1: UATAFAY 9E FU.Y +23 289
+#note Time: 94
+>p2: WDSWPTN C3 W.ND +16 246
+#note Time: 97
+>p1: ATAANEG E9 .ANEGA +20 309
+#note Time: 105
+>p2: SWPTRMN 10D W.P +24 270
+#note Time: 145
+>p1: TAPEDLV 12A PAVE.D +30 339
+#note Time: 184
+>p2: STRMNBE 15A BERMS +47 317
+#note Time: 197
+>p1: TLEIIIO 14E .IOLI +7 346
+#note Time: 109
+>p2: TNIZROR 15G RITZ +49 366
+#note Time: 171
+>p1: TEIRBEU 13I BRUTE +28 374
+#note Time: 158
+>p2: NOROLNS 12H LOON +15 381
+#note Time: 179
+>p1: IEEIDVY N9 IVIED +26 400
+#note Time: 178
+>p2: RNSG B11 R.NG. +12 393
+#note Time: 133
+>p1: EY 7C YE +25 425
+#note Time: 99
+>p1:  (S) +2 427
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: ELIAHWR H3 AWHILE +32 32
+#note Time: 69
+>p2: DYESPEF 6F DE.FY +24 24
+#note Time: 88
+>p1: RLUDAUN 3C UNDUL.R +20 52
+#note Time: 148
+>p2: SPETTEI G8 PETITES +65 89
+#note Time: 118
+>p1: ATZERYV D1 ZA.Y +52 104
+#note Time: 207
+>p2: SUENEOX H12 EXON +50 139
+#note Time: 151
+>p1: TERVGAE 1A GRA.E +45 149
+#note Time: 214
+>p2: SUEINMU 5H .EMIN +32 171
+#note Time: 175
+>p1: TVESBTA F11 TAV +24 173
+#note Time: 289
+>p2: SUUENCI M1 UNCUS +25 196
+#note Time: 246
+>p1: ESBTOOE 2J OBE.TO +20 193
+#note Time: 167
+>p2: EIWOTQF O1 W.OF +42 238
+#note Time: 151
+>p1: SEDCGOR 1H COG +21 214
+#note Time: 229
+>p2: EITQJLA F2 Q.A +32 270
+#note Time: 139
+>p1: SEDRNRD 14G ..RD +9 223
+#note Time: 112
+>p2: EITJLIA I8 AJI +23 293
+#note Time: 179
+>p1: SENRDMI K8 MINDERS +76 299
+#note Time: 323
+>p2: ETLIRVK 12J K.VIL +24 317
+#note Time: 274
+>p1: PHOGEER N10 HE.PER +38 337
+#note Time: 289
+>p2: ETRITOA M12 .OTA +20 337
+#note Time: 332
+>p1: OGSIANI J10 OI. +17 354
+#note Time: 243
+>p2: ERITL?? O6 RETaILs +84 421
+#note Time: 8885
+>p1: GSANIOA N6 AA +10 364
+#note Time: 265
+>p2: B 15M ..B +15 436
+#note Time: 77
+>p2:  (GSNIO) +12 448
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: RCSNNBA H6 BANC +16 16
+#note Time: 33
+>p2: ESYEDUP I5 DEY +24 24
+#note Time: 88
+>p1: RSNTIAH G7 HA +24 40
+#note Time: 225
+>p2: SEUPAIU F8 PIU +12 36
+#note Time: 111
+>p1: RSNTIKO 10H OIK +26 66
+#note Time: 206
+>p2: SEAUDOZ J2 ZOEAS +46 82
+#note Time: 144
+>p1: RSNTSLT 3I R.TLS +12 78
+#note Time: 63
+>p2: UDEIVLO L1 VO.ED +26 108
+#note Time: 193
+>p1: NSTXFMV -XFMV +0 78
+#note Time: 57
+>p2: UILMRAE 1K U.EAL +24 132
+#note Time: 265
+>p1: NSTIFON 11I FINO +25 103
+#note Time: 152
+>p2: IMRBAEF 12J FERBAM +48 180
+#note Time: 301
+>p1: STN?OPR E3 PRONeST +74 177
+#note Time: 2434
+>p2: IRTISMN N7 MISTR.IN +74 254
+#note Time: 255
+>p1: TDOGEAE O3 TOGAED +40 217
+#note Time: 280
+>p2: UNUDXLO F5 XU +24 278
+#note Time: 154
+>p1: EERNAGL D4 EL +18 235
+#note Time: 240
+>p2: NUDLOHE O14 UH +17 295
+#note Time: 222
+>p1: ERNAGAT M12 .A +12 247
+#note Time: 208
+>p2: NDLOETV M6 LEVO +25 320
+#note Time: 222
+>p1: ERNGATA 8L A... +9 256
+#note Time: 241
+>p2: NDTOI?G L7 D.G +16 336
+#note Time: 1343
+>p1: ERNGTAR 2L .RG +17 273
+#note Time: 220
+>p2: NTOI?EC 13D NOTICEs +70 406
+#note Time: 1940
+>p1: ENTARIQ F2 QI +35 308
+#note Time: 322
+>p2: EIWWYJE D11 WI.EY +30 436
+#note Time: 74
+>p1: ENTARI G2 IN +20 328
+#note Time: 240
+>p2: WJE 1G WE +21 457
+#note Time: 63
+>p1: ETAR 15A ART. +21 349
+#note Time: 69
+>p2: J 4N J. +9 466
+#note Time: 84
+>p2:  (E) +2 468
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TSMIDUE H7 TEDIUMS +76 76
+#note Time: 73
+>p2: BNUEADA 13A BANDEAU. +74 74
+#note Time: 172
+>p1: LCLREUJ B10 JUR.L +56 132
+#note Time: 147
+>p2: EOAOGEQ D9 OGEE. +14 88
+#note Time: 87
+>p1: CLEP?FU 8G P.aCEFUL +68 200
+#note Time: 1264
+>p2: AOQXIEI E10 OX +39 127
+#note Time: 125
+>p1: TIEIETB I4 TIBI.E +16 216
+#note Time: 125
+>p2: AQIEINI M7 Q.AI +24 151
+#note Time: 129
+>p1: ETVKAAO H1 KAVA +39 255
+#note Time: 166
+>p2: EININAM 4B INANIM..E +72 223
+#note Time: 211
+>p1: ETOLOEH B1 EOL.TH +34 289
+#note Time: 219
+>p2: EFRPCOZ N10 FROZE +63 286
+#note Time: 206
+>p1: OEOETDO 13L OO.E +26 315
+#note Time: 156
+>p2: PCRNDIA O12 P.RC +42 328
+#note Time: 358
+>p1: ETDOWRI K5 TOW.RED +44 359
+#note Time: 344
+>p2: NDIA?SS 2F Sc.NDIAS +64 392
+#note Time: 1720
+>p1: IANRYGY 1L YAGI +47 406
+#note Time: 229
+>p2: EVTRIHW 12L WH.. +39 431
+#note Time: 171
+>p1: NRYSTON J10 YON +30 436
+#note Time: 220
+>p2: EVTRIGL 1A R.GIVE +35 466
+#note Time: 245
+>p1: RSTNA A13 .AN +17 453
+#note Time: 112
+>p2: TL 6I .L.T +8 474
+#note Time: 74
+>p2:  (RST) +6 480
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: WANEEIX H4 XENIA +40 40
+#note Time: 29
+>p2: JFQTUAN G7 QAT +46 46
+#note Time: 88
+>p1: WETERIE G3 EEW +21 61
+#note Time: 88
+>p2: JFUNPSI 10B PUNJIS +36 82
+#note Time: 88
+>p1: TRIETER E10 .ITTER +26 87
+#note Time: 128
+>p2: FMSDZNT 14D F.Z +35 117
+#note Time: 89
+>p1: EROTUFA 15A FEUA. +33 120
+#note Time: 317
+>p2: MSDNTBP C9 B.NDT +22 139
+#note Time: 81
+>p1: ROTAIIH F2 TORAH +36 156
+#note Time: 220
+>p2: MSPNLOE 14A OM +21 160
+#note Time: 228
+>p1: IIOBIVE 12A BI.E. +22 178
+#note Time: 75
+>p2: SPNLELU 4D LU... +24 184
+#note Time: 188
+>p1: IOIVAR? D8 VI. +14 192
+#note Time: 915
+>p2: SPNELAR 2B PLAN.ERS +77 261
+#note Time: 179
+>p1: OIAR?CL 1H AIRLOCk +85 277
+#note Time: 919
+>p2: HONEYDO 1A HOED +41 302
+#note Time: 94
+>p1: ADUEODR 3B AD +19 296
+#note Time: 87
+>p2: NYOLIGW A3 WYLING +58 360
+#note Time: 97
+>p1: UEODRT? M1 .lOTURED +72 368
+#note Time: 255
+>p2: ONKAYVA 8K VO.KA +42 402
+#note Time: 138
+>p1: SEOMGSE L3 GEM +23 391
+#note Time: 143
+>p2: NYARIOC K4 YA +26 428
+#note Time: 175
+>p1: SOSEIEG K8 .OGIE +18 409
+#note Time: 122
+>p2: NRIOC L10 INRO +17 445
+#note Time: 176
+>p1: SSE F12 SE. +23 432
+#note Time: 121
+>p2: C 13E ..C +8 453
+#note Time: 82
+>p2:  (S) +2 455
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: YATERWI H4 WATERY +32 32
+#note Time: 66
+>p2: RIOCWHD 6F WI.CH +29 29
+#note Time: 143
+>p1: IASCXRA E3 AXIS +36 68
+#note Time: 121
+>p2: RODIDSA D1 DIDO +37 66
+#note Time: 157
+>p1: CRAQANH 1A HAN.CAR +39 107
+#note Time: 84
+>p2: RSAB?SA 1A .......S +42 108
+#note Time: 560
+>p1: QELBPEL G9 BLEEP +25 132
+#note Time: 67
+>p2: RAB?SAN I9 SANdBAR +71 179
+#note Time: 1266
+>p1: QLEMAZG 15D GLAZE. +54 186
+#note Time: 180
+>p2: KJEFERT 14I .FREET +34 213
+#note Time: 138
+>p1: QMOOEEU J10 MOO +24 210
+#note Time: 152
+>p2: KJOLON? M11 JOK. +30 243
+#note Time: 1024
+>p1: QEEUVIO 13C EQUI. +32 242
+#note Time: 165
+>p2: LON?TPO N6 PLaTOON +77 320
+#note Time: 1562
+>p1: EVOEATU C3 OVATE +39 281
+#note Time: 283
+>p2: SIGTYIN 15L TYIN +48 368
+#note Time: 226
+>p1: EUEDAIG K8 GUIDE +29 310
+#note Time: 227
+>p2: SGIDFEL O8 GIF +34 402
+#note Time: 333
+>p1: EAUNMNR O1 MANURE +31 341
+#note Time: 269
+>p2: SDELRIE A1 .IRSELED +89 491
+#note Time: 320
+>p2:  (NIVUOT) +18 509
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: OYMONEW H4 WOMYN +34 34
+#note Time: 29
+>p2: EDISAEX I3 DEXIE +40 40
+#note Time: 100
+>p1: OEEOGUU -OEOGUU +0 34
+#note Time: 50
+>p2: SATOFRW G7 WAFT +33 73
+#note Time: 159
+>p1: EEEEILA G3 EEL +20 54
+#note Time: 67
+>p2: SORD?DK 11C DORKS +31 104
+#note Time: 622
+>p1: EEIAIRI F8 REI.I +23 77
+#note Time: 94
+>p2: ?DEAOID 5G ...ED +26 130
+#note Time: 1426
+>p1: EAINCTT 2B NICTATE +76 153
+#note Time: 269
+>p2: ?AOIDHA B1 A.tHODIA +65 195
+#note Time: 1389
+>p1: VUIONNR A4 UNION +37 190
+#note Time: 209
+>p2: SAIECSN K2 ACI.NESS +61 256
+#note Time: 224
+>p1: VRTAFYA 1H FAY +42 232
+#note Time: 324
+>p2: PTURGGO 8K .PRUG +33 289
+#note Time: 200
+>p1: VRTAOGP 10B VOG +21 253
+#note Time: 251
+>p2: TGOSULV C9 V..OU +26 315
+#note Time: 241
+>p1: RTAPBOA 12A PR.B +34 287
+#note Time: 205
+>p2: TGSLJIR 1A J.G +36 351
+#note Time: 132
+>p1: TAOAIHO A12 .OOH +27 314
+#note Time: 96
+>p2: TSLIREE D1 S.LERITE +87 438
+#note Time: 187
+>p1: TAAIRET 15A .ATTERIA +86 400
+#note Time: 172
+>p2: LQUMB?L F1 B.M +11 449
+#note Time: 343
+>p1: AEZN 2K .ZAN +26 426
+#note Time: 58
+>p2: LQU?L H13 QU. +12 461
+#note Time: 179
+>p1: E C1 ..E +12 438
+#note Time: 85
+>p1:  (L?L) +4 442
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: WALYVDS H6 WAVY +26 26
+#note Time: 30
+>p2: ERGGIET I9 EGG +12 12
+#note Time: 88
+>p1: LDSLDRI G9 DILL +16 42
+#note Time: 76
+>p2: RIETAII -II +0 12
+#note Time: 147
+>p1: SDRNIUP J7 PUD +15 57
+#note Time: 210
+>p2: RETAIEU H11 EAU +11 23
+#note Time: 237
+>p1: SRNIDDO G6 OD +15 72
+#note Time: 191
+>p2: RTIEIEB F4 RIB +25 48
+#note Time: 130
+>p1: SRNIDES 13G S.NDRIES +79 151
+#note Time: 217
+>p2: TEIETOO N9 TOOT.IE +18 66
+#note Time: 160
+>p1: UE?QONN O5 QUiNONE +101 252
+#note Time: 1651
+>p2: EMJRTHO 15L JE.R +57 123
+#note Time: 313
+>p1: ANFTLCO 3C FLACON +32 284
+#note Time: 361
+>p2: MTHOWIO K5 WHOM +32 155
+#note Time: 205
+>p1: TNSAECK 12L KA.S +49 333
+#note Time: 355
+>p2: TIOINHP H1 HI.T +24 179
+#note Time: 247
+>p1: TNECEBR L4 BEET +27 360
+#note Time: 246
+>p2: OINPMEL M3 POEM +34 213
+#note Time: 361
+>p1: NCRXESE 10F X. +25 385
+#note Time: 193
+>p2: INLIIRF K10 FLI. +23 236
+#note Time: 142
+>p1: NCRESEE C1 RE.ENCES +64 449
+#note Time: 210
+>p2: NIIRAAA N1 RAIA +17 253
+#note Time: 158
+>p1: ?ZRAGTA 1J GAZA.s +75 524
+#note Time: 769
+>p2: NIATYUV 1A VA.Y +42 295
+#note Time: 170
+>p1: RTOI 8A RO.TI +18 542
+#note Time: 89
+>p1:  (NITU) +8 550
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: HCBQTSD -BQD +0 0
+#note Time: 9
+>p2: AORWL?L H8 ROLLWAy +76 76
+#note Time: 410
+>p1: HCTSVDU 15D THUDS +60 60
+#note Time: 100
+>p2: KESEIIU 10H .IKE +18 94
+#note Time: 101
+>p1: CVEOEIQ D11 COVE. +20 80
+#note Time: 190
+>p2: SEIUZES 8C SEIZU.ES +68 162
+#note Time: 136
+>p1: EIQENTN J6 QI. +32 112
+#note Time: 156
+>p2: EEIUAAY 14A AIY.E +21 183
+#note Time: 89
+>p1: EENTNIL L8 LENIENT +75 187
+#note Time: 246
+>p2: EUARGOD 8A RE........ +57 240
+#note Time: 445
+>p1: I?CJOMO A12 JI.O +57 244
+#note Time: 1452
+>p2: UAGODNR M12 DUO +17 257
+#note Time: 428
+>p1: ?CMODTO M4 TOMCODs +82 326
+#note Time: 1370
+>p2: AGNROYG N2 AGONY +53 310
+#note Time: 283
+>p1: LWEEHFA K9 F.H +35 361
+#note Time: 218
+>p2: RGIBXAP O1 GRIP +43 353
+#note Time: 314
+>p1: LWEEADA L3 WAE +27 388
+#note Time: 178
+>p2: BXANAIF I7 X.N.A +43 396
+#note Time: 163
+>p1: LEDATIV E3 DILAT.VE +74 462
+#note Time: 453
+>p2: BAIFOSU F10 FOU +27 423
+#note Time: 383
+>p1: ATRRTAR B2 TARTAR. +18 480
+#note Time: 164
+>p2: BAISGNP D4 BAP +28 451
+#note Time: 266
+>p1: RENMBE 14J BE..N +26 506
+#note Time: 165
+>p2: ISGN K6 IS +23 474
+#note Time: 151
+>p1: RME F5 EM +26 532
+#note Time: 109
+>p2: GN 8L ..NG +15 489
+#note Time: 78
+>p2:  (R) +2 491
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: TFNPTOD H6 TOFT +14 14
+#note Time: 17
+>p2: RIBEOSI G4 ORIBI +24 24
+#note Time: 146
+>p1: NPDDEME H1 DEEP +37 51
+#note Time: 79
+>p2: ESEROYE 10E EYESORE +78 102
+#note Time: 105
+>p1: NDMOWE? K4 ENWOMb.D +102 153
+#note Time: 2034
+>p2: AUDXVIH L4 XU +38 140
+#note Time: 199
+>p1: IKMTL?T J1 MILK +26 179
+#note Time: 1111
+>p2: ADVIHEE 8K .AVIE +33 173
+#note Time: 184
+>p1: T?TNEIZ O1 TETaNIZ. +98 277
+#note Time: 1595
+>p2: DHEEIFS F4 FEH +41 214
+#note Time: 205
+>p1: STAAQAD 11C QAT +28 305
+#note Time: 108
+>p2: DEISARG 2A DISAGRE. +74 288
+#note Time: 374
+>p1: SAADEUN 12D SAUNAED +75 380
+#note Time: 238
+>p2: GOARILT A2 .OGTAIL +33 321
+#note Time: 378
+>p1: UNREUCY C1 U.URY +16 396
+#note Time: 139
+>p2: RNBHSAW E5 HWAN +42 363
+#note Time: 178
+>p1: NECGNPO D1 P.NE +31 427
+#note Time: 191
+>p2: RBSCOAL B4 ORB +32 395
+#note Time: 174
+>p1: CGNOILV 13I LOVING +28 455
+#note Time: 108
+>p2: SCALAJO 6M AJ. +26 421
+#note Time: 254
+>p1: CRI J12 ..C +12 467
+#note Time: 105
+>p2: SCLAO L10 SOC.AL +32 453
+#note Time: 174
+>p2:  (RI) +4 457
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: AETUHWQ H4 QUATE +48 48
+#note Time: 34
+>p2: ASUMUIF 4D UMIA. +32 32
+#note Time: 97
+>p1: HWRE?ID 8A sHREWDI. +95 143
+#note Time: 981
+>p2: SUFEGEV 3G FEU +35 67
+#note Time: 106
+>p1: NNRTSUR 5D NUN +18 161
+#note Time: 82
+>p2: SGEVBIP 3B VIBE +28 95
+#note Time: 116
+>p1: RTSRCNS I1 CR.S +23 184
+#note Time: 64
+>p2: SGPLNAY I8 SPANGLY +82 177
+#note Time: 108
+>p1: TRNSGRD 10G GR.D +10 194
+#note Time: 122
+>p2: RCIEETN K5 ENTICER +93 270
+#note Time: 296
+>p1: TNSROAA 1H O.TAN +24 218
+#note Time: 284
+>p2: ETRODOZ M1 TROOZ +36 306
+#note Time: 156
+>p1: SRATAAL 1H ......AL +30 248
+#note Time: 151
+>p2: EDOWINS 12D WENDI.OS +88 394
+#note Time: 280
+>p1: SRTAAAM 11D AMA +25 273
+#note Time: 217
+>p2: EHTXE?I B8 .EX +29 423
+#note Time: 676
+>p1: SRTADBP 2K DA.B +27 300
+#note Time: 179
+>p2: HTE?IOO A8 .mOOTHIE +90 513
+#note Time: 782
+>p1: SRTPGFE 4L F.G +14 314
+#note Time: 161
+>p2: LLIOIJK 14D JOKIL. +30 543
+#note Time: 100
+>p1: SRTPEYI O3 PYRITES +113 427
+#note Time: 249
+>p1:  (LIAOVEE) +20 447
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: DONAARE H8 OARED +16 16
+#note Time: 60
+>p2: TAMACTG 11G M.TATAG +20 20
+#note Time: 73
+>p1: NASWJBT L8 JAW.N +46 62
+#note Time: 150
+>p2: CDLRAEA I3 CRAALED +73 93
+#note Time: 266
+>p1: SBTUSIM 4H B.UTISMS +82 144
+#note Time: 226
+>p2: YLEAKIE 8L .AKE +45 138
+#note Time: 205
+>p1: NGGETIN 6F NEG.TING +64 208
+#note Time: 168
+>p2: YLIEHLE 10J YE. +32 170
+#note Time: 178
+>p1: OIATITE O1 TAT.OI +18 226
+#note Time: 174
+>p2: LIHLEVO 2J HILLO. +34 204
+#note Time: 191
+>p1: IEUXRCW 1H CRUX +53 279
+#note Time: 159
+>p2: EVR?SOU 12A SaVOURE. +78 282
+#note Time: 2002
+>p1: IEWILNF A8 WIFE. +33 312
+#note Time: 240
+>p2: UERDAO? C7 OUtRA.ED +74 356
+#note Time: 3270
+>p1: ILNOYEI 9L .YIN +28 340
+#note Time: 257
+>p2: NZFPNEV 5E ZEP +34 390
+#note Time: 115
+>p1: LOEIBRP B1 PREBOIL +78 418
+#note Time: 292
+>p2: NFNVDII C3 FIN +28 418
+#note Time: 147
+>p1: EQSEHOO E10 EQ.ES +28 446
+#note Time: 125
+>p2: NVDI F8 VID +18 436
+#note Time: 170
+>p1: HOO F14 HO +26 472
+#note Time: 152
+>p2: N 4B ..N +10 446
+#note Time: 76
+>p2:  (O) +2 448
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: EEOETWJ H6 JOW +26 26
+#note Time: 15
+>p2: TEMVPIO I7 MOVE +28 28
+#note Time: 104
+>p1: EEETIGA J6 GAE +19 45
+#note Time: 78
+>p2: TPIDIYA 11I DIP +23 51
+#note Time: 100
+>p1: EETIEIA -EIEI +0 45
+#note Time: 68
+>p2: TIYAEIN L11 TIYIN +25 76
+#note Time: 166
+>p1: TEASAXN J10 X. +50 95
+#note Time: 256
+>p2: AEANRRA M13 ANA +20 96
+#note Time: 101
+>p1: TEASANI N7 TAENIAS +65 160
+#note Time: 344
+>p2: ERRARDR O4 RARER +26 122
+#note Time: 153
+>p1: TBFEOBH 4J HOBBE. +26 186
+#note Time: 158
+>p2: DREUSIA 3D RESIDUA +65 187
+#note Time: 457
+>p1: TFGUIOH 2J FOUGHT +59 245
+#note Time: 261
+>p2: VOLRCK? 10H V.. +13 200
+#note Time: 1154
+>p1: ILINIMO H1 MI.I +24 269
+#note Time: 167
+>p2: OLRCK?S 15H CoRO..LS +81 281
+#note Time: 1482
+>p1: LNIO?QO G2 Q. +22 291
+#note Time: 1389
+>p2: KENYUSD E2 Y.UK +22 303
+#note Time: 204
+>p1: LNIO?OL D1 LO.N +19 310
+#note Time: 1177
+>p2: ENSDTEA F3 .TANDEES +72 375
+#note Time: 249
+>p1: I?OLZAD E9 DIAZOLe +87 397
+#note Time: 1717
+>p2: IWPLNTR 13C PR.WL +22 397
+#note Time: 240
+>p1: EEUCOGE 14A GEE +12 409
+#note Time: 195
+>p2: INTEFT A8 FETTIN. +36 433
+#note Time: 164
+>p2:  (UCOE) +12 445
+#character-encoding UTF-8
+#player1 p1 p1
+#player2 p2 p2
+>p1: LUTRJEW H4 JUREL +40 40
+#note Time: 28
+>p2: SDVRARA 4C SVARA. +32 32
+#note Time: 66
+>p1: TWHUIS? 9C oUTWISH +80 120
+#note Time: 799
+>p2: DRLKATA 3E DAK +29 61
+#note Time: 122
+>p1: DPEGICO 2F COPED +38 158
+#note Time: 149
+>p2: RLTARLR D8 R.RAL +12 73
+#note Time: 80
+>p1: GIL?RIH 7E HIR.LInG +63 221
+#note Time: 641
+>p2: TLRAETD 1I RATTLED +82 155
+#note Time: 261
+>p1: IOYNAMT K3 ANTI.OMY +74 295
+#note Time: 218
+>p2: EAYIUNP 6C YAUPE. +34 189
+#note Time: 230
+>p1: QTXCWEO J6 Q. +62 357
+#note Time: 142
+>p2: INTASAF 11C F.NTASIA +72 261
+#note Time: 158
+>p1: TXCWEOD 3I CO.XED +50 407
+#note Time: 187
+>p2: NVEOOMB L9 MOVE +29 290
+#note Time: 121
+>p1: TWEOESZ H11 .WEET +36 443
+#note Time: 174
+>p2: NOBENEI 4K .INON +35 325
+#note Time: 166
+>p1: OSZGBOE 1A BOOZES +87 530
+#note Time: 124
+>p2: BEENEIF 10C F.EE +28 353
+#note Time: 89
+>p1: GUIIGNO O4 .OGGIN +24 554
+#note Time: 133
+>p2: BNEI 12B BE. +14 367
+#note Time: 110
+>p1: UI 10K ..U +6 560
+#note Time: 79
+>p2: NI 2A IN +12 379
+#note Time: 110
+>p2:  (I) +2 381

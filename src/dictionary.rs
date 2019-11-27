@@ -223,7 +223,8 @@ impl Trie {
         self.can_next(current, next)
     }
 
-    pub fn nexts(&self, current: NodeIndex) -> Vec<(char, NodeIndex)> { // debugging method
+    // -> [Option<(char, NodeIndex)>; 26]
+    pub fn nexts(&self, current: NodeIndex) -> Vec<(char, NodeIndex)> {
         let edges = self.graph.raw_edges();
         let mut res = Vec::new();
         for a in self.graph.edges_directed(current, Direction::Outgoing) {

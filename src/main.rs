@@ -11,7 +11,7 @@ mod dictionary;
 mod player;
 
 fn two_player_game(mut b: &mut Board, gcg: bool) {
-    b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
+    // b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
 
     let mut player_1 = Player { rack: b.bag.draw_tiles(7), name: "p1".to_string() };
     let mut player_2 = Player { rack: b.bag.draw_tiles(7), name: "p2".to_string() };
@@ -153,10 +153,10 @@ board.play_word(utils::Position { row: 14, col: 0 }, String::from("BE.G"), utils
 
 fn main() {
     let mut board = board::Board::default();
-    // for i in 0..10 {
+    for i in 0..100 {
         two_player_game(&mut board, true);
         board.reset();
-    // }
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
