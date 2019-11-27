@@ -47,7 +47,7 @@ impl Board {
             ['.', '.', '^', '.', '.', '.', '-', '.', '-', '.', '.', '.', '^', '.', '.'],
             ['.', '^', '.', '.', '.', '+', '.', '.', '.', '+', '.', '.', '.', '^', '.'],
             ['#', '.', '.', '-', '.', '.', '.', '#', '.', '.', '.', '-', '.', '.', '#'],
-        ], dict: Dictionary::default(), trie: Trie::default(), bag: Bag::default(), blanks: vec![] }
+        ], trie: Trie::default(), dict: Dictionary::default(), bag: Bag::default(), blanks: vec![] }
     }
 
     pub fn at_position(&self, p: Position) -> char {
@@ -371,7 +371,8 @@ impl Board {
         // if real_pos.row == 13 && real_pos.col == 6 {
         // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
         // }
-        if let Some(seed) = self.trie.nrseed(&part) { 
+        if let Some(seed) = self.trie.nrseed(&part) {
+        // if let Some(seed) = self.trie.follow(node, '#') { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
 
@@ -398,7 +399,7 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            // if let Some(nnode) = self.trie.back_follow(node, next) {
+                            // if let Some(nnode) = self.trie.follow(node, next) {
                                 self.left_part(cp, new_part, node, 
                                             &new_rack, cross_checks, direction,
                                             moves, limit - 1, new_word, cp, real_pos, cross_sums);   
@@ -424,7 +425,7 @@ impl Board {
                         ccp.tick_opp(direction);
 
                         if !self.is_letter(ccp) {
-                            // if let Some(nnode) = self.trie.back_follow(node, c) {
+                            // if let Some(nnode) = self.trie.follow(node, c) {
                                 self.left_part(cp, new_part, node, 
                                             &new_rack, cross_checks, direction,
                                             moves, limit - 1, new_word, cp, real_pos, cross_sums);   
@@ -443,7 +444,7 @@ impl Board {
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        // if word.starts_with("PANDER") { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
+        // println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word);
         if !self.is_letter(position) {
             if position != anchor {
                 if let Some(_terminal) = self.trie.can_next(node, '@') {
@@ -452,16 +453,16 @@ impl Board {
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
                                        typ: Type::Play }; 
                     m.score = self.score(&m, cross_sums);
-                    // if word.starts_with("PANDER") { println!("Found move {:?}", m); }
+                    // println!("Found move {:?}", m);
                     moves.push(m);
                 }
             }
 
             for next in self.trie.nexts(node) {
-                // if word.starts_with("PANDER") { println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]); }
+                // println!("\tconsidering next {} {:?} {:?}", next, self.trie.nexts(node), cross_checks[position.to_int()]);
                 if let Some(unext) = alph.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
-                        // if word.starts_with("PANDER") { println!("\tvalid next"); }
+                        // println!("\tvalid next");
                         if rack[unext] > 0 || rack[26] > 0 {
                             let mut np = part.clone();
                             np.push(next);

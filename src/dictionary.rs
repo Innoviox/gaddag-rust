@@ -9,6 +9,8 @@ use petgraph::graph::NodeIndex;
 use petgraph::visit::EdgeRef;
 use indicatif::ProgressBar;
 use indicatif::ProgressIterator;
+use std::io;
+use std::io::*;
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, HashSet<String>>>,
@@ -92,17 +94,15 @@ impl Trie {
             }
         };
 
+        extend(&mut trie, current, '#');
+
         for i in alph.chars().progress() {
             if i == '?' { continue }
-            let i_node = trie.graph.add_node(i);
-
-            trie.graph.add_edge(trie.current, i_node, i.clone());
+            let i_node = extend(&mut trie, current, i);
 
             for j in alph.chars() {
                 if j == '?' { continue } 
-                let j_node = trie.graph.add_node(j);
-
-                trie.graph.add_edge(i_node, j_node, j.clone());
+                let j_node = extend(&mut trie, i_node, j);
 
                 let dipth: String = i.to_string() + &j.to_string();
                 let filepath = format!("resources/{}.txt", dipth);
@@ -118,28 +118,40 @@ impl Trie {
                         last_node = extend(&mut trie, last_node, c);
                     }
 
-                    let end_node = trie.graph.add_node('@'); // EOW
-                    trie.graph.add_edge(last_node, end_node, '@');
+                    extend(&mut trie, last_node, '@'); // EOW
 
-                    last_node = j_node;
+                    // // println!("gaddagging {}", word);
+                    // for l in 1..word.len() {
+                    //     last_node = current;
+                    //     let v: Vec<char> = word.chars().take(l).collect();
+                    //     // println!("\t recced {} found {:?}", l, v);
+                    //     for c in v.iter().rev() {
+                    //         // print!("{}", c);
+                    //         last_node = extend(&mut trie, last_node, *c);
+                    //     }
+                    //     // println!("");
 
-                    for l in 0..word.len() {
-                        let v: Vec<char> = word.chars().take(l).collect();
-                        for c in v.iter().rev() {
-                            last_node = extend(&mut trie, last_node, *c);
-                        }
+                    //     last_node = extend(&mut trie, last_node, '#');
 
-                        last_node = extend(&mut trie, last_node, '#');
+                    //     for c in word.chars().skip(l) {
+                    //         // print!("{}", c);
+                    //         last_node = extend(&mut trie, last_node, c);
+                    //     }
+                    //     // println!("");
+                    // }
+                    // let mut guess = String::new();
+                    // io::stdin().read_line(&mut guess).expect("Failed to read line");
 
-                        for c in word.chars().skip(l) {
-                            last_node = extend(&mut trie, last_node, c);
-                        }
-                    }
+                    // if word == "AARDVARKS".to_string() {
+                    //     println!("{:?}", trie.nseed(&vec!['D', 'R', 'A', 'A', '#', 'V', 'A', 'R', 'K', 'S']));
+                    // }
                 }
-
                 // return trie;
             }
         }
+
+        // println!("{:?}", trie.nseed(&vec!['D', 'R', 'A', 'A', '#', 'V', 'A', 'R', 'K', 'S']));
+        // println!("{:?}", trie.nseed(&vec!['R', 'E', 'T', 'A', 'E', '#', 'I', 'E', 'S']));
 
         trie
     }
@@ -188,9 +200,11 @@ impl Trie {
 
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         let edges = self.graph.raw_edges();
+        // println!("looking for {}", next);
         for a in self.graph.edges_directed(current, Direction::Outgoing) {
             let e = &edges[a.id().index()];
             if e.weight == next {
+                // println!("found");
                 return Some(e.target())
             }
         }
