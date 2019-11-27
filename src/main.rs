@@ -151,7 +151,7 @@ board.play_word(utils::Position { row: 14, col: 0 }, String::from("BE.G"), utils
 
 fn main() {
     // for i in 0..10 {
-    //     two_player_game(true);
+        two_player_game(true);
     // }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
@@ -163,7 +163,7 @@ fn main() {
     // let t = dictionary::Trie::default();
     // let d = dictionary::Dictionary::default();
 
-    test();
+    // test();
 
     // let position = utils::Position { row: 7, col: 7 };
     // let word = String::from("HELLO");
