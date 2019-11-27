@@ -1,6 +1,7 @@
 #[macro_use] extern crate itertools;
 use crate::player::Player;
 use crate::utils::Type;
+use std::time::SystemTime;
 
 mod bag;
 mod utils;
@@ -28,7 +29,9 @@ fn two_player_game(gcg: bool) {
 
     while board.bag.distribution.len() > 0 || (player_1.rack.len() > 0 && player_2.rack.len() > 0) {
         let rack_1: String = player_1.rack.iter().collect();
+        let start1 = SystemTime::now();
         let (m1, sm1) = player_1.do_move(&mut board, !gcg);
+        let time1 = start1.elapsed().expect("Time went backwards").as_millis();
         
         if sm1 == String::new() && m1.typ == Type::Play {
             break
@@ -48,12 +51,16 @@ fn two_player_game(gcg: bool) {
                             rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
         }
 
+        out = format!("{}\n#note Time: {}", out, time1);
+
         if player_1.rack.len() == 0 {
             break
         }
 
         let rack_2: String = player_2.rack.iter().collect();
+        let start2 = SystemTime::now();
         let (m2, sm2) = player_2.do_move(&mut board, !gcg);
+        let time2 = start2.elapsed().expect("Time went backwards").as_millis();
 
         if sm2 == String::new() && m2.typ == Type::Play {
             break
@@ -73,6 +80,8 @@ fn two_player_game(gcg: bool) {
             out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
                             rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
         }
+
+        out = format!("{}\n#note Time: {}", out, time2);
         
         turn += 1;
 
@@ -140,7 +149,7 @@ fn test() {
 }
 
 fn main() {
-    for i in 0..20 {
+    for i in 0..10 {
         two_player_game(true);
     }
     // let mut b = bag::Bag::default();
