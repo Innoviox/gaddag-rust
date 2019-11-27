@@ -176,23 +176,26 @@ impl Board {
 
         cross
     }
-    
+
     pub fn valid(&self, d: &Direction) -> bool { // TODO check connectedness
         // self.get_words(*dir).iter().all(|x| self.dict.check_word(&x.word))
         let mut marked: [bool; 225] = [false; 225];
 
-        for p in positions().iter() {
-            if !marked[p.to_int()] && self.is_letter(*p) {   
-                let mut curr = p.clone();
-                let mut word = String::new();
-                while self.is_letter(curr) {
-                    word.push(self.at_position(curr));
-                    marked[curr.to_int()] = true;
-                    if !curr.tick(*d) { break }
-                }
-                
-                if word.len() > 1 {
-                    if !self.dict.check_word(&word) { return false }
+        for row in 0..15 {
+            for col in 0..15 {
+                let p = Position { row, col };
+                if !marked[p.to_int()] && self.is_letter(p) {   
+                    let mut curr = p.clone();
+                    let mut word = String::new();
+                    while self.is_letter(curr) {
+                        word.push(self.at_position(curr));
+                        marked[curr.to_int()] = true;
+                        if !curr.tick(*d) { break }
+                    }
+                    
+                    if word.len() > 1 {
+                        if !self.dict.check_word(&word) { return false }
+                    }
                 }
             }
         }
