@@ -3,7 +3,7 @@ use crate::utils::to_word;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
-use petgraph::Graph;
+use petgraph::Graph; // todo use daggy? 
 use petgraph::Direction;
 use petgraph::graph::NodeIndex;
 use petgraph::visit::EdgeRef;

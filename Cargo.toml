@@ -10,7 +10,6 @@ edition = "2018"
 rand = "0.7.2"
 itertools = "0.8.2"
 array-init = "0.1.1"
-daggy = "0.6.0"
 petgraph = "0.4.13"
-petgraph-graphml = "1.0.2"
 indicatif = "0.13.0"
+azul = { git = "https://github.com/maps4print/azul" }
