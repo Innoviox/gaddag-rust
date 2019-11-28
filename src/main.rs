@@ -1,64 +1,82 @@
+#[macro_use] extern crate itertools;
+#[macro_use] extern crate relm;
+
+use crate::player::Player;
+use crate::utils::Position;
+use crate::board::{Board, STATE};
+use std::time::SystemTime;
+
+mod bag;
+mod utils;
+mod board;
+mod dictionary;
+mod player;
+
 use relm_derive::{Msg, widget};
-use relm::Widget;
+use relm::{Widget, Relm, Update};
 use gtk::prelude::*;
-use gtk::Inhibit;
-use gtk::Orientation::Vertical;
+use gtk::{Inhibit, Window, WindowType};
+use gtk::Orientation::{Vertical, Horizontal};
 
 #[derive(Msg)]
 pub enum Msg {
-    Decrement,
-    Increment,
+    // Decrement,
+    // Increment,
     Quit,
 }
 
-pub struct Model {
-    counter: u32,
+struct Win {
+    // …
+    model: Board,
+    window: Window,
 }
 
-#[widget]
-impl Widget for Win {
-    fn model() -> Model {
-        Model {
-            counter: 0,
-        }
+impl Update for Win {
+    // Specify the model used for this widget.
+    type Model = Board;
+    // Specify the model parameter used to init the model.
+    type ModelParam = ();
+    // Specify the type of the messages sent to the update function.
+    type Msg = Msg;
+
+    // Return the initial model.
+    fn model(_: &Relm<Self>, _: ()) -> Board {
+        Board::default()
     }
 
+    // The model may be updated when a message is received.
+    // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
         match event {
-            // A call to self.label1.set_text() is automatically inserted by the
-            // attribute every time the model.counter attribute is updated.
-            Msg::Decrement => self.model.counter -= 1,
-            Msg::Increment => self.model.counter += 1,
             Msg::Quit => gtk::main_quit(),
         }
     }
+}
 
-    view! {
-        gtk::Window {
-            gtk::Box {
-                orientation: Vertical,
-                gtk::Button {
-                    // By default, an event with one paramater is assumed.
-                    clicked => Msg::Increment,
-                    // Hence, the previous line is equivalent to:
-                    // clicked(_) => Increment,
-                    label: "+",
-                },
-                gtk::Label {
-                    // Bind the text property of this Label to the counter attribute
-                    // of the model.
-                    // Every time the counter attribute is updated, the text property
-                    // will be updated too.
-                    text: &self.model.counter.to_string(),
-                },
-                gtk::Button {
-                    clicked => Msg::Decrement,
-                    label: "-",
-                },
-            },
-            // Use a tuple when you want to both send a message and return a value to
-            // the GTK+ callback.
-            delete_event(_, _) => (Msg::Quit, Inhibit(false)),
+impl Widget for Win {
+    // Specify the type of the root widget.
+    type Root = Window;
+
+    // Return the root widget.
+    fn root(&self) -> Self::Root {
+        self.window.clone()
+    }
+
+    // Create the widgets.
+    fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
+        // GTK+ widgets are used normally within a `Widget`.
+        let window = Window::new(WindowType::Toplevel);
+
+        // Connect the signal `delete_event` to send the `Quit` message.
+        connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
+        // There is also a `connect!()` macro for GTK+ events that do not need a
+        // value to be returned in the callback.
+
+        window.show_all();
+
+        Win {
+            model,
+            window: window,
         }
     }
 }
