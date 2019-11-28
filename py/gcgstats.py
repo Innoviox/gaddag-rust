@@ -2,7 +2,7 @@ from statistics import mean, median
 
 time=lambda s: sum(map(int, [i.split()[-1] for i in s.split("\n") if 'Time' in i]))
 s1s, s2s, ts = [], [], []
-with open("../test_cool.txt") as file:
+with open("../test_overnight_2.txt") as file:
     s = file.read().split("#player2 p2 p2")
     for game in s[1:]:
         game = game.split("#p")[0].split("\n")

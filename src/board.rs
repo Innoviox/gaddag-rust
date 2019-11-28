@@ -10,7 +10,6 @@ use petgraph::graph::NodeIndex;
 use itertools::Itertools;
 use std::io;
 use std::io::*;
-use druid::{AppLauncher, Data, Lens};
 
 fn _as(v: usize) -> i32 {
     i32::try_from(v).unwrap()

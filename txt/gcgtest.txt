@@ -1,50 +1,52 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: YWAFUUO H6 FOU +12 12
-#note Time: 16
->p2: OADHCSE I2 COHEADS +78 78
-#note Time: 197
->p1: YWAUHEN J3 WANY +47 59
-#note Time: 154
->p2: X?MFIRI G8 MIX +18 96
-#note Time: 497
->p1: UHEETEB F6 THEBE +35 94
-#note Time: 86
->p2: ?FRIYMO E10 RIMY +28 124
-#note Time: 1860
->p1: UENTPIE 12A UPTI.E +22 116
-#note Time: 237
->p2: ?FOIERN C7 INFEc.OR +80 204
-#note Time: 3824
->p1: NEGEZON 8A ZO.E +42 158
-#note Time: 173
->p2: P?UOVNC 4I ..VOC +26 230
-#note Time: 1112
->p1: NGENAEI M2 IN.AGE +20 178
-#note Time: 188
->p2: P?UNNAB 14A BU.N +12 242
-#note Time: 1216
->p1: NEIEVDI 15D ENDIVE +36 214
+>p1: BSTFWIO H6 BOW +16 16
+#note Time: 34
+>p2: UJR?KHL 7G J.UK +24 24
+#note Time: 285
+>p1: STFIEIM K7 SEMIFIT +90 106
+#note Time: 98
+>p2: R?HLGGE 8K .GGER +27 51
+#note Time: 908
+>p1: AYUULIL M8 .LUILY +22 128
+#note Time: 116
+>p2: ?HLXEDA J9 AXEL +63 114
+#note Time: 1696
+>p1: AUAAWTI N13 AWA +17 145
+#note Time: 100
+>p2: ?HDYGUR O2 RoUGHD.Y +66 180
+#note Time: 971
+>p1: UATIDOA 2I AUDITO. +20 165
+#note Time: 208
+>p2: OVDOSIT 1E OVOID +30 210
+#note Time: 194
+>p1: AELCR?A 15H ARChAE.L +140 305
+#note Time: 2161
+>p2: STZCEOS L1 Z.TS +46 256
+#note Time: 204
+>p1: EVNAPQE 3F VEEP +22 327
+#note Time: 141
+>p2: CEOSHSE G7 .OES +17 273
+#note Time: 152
+>p1: NAQNBOI 14D NIQAB +40 367
+#note Time: 208
+>p2: CHSEOTE 15A OCHE +33 306
+#note Time: 300
+>p1: NOTIEOT F8 TOO +17 384
+#note Time: 216
+>p2: STERNID 9I D.. +8 314
+#note Time: 373
+>p1: NIETIEP 1L .IP +20 404
+#note Time: 218
+>p2: STERNIR 13M ..R +6 320
+#note Time: 250
+>p1: NETIEFE 11C FEET +18 422
 #note Time: 174
->p2: P?NASJR 14I PRAJNaS +88 330
-#note Time: 1623
->p1: IRQAETL E5 QI +24 238
-#note Time: 447
->p2: ADWAGOA 15K WOAD +28 358
-#note Time: 147
->p1: RAETLTL 11G TALLER +25 263
-#note Time: 263
->p2: AGADSEI O12 DI.S +48 406
-#note Time: 340
->p1: TGTEIRO 12H GOITER +33 296
-#note Time: 280
->p2: AGAELSU K2 LE.S +26 432
-#note Time: 311
->p1: TTAKLOR 10K LARK +24 320
-#note Time: 249
->p2: AGAU A8 .AG +13 445
-#note Time: 149
->p1: TTO N5 TOT +14 334
-#note Time: 78
->p1:  (AU) +4 338
+>p2: STENIRA 2A RETINAS +84 404
+#note Time: 504
+>p1: NIERNNM 12A MIEN +27 449
+#note Time: 153
+>p2: NA 1A AN +14 418
+#note Time: 123
+>p2:  (RNN) +6 424

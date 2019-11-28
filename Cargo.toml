@@ -12,5 +12,8 @@ itertools = "0.8.2"
 array-init = "0.1.1"
 petgraph = "0.4.13"
 indicatif = "0.13.0"
-azul = { git = "https://github.com/maps4print/azul" }
-druid = { git = "https://github.com/xi-editor/druid" }
+gtk = "0.7.0"
+relm = "0.18.0"
+relm-derive = "0.18.0"
+# azul = { git = "https://github.com/maps4print/azul" }
+# druid = { git = "https://github.com/xi-editor/druid" }
