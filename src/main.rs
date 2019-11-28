@@ -17,6 +17,9 @@ use relm::{Widget, Relm, Update};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
+use gtk::{
+    Label,
+};
 
 #[derive(Msg)]
 pub enum Msg {
@@ -64,9 +67,19 @@ impl Widget for Win {
 
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
+        let vbox = gtk::Box::new(Vertical, 0);
+        for row in 0..15 {
+            let hbox = gtk::Box::new(Horizontal, 0);
+            for col in 0..15 {
+                let label = Label::new(Some(&model.at_position(Position { row, col }).to_string()));
+                hbox.add(&label);
+            }
+            vbox.add(&hbox);
+        }
+        
         // GTK+ widgets are used normally within a `Widget`.
         let window = Window::new(WindowType::Toplevel);
-
+        window.add(&vbox);
         // Connect the signal `delete_event` to send the `Quit` message.
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         // There is also a `connect!()` macro for GTK+ events that do not need a
