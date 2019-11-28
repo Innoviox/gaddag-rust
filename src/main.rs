@@ -48,11 +48,11 @@ fn two_player_game(mut b: &mut Board, gcg: bool) {
                                       m1.word, score_1)
             }
         } else {
-            out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, turn, 
-                            rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1);
+            out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})", out, turn, 
+                            rack_1, m1.position.to_str(m1.direction), sm1, m1.score, score_1, time1);
         }
 
-        out = format!("{}\n#note Time: {}", out, time1);
+        if gcg { out = format!("{}\n#note Time: {}", out, time1); }
 
         if player_1.rack.len() == 0 {
             break
@@ -78,11 +78,11 @@ fn two_player_game(mut b: &mut Board, gcg: bool) {
                                       m2.word, score_2)
             }
         } else {
-            out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03}", out, 
-                            rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2);
+            out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})", out, 
+                            rack_2, m2.position.to_str(m2.direction), sm2, m2.score, score_2, time2);
         }
 
-        out = format!("{}\n#note Time: {}", out, time2);
+        if gcg { out = format!("{}\n#note Time: {}", out, time2); }
         
         turn += 1;
 
@@ -118,7 +118,7 @@ fn two_player_game(mut b: &mut Board, gcg: bool) {
             out = format!("{}\n>{}:  ({}) +{} {}", out, player_2.name, 
                           end_s, end, score_2);            
         } else {
-            out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(40), end_s, end, score_2);    
+            out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(45), end_s, end, score_2);    
         }   
     }
     if !gcg {
@@ -154,7 +154,7 @@ board.play_word(utils::Position { row: 14, col: 0 }, String::from("BE.G"), utils
 fn main() {
     let mut board = board::Board::default();
     // for i in 0..100 {
-        two_player_game(&mut board, true);
+        two_player_game(&mut board, false);
         board.reset();
     // }
     // let mut b = bag::Bag::default();
