@@ -582,7 +582,6 @@ impl Board {
                 }
             }
         } else {
-            
             let next = self.at_position(position);
             let mut np = part.clone();
             np.push(next);

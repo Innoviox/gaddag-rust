@@ -1,48 +1,58 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: TFGYORE H4 FOGEY +32 32
-#note Time: 45
->p2: ?SIDDNN 6A SNeDDIN. +64 64
-#note Time: 458
->p1: TRLXMGE C3 REM.X +42 74
-#note Time: 125
->p2: OPEONEC A2 POCO.EN +42 106
-#note Time: 137
->p1: TLGLURN 4C .NGUL. +20 94
-#note Time: 70
->p2: EII?LVE D6 .IVE +21 127
-#note Time: 251
->p1: TLRAALR 10B LAR +14 108
-#note Time: 67
->p2: I?LEUNP 11D sPINULE +75 202
-#note Time: 339
->p1: TALRTUF J5 AFLUTT.R +71 179
-#note Time: 149
->p2: OCEIIJE 12C JEE +44 246
-#note Time: 124
->p1: IIDATHE 12H HI.ED +37 216
+>p1: IEIENE? -IEE +0 0
+#note Time: 158
+>p2: N?VSEIO H2 ENVIOuS +76 76
+#note Time: 638
+>p1: INE?GII 8A IGNIfIE. +77 77
+#note Time: 645
+>p2: CTFWTRU 2G W.FT +12 88
+#note Time: 97
+>p1: ATIEPNE I2 .E +9 86
+#note Time: 228
+>p2: CTRUAES 5E SUR.CATE +90 178
+#note Time: 369
+>p1: ATIPNEN 6D NIP +23 109
+#note Time: 314
+>p2: NUGSHOL 4L HUNG +30 208
+#note Time: 175
+>p1: ATENLAX N2 AN.EX +56 165
 #note Time: 143
->p2: OCIITSA C12 .IAO +22 268
-#note Time: 200
->p1: IATQIOE 10F QI +64 280
-#note Time: 144
->p2: CITSWNO 14B W.INSCOT +80 348
-#note Time: 215
->p1: ATIOEIR I8 OI +12 292
-#note Time: 249
->p2: SAOGRVU 15H SAVOUR +38 386
-#note Time: 188
->p1: ATEIRAT 12B A... +11 303
-#note Time: 169
->p2: GZARYME N12 MAZY +49 435
-#note Time: 193
->p1: TEIRATA O6 ARIETTA +79 382
-#note Time: 182
->p2: GREKEHA N2 GREEK +56 491
-#note Time: 186
->p1: OTBESDW 15A WO.D +40 422
-#note Time: 217
->p2: HAB K3 BAH +26 517
-#note Time: 93
->p2:  (TBES) +12 529
+>p2: SOLTOAO 6M O.O +10 218
+#note Time: 125
+>p1: TLAKCIB J4 T.ILBACK +74 239
+#note Time: 173
+>p2: SLTAOVO O1 VLO. +28 246
+#note Time: 225
+>p1: TTAIDBQ 9I Q.T +22 261
+#note Time: 95
+>p2: STAOAEY 8J .AYEST +47 293
+#note Time: 189
+>p1: TAIDBGD 11J .ITBAG +26 287
+#note Time: 160
+>p2: OAEAZLM 10N ZA +65 358
+#note Time: 190
+>p1: DDYOEER 12K DEY +28 315
+#note Time: 143
+>p2: OEALMEN 7J .EONE +32 390
+#note Time: 225
+>p1: DOERUAR 13L DEAR +30 345
+#note Time: 210
+>p2: ALMMWDH G7 M.WL +22 412
+#note Time: 136
+>p1: OURRRSO E8 .UROR +8 353
+#note Time: 158
+>p2: AMDHIFD 12C DI.HAM +30 442
+#note Time: 194
+>p1: RSOARUO H10 AR.ORS +26 379
+#note Time: 223
+>p2: FDLJIEE 13B JEFE +44 486
+#note Time: 222
+>p1: UOP 14B OP +32 411
+#note Time: 129
+>p2: DLI I9 .I +17 503
+#note Time: 82
+>p1: U C8 .U +3 414
+#note Time: 116
+>p1:  (DL) +6 420
