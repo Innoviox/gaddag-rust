@@ -5,6 +5,7 @@ use crate::player::Player;
 use crate::utils::Position;
 use crate::board::{Board, STATE};
 use std::time::SystemTime;
+use std::collections::HashMap;
 
 mod bag;
 mod utils;
@@ -18,7 +19,7 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label,
+    Label, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION
 };
 
 #[derive(Msg)]
@@ -65,13 +66,36 @@ impl Widget for Win {
         self.window.clone()
     }
 
+    fn init_view(&mut self) {
+        // Adjust the look of the entry.
+        let style_context = self.window.get_style_context(); //.unwrap();
+        // TODO: remove the next line when relm supports css.
+        let style = include_str!("../style/board.css");
+        let provider = CssProvider::new();
+        provider.load_from_data(style.as_bytes()).unwrap();
+        style_context.add_provider(&provider, STYLE_PROVIDER_PRIORITY_APPLICATION);
+    }
+
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
+        let mut colors = HashMap::<char, &str>::new();
+        colors.insert('#', "red");
+        colors.insert('.', "white");
+        colors.insert('-', "light blue");
+        colors.insert('^', "pink");
+        colors.insert('*', "pink");
+        colors.insert('+', "dark blue");
+
         let vbox = gtk::Box::new(Vertical, 0);
         for row in 0..15 {
             let hbox = gtk::Box::new(Horizontal, 0);
             for col in 0..15 {
-                let label = Label::new(Some(&model.at_position(Position { row, col }).to_string()));
+                let label = Label::new(None);
+                let at = model.at_position(Position { row, col });
+                label.set_markup(&format!("<span class=\"label\" face=\"monospace\" background=\"{}\" size=\"20000\"> </span>", 
+                                 colors[&at]));
+                // label.set_border_width(2);
+                label.set_size_request(50, 25);
                 hbox.add(&label);
             }
             vbox.add(&hbox);
