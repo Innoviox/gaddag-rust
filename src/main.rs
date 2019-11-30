@@ -92,7 +92,7 @@ impl Widget for Win {
             for col in 0..15 {
                 let label = Label::new(None);
                 let at = model.at_position(Position { row, col });
-                label.set_markup(&format!("<span class=\"label\" face=\"monospace\" background=\"{}\" size=\"20000\"> </span>", 
+                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\" size=\"20000\"> </span>", 
                                  colors[&at]));
                 // label.set_border_width(2);
                 label.set_size_request(50, 25);
