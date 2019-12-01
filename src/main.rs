@@ -6,6 +6,7 @@ extern crate gdk_sys;
 use crate::player::Player;
 use crate::utils::Position;
 use crate::board::{Board, STATE};
+use crate::game::Game;
 use std::time::SystemTime;
 use std::collections::HashMap;
 
@@ -14,14 +15,15 @@ mod utils;
 mod board;
 mod dictionary;
 mod player;
+mod game;
 
 use relm_derive::{Msg, widget};
-use relm::{Widget, Relm, Update};
+use relm::{Widget, Relm, Update, timeout};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION, Border, Grid
+    Label, Border, Grid, Button
 };
 use gdk_sys::GdkRGBA;
 use gdk::RGBA;
@@ -31,32 +33,49 @@ use gdk::RGBA;
 pub enum Msg {
     // Decrement,
     // Increment,
+    Tick,
     Quit,
 }
 
 struct Win {
     // …
-    model: Board,
+    model: Game,
     window: Window,
+
+    grid: Grid
 }
 
 impl Update for Win {
     // Specify the model used for this widget.
-    type Model = Board;
+    type Model = Game;
     // Specify the model parameter used to init the model.
     type ModelParam = ();
     // Specify the type of the messages sent to the update function.
     type Msg = Msg;
 
     // Return the initial model.
-    fn model(_: &Relm<Self>, _: ()) -> Board {
-        Board::default()
+    fn model(_: &Relm<Self>, _: ()) -> Game {
+        Game::default()
     }
 
     // The model may be updated when a message is received.
     // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
         match event {
+            Tick => {
+                self.model.do_move();
+                for row in 0..15 {
+                    for col in 0..15 {
+                        let p = Position { row: row as usize, col: col as usize };
+                        let at = self.model.get_board().at_position(p);
+                        if let Some(w) = self.grid.get_child_at(row, col) {
+                            if let Ok(l) = w.dynamic_cast::<Label>() {
+                                l.set_text(&at.to_string());
+                            }
+                        }
+                    }
+                }
+            },
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -91,29 +110,28 @@ impl Widget for Win {
         for row in 0..15 {
             for col in 0..15 {
                 let label = Label::new(Some(" "));
-                let at = model.at_position(Position { row, col });
+                let at = model.get_board().at_position(Position { row, col });
                 label.override_background_color(gtk::StateFlags::empty(), Some(&colors[&at]));
-                // label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"> </span>", 
-                //                  colors[&at]));
-
                 grid.attach(&label, row as i32, col as i32, 1, 1);
             }
         }
 
-        // GTK+ widgets are used normally within a `Widget`.
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
-        // Connect the signal `delete_event` to send the `Quit` message.
+        window.set_default_size(400, 400);
+
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        // There is also a `connect!()` macro for GTK+ events that do not need a
-        // value to be returned in the callback.
 
         window.show_all();
 
-        Win {
+        let mut win = Win {
             model,
-            window: window,
-        }
+            window,
+            grid
+        };
+
+        win.update(Msg::Tick);
+        win
     }
 }
 

@@ -6,16 +6,18 @@ use std::cmp;
 
 pub struct Player {
     pub rack: Vec<char>,
-    pub name: String
+    pub name: String,
+    pub score: u32
 }
 
 impl Player {
-    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String){
+    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String) {
         let gen = board.gen_all_moves(&self.rack);
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
         let best_m = gen.iter().max_by(Move::cmp_with(1.0, eval_val));
 
         if let Some(m) = best_m {
+            self.score += m.score as u32;
             match m.typ {
                 Type::Play => {
                     let chars = board.reals(&m);
