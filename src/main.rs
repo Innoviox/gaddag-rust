@@ -151,7 +151,7 @@ impl Widget for Win {
         grid.attach(&moves_container, 16, 0, 10, 15);
 
         let window = Window::new(WindowType::Toplevel);
-        window.add(&board);
+        window.add(&grid);
         window.set_default_size(400, 400);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
