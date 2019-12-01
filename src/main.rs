@@ -98,11 +98,24 @@ impl Update for Win {
                     let lm = Move::of(&self.last_move);
                     self.place(&lm, "white");
 
-                    let m = self.model.do_move().0;
+                    let p = self.model.current_player();
+                    let rack: String = p.rack.iter().collect();
+                    let score = p.score as i32;
+                    let c = self.model.current as i32;
+                    let t = self.model.get_turn() as i32;
+
+                    let (m, sm) = self.model.do_move();
 
                     self.place(&m, "yellow");
 
                     self.last_move = Move::of(&m);
+
+                    let text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
+                            rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
+
+                    let label = Label::new(Some(&text));
+                    println!("{} {} {}", text, t - 1, c);
+                    self.moves.attach(&label, t - 1, c, 1, 1);
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -146,6 +159,12 @@ impl Widget for Win {
         }
 
         let moves = gtk::Grid::new();
+        moves.set_hexpand(true);
+        moves.set_vexpand(true);
+        moves.set_row_homogeneous(true);
+        moves.set_column_homogeneous(true); 
+        moves.set_halign(gtk::Align::Fill);
+        moves.set_valign(gtk::Align::Fill);
 
         let no_adjustment: Option<gtk::Adjustment> = None;
         let moves_container = gtk::Layout::new(no_adjustment.as_ref(), no_adjustment.as_ref());
@@ -160,11 +179,11 @@ impl Widget for Win {
         grid.set_valign(gtk::Align::Fill);
 
         grid.attach(&board, 0, 0, 1, 1);
-        // grid.attach(&moves_container, 0, 1, 1, 1);
+        grid.attach(&moves_container, 1, 0, 1, 1);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
-        window.set_default_size(600, 600);
+        window.set_default_size(2500, 2500);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         interval(relm.stream(), 1000, || Msg::Tick);
