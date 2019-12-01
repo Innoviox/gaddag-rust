@@ -89,12 +89,11 @@ impl Update for Win {
                 if !self.model.is_over() {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
+                    let m = self.model.do_move().0;
+                    self.place(&m, "yellow");
+
                     let lm = Move::of(&self.last_move);
                     self.place(&lm, "white");
-
-                    let m = self.model.do_move().0;
-
-                    self.place(&m, "yellow");
 
                     self.last_move = Move::of(&m);
                 }
