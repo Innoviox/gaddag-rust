@@ -112,6 +112,8 @@ impl Widget for Win {
                                  colors[&at]));
 
                 grid.attach(&label, row as i32, col as i32, 1, 1);
+                grid.set_cell_width(&label, 50);
+                grid.set_cell_height(&label, 50);
             }
         }
 
