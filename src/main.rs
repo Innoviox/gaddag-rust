@@ -29,6 +29,9 @@ use gdk_sys::GdkRGBA;
 use gdk::RGBA;
 
 
+const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
+const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
+
 #[derive(Msg)]
 pub enum Msg {
     // Decrement,
@@ -71,7 +74,8 @@ impl Update for Win {
                         let at = self.model.get_board().at_position(p);
                         if let Some(w) = self.grid.get_child_at(p.row as i32, p.col as i32) {
                             if let Ok(l) = w.dynamic_cast::<Label>() {
-                                l.set_text(&at.to_string());
+                                l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+                                l.set_markup(&format!("<span color=\"white\">{}</span>", at));
                             }
                         }
                         p.tick(m.direction);
