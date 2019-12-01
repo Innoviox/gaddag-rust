@@ -1,6 +1,7 @@
 #[macro_use] extern crate itertools;
 #[macro_use] extern crate relm;
 extern crate gdk;
+extern crate gdk_sys;
 
 use crate::player::Player;
 use crate::utils::Position;
@@ -22,6 +23,9 @@ use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
     Label, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION, Border, Grid
 };
+use gdk_sys::GdkRGBA;
+use gdk::RGBA;
+
 
 #[derive(Msg)]
 pub enum Msg {
@@ -69,51 +73,30 @@ impl Widget for Win {
 
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
-        let mut colors = HashMap::<char, &str>::new();
-        colors.insert('#', "red");
-        colors.insert('.', "white");
-        colors.insert('-', "light blue");
-        colors.insert('^', "pink");
-        colors.insert('*', "pink");
-        colors.insert('+', "dark blue");
+        let mut colors = HashMap::<char, RGBA>::new();
+        colors.insert('#', RGBA { red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0} ); // "red");
+        colors.insert('.', RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0} ); // "white");
+        colors.insert('-', RGBA { red: 0.48, green: 0.79, blue: 0.90, alpha: 1.0} ); // "light blue");
+        colors.insert('^', RGBA { red: 0.90, green: 0.49, blue: 0.49, alpha: 1.0} ); // "pink");
+        colors.insert('*', RGBA { red: 0.90, green: 0.49, blue: 0.49, alpha: 1.0} ); // "pink");
+        colors.insert('+', RGBA { red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0} ); // "dark blue");
 
-        // let vbox = gtk::Box::new(Vertical, 0);
-        // for row in 0..15 {
-        //     let hbox = gtk::Box::new(Horizontal, 0);
-        //     for col in 0..15 {
-        //         let label = Label::new(None);
-        //         let at = model.at_position(Position { row, col });
-        //         label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"></span>", 
-        //                          colors[&at]));
-        //         // label.set_border_width(2);
-        //         // label.set_size_request(50, 25);
-        //         let border = Border::default();
-        //         border.add(&label);
-        //         hbox.add(&border);
-        //     }
-        //     vbox.add(&hbox);
-        // }
         let grid = gtk::Grid::new();
         grid.set_row_homogeneous(true);
         grid.set_column_homogeneous(true); 
         grid.set_row_spacing(2);
         grid.set_column_spacing(2);
         grid.set_border_width(1);     
-        grid.set_hexpand(true);
-        grid.set_vexpand(true);
-        grid.set_halign(gtk::Align::Fill);
-        grid.set_valign(gtk::Align::Fill);
 
         for row in 0..15 {
             for col in 0..15 {
-                let label = Label::new(None);
+                let label = Label::new(Some(" "));
                 let at = model.at_position(Position { row, col });
-                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"> </span>", 
-                                 colors[&at]));
+                label.override_background_color(gtk::StateFlags::empty(), Some(&colors[&at]));
+                // label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"> </span>", 
+                //                  colors[&at]));
 
                 grid.attach(&label, row as i32, col as i32, 1, 1);
-                grid.set_cell_width(&label, 50);
-                grid.set_cell_height(&label, 50);
             }
         }
 
