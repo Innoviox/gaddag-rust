@@ -63,7 +63,7 @@ impl Win {
                     l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
                     if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
                         at = at.to_lowercase().to_string().chars().next().unwrap();
-                        l.set_markup(&format!("<span color=\"{}\"><u>{}</u></span>", "pink", at));
+                        l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
                     } else {
                         l.set_markup(&format!("<span color=\"{}\">{}</span>", color, at));
                     }
