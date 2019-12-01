@@ -63,7 +63,7 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Tick => {
-                if !self.model.is_done {
+                if !self.model.is_over() {
                     let m = self.model.do_move().0;
 
                     let mut p = m.position.clone();
