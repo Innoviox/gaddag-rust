@@ -20,7 +20,7 @@ pub struct Board {
     dict: Dictionary,
     trie: Trie, 
     pub bag: Bag, // public so can draw tiles
-    blanks: Vec<Position>,
+    pub blanks: Vec<Position>,
     cross_checks: [[Vec<char>; 225]; 2],
     affected: Vec<Position>
 }

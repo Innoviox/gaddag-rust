@@ -57,11 +57,16 @@ impl Win {
     fn place(&mut self, m: &Move, color: &str) {
         let mut p = m.position.clone();
         for i in m.word.chars() {
-            let at = self.model.get_board().at_position(p);
+            let mut at = self.model.get_board().at_position(p);
             if let Some(w) = self.board.get_child_at(p.row as i32, p.col as i32) {
                 if let Ok(l) = w.dynamic_cast::<Label>() {
                     l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-                    l.set_markup(&format!("<span color=\"{}\">{}</span>", color, at));
+                    if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
+                        at = at.to_lowercase().to_string().chars().next().unwrap();
+                        l.set_markup(&format!("<span color=\"{}\"><u>{}</u></span>", "pink", at));
+                    } else {
+                        l.set_markup(&format!("<span color=\"{}\">{}</span>", color, at));
+                    }
                 }
             }
             p.tick(m.direction);
@@ -147,12 +152,19 @@ impl Widget for Win {
         moves_container.add(&moves);
 
         let grid = gtk::Grid::new();
-        grid.attach(&board, 0, 0, 15, 15);
-        grid.attach(&moves_container, 16, 0, 10, 15);
+        grid.set_hexpand(true);
+        grid.set_vexpand(true);
+        grid.set_row_homogeneous(true);
+        grid.set_column_homogeneous(true); 
+        grid.set_halign(gtk::Align::Fill);
+        grid.set_valign(gtk::Align::Fill);
+
+        grid.attach(&board, 0, 0, 1, 1);
+        // grid.attach(&moves_container, 0, 1, 1, 1);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
-        window.set_default_size(400, 400);
+        window.set_default_size(600, 600);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         interval(relm.stream(), 1000, || Msg::Tick);
