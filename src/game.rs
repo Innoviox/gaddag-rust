@@ -25,7 +25,7 @@ impl Game {
     }
 
     pub fn is_over(&self) -> bool {
-        self.board.bag.distribution.len() > 0 || (self.players[0].rack.len() > 0 && self.players[0].rack.len() > 0)
+        !(self.board.bag.distribution.len() > 0 || (self.players[0].rack.len() > 0 && self.players[0].rack.len() > 0))
     }
 
     pub fn get_board(&self) -> &Board { &self.board }
