@@ -17,5 +17,4 @@ gdk = "0.11.0"
 gdk-sys = "0.9.0"
 relm = "0.18.0"
 relm-derive = "0.18.0"
-# azul = { git = "https://github.com/maps4print/azul" }
-# druid = { git = "https://github.com/xi-editor/druid" }
+rayon = "1.2.1"

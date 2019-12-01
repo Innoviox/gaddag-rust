@@ -467,7 +467,8 @@ impl Board {
             if cp.tick_opp(direction) {  // todo if not tick opp add check?
                 // for (i, next) in alph.chars().enumerate() {
                     // let next = c.next().unwrap();
-
+                // todo rayon
+                // self.trie.nexts(node).par_iter().map(|(next, nnode)| {
                 for (next, nnode) in self.trie.nexts(node) {
                     if let Some(i) = alph.find(next) {
                         if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 

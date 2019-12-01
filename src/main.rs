@@ -47,6 +47,7 @@ struct Win {
 
     // ui fields
     board: Grid,
+    moves: Grid,
 
     // internal fields
     last_move: Move,
@@ -139,6 +140,16 @@ impl Widget for Win {
             }
         }
 
+        let moves = gtk::Grid::new();
+
+        let no_adjustment: Option<gtk::Adjustment> = None;
+        let moves_container = gtk::Layout::new(no_adjustment.as_ref(), no_adjustment.as_ref());
+        moves_container.add(&moves);
+
+        let grid = gtk::Grid::new();
+        grid.attach(&board, 0, 0, 15, 15);
+        grid.attach(&moves_container, 16, 0, 10, 15);
+
         let window = Window::new(WindowType::Toplevel);
         window.add(&board);
         window.set_default_size(400, 400);
@@ -152,6 +163,7 @@ impl Widget for Win {
             model,
             window,
             board,
+            moves,
             last_move: Move::none()
         };
 
