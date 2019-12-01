@@ -18,7 +18,7 @@ mod player;
 mod game;
 
 use relm_derive::{Msg, widget};
-use relm::{Widget, Relm, Update, timeout};
+use relm::{Widget, Relm, Update, interval};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
@@ -63,16 +63,18 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Tick => {
-                self.model.do_move();
-                for row in 0..15 {
-                    for col in 0..15 {
-                        let p = Position { row: row as usize, col: col as usize };
+                if !self.model.is_done {
+                    let m = self.model.do_move().0;
+
+                    let mut p = m.position.clone();
+                    for i in m.word.chars() {
                         let at = self.model.get_board().at_position(p);
-                        if let Some(w) = self.grid.get_child_at(row, col) {
+                        if let Some(w) = self.grid.get_child_at(p.row as i32, p.col as i32) {
                             if let Ok(l) = w.dynamic_cast::<Label>() {
                                 l.set_text(&at.to_string());
                             }
                         }
+                        p.tick(m.direction);
                     }
                 }
             },
@@ -98,7 +100,7 @@ impl Widget for Win {
         colors.insert('-', RGBA { red: 0.48, green: 0.79, blue: 0.90, alpha: 1.0} ); // "light blue");
         colors.insert('^', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
         colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
-        colors.insert('+', RGBA { red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0} ); // "dark blue");
+        colors.insert('+', RGBA { red: 0.2, green: 0.38, blue: 0.92, alpha: 1.0} ); // "dark blue");
 
         let grid = gtk::Grid::new();
         grid.set_row_homogeneous(true);
@@ -121,6 +123,7 @@ impl Widget for Win {
         window.set_default_size(400, 400);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
+        interval(relm.stream(), 1000, || Msg::Tick);
 
         window.show_all();
 
@@ -130,7 +133,7 @@ impl Widget for Win {
             grid
         };
 
-        win.update(Msg::Tick);
+        // win.update(Msg::Tick);
         win
     }
 }
