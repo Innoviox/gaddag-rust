@@ -4,7 +4,7 @@ extern crate gdk;
 extern crate gdk_sys;
 
 use crate::player::Player;
-use crate::utils::Position;
+use crate::utils::{Position, Move};
 use crate::board::{Board, STATE};
 use crate::game::Game;
 use std::time::SystemTime;
@@ -41,11 +41,31 @@ pub enum Msg {
 }
 
 struct Win {
-    // …
+    // necessary fields
     model: Game,
     window: Window,
 
-    grid: Grid
+    // ui fields
+    board: Grid,
+
+    // internal fields
+    last_move: Move,
+}
+
+impl Win {
+    fn place(&mut self, m: &Move, color: &str) {
+        let mut p = m.position.clone();
+        for i in m.word.chars() {
+            let at = self.model.get_board().at_position(p);
+            if let Some(w) = self.board.get_child_at(p.row as i32, p.col as i32) {
+                if let Ok(l) = w.dynamic_cast::<Label>() {
+                    l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+                    l.set_markup(&format!("<span color=\"{}\">{}</span>", color, at));
+                }
+            }
+            p.tick(m.direction);
+        }
+    }
 }
 
 impl Update for Win {
@@ -67,19 +87,16 @@ impl Update for Win {
         match event {
             Tick => {
                 if !self.model.is_over() {
+                    // why do i have to do this??? why cant i do
+                    // self.place(&self.last_move...)? idk
+                    let lm = Move::of(&self.last_move);
+                    self.place(&lm, "white");
+
                     let m = self.model.do_move().0;
 
-                    let mut p = m.position.clone();
-                    for i in m.word.chars() {
-                        let at = self.model.get_board().at_position(p);
-                        if let Some(w) = self.grid.get_child_at(p.row as i32, p.col as i32) {
-                            if let Ok(l) = w.dynamic_cast::<Label>() {
-                                l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-                                l.set_markup(&format!("<span color=\"white\">{}</span>", at));
-                            }
-                        }
-                        p.tick(m.direction);
-                    }
+                    self.place(&m, "yellow");
+
+                    self.last_move = Move::of(&m);
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -106,24 +123,24 @@ impl Widget for Win {
         colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
         colors.insert('+', RGBA { red: 0.2, green: 0.38, blue: 0.92, alpha: 1.0} ); // "dark blue");
 
-        let grid = gtk::Grid::new();
-        grid.set_row_homogeneous(true);
-        grid.set_column_homogeneous(true); 
-        grid.set_row_spacing(2);
-        grid.set_column_spacing(2);
-        grid.set_border_width(1);     
+        let board = gtk::Grid::new();
+        board.set_row_homogeneous(true);
+        board.set_column_homogeneous(true); 
+        board.set_row_spacing(2);
+        board.set_column_spacing(2);
+        board.set_border_width(1);     
 
         for row in 0..15 {
             for col in 0..15 {
                 let label = Label::new(Some(" "));
                 let at = model.get_board().at_position(Position { row, col });
                 label.override_background_color(gtk::StateFlags::empty(), Some(&colors[&at]));
-                grid.attach(&label, row as i32, col as i32, 1, 1);
+                board.attach(&label, row as i32, col as i32, 1, 1);
             }
         }
 
         let window = Window::new(WindowType::Toplevel);
-        window.add(&grid);
+        window.add(&board);
         window.set_default_size(400, 400);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
@@ -134,7 +151,8 @@ impl Widget for Win {
         let mut win = Win {
             model,
             window,
-            grid
+            board,
+            last_move: Move::none()
         };
 
         // win.update(Msg::Tick);
