@@ -1,5 +1,6 @@
 #[macro_use] extern crate itertools;
 #[macro_use] extern crate relm;
+extern crate gdk;
 
 use crate::player::Player;
 use crate::utils::Position;
@@ -19,7 +20,7 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION
+    Label, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION, Border, Grid
 };
 
 #[derive(Msg)]
@@ -66,16 +67,6 @@ impl Widget for Win {
         self.window.clone()
     }
 
-    fn init_view(&mut self) {
-        // Adjust the look of the entry.
-        let style_context = self.window.get_style_context(); //.unwrap();
-        // TODO: remove the next line when relm supports css.
-        let style = include_str!("../style/board.css");
-        let provider = CssProvider::new();
-        provider.load_from_data(style.as_bytes()).unwrap();
-        style_context.add_provider(&provider, STYLE_PROVIDER_PRIORITY_APPLICATION);
-    }
-
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
         let mut colors = HashMap::<char, &str>::new();
@@ -86,24 +77,43 @@ impl Widget for Win {
         colors.insert('*', "pink");
         colors.insert('+', "dark blue");
 
-        let vbox = gtk::Box::new(Vertical, 0);
+        // let vbox = gtk::Box::new(Vertical, 0);
+        // for row in 0..15 {
+        //     let hbox = gtk::Box::new(Horizontal, 0);
+        //     for col in 0..15 {
+        //         let label = Label::new(None);
+        //         let at = model.at_position(Position { row, col });
+        //         label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"></span>", 
+        //                          colors[&at]));
+        //         // label.set_border_width(2);
+        //         // label.set_size_request(50, 25);
+        //         let border = Border::default();
+        //         border.add(&label);
+        //         hbox.add(&border);
+        //     }
+        //     vbox.add(&hbox);
+        // }
+        let grid = gtk::Grid::new();
+        grid.set_row_homogeneous(true);
+        grid.set_column_homogeneous(true); 
+        grid.set_row_spacing(2);
+        grid.set_column_spacing(2);
+        grid.set_border_width(1);     
+
         for row in 0..15 {
-            let hbox = gtk::Box::new(Horizontal, 0);
             for col in 0..15 {
                 let label = Label::new(None);
                 let at = model.at_position(Position { row, col });
-                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\" size=\"20000\"> </span>", 
+                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"></span>", 
                                  colors[&at]));
-                // label.set_border_width(2);
-                label.set_size_request(50, 25);
-                hbox.add(&label);
+
+                grid.attach(&label, row as i32, col as i32, 50, 50);
             }
-            vbox.add(&hbox);
         }
-        
+
         // GTK+ widgets are used normally within a `Widget`.
         let window = Window::new(WindowType::Toplevel);
-        window.add(&vbox);
+        window.add(&grid);
         // Connect the signal `delete_event` to send the `Quit` message.
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         // There is also a `connect!()` macro for GTK+ events that do not need a
