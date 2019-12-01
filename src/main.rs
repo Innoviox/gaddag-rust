@@ -99,15 +99,19 @@ impl Widget for Win {
         grid.set_row_spacing(2);
         grid.set_column_spacing(2);
         grid.set_border_width(1);     
+        grid.set_hexpand(true);
+        grid.set_vexpand(true);
+        grid.set_halign(gtk::Align::Fill);
+        grid.set_valign(gtk::Align::Fill);
 
         for row in 0..15 {
             for col in 0..15 {
                 let label = Label::new(None);
                 let at = model.at_position(Position { row, col });
-                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"></span>", 
+                label.set_markup(&format!("<span face=\"monospace\" background=\"{}\"> </span>", 
                                  colors[&at]));
 
-                grid.attach(&label, row as i32, col as i32, 50, 50);
+                grid.attach(&label, row as i32, col as i32, 1, 1);
             }
         }
 
