@@ -77,8 +77,8 @@ impl Widget for Win {
         colors.insert('#', RGBA { red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0} ); // "red");
         colors.insert('.', RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0} ); // "white");
         colors.insert('-', RGBA { red: 0.48, green: 0.79, blue: 0.90, alpha: 1.0} ); // "light blue");
-        colors.insert('^', RGBA { red: 0.90, green: 0.49, blue: 0.49, alpha: 1.0} ); // "pink");
-        colors.insert('*', RGBA { red: 0.90, green: 0.49, blue: 0.49, alpha: 1.0} ); // "pink");
+        colors.insert('^', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
+        colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
         colors.insert('+', RGBA { red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0} ); // "dark blue");
 
         let grid = gtk::Grid::new();
