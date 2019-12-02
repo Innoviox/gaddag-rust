@@ -114,8 +114,8 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    println!("{} {} {}", text, t - 1, c);
-                    self.moves.attach(&label, t - 1, c, 1, 1);
+                    self.board.attach(&label, 15 + c * 8, t, 8, 1);
+                    self.window.show_all();
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -158,6 +158,11 @@ impl Widget for Win {
             }
         }
 
+        let l1 = Label::new(Some("Player 1"));
+        board.attach(&l1, 15, 0, 8, 1);
+        let l2 = Label::new(Some("Player 2"));
+        board.attach(&l2, 23, 0, 8, 1);
+
         let moves = gtk::Grid::new();
         moves.set_hexpand(true);
         moves.set_vexpand(true);
@@ -179,7 +184,7 @@ impl Widget for Win {
         grid.set_valign(gtk::Align::Fill);
 
         grid.attach(&board, 0, 0, 1, 1);
-        grid.attach(&moves_container, 1, 0, 1, 1);
+        // grid.attach(&moves_container, 1, 0, 1, 1);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
