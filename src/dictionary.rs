@@ -41,15 +41,15 @@ impl Dictionary {
 
         let bar = ProgressBar::new(40);
         let mut i = 0;
-        
-        for (w, e) in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from).par_iter().map(|line| {
+
+        dict.leaves = fs::read_to_string("resources/leaves.txt").expect("No leaves file")
+                          .lines().map(String::from).collect::<Vec<String>>()
+                          .par_iter().map(|line| {
             let s: Vec<&str> = line.split(" ").collect();
             let word = to_word(&s[0].chars().collect());
             let eval = s[1].parse::<f32>().unwrap();  
-            (word, eval)         
-        }) {
-            dict.leaves.insert(w, e);
-        }
+            (word, eval)
+        }).collect();
 
         // for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
         //     let s: Vec<&str> = line.split(" ").collect();
