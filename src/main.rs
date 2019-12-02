@@ -36,7 +36,7 @@ const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 pub enum Msg {
     Tick,
     Quit,
-    SetMove
+    SetMove(usize)
 }
 
 struct Win {
@@ -50,6 +50,7 @@ struct Win {
 
     // internal fields
     last_move: Move,
+    colors: HashMap::<char, RGBA>
 }
 
 impl Win {
@@ -71,6 +72,32 @@ impl Win {
             p.tick(m.direction);
         }
     }
+
+    fn setup_board(&mut self) {
+        for row in 0..15 {
+            for col in 0..15 {
+                let p = Position { row, col };
+                let at = self.model.get_board().at_position(p);
+                if "#^+-*.".contains(at) {
+                    let label = Label::new(Some(" "));
+                    label.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                    self.board.attach(&label, row as i32, col as i32, 1, 1);
+                } else if let Some(w) = self.board.get_child_at(col as i32, row as i32) {
+                    if let Ok(l) = w.dynamic_cast::<Label>() {
+                        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+                        if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
+                            at = at.to_lowercase().to_string().chars().next().unwrap();
+                            l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
+                        } else {
+                            l.set_markup(&format!("<span color=\"{}\">{}</span>", "white", at));
+                        }
+                    }
+                }
+            }
+        }
+
+        self.window.show_all();
+    }
 }
 
 impl Update for Win {
@@ -90,7 +117,7 @@ impl Update for Win {
     // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
         match event {
-            Tick => {
+            Msg::Tick => {
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
                 if !self.model.is_over() {
@@ -114,10 +141,12 @@ impl Update for Win {
 
                     let label = Label::new(Some(&text));
                     label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
-                    // label.connect_clicked(move |_| {
-                    //     self.update(Msg::SetMove());
-                    // });
-                    self.moves.attach(&label, c, t, 1, 1);                   
+                    let btn = Button::new();
+                    btn.add(&label);
+                    btn.connect_clicked(move |_| {
+                        self.update(Msg::SetMove((c * 2 + t) as usize));
+                    });
+                    self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
@@ -126,10 +155,10 @@ impl Update for Win {
                 }
                 self.window.show_all();
             },
-            SetMove => {
-
+            Msg::SetMove(n) => {
+                self.model.set_state(n);
             },
-            Quit => gtk::main_quit(),
+            Msg::Quit => gtk::main_quit(),
         }
     }
 }
@@ -159,15 +188,6 @@ impl Widget for Win {
         board.set_row_spacing(2);
         board.set_column_spacing(2);
         board.set_border_width(1);     
-
-        for row in 0..15 {
-            for col in 0..15 {
-                let label = Label::new(Some(" "));
-                let at = model.get_board().at_position(Position { row, col });
-                label.override_background_color(gtk::StateFlags::empty(), Some(&colors[&at]));
-                board.attach(&label, row as i32, col as i32, 1, 1);
-            }
-        }
 
         let moves = gtk::Grid::new();
         moves.set_hexpand(true);
@@ -214,10 +234,12 @@ impl Widget for Win {
             window,
             board,
             moves,
-            last_move: Move::none()
+            last_move: Move::none(),
+            colors
         };
 
         // win.update(Msg::Tick);
+        win.setup_board();
         win
     }
 }

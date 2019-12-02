@@ -11,6 +11,8 @@ use itertools::Itertools;
 use std::io;
 use std::io::*;
 
+pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2]);
+
 fn _as(v: usize) -> i32 {
     i32::try_from(v).unwrap()
 }
@@ -251,6 +253,17 @@ impl Board {
         }
 
         false
+    }
+
+    pub fn save_state(&self) -> S {
+        (self.state.clone(), self.blanks.clone(), self.cross_checks.clone())
+    }
+
+    pub fn set_state(&mut self, state: S) {
+        let (s, b, c) = state;
+        self.state = s;
+        self.blanks = b;
+        self.cross_checks = c;
     }
 }
 

@@ -1,13 +1,16 @@
-use crate::board::Board;
+use crate::board::{Board, S};
 use crate::player::Player;
 use crate::utils::Move;
+
+use std::vec::Vec;
 
 pub struct Game {
     players: [Player; 2],
     board: Board,
     pub current: usize,
     turn: u32,
-    pub finished: bool
+    pub finished: bool,
+    states: Vec<S>
 }
 
 impl Game {
@@ -17,11 +20,12 @@ impl Game {
         let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
         let players = [player_1, player_2];
 
-        Game { players, board, current: 0, turn: 1, finished: false }
+        Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new() }
     }
 
     pub fn do_move(&mut self) -> (Move, String) {
         let m = self.players[self.current].do_move(&mut self.board, true);
+        self.states.push(self.board.save_state());
         self.current = (self.current + 1) % 2;
         if self.current == 0 { self.turn += 1; }
         m
@@ -63,5 +67,9 @@ impl Game {
 
     pub fn get_player(&mut self, n: i32) -> &mut Player {
         &mut self.players[n as usize]
+    }
+
+    pub fn set_state(&mut self, to: usize) {
+        self.board.set_state(self.states[to])
     }
 }
