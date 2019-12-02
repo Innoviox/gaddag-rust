@@ -114,12 +114,13 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
+                    label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
                     self.moves.attach(&label, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
                     let label = Label::new(Some(&text));
-                    self.moves.attach(&label, n, t, 1, 1);
+                    self.moves.attach(&label, n, t + 1, 1, 1);
                 }
                 self.window.show_all();
             },
