@@ -170,6 +170,9 @@ impl Widget for Win {
         moves.set_column_homogeneous(true); 
         moves.set_halign(gtk::Align::Fill);
         moves.set_valign(gtk::Align::Fill);
+        moves.set_row_spacing(20);
+        moves.set_column_spacing(20);
+        moves.set_border_width(5);     
 
         let l1 = Label::new(Some("Player 1"));
         moves.attach(&l1, 0, 0, 1, 1);
