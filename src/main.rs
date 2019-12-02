@@ -58,7 +58,7 @@ impl Win {
         let mut p = m.position.clone();
         for i in m.word.chars() {
             let mut at = self.model.get_board().at_position(p);
-            if let Some(w) = self.board.get_child_at(p.row as i32, p.col as i32) {
+            if let Some(w) = self.board.get_child_at(p.col as i32, p.row as i32) {
                 if let Ok(l) = w.dynamic_cast::<Label>() {
                     l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
                     if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
