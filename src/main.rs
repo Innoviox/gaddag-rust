@@ -114,12 +114,12 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    self.board.attach(&label, 15 + c * 8, t, 8, 1);                   
+                    self.moves.attach(&label, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
                     let label = Label::new(Some(&text));
-                    self.board.attach(&label, 15 + n * 8, t, 8, 1);
+                    self.moves.attach(&label, n, t, 1, 1);
                 }
                 self.window.show_all();
             },
@@ -163,11 +163,6 @@ impl Widget for Win {
             }
         }
 
-        let l1 = Label::new(Some("Player 1"));
-        board.attach(&l1, 15, 0, 8, 1);
-        let l2 = Label::new(Some("Player 2"));
-        board.attach(&l2, 23, 0, 8, 1);
-
         let moves = gtk::Grid::new();
         moves.set_hexpand(true);
         moves.set_vexpand(true);
@@ -175,6 +170,11 @@ impl Widget for Win {
         moves.set_column_homogeneous(true); 
         moves.set_halign(gtk::Align::Fill);
         moves.set_valign(gtk::Align::Fill);
+
+        let l1 = Label::new(Some("Player 1"));
+        moves.attach(&l1, 0, 0, 1, 1);
+        let l2 = Label::new(Some("Player 2"));
+        moves.attach(&l2, 1, 0, 1, 1);
 
         let no_adjustment: Option<gtk::Adjustment> = None;
         let moves_container = gtk::Layout::new(no_adjustment.as_ref(), no_adjustment.as_ref());
@@ -189,7 +189,7 @@ impl Widget for Win {
         grid.set_valign(gtk::Align::Fill);
 
         grid.attach(&board, 0, 0, 1, 1);
-        // grid.attach(&moves_container, 1, 0, 1, 1);
+        grid.attach(&moves_container, 1, 0, 1, 1);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
