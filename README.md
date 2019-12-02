@@ -9,7 +9,7 @@ sum(map(int, [i.split()[-1] for i in s.split("\n") if 'Time' in i]))
 
 ## Current UI Status
 
-![example](/Users/chervjay/Documents/GitHub/gaddag-rust/example.png)
+![example](example.png)
 
 UI Roadmap
 
