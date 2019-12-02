@@ -81,7 +81,7 @@ impl Board {
         self.state[p.row][p.col]
     }
 
-    fn is_letter(&self, p: Position) -> bool {
+    pub fn is_letter(&self, p: Position) -> bool {
         return !"#^+-*.".contains(self.at_position(p))
     }
 

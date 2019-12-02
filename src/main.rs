@@ -34,10 +34,9 @@ const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 
 #[derive(Msg)]
 pub enum Msg {
-    // Decrement,
-    // Increment,
     Tick,
     Quit,
+    SetMove
 }
 
 struct Win {
@@ -98,7 +97,7 @@ impl Update for Win {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
                     let lm = Move::of(&self.last_move);
-                    self.place(&lm, "white");
+                    self.place(&lm, "white", true);
 
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
@@ -106,7 +105,7 @@ impl Update for Win {
 
                     let (m, sm) = self.model.do_move();
 
-                    self.place(&m, "yellow");
+                    self.place(&m, "yellow", false);
 
                     self.last_move = Move::of(&m);
 
@@ -115,6 +114,9 @@ impl Update for Win {
 
                     let label = Label::new(Some(&text));
                     label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
+                    // label.connect_clicked(move |_| {
+                    //     self.update(Msg::SetMove());
+                    // });
                     self.moves.attach(&label, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
@@ -124,7 +126,10 @@ impl Update for Win {
                 }
                 self.window.show_all();
             },
-            Msg::Quit => gtk::main_quit(),
+            SetMove => {
+
+            },
+            Quit => gtk::main_quit(),
         }
     }
 }
