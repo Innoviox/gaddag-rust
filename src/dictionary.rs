@@ -11,6 +11,7 @@ use indicatif::ProgressBar;
 use indicatif::ProgressIterator;
 use std::io;
 use std::io::*;
+use rayon::prelude::*;
 
 pub struct Dictionary {
     words: HashMap<char, HashMap<char, HashSet<String>>>,
@@ -40,14 +41,24 @@ impl Dictionary {
 
         let bar = ProgressBar::new(40);
         let mut i = 0;
-        for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
+        
+        for (w, e) in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from).par_iter().map(|line| {
             let s: Vec<&str> = line.split(" ").collect();
             let word = to_word(&s[0].chars().collect());
-            let eval = s[1].parse::<f32>().unwrap();
-            dict.leaves.insert(word, eval);
-            i += 1;
-            if i % 25000 == 0 { bar.inc(1); }
+            let eval = s[1].parse::<f32>().unwrap();  
+            (word, eval)         
+        }) {
+            dict.leaves.insert(w, e);
         }
+
+        // for line in fs::read_to_string("resources/leaves.txt").expect("No leaves file").lines().map(String::from) {
+        //     let s: Vec<&str> = line.split(" ").collect();
+        //     let word = to_word(&s[0].chars().collect());
+        //     let eval = s[1].parse::<f32>().unwrap();
+        //     dict.leaves.insert(word, eval);
+        //     i += 1;
+        //     if i % 25000 == 0 { bar.inc(1); }
+        // }
         dict.leaves.insert(vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0.0);
         bar.finish();
 

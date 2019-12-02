@@ -92,6 +92,8 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Tick => {
+                let c = self.model.current as i32;
+                let t = self.model.get_turn() as i32;
                 if !self.model.is_over() {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
@@ -101,8 +103,6 @@ impl Update for Win {
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
                     let score = p.score as i32;
-                    let c = self.model.current as i32;
-                    let t = self.model.get_turn() as i32;
 
                     let (m, sm) = self.model.do_move();
 
@@ -114,9 +114,14 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    self.board.attach(&label, 15 + c * 8, t, 8, 1);
-                    self.window.show_all();
+                    self.board.attach(&label, 15 + c * 8, t, 8, 1);                   
+                } else if !self.model.finished {
+                    let (end_s, end, n) = self.model.finish();
+                    let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
+                    let label = Label::new(Some(&text));
+                    self.board.attach(&label, 15 + n * 8, t, 8, 1);
                 }
+                self.window.show_all();
             },
             Msg::Quit => gtk::main_quit(),
         }

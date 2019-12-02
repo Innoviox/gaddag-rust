@@ -6,7 +6,8 @@ pub struct Game {
     players: [Player; 2],
     board: Board,
     pub current: usize,
-    turn: u32
+    turn: u32,
+    pub finished: bool
 }
 
 impl Game {
@@ -16,7 +17,7 @@ impl Game {
         let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
         let players = [player_1, player_2];
 
-        Game { players, board, current: 0, turn: 1 }
+        Game { players, board, current: 0, turn: 1, finished: false }
     }
 
     pub fn do_move(&mut self) -> (Move, String) {
@@ -24,6 +25,29 @@ impl Game {
         self.current = (self.current + 1) % 2;
         if self.current == 0 { self.turn += 1; }
         m
+    }
+
+    pub fn finish(&mut self) -> (String, i32, i32) {
+        let mut n = 0;
+        if self.get_player(1).rack.len() == 0 {
+            n = 1;
+        }
+
+        let mut end = 0;
+        let mut end_s = String::new();
+
+        for s in self.get_player((n + 1) % 2).rack.clone() {
+            end += self.board.bag.score(s);
+            end_s.push(s);
+        }
+
+        end *= 2;
+        let p = self.get_player(n);
+        p.score += end as u32;
+
+        self.finished = true;
+
+        (end_s, end, n)
     }
 
     pub fn is_over(&self) -> bool {
@@ -35,5 +59,9 @@ impl Game {
 
     pub fn current_player(&self) -> &Player {
         &self.players[self.current]
+    }
+
+    pub fn get_player(&mut self, n: i32) -> &mut Player {
+        &mut self.players[n as usize]
     }
 }
