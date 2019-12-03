@@ -61,14 +61,14 @@ impl Win {
 
     fn set(&mut self, p: Position, color: &str) {
         let mut at = self.model.get_board().at_position(p);
-        let score = self.model.get_board().bag.score(at);
+        let mut score = self.model.get_board().bag.score(at);
         let l = self.get(p.col as i32, p.row as i32);
         l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
         if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
             at = at.to_lowercase().to_string().chars().next().unwrap();
-            l.set_markup(&format!("<span color=\"{}\">{}</span><sub color=\"{0}\">{}</sub>", "pink", at, score));
+            l.set_markup(&format!("<span color=\"{}\">{}</span><span color=\"{0}\"><sub>{}</sub></span>", "pink", at, 0));
         } else {
-            l.set_markup(&format!("<span color=\"{}\">{}</span><sub color=\"{0}\">{}</sub>", color, at, score));
+            l.set_markup(&format!("<span color=\"{}\">{}</span><span color=\"{0}\"><sub>{}</sub></span>", color, at, score));
         }
     }
 
