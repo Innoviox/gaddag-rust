@@ -55,21 +55,27 @@ struct Win {
 }
 
 impl Win {
+    fn get(&mut self, col: i32, row: i32) -> Label {
+        self.board.get_child_at(col, row).unwrap().dynamic_cast::<Label>().ok().unwrap()
+    }
+
+    fn set(&mut self, p: Position, color: &str) {
+        let mut at = self.model.get_board().at_position(p);
+        let score = self.model.get_board().bag.score(at);
+        let l = self.get(p.col as i32, p.row as i32);
+        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+        if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
+            at = at.to_lowercase().to_string().chars().next().unwrap();
+            l.set_markup(&format!("<span color=\"{}\">{}</span><sub color=\"{0}\">{}</sub>", "pink", at, score));
+        } else {
+            l.set_markup(&format!("<span color=\"{}\">{}</span><sub color=\"{0}\">{}</sub>", color, at, score));
+        }
+    }
+
     fn place(&mut self, m: &Move, color: &str) {
         let mut p = m.position.clone();
         for i in m.word.chars() {
-            let mut at = self.model.get_board().at_position(p);
-            if let Some(w) = self.board.get_child_at(p.col as i32, p.row as i32) {
-                if let Ok(l) = w.dynamic_cast::<Label>() {
-                    l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-                    if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
-                        at = at.to_lowercase().to_string().chars().next().unwrap();
-                        l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
-                    } else {
-                        l.set_markup(&format!("<span color=\"{}\">{}</span>", color, at));
-                    }
-                }
-            }
+            self.set(p, color);
             p.tick(m.direction);
         }
     }
@@ -79,28 +85,12 @@ impl Win {
             for col in 0..15 {
                 let p = Position { row, col };
                 let mut at = self.model.get_board().at_position(p);
-                if !first {
-                    if let Some(w) = self.board.get_child_at(col as i32, row as i32) {
-                        if let Ok(l) = w.dynamic_cast::<Label>() {
-                            if "#^+-*.".contains(at) {
-                                l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
-                                l.set_text(" ");
-                            } else {
-                                let score = self.model.get_board().bag.score(at);
-                                l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-                                if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
-                                    at = at.to_lowercase().to_string().chars().next().unwrap();
-                                    l.set_markup(&format!("<span color=\"{}\">{}</span><span rise=\"-10\">{}</span>", "pink", at, score));
-                                } else {
-                                    l.set_markup(&format!("<span color=\"{}\">{}</span><span rise=\"-10\">{}</span>", "white", at, score));
-                                }
-                            }
-                        }
-                    }
+                if first || "#^+-*.".contains(at) {
+                    let l = self.get(p.col as i32, p.row as i32);
+                    l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                    l.set_text(" ");
                 } else {
-                    let label = Label::new(Some(" "));
-                    label.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
-                    self.board.attach(&label, row as i32, col as i32, 1, 1);
+                    self.set(p, "white");
                 }
             }
         }
