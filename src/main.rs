@@ -74,25 +74,32 @@ impl Win {
         }
     }
 
-    fn setup_board(&mut self) {
+    fn setup_board(&mut self, first: bool) {
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
                 let mut at = self.model.get_board().at_position(p);
-                if "#^+-*.".contains(at) {
+                if !first {
+                    if let Some(w) = self.board.get_child_at(col as i32, row as i32) {
+                        if let Ok(l) = w.dynamic_cast::<Label>() {
+                            if "#^+-*.".contains(at) {
+                                l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                                l.set_text(" ");
+                            } else {
+                                l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+                                if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
+                                    at = at.to_lowercase().to_string().chars().next().unwrap();
+                                    l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
+                                } else {
+                                    l.set_markup(&format!("<span color=\"{}\">{}</span>", "white", at));
+                                }
+                            }
+                        }
+                    }
+                } else {
                     let label = Label::new(Some(" "));
                     label.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
                     self.board.attach(&label, row as i32, col as i32, 1, 1);
-                } else if let Some(w) = self.board.get_child_at(col as i32, row as i32) {
-                    if let Ok(l) = w.dynamic_cast::<Label>() {
-                        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-                        if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
-                            at = at.to_lowercase().to_string().chars().next().unwrap();
-                            l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
-                        } else {
-                            l.set_markup(&format!("<span color=\"{}\">{}</span>", "white", at));
-                        }
-                    }
                 }
             }
         }
@@ -147,11 +154,6 @@ impl Update for Win {
                     let btn = Button::new();
                     btn.add(&label);
                     connect!(self.myrelm, btn, connect_clicked(_), Msg::SetMove(n - 1));
-                    // btn.connect_clicked(move |b| {
-                    //     let n = b.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap();
-                    //     println!("{}", n);
-                    //     Self::update(self, Msg::SetMove(n));
-                    // });
                     self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
@@ -166,7 +168,7 @@ impl Update for Win {
                     println!("Received setmove {}", n);
                     self.model.set_state(n);
                     println!("{}", self.model.get_board());
-                    self.setup_board();
+                    self.setup_board(false);
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -251,7 +253,7 @@ impl Widget for Win {
         };
 
         // win.update(Msg::Tick);
-        win.setup_board();
+        win.setup_board(true);
         win
     }
 }
