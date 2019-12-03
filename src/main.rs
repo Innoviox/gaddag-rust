@@ -140,12 +140,12 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
+                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t * 2 + c, text));
                     let btn = Button::new();
                     btn.add(&label);
                     btn.connect_clicked(move |a| {
-                        println!("{}", a);
-                        // self.update(Msg::SetMove((c * 2 + t) as usize));
+                        println!("{}", a.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap());
+                        // self.update(Msg::SetMove(a.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap()));
                     });
                     self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {
