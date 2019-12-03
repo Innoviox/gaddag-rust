@@ -86,12 +86,13 @@ impl Win {
                                 l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
                                 l.set_text(" ");
                             } else {
+                                let score = self.model.get_board().bag.score(at);
                                 l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
                                 if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
                                     at = at.to_lowercase().to_string().chars().next().unwrap();
-                                    l.set_markup(&format!("<span color=\"{}\">{}</span>", "pink", at));
+                                    l.set_markup(&format!("<span color=\"{}\">{}</span><span rise=\"-10\">{}</span>", "pink", at, score));
                                 } else {
-                                    l.set_markup(&format!("<span color=\"{}\">{}</span>", "white", at));
+                                    l.set_markup(&format!("<span color=\"{}\">{}</span><span rise=\"-10\">{}</span>", "white", at, score));
                                 }
                             }
                         }

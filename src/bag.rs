@@ -48,7 +48,7 @@ impl Bag {
     pub fn score(&self, c: char) -> i32 {
         match self.scores.get(&c) {
             Some(i) => *i,
-            None => -1
+            None => 0
         }
     }
     
