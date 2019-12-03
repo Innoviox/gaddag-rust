@@ -143,8 +143,9 @@ impl Update for Win {
                     label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t * 2 + c, text));
                     let btn = Button::new();
                     btn.add(&label);
-                    btn.connect_clicked(move |a| {
-                        println!("{}", a.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap());
+                    btn.connect_clicked(move |b| {
+                        let n = b.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap();
+                        println!("{}", n);
                         // self.update(Msg::SetMove(a.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap()));
                     });
                     self.moves.attach(&btn, c, t, 1, 1);                   
