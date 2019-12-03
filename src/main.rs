@@ -85,7 +85,11 @@ impl Win {
             for col in 0..15 {
                 let p = Position { row, col };
                 let mut at = self.model.get_board().at_position(p);
-                if first || "#^+-*.".contains(at) {
+                if first {
+                    let l = Label::new(Some(" "));
+                    l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                    self.board.attach(&l, row as i32, col as i32, 1, 1);
+                } else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
                     l.set_text(" ");
