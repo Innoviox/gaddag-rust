@@ -50,7 +50,8 @@ struct Win {
 
     // internal fields
     last_move: Move,
-    colors: HashMap::<char, RGBA>
+    colors: HashMap::<char, RGBA>,
+    myrelm: Relm<Win>
 }
 
 impl Win {
@@ -140,14 +141,16 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t * 2 + c - 1, text));
+                    let n = (t * 2 + c - 1) as usize;
+                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", n, text));
                     let btn = Button::new();
                     btn.add(&label);
-                    btn.connect_clicked(move |b| {
-                        let n = b.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap();
-                        println!("{}", n);
-                        // self.update(Msg::SetMove(a.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap()));
-                    });
+                    connect!(self.myrelm, btn, connect_clicked(_), Msg::SetMove(n));
+                    // btn.connect_clicked(move |b| {
+                    //     let n = b.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap();
+                    //     println!("{}", n);
+                    //     Self::update(self, Msg::SetMove(n));
+                    // });
                     self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
@@ -159,6 +162,7 @@ impl Update for Win {
             },
             Msg::SetMove(n) => {
                 self.model.set_state(n);
+                self.setup_board();
             },
             Msg::Quit => gtk::main_quit(),
         }
@@ -237,7 +241,8 @@ impl Widget for Win {
             board,
             moves,
             last_move: Move::none(),
-            colors
+            colors,
+            myrelm: relm.clone()
         };
 
         // win.update(Msg::Tick);
