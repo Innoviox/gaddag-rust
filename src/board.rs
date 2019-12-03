@@ -259,11 +259,11 @@ impl Board {
         (self.state.clone(), self.blanks.clone(), self.cross_checks.clone())
     }
 
-    pub fn set_state(&mut self, state: S) {
+    pub fn set_state(&mut self, state: &S) {
         let (s, b, c) = state;
-        self.state = s;
-        self.blanks = b;
-        self.cross_checks = c;
+        self.state = (*s).clone();
+        self.blanks = (*b).clone();
+        self.cross_checks = (*c).clone();
     }
 }
 

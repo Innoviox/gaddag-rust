@@ -77,7 +77,7 @@ impl Win {
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
-                let at = self.model.get_board().at_position(p);
+                let mut at = self.model.get_board().at_position(p);
                 if "#^+-*.".contains(at) {
                     let label = Label::new(Some(" "));
                     label.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
@@ -143,8 +143,9 @@ impl Update for Win {
                     label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
                     let btn = Button::new();
                     btn.add(&label);
-                    btn.connect_clicked(move |_| {
-                        self.update(Msg::SetMove((c * 2 + t) as usize));
+                    btn.connect_clicked(move |a| {
+                        println!("{}", a);
+                        // self.update(Msg::SetMove((c * 2 + t) as usize));
                     });
                     self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {

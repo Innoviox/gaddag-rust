@@ -70,6 +70,6 @@ impl Game {
     }
 
     pub fn set_state(&mut self, to: usize) {
-        self.board.set_state(self.states[to])
+        self.board.set_state(&self.states[to])
     }
 }
