@@ -51,7 +51,7 @@ struct Win {
     // internal fields
     last_move: Move,
     colors: HashMap::<char, RGBA>,
-    myrelm: Relm<Win>
+    relm: Relm<Win>
 }
 
 impl Win {
@@ -124,7 +124,6 @@ impl Update for Win {
     // The model may be updated when a message is received.
     // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
-        println!("Updating for {:?}", event);
         match event {
             Msg::Tick => {
                 let c = self.model.current as i32;
@@ -153,7 +152,7 @@ impl Update for Win {
                     label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", n, text));
                     let btn = Button::new();
                     btn.add(&label);
-                    connect!(self.myrelm, btn, connect_clicked(_), Msg::SetMove(n - 1));
+                    connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     self.moves.attach(&btn, c, t, 1, 1);                   
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
@@ -165,10 +164,9 @@ impl Update for Win {
             },
             Msg::SetMove(n) => {
                 if self.model.is_over() {
-                    println!("Received setmove {}", n);
-                    self.model.set_state(n);
-                    println!("{}", self.model.get_board());
+                    let m = self.model.set_state(n);
                     self.setup_board(false);
+                    self.place(&m, "yellow");
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -239,7 +237,7 @@ impl Widget for Win {
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         interval(relm.stream(), 100, || Msg::Tick);
-
+        
         window.show_all();
 
         let mut win = Win {
@@ -249,7 +247,7 @@ impl Widget for Win {
             moves,
             last_move: Move::none(),
             colors,
-            myrelm: relm.clone()
+            relm: relm.clone()
         };
 
         // win.update(Msg::Tick);

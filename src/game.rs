@@ -10,7 +10,7 @@ pub struct Game {
     pub current: usize,
     turn: u32,
     pub finished: bool,
-    states: Vec<S>
+    states: Vec<(S, Move)>
 }
 
 impl Game {
@@ -25,7 +25,7 @@ impl Game {
 
     pub fn do_move(&mut self) -> (Move, String) {
         let m = self.players[self.current].do_move(&mut self.board, true);
-        self.states.push(self.board.save_state());
+        self.states.push((self.board.save_state(), Move::of(&m.0)));
         self.current = (self.current + 1) % 2;
         if self.current == 0 { self.turn += 1; }
         m
@@ -69,7 +69,9 @@ impl Game {
         &mut self.players[n as usize]
     }
 
-    pub fn set_state(&mut self, to: usize) {
-        self.board.set_state(&self.states[to])
+    pub fn set_state(&mut self, to: usize) -> Move {
+        let (s, m) = &self.states[to];
+        self.board.set_state(s);
+        Move::of(m)
     }
 }
