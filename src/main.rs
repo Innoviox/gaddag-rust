@@ -238,7 +238,7 @@ impl Widget for Win {
         window.set_default_size(2500, 2500);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        interval(relm.stream(), 1000, || Msg::Tick);
+        interval(relm.stream(), 100, || Msg::Tick);
 
         window.show_all();
 
