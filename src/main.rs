@@ -217,7 +217,8 @@ impl Widget for Win {
         moves.attach(&l2, 1, 0, 1, 1);
 
         let no_adjustment: Option<gtk::Adjustment> = None;
-        let moves_container = gtk::Layout::new(no_adjustment.as_ref(), no_adjustment.as_ref());
+        let scroll: Option<gtk::Adjustment> = Some(gtk::Adjustment::new(0.0, std::f64::MIN, std::f64::MAX, 1.0, 0.0, 0.0));
+        let moves_container = gtk::ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
         let grid = gtk::Grid::new();

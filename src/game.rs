@@ -16,8 +16,8 @@ pub struct Game {
 impl Game {
     pub fn default() -> Game {
         let mut board = Board::default();
-        let mut player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0 };
-        let mut player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
+        let player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0 };
+        let player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
         let players = [player_1, player_2];
 
         Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new() }
