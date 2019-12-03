@@ -10,7 +10,7 @@ pub struct Game {
     pub current: usize,
     turn: u32,
     pub finished: bool,
-    states: Vec<(S, Move)>
+    states: Vec<(S, Move, Vec<char>)>
 }
 
 impl Game {
@@ -24,8 +24,9 @@ impl Game {
     }
 
     pub fn do_move(&mut self) -> (Move, String) {
+        let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, true);
-        self.states.push((self.board.save_state(), Move::of(&m.0)));
+        self.states.push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;
         if self.current == 0 { self.turn += 1; }
         m
@@ -69,9 +70,9 @@ impl Game {
         &mut self.players[n as usize]
     }
 
-    pub fn set_state(&mut self, to: usize) -> Move {
-        let (s, m) = &self.states[to];
+    pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>) {
+        let (s, m, r) = &self.states[to];
         self.board.set_state(s);
-        Move::of(m)
+        (Move::of(m), r.clone())
     }
 }

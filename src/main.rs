@@ -164,7 +164,7 @@ impl Update for Win {
             },
             Msg::SetMove(n) => {
                 if self.model.is_over() {
-                    let m = self.model.set_state(n);
+                    let (m, r) = self.model.set_state(n);
                     self.setup_board(false);
                     self.place(&m, "yellow");
                 }
