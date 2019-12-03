@@ -146,7 +146,7 @@ impl Update for Win {
                     label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", n, text));
                     let btn = Button::new();
                     btn.add(&label);
-                    connect!(self.myrelm, btn, connect_clicked(_), Msg::SetMove(n));
+                    connect!(self.myrelm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     // btn.connect_clicked(move |b| {
                     //     let n = b.get_children()[0].clone().dynamic_cast::<gtk::Label>().ok().unwrap().get_text().unwrap().split(".").next().unwrap().parse::<usize>().unwrap();
                     //     println!("{}", n);
@@ -162,10 +162,12 @@ impl Update for Win {
                 self.window.show_all();
             },
             Msg::SetMove(n) => {
-                println!("Received setmove {}", n);
-                self.model.set_state(n);
-                println!("{}", self.model.get_board());
-                self.setup_board();
+                if self.model.is_over() {
+                    println!("Received setmove {}", n);
+                    self.model.set_state(n);
+                    println!("{}", self.model.get_board());
+                    self.setup_board();
+                }
             },
             Msg::Quit => gtk::main_quit(),
         }
