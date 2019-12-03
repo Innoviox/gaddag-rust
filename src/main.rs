@@ -140,7 +140,7 @@ impl Update for Win {
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
 
                     let label = Label::new(Some(&text));
-                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t * 2 + c, text));
+                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t * 2 + c - 1, text));
                     let btn = Button::new();
                     btn.add(&label);
                     btn.connect_clicked(move |b| {
