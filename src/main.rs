@@ -32,7 +32,7 @@ use gdk::RGBA;
 const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
 const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Msg {
     Tick,
     Quit,
@@ -117,6 +117,7 @@ impl Update for Win {
     // The model may be updated when a message is received.
     // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
+        println!("Updating for {:?}", event);
         match event {
             Msg::Tick => {
                 let c = self.model.current as i32;
@@ -161,7 +162,9 @@ impl Update for Win {
                 self.window.show_all();
             },
             Msg::SetMove(n) => {
+                println!("Received setmove {}", n);
                 self.model.set_state(n);
+                println!("{}", self.model.get_board());
                 self.setup_board();
             },
             Msg::Quit => gtk::main_quit(),
