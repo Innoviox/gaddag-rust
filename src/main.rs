@@ -1,7 +1,6 @@
 #[macro_use] extern crate itertools;
 #[macro_use] extern crate relm;
 extern crate gdk;
-extern crate gdk_sys;
 
 use crate::player::Player;
 use crate::utils::{Position, Move};
@@ -18,7 +17,7 @@ mod dictionary;
 mod player;
 mod game;
 
-use relm_derive::{Msg, widget};
+use relm_derive::Msg;
 use relm::{Widget, Relm, Update, interval};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
@@ -26,7 +25,6 @@ use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
     Label, Border, Grid, Button
 };
-use gdk_sys::GdkRGBA;
 use gdk::RGBA;
 
 

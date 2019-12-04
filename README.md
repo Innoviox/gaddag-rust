@@ -17,6 +17,10 @@ Scores, Clickable moves
 
 ![december 3rd with scores and move buttons](ui/12_3_19_17_39.png)
 
+Boxed Blanks, shrunk moves
+
+![december 3rd with boxed blanks](ui/12_3_19_22_16.png)
+
 UI Roadmap
 
 - clickable moves :white_check_mark:
