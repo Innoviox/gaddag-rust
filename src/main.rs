@@ -9,6 +9,7 @@ use crate::board::{Board, STATE};
 use crate::game::Game;
 use std::time::SystemTime;
 use std::collections::HashMap;
+use std::convert::TryInto;
 
 mod bag;
 mod utils;
@@ -65,12 +66,13 @@ impl Win {
         let l = self.get(p.col as i32, p.row as i32);
         l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
         if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
-            at = at.to_lowercase().to_string().chars().next().unwrap();
-            l.set_markup(&format!("<span face=\"monospace\" color=\"{}\">{}</span><span color=\"{0}\" face=\"monospace\"><sub>{}</sub></span>", "pink", at, 0));
+            // at = at.to_lowercase().to_string().chars().next().unwrap();
+            let at: char = (at as u32 + 127215).try_into().unwrap();
+            l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", "pink", at, 0));
         } else {
-            l.set_markup(&format!("<span face=\"monospace\" color=\"{}\">{}</span><span color=\"{0}\" face=\"monospace\"><sub>{}</sub></span>", color, at, score));
+            l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", color, at, score));
         }
-    }
+    } 
 
     fn place(&mut self, m: &Move, color: &str) {
         let mut p = m.position.clone();
@@ -196,15 +198,9 @@ impl Widget for Win {
         board.set_border_width(1);     
 
         let moves = gtk::Grid::new();
-        // moves.set_hexpand(true);
-        // moves.set_vexpand(true);
-        // moves.set_row_homogeneous(true);
-        // moves.set_column_homogeneous(true); 
-        // moves.set_halign(gtk::Align::Fill);
-        // moves.set_valign(gtk::Align::Fill);
-        moves.set_row_spacing(20);
-        moves.set_column_spacing(20);
-        moves.set_border_width(5);     
+        moves.set_row_spacing(10);
+        moves.set_column_spacing(10);
+        moves.set_border_width(3);
 
         let l1 = Label::new(Some("Player 1"));
         moves.attach(&l1, 0, 0, 1, 1);
