@@ -66,9 +66,9 @@ impl Win {
         l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
         if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
             at = at.to_lowercase().to_string().chars().next().unwrap();
-            l.set_markup(&format!("<span color=\"{}\">{}</span><span color=\"{0}\"><sub>{}</sub></span>", "pink", at, 0));
+            l.set_markup(&format!("<span face=\"monospace\" color=\"{}\">{}</span><span color=\"{0}\" face=\"monospace\"><sub>{}</sub></span>", "pink", at, 0));
         } else {
-            l.set_markup(&format!("<span color=\"{}\">{}</span><span color=\"{0}\"><sub>{}</sub></span>", color, at, score));
+            l.set_markup(&format!("<span face=\"monospace\" color=\"{}\">{}</span><span color=\"{0}\" face=\"monospace\"><sub>{}</sub></span>", color, at, score));
         }
     }
 
@@ -196,12 +196,12 @@ impl Widget for Win {
         board.set_border_width(1);     
 
         let moves = gtk::Grid::new();
-        moves.set_hexpand(true);
-        moves.set_vexpand(true);
-        moves.set_row_homogeneous(true);
-        moves.set_column_homogeneous(true); 
-        moves.set_halign(gtk::Align::Fill);
-        moves.set_valign(gtk::Align::Fill);
+        // moves.set_hexpand(true);
+        // moves.set_vexpand(true);
+        // moves.set_row_homogeneous(true);
+        // moves.set_column_homogeneous(true); 
+        // moves.set_halign(gtk::Align::Fill);
+        // moves.set_valign(gtk::Align::Fill);
         moves.set_row_spacing(20);
         moves.set_column_spacing(20);
         moves.set_border_width(5);     
