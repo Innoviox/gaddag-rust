@@ -65,13 +65,13 @@ impl Win {
         let mut score = self.model.get_board().bag.score(at);
         let l = self.get(p.col as i32, p.row as i32);
         l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-        if self.model.get_board().blanks.contains(&p) { // todo: blanks - make square?
-            // at = at.to_lowercase().to_string().chars().next().unwrap();
-            let at: char = (at as u32 + 127215).try_into().unwrap();
-            l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", "pink", at, 0));
-        } else {
-            l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", color, at, score));
+
+        if self.model.get_board().blanks.contains(&p) { // blank
+            at = (at as u32 + 127215).try_into().unwrap(); // make square character https://unicode.org/charts/nameslist/n_1F100.html
+            score = 0;
         }
+
+        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", color, at, score));
     } 
 
     fn place(&mut self, m: &Move, color: &str) {
