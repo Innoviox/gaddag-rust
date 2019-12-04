@@ -1,6 +1,8 @@
-use crate::board::{Board, S};
+use crate::board::{Board, S, STATE};
 use crate::player::Player;
-use crate::utils::Move;
+use crate::utils::{Move, Position};
+
+use array_init::array_init;
 
 use std::vec::Vec;
 
@@ -79,11 +81,11 @@ impl Game {
         (Move::of(m), r.clone())
     }
 
-    pub fn get_last_state(&self) -> Option<S> {
+    pub fn get_last_state(&self) -> S {
         if self.state == 0 {
-            return None
+            return (STATE, vec![], [array_init(|_| Vec::new()), array_init(|_| Vec::new())])
         }
 
-        Some(self.states[self.state - 1].0.clone())
+        self.states[self.state - 1].0.clone()
     }
 }

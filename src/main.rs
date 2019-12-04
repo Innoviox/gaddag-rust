@@ -74,8 +74,9 @@ impl Win {
 
     fn place(&mut self, m: &Move, color: &str, force: bool) {
         let mut p = m.position.clone();
+        let last = self.model.get_last_state();
         for i in m.word.chars() {
-            if force || (self.model.state > 0 && "#^+-*.".contains(self.model.get_last_state().unwrap().0[p.row][p.col])) {
+            if force || "#^+-*.".contains(last.0[p.row][p.col]) {
                 self.set(p, color);
             }
             p.tick(m.direction);
@@ -136,9 +137,9 @@ impl Update for Win {
                     let score = p.score as i32;
 
                     let (m, sm) = self.model.do_move();
-
+                    self.model.state -= 1; // dont know why this is necssary
                     if !m.exch() { self.place(&m, "yellow", false); }
-
+                    self.model.state += 1;
                     self.last_move = Move::of(&m);
 
                     let mut text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
