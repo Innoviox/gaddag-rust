@@ -129,7 +129,7 @@ impl Update for Win {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
                     let lm = Move::of(&self.last_move);
-                    self.place(&lm, "white");
+                    if !lm.exch() { self.place(&lm, "white"); }
 
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
@@ -137,7 +137,7 @@ impl Update for Win {
 
                     let (m, sm) = self.model.do_move();
 
-                    self.place(&m, "yellow");
+                    if !m.exch() { self.place(&m, "yellow"); }
 
                     self.last_move = Move::of(&m);
 
