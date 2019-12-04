@@ -72,10 +72,12 @@ impl Win {
         l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", color, at, score));
     } 
 
-    fn place(&mut self, m: &Move, color: &str) {
+    fn place(&mut self, m: &Move, color: &str, force: bool) {
         let mut p = m.position.clone();
         for i in m.word.chars() {
-            self.set(p, color);
+            if force || (self.model.state > 0 && "#^+-*.".contains(self.model.get_last_state().unwrap().0[p.row][p.col])) {
+                self.set(p, color);
+            }
             p.tick(m.direction);
         }
     }
@@ -127,7 +129,7 @@ impl Update for Win {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
                     let lm = Move::of(&self.last_move);
-                    if !lm.exch() { self.place(&lm, "white"); }
+                    if !lm.exch() { self.place(&lm, "white", true); }
 
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
@@ -135,7 +137,7 @@ impl Update for Win {
 
                     let (m, sm) = self.model.do_move();
 
-                    if !m.exch() { self.place(&m, "yellow"); }
+                    if !m.exch() { self.place(&m, "yellow", false); }
 
                     self.last_move = Move::of(&m);
 
@@ -165,7 +167,7 @@ impl Update for Win {
                 if self.model.is_over() {
                     let (m, r) = self.model.set_state(n);
                     self.setup_board(false);
-                    self.place(&m, "yellow");
+                    if !m.exch() { self.place(&m, "yellow", false); }
                 }
             },
             Msg::Quit => gtk::main_quit(),
@@ -223,14 +225,14 @@ impl Widget for Win {
         grid.set_valign(gtk::Align::Fill);
 
         grid.attach(&board, 0, 0, 15, 15);
-        grid.attach(&moves_container, 16, 4, 10, 10);
+        grid.attach(&moves_container, 16, 0, 10, 10);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
         window.set_default_size(2500, 2500);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        interval(relm.stream(), 100, || Msg::Tick);
+        interval(relm.stream(), 1000, || Msg::Tick);
         
         window.show_all();
 
