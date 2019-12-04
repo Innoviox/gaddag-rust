@@ -40,7 +40,6 @@ impl Dictionary {
         }
 
         let bar = ProgressBar::new(40);
-        let mut i = 0;
 
         dict.leaves = fs::read_to_string("resources/leaves.txt").expect("No leaves file")
                           .lines().map(String::from).collect::<Vec<String>>()
@@ -95,7 +94,7 @@ impl Trie {
 
         let mut last_node = current;
         
-        let mut extend = |t: &mut Trie, ln, c| {
+        let extend = |t: &mut Trie, ln, c| {
             if let Some(new) = t.follow(ln, c) {
                 return new;
             } else {

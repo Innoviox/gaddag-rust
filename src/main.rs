@@ -84,7 +84,7 @@ impl Win {
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
-                let mut at = self.model.get_board().at_position(p);
+                let at = self.model.get_board().at_position(p);
                 if first {
                     let l = Label::new(Some(" "));
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
@@ -222,8 +222,8 @@ impl Widget for Win {
         grid.set_halign(gtk::Align::Fill);
         grid.set_valign(gtk::Align::Fill);
 
-        grid.attach(&board, 0, 0, 1, 1);
-        grid.attach(&moves_container, 1, 0, 1, 1);
+        grid.attach(&board, 0, 0, 15, 15);
+        grid.attach(&moves_container, 16, 4, 10, 10);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
