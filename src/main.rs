@@ -141,8 +141,12 @@ impl Update for Win {
 
                     self.last_move = Move::of(&m);
 
-                    let text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
+                    let mut text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
                             rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
+                    if m.exch() {
+                        text = format!("{:<7}/EXC: -{:<11} +{:<03}/{:<03}",
+                            rack, m.word, m.score, score + m.score);
+                    } 
 
                     let label = Label::new(Some(&text));
                     let n = (t * 2 + c - 1) as usize;

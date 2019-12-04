@@ -211,4 +211,8 @@ impl Move {
 
         nr
     }
+    
+    pub fn exch(&self) -> bool {
+        self.typ == Type::Exch
+    }
 }
