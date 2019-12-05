@@ -88,4 +88,8 @@ impl Game {
 
         self.states[self.state - 1].0.clone()
     }
+
+    pub fn reset(&mut self) {
+        self.board.reset();
+    }
 }

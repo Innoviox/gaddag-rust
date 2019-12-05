@@ -203,7 +203,7 @@ impl Board {
                     //         // println!("\tnot found");
                     //         return false
                     //     }
-                    let mut word = String::new();
+                    let mut word = String::with_capacity(10);
                     while self.is_letter(curr) {
                         word.push(self.at_position(curr));
                         marked[curr.to_int()] = true;
