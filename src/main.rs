@@ -151,7 +151,11 @@ impl Update for Win {
 
                     let label = Label::new(Some(&text));
                     let n = (t * 2 + c - 1) as usize;
-                    label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", n, text));
+                    if c == 0 {
+                        label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t, text));
+                    } else {
+                        label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
+                    }
                     let btn = Button::new();
                     btn.add(&label);
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
