@@ -23,9 +23,11 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, Border, Grid, Button
+    Label, Grid, Button, ScrolledWindow, Viewport
 };
 use gdk::RGBA;
+use itertools::Itertools;
+use std::cmp::max;
 
 
 const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
@@ -245,7 +247,7 @@ impl Widget for Win {
 
         let no_adjustment: Option<gtk::Adjustment> = None;
         let scroll: Option<gtk::Adjustment> = Some(gtk::Adjustment::new(0.0, std::f64::MIN, std::f64::MAX, 1.0, 0.0, 0.0));
-        let moves_container = gtk::ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
+        let moves_container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
         let rack = gtk::Grid::new();
@@ -263,11 +265,84 @@ impl Widget for Win {
 
         let graph = gtk::DrawingArea::new();
         graph.connect_draw(move |widget,cr| {
+            let (s1, s2): (Vec<(usize, i32)>, Vec<(usize, i32)>) = widget.get_parent()
+                                    .unwrap()
+                                    .dynamic_cast::<Grid>()
+                                    .ok()
+                                    .unwrap()
+                                    .get_children()
+                                    .iter()
+                                    .filter(|x| x.is::<ScrolledWindow>())
+                                    .nth(0)
+                                    .unwrap()
+                                    .clone()
+                                    .dynamic_cast::<ScrolledWindow>()
+                                    .ok()
+                                    .unwrap()
+                                    .get_children()[0]
+                                    .clone()
+                                    .dynamic_cast::<Viewport>()
+                                    .ok()
+                                    .unwrap()
+                                    .get_children()[0]
+                                    .clone()
+                                    .dynamic_cast::<Grid>()
+                                    .ok()
+                                    .unwrap()
+                                    .get_children()
+                                    .iter()
+                                    .map(|x| x.clone()
+                                              .dynamic_cast::<Button>())
+                                    .filter(|x| match x { Ok(_) => true, _ => false })
+                                    .map(|x| x.ok()
+                                                                      .unwrap()
+                                                                      .get_children()[0]
+                                                                      .clone()
+                                                                      .dynamic_cast::<Label>()
+                                                                      .ok()
+                                                                      .unwrap()
+                                                                      .get_text()
+                                                                      .unwrap()
+                                                                      .split("+")
+                                                                      .nth(1)
+                                                                      .unwrap()
+                                                                      .split("/")
+                                                                      .nth(0)
+                                                                      .unwrap()
+                                                                      .parse::<i32>()
+                                                                      .unwrap())
+                                    .rev()
+                                    .enumerate()
+                                    .collect::<Vec<(usize, i32)>>()
+                                    .iter()
+                                    .partition(|(i, n)| i % 2 == 0);
+            let s1: Vec<i32> = s1.iter().map(|x| x.1).collect();
+            let s2: Vec<i32> = s2.iter().map(|x| x.1).collect();
+
+            let top = max(s1.iter().max(), s2.iter().max()).unwrap();
+
             let width: f64 = widget.get_allocated_width() as f64;
             let height: f64 = widget.get_allocated_height() as f64;
+            let m = (*top as f64) / height;
+
             cr.rectangle(0.0,0.0,width,height);
-            cr.set_source_rgb(0.5,0.2, 0.38);
+            cr.set_source_rgb(1.0,1.0, 1.0);
             cr.fill();
+
+            cr.set_source_rgb(1.0,0.0, 0.0);
+            cr.move_to(0.0, 0.0);
+            let dx = width / (s1.len() as f64);
+            for (i, n) in s1.iter().enumerate() {
+                cr.line_to(dx * (i as f64), m * (*n as f64));
+            }
+
+            cr.set_source_rgb(0.0,1.0, 0.0);
+            cr.move_to(0.0, 0.0);
+            let dx = width / (s2.len() as f64);
+            for (i, n) in s2.iter().enumerate() {
+                cr.line_to(dx * (i as f64), m * (*n as f64));
+            }
+
 
             Inhibit(false)
         });
@@ -283,7 +358,7 @@ impl Widget for Win {
         grid.attach(&board, 0, 0, 13, 15);
         grid.attach(&moves_container, 13, 0, 10, 10);
         grid.attach(&rack, 4, 16, 7, 1);
-        grid.attach(&graph, 15, 11, 6, 4);
+        grid.attach(&graph, 13, 10, 10, 5);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
