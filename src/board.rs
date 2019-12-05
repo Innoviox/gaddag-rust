@@ -13,7 +13,7 @@ use std::io::*;
 
 pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2]);
 
-fn _as(v: usize) -> i32 {
+fn _as(v: usize) -> i32 { // made this before i knew about the as keyword whoops
     i32::try_from(v).unwrap()
 }
 
