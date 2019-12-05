@@ -61,6 +61,10 @@ impl Win {
 
     fn lset(&mut self, l: Label, c: &str, a: char, s: i32) {
         l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+        let mut st = s.to_string();
+        if s == -1 {
+            st = "".to_string();
+        }
         l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", c, a, s));
     }
 
@@ -114,6 +118,10 @@ impl Win {
             let a = r[i as usize];
             let s = self.model.get_board().bag.score(a);
             self.lset(l, "white", a, s);
+        }
+        for i in r.len()..7 {
+            let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
+            self.lset(l, "white", ' ', -1);
         }
     }
 
