@@ -109,7 +109,7 @@ impl Win {
             }
         }
         self.window.show_all();
-        timeout(self.relm.stream(), 100, || Msg::Tick);
+        self.update(Msg::Tick);
     }
 
     fn _update_rack(&mut self, r: &Vec<char>) {
@@ -192,7 +192,7 @@ impl Update for Win {
                     self.moves.attach(&label, n, t + 1, 1, 1);
                 }
                 self.window.show_all();
-                timeout(self.relm.stream(), 10, || Msg::Tick);
+                timeout(self.relm.stream(), 1, || Msg::Tick);
             },
             Msg::SetMove(n) => {
                 if self.model.is_over() {
@@ -261,6 +261,17 @@ impl Widget for Win {
             rack.attach(&l, i, 0, 1, 1);
         }
 
+        let graph = gtk::DrawingArea::new();
+        graph.connect_draw(move |widget,cr| {
+            let width: f64 = widget.get_allocated_width() as f64;
+            let height: f64 = widget.get_allocated_height() as f64;
+            cr.rectangle(0.0,0.0,width,height);
+            cr.set_source_rgb(0.5,0.2, 0.38);
+            cr.fill();
+
+            Inhibit(false)
+        });
+
         let grid = gtk::Grid::new();
         grid.set_hexpand(true);
         grid.set_vexpand(true);
@@ -269,9 +280,10 @@ impl Widget for Win {
         grid.set_halign(gtk::Align::Fill);
         grid.set_valign(gtk::Align::Fill);
 
-        grid.attach(&board, 0, 0, 15, 14);
-        grid.attach(&moves_container, 15, 0, 10, 10);
+        grid.attach(&board, 0, 0, 13, 15);
+        grid.attach(&moves_container, 13, 0, 10, 10);
         grid.attach(&rack, 4, 16, 7, 1);
+        grid.attach(&graph, 15, 11, 6, 4);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
