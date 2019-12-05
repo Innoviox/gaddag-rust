@@ -46,6 +46,7 @@ struct Win {
     // ui fields
     board: Grid,
     moves: Grid,
+    rack: Grid,
 
     // internal fields
     last_move: Move,
@@ -58,18 +59,20 @@ impl Win {
         self.board.get_child_at(col, row).unwrap().dynamic_cast::<Label>().ok().unwrap()
     }
 
+    fn lset(&mut self, l: Label, c: &str, a: char, s: i32) {
+        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", c, a, s));
+    }
+
     fn set(&mut self, p: Position, color: &str) {
         let mut at = self.model.get_board().at_position(p);
         let mut score = self.model.get_board().bag.score(at);
         let l = self.get(p.col as i32, p.row as i32);
-        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
-
         if self.model.get_board().blanks.contains(&p) { // blank
             at = (at as u32 + 127215).try_into().unwrap(); // make square character https://unicode.org/charts/nameslist/n_1F100.html
             score = 0;
         }
-
-        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", color, at, score));
+        self.lset(l, color, at, score);
     } 
 
     fn place(&mut self, m: &Move, color: &str, force: bool) {
@@ -104,6 +107,16 @@ impl Win {
 
         self.window.show_all();
     }
+
+    fn update_rack(&mut self) {
+        let r = self.model.current_player().rack.clone();
+        for i in 0..r.len() {
+            let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
+            let a = r[i as usize];
+            let s = self.model.get_board().bag.score(a);
+            self.lset(l, "white", a, s);
+        }
+    }
 }
 
 impl Update for Win {
@@ -124,6 +137,7 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Msg::Tick => {
+                self.update_rack();
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
                 if !self.model.is_over() {
@@ -221,6 +235,19 @@ impl Widget for Win {
         let moves_container = gtk::ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
+        let rack = gtk::Grid::new();
+        rack.set_hexpand(true); // todo make fn to generate grid
+        rack.set_vexpand(true);
+        rack.set_row_homogeneous(true);
+        rack.set_column_homogeneous(true);
+        rack.set_halign(gtk::Align::Fill);
+        rack.set_border_width(5);
+        for i in 0..7 {
+            let l = Label::new(Some(" "));
+            l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+            rack.attach(&l, i, 0, 1, 1);
+        }
+
         let grid = gtk::Grid::new();
         grid.set_hexpand(true);
         grid.set_vexpand(true);
@@ -229,12 +256,13 @@ impl Widget for Win {
         grid.set_halign(gtk::Align::Fill);
         grid.set_valign(gtk::Align::Fill);
 
-        grid.attach(&board, 0, 0, 15, 15);
-        grid.attach(&moves_container, 16, 0, 10, 10);
+        grid.attach(&board, 0, 0, 15, 14);
+        grid.attach(&moves_container, 15, 0, 10, 10);
+        grid.attach(&rack, 4, 16, 7, 1);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
-        window.set_default_size(2500, 2500);
+        window.set_default_size(1280, 800);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
         interval(relm.stream(), 1000, || Msg::Tick);
@@ -246,6 +274,7 @@ impl Widget for Win {
             window,
             board,
             moves,
+            rack,
             last_move: Move::none(),
             colors,
             relm: relm.clone()
