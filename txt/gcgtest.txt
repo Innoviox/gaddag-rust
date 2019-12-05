@@ -1,52 +1,46 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: BSTFWIO H6 BOW +16 16
+>p1: BEYAALE H8 BELAY +28 28
+#note Time: 5
+>p2: SURNNTO 13B TURNONS +77 77
+#note Time: 21
+>p1: AEAIYON 14E AYE +31 59
+#note Time: 23
+>p2: WFRROUT 15G WORT +27 104
+#note Time: 19
+>p1: AIONRMO I6 AMORINO +79 138
+#note Time: 44
+>p2: FRUTPDI H1 PUTRID +33 137
+#note Time: 32
+>p1: RSEACIG B8 ERGAS.IC +80 218
+#note Time: 68
+>p2: FIJ?ASL 8A F.IJoA +69 206
+#note Time: 281
+>p1: ITPHQVE J6 HEP +42 260
+#note Time: 22
+>p2: SLDBUGD J11 DUG +15 221
+#note Time: 17
+>p1: ITQVELE C7 Q. +21 281
+#note Time: 21
+>p2: SLBDRNN F6 BL.ND +18 239
+#note Time: 11
+>p1: ITVELEX K2 VEXIL +38 319
+#note Time: 24
+>p2: SRNTZI? L3 TINS +39 278
+#note Time: 189
+>p1: TEEEEOA 13J .OATEE +14 333
+#note Time: 11
+>p2: RZ?AAIC O6 ARChAIZ. +134 412
+#note Time: 230
+>p1: EEDHGIS 3A HEDGIES. +78 411
+#note Time: 29
+>p2: WEOKMVE N3 EVOKE +40 452
+#note Time: 20
+>p1: ONUETAF 12L FUT. +46 457
 #note Time: 34
->p2: UJR?KHL 7G J.UK +24 24
-#note Time: 285
->p1: STFIEIM K7 SEMIFIT +90 106
-#note Time: 98
->p2: R?HLGGE 8K .GGER +27 51
-#note Time: 908
->p1: AYUULIL M8 .LUILY +22 128
-#note Time: 116
->p2: ?HLXEDA J9 AXEL +63 114
-#note Time: 1696
->p1: AUAAWTI N13 AWA +17 145
-#note Time: 100
->p2: ?HDYGUR O2 RoUGHD.Y +66 180
-#note Time: 971
->p1: UATIDOA 2I AUDITO. +20 165
-#note Time: 208
->p2: OVDOSIT 1E OVOID +30 210
-#note Time: 194
->p1: AELCR?A 15H ARChAE.L +140 305
-#note Time: 2161
->p2: STZCEOS L1 Z.TS +46 256
-#note Time: 204
->p1: EVNAPQE 3F VEEP +22 327
-#note Time: 141
->p2: CEOSHSE G7 .OES +17 273
-#note Time: 152
->p1: NAQNBOI 14D NIQAB +40 367
-#note Time: 208
->p2: CHSEOTE 15A OCHE +33 306
-#note Time: 300
->p1: NOTIEOT F8 TOO +17 384
-#note Time: 216
->p2: STERNID 9I D.. +8 314
-#note Time: 373
->p1: NIETIEP 1L .IP +20 404
-#note Time: 218
->p2: STERNIR 13M ..R +6 320
-#note Time: 250
->p1: NETIEFE 11C FEET +18 422
-#note Time: 174
->p2: STENIRA 2A RETINAS +84 404
-#note Time: 504
->p1: NIERNNM 12A MIEN +27 449
-#note Time: 153
->p2: NA 1A AN +14 418
-#note Time: 123
->p2:  (RNN) +6 424
+>p2: WMOLI N10 MO..L +38 490
+#note Time: 19
+>p1: ONEA 15A O.EAN +27 484
+#note Time: 13
+>p1:  (WI) +10 494
