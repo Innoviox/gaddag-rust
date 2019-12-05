@@ -65,7 +65,7 @@ impl Win {
         if s == -1 {
             st = "".to_string();
         }
-        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", c, a, s));
+        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", c, a, st));
     }
 
     fn set(&mut self, p: Position, color: &str) {
