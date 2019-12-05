@@ -108,14 +108,17 @@ impl Win {
         self.window.show_all();
     }
 
-    fn update_rack(&mut self) {
-        let r = self.model.current_player().rack.clone();
+    fn _update_rack(&mut self, r: &Vec<char>) {
         for i in 0..r.len() {
             let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
             let a = r[i as usize];
             let s = self.model.get_board().bag.score(a);
             self.lset(l, "white", a, s);
         }
+    }
+
+    fn update_rack(&mut self) {
+        self._update_rack(&self.model.current_player().rack.clone());
     }
 }
 
@@ -137,10 +140,10 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Msg::Tick => {
-                self.update_rack();
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
                 if !self.model.is_over() {
+                    self.update_rack();
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
                     let lm = Move::of(&self.last_move);
@@ -186,6 +189,7 @@ impl Update for Win {
                 if self.model.is_over() {
                     let (m, r) = self.model.set_state(n);
                     self.setup_board(false);
+                    self._update_rack(&r.clone());
                     if !m.exch() { self.place(&m, "yellow", false); }
                 }
             },
