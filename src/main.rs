@@ -18,7 +18,7 @@ mod player;
 mod game;
 
 use relm_derive::Msg;
-use relm::{Widget, Relm, Update, interval};
+use relm::{Widget, Relm, Update, interval, timeout};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
@@ -104,8 +104,8 @@ impl Win {
                 }
             }
         }
-
         self.window.show_all();
+        timeout(self.relm.stream(), 100, || Msg::Tick);
     }
 
     fn _update_rack(&mut self, r: &Vec<char>) {
@@ -176,7 +176,7 @@ impl Update for Win {
                     let btn = Button::new();
                     btn.add(&label);
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
-                    self.moves.attach(&btn, c, t, 1, 1);                   
+                    self.moves.attach(&btn, c, t, 1, 1);
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
@@ -184,6 +184,7 @@ impl Update for Win {
                     self.moves.attach(&label, n, t + 1, 1, 1);
                 }
                 self.window.show_all();
+                timeout(self.relm.stream(), 10, || Msg::Tick);
             },
             Msg::SetMove(n) => {
                 if self.model.is_over() {
@@ -269,7 +270,6 @@ impl Widget for Win {
         window.set_default_size(1280, 800);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        interval(relm.stream(), 100, || Msg::Tick);
         
         window.show_all();
 
@@ -283,8 +283,6 @@ impl Widget for Win {
             colors,
             relm: relm.clone()
         };
-
-        // win.update(Msg::Tick);
         win.setup_board(true);
         win
     }
