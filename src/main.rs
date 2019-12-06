@@ -54,6 +54,7 @@ struct Win {
     // internal fields
     last_move: Move,
     colors: HashMap::<char, RGBA>,
+    back_colors: HashMap::<char, RGBA>,
     relm: Relm<Win>
 }
 
@@ -230,6 +231,15 @@ impl Widget for Win {
         colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
         colors.insert('+', RGBA { red: 0.2, green: 0.38, blue: 0.92, alpha: 1.0} ); // "dark blue");
 
+        // colors for back, slightly greyed out
+        let mut back_colors = HashMap::<char, RGBA>::new();
+        back_colors.insert('#', RGBA { red: 0.92, green: 0.54, blue: 0.54, alpha: 1.0} );
+        back_colors.insert('.', RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0} );
+        back_colors.insert('-', RGBA { red: 0.63, green: 0.78, blue: 0.83, alpha: 1.0} );
+        back_colors.insert('^', RGBA { red: 0.94, green: 0.82, blue: 0.82, alpha: 1.0} );
+        back_colors.insert('*', RGBA { red: 0.94, green: 0.82, blue: 0.82, alpha: 1.0} );
+        back_colors.insert('+', RGBA { red: 0.25, green: 0.32, blue: 0.53, alpha: 1.0} );
+
         let board = gtk::Grid::new();
         board.set_row_homogeneous(true);
         board.set_column_homogeneous(true); 
@@ -374,6 +384,7 @@ impl Widget for Win {
             graph,
             last_move: Move::none(),
             colors,
+            back_colors,
             relm: relm.clone()
         };
         win.setup_board(true);
