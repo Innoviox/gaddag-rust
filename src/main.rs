@@ -323,28 +323,53 @@ impl Widget for Win {
 
             let width: f64 = widget.get_allocated_width() as f64;
             let height: f64 = widget.get_allocated_height() as f64;
-            let m = (*top as f64) / height;
+            let m = height / (*top as f64);
 
             cr.rectangle(0.0,0.0, width, height);
             cr.set_source_rgb(1.0,1.0, 1.0);
             cr.fill();
 
+            cr.set_line_width(1.0);
+
+            let draw = |list: Vec<i32>| {
+                let dx = width / (s1.len() as f64);
+                cr.move_to(0.0, 0.0);
+                let dx = width / (s1.len() as f64);
+                let mut s = 0;
+                for (i, n) in list.iter().enumerate() {
+                    s += *n;
+                    println!("{} {}", i, s);
+                    cr.line_to(dx * (i as f64), m * (s as f64));
+                }
+            };
+
             cr.set_source_rgb(1.0,0.0, 0.0);
-            cr.move_to(0.0, 0.0);
-            let dx = width / (s1.len() as f64);
-            for (i, n) in s1.iter().enumerate() {
-                println!("Drawing line {} {}", dx * (i as f64), m * (*n as f64));
-                cr.line_to(dx * (i as f64), m * (*n as f64));
-            }
+            draw(s1.clone());
+            cr.stroke();
 
-            cr.set_source_rgb(0.0,1.0, 0.0);
-            cr.move_to(0.0, 0.0);
-            let dx = width / (s2.len() as f64);
-            for (i, n) in s2.iter().enumerate() {
-                println!("Drawing line {} {}", dx * (i as f64), m * (*n as f64));
-                cr.line_to(dx * (i as f64), m * (*n as f64));
-            }
-
+            cr.set_source_rgb(1.0, 0.0, 1.0);
+            draw(s2.clone());
+            cr.stroke();
+//            cr.move_to(0.0, 0.0);
+//            let dx = width / (s1.len() as f64);
+//            let mut s = 0;
+//            for (i, n) in s1.iter().enumerate() {
+//                s += *n;
+//                cr.line_to(dx * (i as f64), m * (s as f64));
+//            }
+//
+//            cr.stroke();
+//
+//            cr.set_source_rgb(0.0,0.0, 1.0);
+//            cr.move_to(0.0, 0.0);
+//            let dx = width / (s2.len() as f64);
+//            s = 0;
+//            for (i, n) in s2.iter().enumerate() {
+//                s += *n;
+//                cr.line_to(dx * (i as f64), m * (s as f64));
+//            }
+//
+//            cr.stroke();
 
             Inhibit(false)
         });
