@@ -66,7 +66,7 @@ impl Board {
 
         // for testing exchanges
         // note - at present, game ends 413-506, 9a DISHW.RE
-        b.bag = Bag::with(&vec!['P', 'F', 'T', 'C', 'Z', 'S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'E', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
+//        b.bag = Bag::with(&vec!['P', 'F', 'T', 'C', 'Z', 'S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'E', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
 
         b
     }
@@ -458,7 +458,6 @@ impl Board {
                      (np.col == 0 && direction == Direction::Across)) {
                     nnnp.tick(direction);
                 }
-                // println!("Seeding with {:?} at {:?}", word, nnp);
                 // pass to extend-right
                 self.extend_right(&Vec::new(), self.trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), moves, &word.iter().collect(), nnnp, nnp, cross_sums);
                 return
@@ -470,43 +469,46 @@ impl Board {
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
                  direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
-        // if real_pos.row == 13 && real_pos.col == 6 {
-        // println!("Received call left with {:?} {:?} {:?} {:?} {:?} {:?}", position, part, limit, curr_pos, real_pos, direction);
-        // }
-        // if let Some(seed) = self.trie.nrseed(&part) {
+        /*
+        This method extends the current move as far left as possible using only tiles on the rack.
+        Therefore, if it would hit a tile on the board, it returns instead.
+        Since the tile-on-board calculation is mildly expensive, we pass this method how far it can go
+        (its limit). Once this limit is 0, it will return. Otherwise, it will recurse - for every tile,
+        go left from that tile with limit - 1.
+
+        The speed of this method is vastly improved with the use of a GADDAG, as it will therefore only
+        check valid left parts.
+        */
+
+        // Check if this is a valid left part; if it is, extend right.
         if let Some(seed) = self.trie.follow(node, '#') { 
             self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
         }
 
-        if limit > 0 {
-            // let mut c = alph.chars();
-            // println!("Lefting at {:?}, considering {:?}", curr_pos, cross_checks[curr_pos.to_int()]);
-            let mut cp = position.clone();
-            if cp.tick_opp(direction) {  // todo if not tick opp add check?
-                // for (i, next) in alph.chars().enumerate() {
-                    // let next = c.next().unwrap();
+        if limit > 0 { // can still travel in the given direction
+            let mut cp = position.clone(); // current position
+            if cp.tick_opp(direction) { // try to move left
                 // todo rayon
                 // self.trie.nexts(node).par_iter().map(|(next, nnode)| {
-                for (next, nnode) in self.trie.nexts(node) {
-                    if let Some(i) = alph.find(next) {
-                        if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) { 
-                            // println!("Lefting {}", next);
-
+                for (next, nnode) in self.trie.nexts(node) { // iterate over nexts
+                    if let Some(i) = alph.find(next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
+                        // Valid letters must be both on the rack and in the cross checks.
+                        if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) {
                             let mut new_rack = rack.clone();
-                            new_rack[i] -= 1;
-                            
+                            new_rack[i] -= 1; // remove the letter from the rack
+
+                            // add the letter to the left part and the word
                             let mut new_part = part.clone();
                             new_part.push(next);
-
                             let new_word = next.to_string() + &word;
 
-                            let mut ccp = cp.clone();
+                            let mut ccp = cp.clone(); // new starting position
                             ccp.tick_opp(direction);
 
-                            if !self.is_letter(ccp) {
-                                if let Some(nnode) = self.trie.follow(node, next) {
+                            if !self.is_letter(ccp) { // final check to confirm we won't hit a letter
+                                if let Some(nnode) = self.trie.follow(node, next) { // see if it can form a valid left part
+                                    // recurse
                                     self.left_part(cp, new_part, nnode, 
-                                    // self.left_part(cp, new_part, node, 
                                                 &new_rack, cross_checks, direction,
                                                 moves, limit - 1, new_word, cp, real_pos, cross_sums);   
                                 }
@@ -516,9 +518,10 @@ impl Board {
                 }
             }
 
-            if rack[26] > 0 { // blank
+            if rack[26] > 0 { // have a blank
+                // If we have a blank, we apply the algorithm above, but for each letter the blank could be
                 let mut new_rack = rack.clone();
-                new_rack[26] -= 1;
+                new_rack[26] -= 1; // remove the blank
                 
                 let mut cp = position.clone();
                 if cp.tick_opp(direction) {
@@ -532,9 +535,7 @@ impl Board {
 
                                 let new_word = c.to_lowercase().to_string() + &word;
                             
-                            // if let Some(nnode) = self.trie.follow(node, c) {
-                                self.left_part(cp, new_part, nnode, 
-                                // self.left_part(cp, new_part, node, 
+                                self.left_part(cp, new_part, nnode,
                                             &new_rack, cross_checks, direction,
                                             moves, limit - 1, new_word, cp, real_pos, cross_sums);   
                             }
@@ -543,37 +544,37 @@ impl Board {
                 }
             }
         }
-        /*
-        extend-right(trie.find(current_part))
-        if limit > 0 
-            for char on rack
-                left-part(rack - char, limit - 1, char + part)
-        */
     }
 
     fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
-        // if anchor.row == 11 && anchor.col == 1 { println!("Extending right at {:?} {:?} {:?} {}", position, anchor, part, word); }
-        if !self.is_letter(position) {
-            if position != anchor {
-                if let Some(_terminal) = self.trie.can_next(node, '@') {
+        /*
+        The heart of the algorithm, extend-right attempts to place all moves from a given left part.
+        This method also recurses.
+
+        When it hits a letter, it simply puts it in the right part and moves on. Therefore, a right part
+        can mix tiles on the rack and on the board, unlike a left part.
+
+        todo: code duplication
+        */
+        if !self.is_letter(position) { // found an empty tile
+            if position != anchor { // not the anchor so we can check if it's a move
+                if let Some(_terminal) = self.trie.can_next(node, '@') { // move forms a valid word
                     // return move
                     let mut m = Move { word: word.to_string(), position: start_pos, 
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
                                        typ: Type::Play }; 
-                    m.score = self.score(&m, cross_sums);
-                    // if anchor.row == 11 && anchor.col == 1 { println!("Found move {:?}", m); }
-                    moves.push(m);
+                    m.score = self.score(&m, cross_sums); // score move
+                    moves.push(m); // add move to list
                 }
             }
 
-            for (next, nnode) in self.trie.nexts(node) {
+            for (next, nnode) in self.trie.nexts(node) { // iterate over all possible nexts from the word
                 if let Some(unext) = alph.find(next) {
-                    if cross_checks[position.to_int()].contains(&next) { // todo: blanks here?
-                        // println!("\tvalid next");
-                        if rack[unext] > 0 || rack[26] > 0 {
-                            let mut np = part.clone();
+                    if cross_checks[position.to_int()].contains(&next) { // confirm that next is valid in the position todo: blanks here?
+                        if rack[unext] > 0 || rack[26] > 0 { // confirm that next is on rack, or rack has a blank. todo: reduce left-part code to look like this
+                            let mut np = part.clone(); // add to part
                             np.push(next);
-                            let mut nr = rack.clone();
+                            let mut nr = rack.clone(); // remove from rack
                             let mut snext = next.to_string();
                             if rack[unext] > 0 { 
                                 nr[unext] -= 1; 
@@ -583,13 +584,12 @@ impl Board {
                             }
                             let mut npp = position.clone();
 
-                            // let nnode = self.trie.follow(node, next).unwrap();
-                            let nword = &(word.to_owned() + &snext);
+                            let nword = &(word.to_owned() + &snext); // add to word
 
-                            if npp.tick(direction) {
+                            if npp.tick(direction) { // try to extend right
                                 self.extend_right(&np, nnode, npp, cross_checks, direction, nr, moves, 
                                                   nword, start_pos, anchor, cross_sums);
-                            } else if let Some(_terminal) = self.trie.can_next(nnode, '@') {
+                            } else if let Some(_terminal) = self.trie.can_next(nnode, '@') { // try to place move
                                 let mut m = Move { word: nword.to_string(), position: start_pos, 
                                                 direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)),
                                                 typ: Type::Play };  
@@ -600,7 +600,7 @@ impl Board {
                     }
                 }
             }
-        } else {
+        } else { // found a letter on the board
             let next = self.at_position(position);
             let mut np = part.clone();
             np.push(next);
@@ -609,9 +609,9 @@ impl Board {
             let nword = &(word.to_owned() + &next.to_string());
             
             if let Some(next_node) = self.trie.follow(node, next) {
-                if npp.tick(direction) {
+                if npp.tick(direction) { // try to extend right
                     self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, nword, start_pos, anchor, cross_sums);
-                } else if let Some(_terminal) = self.trie.can_next(next_node, '@') {
+                } else if let Some(_terminal) = self.trie.can_next(next_node, '@') { // try to place move
                     let mut m = Move { word: nword.to_string(), position: start_pos, 
                                     direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)),
                                     typ: Type::Play };  
