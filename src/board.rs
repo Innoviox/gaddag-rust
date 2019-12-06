@@ -639,7 +639,11 @@ impl Board {
             } else {
                 if human {
                     res.push('(');
-                    res.push(i); // todo make lowercase if blank
+                    if self.blanks.contains(&curr_pos) {
+                        res.push(i.to_lowercase().nth(0).unwrap());
+                    } else {
+                        res.push(i);
+                    }
                     res.push(')');
                 } else {
                     res.push('.');
