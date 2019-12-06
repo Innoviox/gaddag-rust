@@ -23,7 +23,7 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, Grid, Button, ScrolledWindow, Viewport
+    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea
 };
 use gdk::RGBA;
 use itertools::Itertools;
@@ -49,6 +49,7 @@ struct Win {
     board: Grid,
     moves: Grid,
     rack: Grid,
+    graph: DrawingArea,
 
     // internal fields
     last_move: Move,
@@ -194,6 +195,8 @@ impl Update for Win {
                     self.moves.attach(&label, n, t + 1, 1, 1);
                 }
                 self.window.show_all();
+
+                self.graph.queue_draw();
                 timeout(self.relm.stream(), 1, || Msg::Tick);
             },
             Msg::SetMove(n) => {
@@ -332,7 +335,7 @@ impl Widget for Win {
             cr.set_line_width(1.0);
 
             let draw = |list: Vec<i32>| {
-                cr.move_to(0.0, 0.0);
+                cr.move_to(0.0, height);
                 let dx = width / (s1.len() as f64);
                 for (i, n) in list.iter().enumerate() {
                     cr.line_to(dx * (i as f64), height - m * (*n as f64));
@@ -377,6 +380,7 @@ impl Widget for Win {
             board,
             moves,
             rack,
+            graph,
             last_move: Move::none(),
             colors,
             relm: relm.clone()
