@@ -63,8 +63,8 @@ impl Win {
         self.board.get_child_at(col, row).unwrap().dynamic_cast::<Label>().ok().unwrap()
     }
 
-    fn lset(&mut self, l: Label, c: &str, a: char, s: i32) {
-        l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+    fn lset(&mut self, l: Label, c: &str, a: char, s: i32, b: &RGBA) {
+        l.override_background_color(gtk::StateFlags::empty(), Some(b));
         let mut st = s.to_string();
         if s == -1 {
             st = "".to_string();
@@ -80,7 +80,8 @@ impl Win {
             at = (at as u32 + 127215).try_into().unwrap(); // make square character https://unicode.org/charts/nameslist/n_1F100.html
             score = 0;
         }
-        self.lset(l, color, at, score);
+        let b = self.back_colors[&STATE[p.row][p.col]];
+        self.lset(l, color, at, score, &b);
     } 
 
     fn place(&mut self, m: &Move, color: &str, force: bool) {
@@ -121,11 +122,11 @@ impl Win {
             let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
             let a = r[i as usize];
             let s = self.model.get_board().bag.score(a);
-            self.lset(l, "white", a, s);
+            self.lset(l, "white", a, s, &GREY);
         }
         for i in r.len()..7 {
             let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
-            self.lset(l, "white", ' ', -1);
+            self.lset(l, "white", ' ', -1, &GREY);
         }
     }
 
@@ -231,13 +232,13 @@ impl Widget for Win {
         colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
         colors.insert('+', RGBA { red: 0.2, green: 0.38, blue: 0.92, alpha: 1.0} ); // "dark blue");
 
-        // colors for back, slightly greyed out
+        // colors for back, greyed out
         let mut back_colors = HashMap::<char, RGBA>::new();
-        back_colors.insert('#', RGBA { red: 0.92, green: 0.54, blue: 0.54, alpha: 1.0} );
+        back_colors.insert('#', RGBA { red: 0.66, green: 0.20, blue: 0.20, alpha: 1.0} );
         back_colors.insert('.', RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0} );
-        back_colors.insert('-', RGBA { red: 0.63, green: 0.78, blue: 0.83, alpha: 1.0} );
-        back_colors.insert('^', RGBA { red: 0.94, green: 0.82, blue: 0.82, alpha: 1.0} );
-        back_colors.insert('*', RGBA { red: 0.94, green: 0.82, blue: 0.82, alpha: 1.0} );
+        back_colors.insert('-', RGBA { red: 0.27, green: 0.50, blue: 0.52, alpha: 1.0} );
+        back_colors.insert('^', RGBA { red: 0.71, green: 0.35, blue: 0.35, alpha: 1.0} );
+        back_colors.insert('*', RGBA { red: 0.71, green: 0.35, blue: 0.35, alpha: 1.0} );
         back_colors.insert('+', RGBA { red: 0.25, green: 0.32, blue: 0.53, alpha: 1.0} );
 
         let board = gtk::Grid::new();
