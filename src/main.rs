@@ -195,7 +195,6 @@ impl Update for Win {
                     self.moves.attach(&label, n, t + 1, 1, 1);
                 }
                 self.window.show_all();
-
                 self.graph.queue_draw();
                 timeout(self.relm.stream(), 1, || Msg::Tick);
             },
@@ -338,7 +337,7 @@ impl Widget for Win {
                 cr.move_to(0.0, height);
                 let dx = width / (s1.len() as f64);
                 for (i, n) in list.iter().enumerate() {
-                    cr.line_to(dx * (i as f64), height - m * (*n as f64));
+                    cr.line_to(dx * ((i + 1) as f64), height - m * (*n as f64));
                 }
                 cr.stroke();
             };
