@@ -639,7 +639,7 @@ impl Board {
             } else {
                 if human {
                     res.push('(');
-                    res.push(i);
+                    res.push(i); // todo make lowercase if blank
                     res.push(')');
                 } else {
                     res.push('.');
