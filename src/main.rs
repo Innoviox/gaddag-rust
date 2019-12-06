@@ -313,11 +313,11 @@ impl Widget for Win {
                 if let Some(l) = s2.last() { s2.push(*l); }
             }
 
-            let top = max(s1.iter().max(), s2.iter().max()).unwrap();
+            let top = max(s1.iter().max(), s2.iter().max()).unwrap() + 10;
 
             let width: f64 = widget.get_allocated_width() as f64;
             let height: f64 = widget.get_allocated_height() as f64;
-            let m = height / (*top as f64);
+            let m = height / (top as f64);
 
             cr.rectangle(0.0,0.0, width, height);
             cr.set_source_rgb(1.0,1.0, 1.0);
