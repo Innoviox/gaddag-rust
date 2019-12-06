@@ -267,59 +267,51 @@ impl Widget for Win {
 
         let graph = gtk::DrawingArea::new();
         graph.connect_draw(move |widget,cr| {
-            let (s1, s2): (Vec<(usize, i32)>, Vec<(usize, i32)>) = widget.get_parent()
-                                    .unwrap()
-                                    .dynamic_cast::<Grid>()
-                                    .ok()
-                                    .unwrap()
-                                    .get_children()
-                                    .iter()
-                                    .filter(|x| x.is::<ScrolledWindow>())
-                                    .nth(0)
-                                    .unwrap()
-                                    .clone()
-                                    .dynamic_cast::<ScrolledWindow>()
-                                    .ok()
-                                    .unwrap()
-                                    .get_children()[0]
-                                    .clone()
-                                    .dynamic_cast::<Viewport>()
-                                    .ok()
-                                    .unwrap()
-                                    .get_children()[0]
-                                    .clone()
-                                    .dynamic_cast::<Grid>()
-                                    .ok()
-                                    .unwrap()
-                                    .get_children()
-                                    .iter()
-                                    .map(|x| x.clone()
-                                              .dynamic_cast::<Button>())
-                                    .filter(|x| match x { Ok(_) => true, _ => false })
-                                    .map(|x| x.ok()
-                                                                      .unwrap()
-                                                                      .get_children()[0]
-                                                                      .clone()
-                                                                      .dynamic_cast::<Label>()
-                                                                      .ok()
-                                                                      .unwrap()
-                                                                      .get_text()
-                                                                      .unwrap()
-                                                                      .split("+")
-                                                                      .nth(1)
-                                                                      .unwrap()
-                                                                      .split("/")
-                                                                      .nth(1)
-                                                                      .unwrap()
-                                                                      .parse::<i32>()
-                                                                      .unwrap())
-                                    .rev()
-                                    .enumerate()
-                                    .collect::<Vec<(usize, i32)>>()
-                                    .iter()
-                                    .partition(|(i, n)| i % 2 == 0);
-            let s1: Vec<i32> = s1.iter().map(|x| x.1).collect();
-            let s2: Vec<i32> = s2.iter().map(|x| x.1).collect();
+            let children = widget
+                // get parent as grid
+                .get_parent().unwrap().dynamic_cast::<Grid>().ok().unwrap()
+                // get moves window
+                .get_children().iter().filter(|x| x.is::<ScrolledWindow>()).nth(0).unwrap().clone().dynamic_cast::<ScrolledWindow>().ok().unwrap()
+                // get actual moves object
+                .get_children()[0].clone().dynamic_cast::<Viewport>().ok().unwrap().get_children()[0].clone().dynamic_cast::<Grid>().ok().unwrap()
+                // get children of moves object
+                .get_children();
+            let (s1, s2): (Vec<(usize, i32)>, Vec<(usize, i32)>) = children.iter()
+                                    // get buttons, which contain the moves
+                                    .map(|x| x.clone().dynamic_cast::<Button>()).filter(|x| match x { Ok(_) => true, _ => false })
+                                    .map(|x| x
+                                        // get text on label
+                                        .ok().unwrap().get_children()[0].clone().dynamic_cast::<Label>().ok().unwrap().get_text().unwrap()
+                                        // get score from text
+                                        .split("+").nth(1).unwrap().split("/").nth(1).unwrap().parse::<i32>().unwrap())
+                                    // split into player 1 and player 2
+                                    .rev().enumerate().collect::<Vec<(usize, i32)>>().iter().partition(|(i, n)| i % 2 == 0);
+
+            // remove partition artifacts
+            let mut s1: Vec<i32> = s1.iter().map(|x| x.1).collect();
+            let mut s2: Vec<i32> = s2.iter().map(|x| x.1).collect();
+
+            let end = match children.iter() // match because end may not exist (e.g. game may not be over)
+                // get all labels
+                .map(|x| x.clone().dynamic_cast::<Label>()).filter(|x| match x { Ok(_) => true, _ => false })
+                // filter for labels with "/" (there should only be one, the one we want)
+                .map(|x| x.ok().unwrap().get_text().unwrap()).filter(|x| x.contains("/"))
+                // take label we found
+                .nth(0) {
+                    // extract score
+                    Some(s) => s.split("/").nth(1).unwrap().parse::<i32>().unwrap(),
+                    _ => 0
+            };
+
+            // add end score to correct array
+            if end != 0 { if s1.len() > s2.len() { s1.push(end); } else { s2.push(end); } }
+
+            // make same length (fill with last value)
+            if s1.len() < s2.len() {
+                if let Some(l) = s1.last() { s1.push(*l); }
+            } else {
+                if let Some(l) = s2.last() { s2.push(*l); }
+            }
 
             let top = max(s1.iter().max(), s2.iter().max()).unwrap();
 
