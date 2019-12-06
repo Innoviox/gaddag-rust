@@ -307,7 +307,7 @@ impl Widget for Win {
                                                                       .nth(1)
                                                                       .unwrap()
                                                                       .split("/")
-                                                                      .nth(0)
+                                                                      .nth(1)
                                                                       .unwrap()
                                                                       .parse::<i32>()
                                                                       .unwrap())
@@ -332,44 +332,20 @@ impl Widget for Win {
             cr.set_line_width(1.0);
 
             let draw = |list: Vec<i32>| {
-                let dx = width / (s1.len() as f64);
                 cr.move_to(0.0, 0.0);
                 let dx = width / (s1.len() as f64);
-                let mut s = 0;
                 for (i, n) in list.iter().enumerate() {
-                    s += *n;
-                    println!("{} {}", i, s);
-                    cr.line_to(dx * (i as f64), m * (s as f64));
+                    cr.line_to(dx * (i as f64), height - m * (*n as f64));
                 }
+                cr.stroke();
             };
 
             cr.set_source_rgb(1.0,0.0, 0.0);
             draw(s1.clone());
-            cr.stroke();
+
 
             cr.set_source_rgb(1.0, 0.0, 1.0);
             draw(s2.clone());
-            cr.stroke();
-//            cr.move_to(0.0, 0.0);
-//            let dx = width / (s1.len() as f64);
-//            let mut s = 0;
-//            for (i, n) in s1.iter().enumerate() {
-//                s += *n;
-//                cr.line_to(dx * (i as f64), m * (s as f64));
-//            }
-//
-//            cr.stroke();
-//
-//            cr.set_source_rgb(0.0,0.0, 1.0);
-//            cr.move_to(0.0, 0.0);
-//            let dx = width / (s2.len() as f64);
-//            s = 0;
-//            for (i, n) in s2.iter().enumerate() {
-//                s += *n;
-//                cr.line_to(dx * (i as f64), m * (s as f64));
-//            }
-//
-//            cr.stroke();
 
             Inhibit(false)
         });
