@@ -3,7 +3,7 @@
 extern crate gdk;
 
 use crate::player::Player;
-use crate::utils::{Position, Move};
+use crate::utils::{Position, Move, to_word, alph};
 use crate::board::{Board, STATE};
 use crate::game::Game;
 use std::time::SystemTime;
@@ -133,6 +133,22 @@ impl Win {
     fn update_rack(&mut self) {
         self._update_rack(&self.model.current_player().rack.clone());
     }
+
+    fn update_rack_for(&mut self, m: &Move) {
+        let mut word = to_word(&m.word.chars().collect());
+
+        for w in self.rack.get_children() {
+            let l = w.dynamic_cast::<Label>().ok().unwrap();
+            let c = l.to_string().chars().nth(0).unwrap();
+            if let Some(i) = alph.find(c) {
+                if word[i] > 0 {
+                    word[i] -= 1;
+                    let s = self.model.get_board().bag.score(c);
+                    self.lset(l, "yellow", c, s, &GREY);
+                }
+            }
+        }
+    }
 }
 
 impl Update for Win {
@@ -168,7 +184,11 @@ impl Update for Win {
 
                     let (m, sm) = self.model.do_move(true);
                     self.model.state -= 1; // dont know why this is necssary
-                    if !m.exch() { self.place(&m, "yellow", false); }
+                    if !m.exch() {
+                        self.place(&m, "yellow", false);
+                    } else {
+                        self.update_rack_for(&m)
+                    }
                     self.model.state += 1;
                     self.last_move = Move::of(&m);
 
