@@ -309,7 +309,7 @@ impl Widget for Win {
             // make same length (fill with last value)
             if s1.len() < s2.len() {
                 if let Some(l) = s1.last() { s1.push(*l); }
-            } else {
+            } else if s1.len() > s2.len() {
                 if let Some(l) = s2.last() { s2.push(*l); }
             }
 

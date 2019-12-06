@@ -21,6 +21,10 @@ Boxed Blanks, shrunk moves
 
 ![december 3rd with boxed blanks](ui/12_3_19_22_16.png)
 
+Rack, graph
+
+![afopr](ui/12_5_19_20_41.png)
+
 UI Roadmap
 
 - clickable moves :white_check_mark:
