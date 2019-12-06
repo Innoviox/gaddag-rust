@@ -317,10 +317,12 @@ impl Widget for Win {
             if end != 0 { if s1.len() > s2.len() { s1.push(end); } else { s2.push(end); } }
 
             // make same length (fill with last value)
-            if s1.len() < s2.len() {
-                if let Some(l) = s1.last() { s1.push(*l); }
-            } else if s1.len() > s2.len() {
-                if let Some(l) = s2.last() { s2.push(*l); }
+            for i in 0..2 {
+                if s1.len() < s2.len() {
+                    if let Some(l) = s1.last() { s1.push(*l); }
+                } else if s1.len() > s2.len() {
+                    if let Some(l) = s2.last() { s2.push(*l); }
+                }
             }
 
             let top = max(s1.iter().max(), s2.iter().max()).unwrap() + 10;
