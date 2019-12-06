@@ -139,7 +139,7 @@ impl Win {
 
         for w in self.rack.get_children() {
             let l = w.dynamic_cast::<Label>().ok().unwrap();
-            let c = l.to_string().chars().nth(0).unwrap();
+            let c = l.get_text().unwrap().chars().nth(0).unwrap();
             if let Some(i) = alph.find(c) {
                 if word[i] > 0 {
                     word[i] -= 1;
@@ -147,6 +147,14 @@ impl Win {
                     self.lset(l, "yellow", c, s, &GREY);
                 }
             }
+        }
+    }
+
+    fn _handle(&mut self, m: &Move) {
+        if !m.exch() {
+            self.place(&m, "yellow", false);
+        } else {
+            self.update_rack_for(&m);
         }
     }
 }
@@ -183,12 +191,8 @@ impl Update for Win {
                     let score = p.score as i32;
 
                     let (m, sm) = self.model.do_move(true);
-                    self.model.state -= 1; // dont know why this is necssary
-                    if !m.exch() {
-                        self.place(&m, "yellow", false);
-                    } else {
-                        self.update_rack_for(&m)
-                    }
+                    self.model.state -= 1; // dont know why this is necessary
+                    self._handle(&m);
                     self.model.state += 1;
                     self.last_move = Move::of(&m);
 
@@ -225,7 +229,7 @@ impl Update for Win {
                     let (m, r) = self.model.set_state(n);
                     self.setup_board(false);
                     self._update_rack(&r.clone());
-                    if !m.exch() { self.place(&m, "yellow", false); }
+                    self._handle(&m);
                 }
             },
             Msg::Quit => gtk::main_quit(),
