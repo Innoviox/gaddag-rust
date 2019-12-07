@@ -373,7 +373,7 @@ impl Board {
         di = 1;
         d = Direction::Down;
         di_opp = 0;
-        for col in 0..15 {
+        for col in 0..15 { // todo rayon
             last_anchor_col = 0;   
             for row in 0..15 {
                 let p = Position { row, col };
@@ -490,10 +490,10 @@ impl Board {
             let mut cp = position.clone(); // current position
             if cp.tick_opp(direction) { // try to move left
                 // todo rayon
-                let ms = self.trie.nexts(node).par_iter().map(|(next, nnode)| {
-                    let mut mymoves = vec![];
-//                for (next, nnode) in self.trie.nexts(node) { // iterate over nexts
-                    if let Some(i) = alph.find(*next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
+//                let ms = self.trie.nexts(node).par_iter().map(|(next, nnode)| {
+//                    let mut mymoves = vec![];
+                for (next, nnode) in self.trie.nexts(node) { // iterate over nexts
+                    if let Some(i) = alph.find(next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
                         // Valid letters must be both on the rack and in the cross checks.
                         if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) {
                             let mut new_rack = rack.clone();
@@ -501,27 +501,28 @@ impl Board {
 
                             // add the letter to the left part and the word
                             let mut new_part = part.clone();
-                            new_part.push(*next);
+                            new_part.push(next);
                             let new_word = next.to_string() + &word;
 
                             let mut ccp = cp.clone(); // new starting position
                             ccp.tick_opp(direction);
 
                             if !self.is_letter(ccp) { // final check to confirm we won't hit a letter
-                                if let Some(nnode) = self.trie.follow(node, *next) { // see if it can form a valid left part
+                                if let Some(nnode) = self.trie.follow(node, next) { // see if it can form a valid left part
                                     // recurse
-                                    self.left_part(cp, new_part, nnode, 
-                                                &new_rack, cross_checks, direction,
-                                                &mut mymoves, limit - 1, new_word, cp, real_pos, cross_sums);
+                                    self.left_part(cp, new_part, nnode,
+                                                   &new_rack, cross_checks, direction,
+                                                   moves, limit - 1, new_word, cp, real_pos, cross_sums);
                                 }
                             }
                         }
                     }
-                    mymoves
-                }).collect::<Vec<Vec<Move>>>();
-                
-                for i in ms { // todo do better
-                    moves.extend(i);
+//                    mymoves
+//                }).collect::<Vec<Vec<Move>>>();
+//
+//                for i in ms { // todo do better
+//                    moves.extend(i);
+//                }
                 }
             }
 

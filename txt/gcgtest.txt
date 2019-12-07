@@ -1,56 +1,52 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: YR?UATE H6 EsTUARY +76 76
-#note Time: 114
->p2: PENBNII 12D PINE. +20 20
-#note Time: 14
->p1: ZODIUTH 11B DHUTI +28 104
-#note Time: 21
->p2: BNIARDQ F10 Q..DAR +38 58
-#note Time: 29
->p1: ZOMGORC 13A MOZO +35 139
-#note Time: 16
->p2: BNIOOSB 15F .IBBON +30 88
-#note Time: 20
->p1: GRCVEOS L12 VOGS +30 169
-#note Time: 31
->p2: OSUNWYT 13K Y.W +18 106
-#note Time: 30
->p1: RCEAETM N7 CREMATE +77 246
-#note Time: 45
->p2: OSUNTFE 8L FO.T +33 139
-#note Time: 61
->p1: GEIARIC 14J GI. +22 268
-#note Time: 39
->p2: SUNEDDI O13 DUD +27 166
-#note Time: 42
->p1: EARICIE A12 E.IC +27 295
-#note Time: 27
->p2: SNEIFRO B13 .F +20 186
-#note Time: 76
->p1: ARIEHAU I8 AHI +23 318
-#note Time: 29
->p2: SNEIROE 10B OE +14 200
-#note Time: 54
->p1: REAUEIN J6 EAU +8 326
-#note Time: 40
->p2: SNIRELI K1 INLIERS +68 268
-#note Time: 40
->p1: REINL?A 1H bIL.NEAR +122 448
-#note Time: 876
->p2: GJTAXRL A8 TAJ +40 308
-#note Time: 18
->p1: EOAOEKT 2G KETO.E +21 469
-#note Time: 18
->p2: GXRLAEW 4H WAX.ER +40 348
-#note Time: 30
->p1: AOPSVSN M11 PA.S +25 494
-#note Time: 24
->p2: GLLN L4 .NG +10 358
-#note Time: 7
->p1: OVSN 6F VO. +14 508
-#note Time: 7
->p2: LL N1 .LL +6 364
+>p1: NOOEARV H4 NOVAE +18 18
+#note Time: 4
+>p2: TUGPGEE 4H .UGGET +16 16
 #note Time: 8
->p2:  (SN) +4 368
+>p1: ORDHUEI K1 DOU.HIER +76 94
+#note Time: 24
+>p2: PECDWIO 2J W.OPIE +38 54
+#note Time: 25
+>p1: HTUOEGD J8 OUGHTED +72 166
+#note Time: 20
+>p2: CDSQO?X J4 .OX +57 111
+#note Time: 123
+>p1: LIEZKIA G7 ZA +44 210
+#note Time: 19
+>p2: CDSQ?NL N1 Q. +11 122
+#note Time: 94
+>p1: LIEKIMN K10 IMINE +38 248
+#note Time: 19
+>p2: CDS?NLY 12H LY..C +22 144
+#note Time: 119
+>p1: LKPNTOR H11 P.ONK +33 281
+#note Time: 22
+>p2: DS?NJMS 13G J. +17 161
+#note Time: 74
+>p1: LTREINI 3K .NI +19 300
+#note Time: 37
+>p2: DS?NMSC 15K SCeND +38 199
+#note Time: 107
+>p1: LTREIAT 1G TRIA. +23 323
+#note Time: 46
+>p2: MSUEEND 14M MU +15 214
+#note Time: 23
+>p1: LETAATE 13M ETA +17 340
+#note Time: 15
+>p2: SEEND?W 15A NEWSDEs. +98 312
+#note Time: 195
+>p1: LATELII 2B ILLITE +18 358
+#note Time: 30
+>p2: FAAOYBT D1 F.YBOAT +38 350
+#note Time: 22
+>p1: AREIALS E4 AERIALS +76 434
+#note Time: 43
+>p2: AOBRVAR O7 ARAROB. +36 386
+#note Time: 22
+>p1: ESFR 14E EF +29 463
+#note Time: 15
+>p2: V 6C V.. +6 392
+#note Time: 11
+>p2:  (SR) +4 396
