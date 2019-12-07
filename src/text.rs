@@ -18,7 +18,7 @@ fn two_player_game(mut g: &mut Game, gcg: bool) {
     let mut turn = 1;
 
     while !g.is_over() {
-        let rack_1: String = g.get_player(0).rack.iter().collect();
+        let rack_1: String = g.get_player(0).rack.clone().iter().collect();
         let start1 = SystemTime::now();
         let (m1, sm1) = g.do_move(false);
         let time1 = start1.elapsed().expect("Time went backwards").as_millis();
@@ -46,7 +46,7 @@ fn two_player_game(mut g: &mut Game, gcg: bool) {
             break
         }
 
-        let rack_2: String = g.get_player(1).rack.iter().collect();
+        let rack_2: String = g.get_player(1).rack.clone().iter().collect();
         let start2 = SystemTime::now();
         let (m2, sm2) = g.do_move(false);
         let time2 = start2.elapsed().expect("Time went backwards").as_millis();

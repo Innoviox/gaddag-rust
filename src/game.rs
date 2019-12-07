@@ -91,5 +91,9 @@ impl Game {
 
     pub fn reset(&mut self) {
         self.board.reset();
+        for p in &mut self.players {
+            p.score = 0;
+            p.rack = self.board.bag.draw_tiles(7);
+        }
     }
 }
