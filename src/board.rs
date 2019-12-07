@@ -274,7 +274,7 @@ impl Board {
 }
 
 impl Board {
-    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
+    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> (Vec<Move>, Vec<Move>) {
         // println!("{:?}", self.affected);
         /*
         This method generates all possible moves from the current state with the given rack.
@@ -287,6 +287,7 @@ impl Board {
         */
 
         let mut result = Vec::new(); // This will store the found moves and be passed-by-reference to the recursive methods.
+        let mut partials = Vec::new();
 
         // todo only recalc for affected squares <<<<< IMPORTANT
         /*
@@ -356,13 +357,13 @@ impl Board {
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { // if left is a letter, use left part already on board
                             self.left_on_board(np, &rword, &self.cross_checks[di_opp], 
-                                                d, &mut result, &cross_sums[di_opp]);
+                                                d, &mut result, &cross_sums[di_opp], &mut partials);
                     } else { // make left part from rack. note that these arguments are really ugly but all fairly necessary (some for debugging)
                         self.left_part(p, Vec::new(), root, 
                                     &rword, &self.cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.col - last_anchor_col + 1).try_into().unwrap(), 
-                                    String::new(), p, p, &cross_sums[di_opp]);
+                                    String::new(), p, p, &cross_sums[di_opp], &mut partials);
                     }
                     last_anchor_col = p.col;
                 }
@@ -381,13 +382,13 @@ impl Board {
                     let mut np = p.clone();
                     if np.tick_opp(d) && self.is_letter(np) { 
                             self.left_on_board(np, &rword, &self.cross_checks[di_opp], 
-                                                d, &mut result, &cross_sums[di_opp]);
+                                                d, &mut result, &cross_sums[di_opp], &mut partials);
                     } else {
                         self.left_part(p, Vec::new(), root, 
                                     &rword, &self.cross_checks[di_opp], 
                                     d, &mut result, 
                                     (p.row - last_anchor_col + 1).try_into().unwrap(), 
-                                    String::new(), p, p, &cross_sums[di_opp]);
+                                    String::new(), p, p, &cross_sums[di_opp], &mut partials);
                     }
                     last_anchor_col = p.row;
                 }
@@ -414,12 +415,12 @@ impl Board {
             }
         }
 
-        result
+        (result, partials)
     }
 
     // todo: fix ugly arguments
     fn left_on_board(&self, position: Position, rack: &Vec<usize>, cross_checks: &[Vec<char>; 225],
-                     direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225]) {
+                     direction: Direction, moves: &mut Vec<Move>, cross_sums: &[i32; 225], partials: &mut Vec<Move>) {
         /*
         This method extends the current move as left as possible using only tiles on the board, and then
         passes it on to extend-right. For example, the following situation:
@@ -460,7 +461,7 @@ impl Board {
                     nnnp.tick(direction);
                 }
                 // pass to extend-right
-                self.extend_right(&Vec::new(), self.trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), moves, &word.iter().collect(), nnnp, nnp, cross_sums);
+                self.extend_right(&Vec::new(), self.trie.seed(&word), nnp, cross_checks, direction, rack.to_vec(), moves, &word.iter().collect(), nnnp, nnp, cross_sums, partials);
                 return
             }
         }
@@ -469,7 +470,7 @@ impl Board {
 
     fn left_part(&self, position: Position, part: Vec<char>, node: NodeIndex, 
                  rack: &Vec<usize>, cross_checks: &[Vec<char>; 225], 
-                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225]) {
+                 direction: Direction, moves: &mut Vec<Move>, limit: u32, word: String, curr_pos: Position, real_pos: Position, cross_sums: &[i32; 225], partials: &mut Vec<Move>) {
         /*
         This method extends the current move as far left as possible using only tiles on the rack.
         Therefore, if it would hit a tile on the board, it returns instead.
@@ -483,7 +484,7 @@ impl Board {
 
         // Check if this is a valid left part; if it is, extend right.
         if let Some(seed) = self.trie.follow(node, '#') { 
-            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums);
+            self.extend_right(&part, seed, real_pos, cross_checks, direction, rack.to_vec(), moves, &word, curr_pos, real_pos, cross_sums, partials);
         }
 
         if limit > 0 { // can still travel in the given direction
@@ -512,7 +513,7 @@ impl Board {
                                     // recurse
                                     self.left_part(cp, new_part, nnode,
                                                    &new_rack, cross_checks, direction,
-                                                   moves, limit - 1, new_word, cp, real_pos, cross_sums);
+                                                   moves, limit - 1, new_word, cp, real_pos, cross_sums, partials);
                                 }
                             }
                         }
@@ -545,7 +546,7 @@ impl Board {
                             
                                 self.left_part(cp, new_part, nnode,
                                             &new_rack, cross_checks, direction,
-                                            moves, limit - 1, new_word, cp, real_pos, cross_sums);   
+                                            moves, limit - 1, new_word, cp, real_pos, cross_sums, partials);
                             }
                         }
                     }
@@ -554,7 +555,7 @@ impl Board {
         }
     }
 
-    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225]) {
+    fn extend_right(&self, part: &Vec<char>, node: NodeIndex, position: Position, cross_checks: &[Vec<char>; 225], direction: Direction, rack: Vec<usize>, moves: &mut Vec<Move>, word: &String, start_pos: Position, anchor: Position, cross_sums: &[i32; 225], partials: &mut Vec<Move>) {
         /*
         The heart of the algorithm, extend-right attempts to place all moves from a given left part.
         This method also recurses.
@@ -564,6 +565,8 @@ impl Board {
 
         todo: code duplication
         */
+        partials.push(Move { word: word.to_string(), position: start_pos, direction, score: 0, evaluation: 0, typ: Type::Play });
+
         if !self.is_letter(position) { // found an empty tile
             if position != anchor { // not the anchor so we can check if it's a move
                 if let Some(_terminal) = self.trie.can_next(node, '@') { // move forms a valid word
@@ -596,7 +599,7 @@ impl Board {
 
                             if npp.tick(direction) { // try to extend right
                                 self.extend_right(&np, nnode, npp, cross_checks, direction, nr, moves, 
-                                                  nword, start_pos, anchor, cross_sums);
+                                                  nword, start_pos, anchor, cross_sums, partials);
                             } else if let Some(_terminal) = self.trie.can_next(nnode, '@') { // try to place move
                                 let mut m = Move { word: nword.to_string(), position: start_pos, 
                                                 direction, score: 0, evaluation: *self.dict.evaluate(&nr).expect(&format!("{:?}", &nr)),
@@ -618,7 +621,7 @@ impl Board {
             
             if let Some(next_node) = self.trie.follow(node, next) {
                 if npp.tick(direction) { // try to extend right
-                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, nword, start_pos, anchor, cross_sums);
+                    self.extend_right(&np, next_node, npp, cross_checks, direction, rack, moves, nword, start_pos, anchor, cross_sums, partials);
                 } else if let Some(_terminal) = self.trie.can_next(next_node, '@') { // try to place move
                     let mut m = Move { word: nword.to_string(), position: start_pos, 
                                     direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)),

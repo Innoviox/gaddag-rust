@@ -11,8 +11,8 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String) {
-        let gen = board.gen_all_moves(&self.rack);
+    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String, Vec<Move>) {
+        let (gen, partials) = board.gen_all_moves(&self.rack);
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
         let best_m = gen.iter().max_by(Move::cmp_with(1.0, eval_val));
 
@@ -34,7 +34,7 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), skips)
+                    return (Move::of(m), skips, partials)
                 },
                 Type::Exch => {
                     let word = m.complement(&self.rack);
@@ -48,12 +48,12 @@ impl Player {
                     let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
-                    return (nm, String::new())
+                    return (nm, String::new(), partials)
                 }
             }
         }
 
-        (Move::none(), String::new())
+        (Move::none(), String::new(), partials)
     }
 
     fn draw_up(&mut self, board: &mut Board) {
