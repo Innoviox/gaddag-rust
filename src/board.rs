@@ -687,7 +687,6 @@ impl Board {
 
             if cross_sum >= 0 {
                 let cross_score = curr_score + cross_sum;
-                // println!("Found cross score {:?} {} {} {} {}", curr_pos, cross_score, cross_mult, curr_score, cross_sum);
                 total_cross_score += cross_mult * cross_score;
             }
 
@@ -696,11 +695,8 @@ impl Board {
             curr_pos.tick(m.direction); // no check here because must be true
         }
 
-        // println!("Found true score {} {}", true_mult, true_score);
 
         let mut score = true_mult * true_score + total_cross_score;
-        
-        // println!("Final {}", score);
 
         if m.word.len() - n_played == 7 {
             score += 50;

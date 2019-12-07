@@ -1,16 +1,8 @@
-#[macro_use] extern crate itertools;
 use crate::player::Player;
 use crate::utils::Type;
 use crate::board::Board;
 use crate::game::Game;
 use std::time::SystemTime;
-
-mod bag;
-mod utils;
-mod board;
-mod dictionary;
-mod player;
-mod game;
 
 fn two_player_game(mut g: &mut Game, gcg: bool) {
     // b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
@@ -81,7 +73,7 @@ fn two_player_game(mut g: &mut Game, gcg: bool) {
         turn += 1;
 
 //         println!("{}", out);
-         println!("{}", g.get_board());
+//         println!("{}", g.get_board());
     }
 
     let (end_s, end, n) = g.finish();
@@ -108,7 +100,7 @@ fn two_player_game(mut g: &mut Game, gcg: bool) {
     println!("{}", out);
 }
 
-fn main() {
+pub fn main() {
     let mut game = Game::default();
 //    loop {
         two_player_game(&mut game, true);
