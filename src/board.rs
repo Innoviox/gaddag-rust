@@ -520,7 +520,7 @@ impl Board {
                     mymoves
                 }).collect::<Vec<Vec<Move>>>();
                 
-                for i in ms {
+                for i in ms { // todo do better
                     moves.extend(i);
                 }
             }
