@@ -153,7 +153,7 @@ impl Win {
     fn _handle(&mut self, m: &Move) {
         if !m.exch() {
             self.place(&m, "yellow", false);
-        } else {
+        } else { // todo do it for placements to
             self.update_rack_for(&m);
         }
     }
@@ -375,7 +375,7 @@ impl Widget for Win {
             draw(s1.clone());
 
 
-            cr.set_source_rgb(1.0, 0.0, 1.0);
+            cr.set_source_rgb(0.0, 0.0, 1.0);
             draw(s2.clone());
 
             Inhibit(false)
