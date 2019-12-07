@@ -1,6 +1,16 @@
 # gaddag-rust
 aye matey, a rusty gaddag https://ericsink.com/downloads/faster-scrabble-gordon.pdf
 
+## Building and running
+
+``` bash
+$ cargo run --release (text|viz)
+```
+
+Default argument is viz. Both will run a single AI game.
+
+
+
 ### To get total time
 
 ```
