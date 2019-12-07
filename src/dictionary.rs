@@ -3,9 +3,9 @@ use crate::utils::to_word;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs;
-use petgraph::Graph; // todo use daggy? 
+use petgraph::{Graph, Directed}; // todo use daggy?
 use petgraph::Direction;
-use petgraph::graph::NodeIndex;
+use petgraph::graph::{NodeIndex, Edges};
 use petgraph::visit::EdgeRef;
 use indicatif::ProgressBar;
 use indicatif::ProgressIterator;
@@ -234,14 +234,15 @@ impl Trie {
     }
 
     // -> [Option<(char, NodeIndex)>; 26]
+    pub fn _nexts(&self, current: NodeIndex) -> Edges<char, Directed, u32> {
+        self.graph.edges_directed(current, Direction::Outgoing)
+    }
+
     pub fn nexts(&self, current: NodeIndex) -> Vec<(char, NodeIndex)> {
         let edges = self.graph.raw_edges();
-        let mut res = Vec::new();
-        for a in self.graph.edges_directed(current, Direction::Outgoing) {
+        self._nexts(current).map(|a| {
             let e = &edges[a.id().index()];
-            res.push((e.weight, e.target()));
-        }
-
-        res
+            (e.weight, e.target())
+        }).collect()
     }
 }

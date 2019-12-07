@@ -1,46 +1,56 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: BEYAALE H8 BELAY +28 28
-#note Time: 5
->p2: SURNNTO 13B TURNONS +77 77
+>p1: YR?UATE H6 EsTUARY +76 76
+#note Time: 114
+>p2: PENBNII 12D PINE. +20 20
+#note Time: 14
+>p1: ZODIUTH 11B DHUTI +28 104
 #note Time: 21
->p1: AEAIYON 14E AYE +31 59
-#note Time: 23
->p2: WFRROUT 15G WORT +27 104
-#note Time: 19
->p1: AIONRMO I6 AMORINO +79 138
-#note Time: 44
->p2: FRUTPDI H1 PUTRID +33 137
-#note Time: 32
->p1: RSEACIG B8 ERGAS.IC +80 218
-#note Time: 68
->p2: FIJ?ASL 8A F.IJoA +69 206
-#note Time: 281
->p1: ITPHQVE J6 HEP +42 260
-#note Time: 22
->p2: SLDBUGD J11 DUG +15 221
-#note Time: 17
->p1: ITQVELE C7 Q. +21 281
-#note Time: 21
->p2: SLBDRNN F6 BL.ND +18 239
-#note Time: 11
->p1: ITVELEX K2 VEXIL +38 319
-#note Time: 24
->p2: SRNTZI? L3 TINS +39 278
-#note Time: 189
->p1: TEEEEOA 13J .OATEE +14 333
-#note Time: 11
->p2: RZ?AAIC O6 ARChAIZ. +134 412
-#note Time: 230
->p1: EEDHGIS 3A HEDGIES. +78 411
+>p2: BNIARDQ F10 Q..DAR +38 58
 #note Time: 29
->p2: WEOKMVE N3 EVOKE +40 452
+>p1: ZOMGORC 13A MOZO +35 139
+#note Time: 16
+>p2: BNIOOSB 15F .IBBON +30 88
 #note Time: 20
->p1: ONUETAF 12L FUT. +46 457
-#note Time: 34
->p2: WMOLI N10 MO..L +38 490
-#note Time: 19
->p1: ONEA 15A O.EAN +27 484
-#note Time: 13
->p1:  (WI) +10 494
+>p1: GRCVEOS L12 VOGS +30 169
+#note Time: 31
+>p2: OSUNWYT 13K Y.W +18 106
+#note Time: 30
+>p1: RCEAETM N7 CREMATE +77 246
+#note Time: 45
+>p2: OSUNTFE 8L FO.T +33 139
+#note Time: 61
+>p1: GEIARIC 14J GI. +22 268
+#note Time: 39
+>p2: SUNEDDI O13 DUD +27 166
+#note Time: 42
+>p1: EARICIE A12 E.IC +27 295
+#note Time: 27
+>p2: SNEIFRO B13 .F +20 186
+#note Time: 76
+>p1: ARIEHAU I8 AHI +23 318
+#note Time: 29
+>p2: SNEIROE 10B OE +14 200
+#note Time: 54
+>p1: REAUEIN J6 EAU +8 326
+#note Time: 40
+>p2: SNIRELI K1 INLIERS +68 268
+#note Time: 40
+>p1: REINL?A 1H bIL.NEAR +122 448
+#note Time: 876
+>p2: GJTAXRL A8 TAJ +40 308
+#note Time: 18
+>p1: EOAOEKT 2G KETO.E +21 469
+#note Time: 18
+>p2: GXRLAEW 4H WAX.ER +40 348
+#note Time: 30
+>p1: AOPSVSN M11 PA.S +25 494
+#note Time: 24
+>p2: GLLN L4 .NG +10 358
+#note Time: 7
+>p1: OVSN 6F VO. +14 508
+#note Time: 7
+>p2: LL N1 .LL +6 364
+#note Time: 8
+>p2:  (SN) +4 368
