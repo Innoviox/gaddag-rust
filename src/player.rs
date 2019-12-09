@@ -34,7 +34,7 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), skips, partials)
+                    return (Move::of(m), skips, gen)
                 },
                 Type::Exch => {
                     let word = m.complement(&self.rack);
@@ -48,12 +48,12 @@ impl Player {
                     let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
-                    return (nm, String::new(), partials)
+                    return (nm, String::new(), gen)
                 }
             }
         }
 
-        (Move::none(), String::new(), partials)
+        (Move::none(), String::new(), gen)
     }
 
     fn draw_up(&mut self, board: &mut Board) {
