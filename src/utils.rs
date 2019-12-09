@@ -34,8 +34,8 @@ impl Direction {
 
     pub fn to_str(&self) -> String {
         match self {
-            Direction::Down => return String::from("Down"),
-            Direction::Across => return String::from("Across")
+            Direction::Down => return String::from("↓"),
+            Direction::Across => return String::from("→")
         }
     }
 }
