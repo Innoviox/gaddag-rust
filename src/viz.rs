@@ -207,6 +207,7 @@ impl Update for Win {
     // The model may be updated when a message is received.
     // Widgets may also be updated in this function.
     fn update(&mut self, event: Msg) {
+//        println!("Updating {:?}", event);
         match event {
             Msg::Tick => {
                 let c = self.model.current as i32;
@@ -250,17 +251,15 @@ impl Update for Win {
                     self.model.state -= 1; // dont know why this is necessary
                     self.setup_board(false, false);
                     let p = Move::of(&self.partials[self.partialn]);
-                    let p2 = Move::of(&self.partials[self.partialn]);
                     self.partialn += 1;
                     self._handle(&Move::of(&p));
                     self.model.state += 1;
                     self.window.show_all();
                     self.graph.queue_draw();
-//                    println!("{:?}",  Move::of(&p2));
                     timeout(self.relm.stream(), 1, || Msg::Partials);
                 } else {
                     self.update_for_move(&Move::of(&self.m));
-                    self._update();
+//                    self._update();
                 }
 
             }
