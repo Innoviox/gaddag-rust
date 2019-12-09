@@ -12,9 +12,9 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea
+    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, EventBox
 };
-use gdk::RGBA;
+use gdk::{RGBA, EventButton};
 use itertools::Itertools;
 use std::cmp::max;
 
@@ -259,7 +259,15 @@ impl Widget for Win {
         board.set_column_homogeneous(true); 
         board.set_row_spacing(2);
         board.set_column_spacing(2);
-        board.set_border_width(1);     
+        board.set_border_width(1);
+
+        let event_box = gtk::EventBox::new();
+        event_box.add(&board);
+
+        event_box.connect_button_press_event(move |w, e| {
+            println!("{:?} {:?}", w, e.get_position());
+            gtk::Inhibit(false)
+        });
 
         let moves = gtk::Grid::new();
         moves.set_row_spacing(10);
@@ -378,7 +386,7 @@ impl Widget for Win {
         grid.set_halign(gtk::Align::Fill);
         grid.set_valign(gtk::Align::Fill);
 
-        grid.attach(&board, 0, 0, 13, 15);
+        grid.attach(&event_box, 0, 0, 13, 15);
         grid.attach(&moves_container, 13, 0, 10, 10);
         grid.attach(&rack, 4, 16, 7, 1);
         grid.attach(&graph, 13, 10, 10, 5);
