@@ -26,6 +26,7 @@ const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 pub enum Msg {
     Tick,
     Quit,
+    Partials,
     SetMove(usize)
 }
 
@@ -44,7 +45,10 @@ struct Win {
     last_move: Move,
     colors: HashMap::<char, RGBA>,
     back_colors: HashMap::<char, RGBA>,
-    relm: Relm<Win>
+    relm: Relm<Win>,
+    partials: Vec<Move>,
+    partialn: usize,
+    m: Move
 }
 
 impl Win {
@@ -61,8 +65,8 @@ impl Win {
         l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span><span color=\"{0}\" face=\"sans\"><sub>{}</sub></span>", c, a, st));
     }
 
-    fn set(&mut self, p: Position, color: &str) {
-        let mut at = self.model.get_board().at_position(p);
+    fn set(&mut self, p: Position, color: &str, c: char) {
+        let mut at = c;  // self.model.get_board().at_position(p);
         let mut score = self.model.get_board().bag.score(at);
         let l = self.get(p.col as i32, p.row as i32);
         if self.model.get_board().blanks.contains(&p) { // blank
@@ -78,13 +82,13 @@ impl Win {
         let last = self.model.get_last_state();
         for i in m.word.chars() {
             if force || "#^+-*.".contains(last.0[p.row][p.col]) {
-                self.set(p, color);
+                self.set(p, color, i);
             }
             p.tick(m.direction);
         }
     }
 
-    fn setup_board(&mut self, first: bool) {
+    fn setup_board(&mut self, first: bool, tick: bool) {
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
@@ -98,12 +102,12 @@ impl Win {
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
                     l.set_text(" ");
                 } else {
-                    self.set(p, "white");
+                    self.set(p, "white", at);
                 }
             }
         }
         self.window.show_all();
-        self.update(Msg::Tick);
+        if tick { self.update(Msg::Tick); }
     }
 
     fn _update_rack(&mut self, r: &Vec<char>) {
@@ -148,6 +152,44 @@ impl Win {
     }
 }
 
+impl Win {
+    fn update_for_move(&mut self, m: &Move) {
+        let c = self.model.current as i32;
+        let t = self.model.get_turn() as i32;
+        self.model.state -= 1; // dont know why this is necessary
+        self._handle(&m);
+        self.model.state += 1;
+        self.last_move = Move::of(&m);
+//
+//        let mut text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
+//                               m.position.to_str(m.direction) m.score);
+//        if m.exch() {
+//            text = format!("{:<7}/EXC: -{:<11} +{:<03}/{:<03}",
+//                           rack, m.word, m.score, score + m.score);
+//        }
+//
+//        let label = Label::new(Some(&text));
+//        let n = (t * 2 + c - 1) as usize;
+//        if c == 0 {
+//            label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t, text));
+//        } else {
+//            label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
+//        }
+//        let btn = Button::new();
+//        btn.add(&label);
+//        connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
+//        self.moves.attach(&btn, c, t, 1, 1);
+
+        self._update();
+    }
+
+    fn _update(&mut self) {
+        self.window.show_all();
+        self.graph.queue_draw();
+        timeout(self.relm.stream(), 1, || Msg::Tick);
+    }
+}
+
 impl Update for Win {
     // Specify the model used for this widget.
     type Model = Game;
@@ -169,6 +211,7 @@ impl Update for Win {
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
                 if !self.model.is_over() {
+                    self.setup_board(false, false);
                     self.update_rack();
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
@@ -180,47 +223,46 @@ impl Update for Win {
                     let score = p.score as i32;
 
                     let (m, sm, partials) = self.model.do_move(true);
-                    self.model.state -= 1; // dont know why this is necessary
-                    self._handle(&m);
-                    self.model.state += 1;
-                    self.last_move = Move::of(&m);
+                    self.m = Move::of(&m);
+                    self.partialn = 0;
+                    self.partials = partials;
 
-                    let mut text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
-                            rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
-                    if m.exch() {
-                        text = format!("{:<7}/EXC: -{:<11} +{:<03}/{:<03}",
-                            rack, m.word, m.score, score + m.score);
-                    } 
-
-                    let label = Label::new(Some(&text));
-                    let n = (t * 2 + c - 1) as usize;
-                    if c == 0 {
-                        label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t, text));
-                    } else {
-                        label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
-                    }
-                    let btn = Button::new();
-                    btn.add(&label);
-                    connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
-                    self.moves.attach(&btn, c, t, 1, 1);
+                    timeout(self.relm.stream(), 1, || Msg::Partials);
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
                     let label = Label::new(Some(&text));
                     self.moves.attach(&label, n, t + 1, 1, 1);
+                    self._update();
                 }
-                self.window.show_all();
-                self.graph.queue_draw();
-                timeout(self.relm.stream(), 1, || Msg::Tick);
             },
             Msg::SetMove(n) => {
                 if self.model.is_over() {
                     let (m, r) = self.model.set_state(n);
-                    self.setup_board(false);
+                    self.setup_board(false, true);
                     self._update_rack(&r.clone());
                     self._handle(&m);
                 }
             },
+            Msg::Partials => {
+                if self.partialn < self.partials.len() {
+                    self.setup_board(false, false);
+                    let p = Move::of(&self.partials[self.partialn]);
+                    let p2 = Move::of(&self.partials[self.partialn]);
+                    self.partialn += 1;
+                    self.model.state -= 1; // dont know why this is necessary
+                    self._handle(&Move::of(&p));
+                    self.model.state += 1;
+                    self.window.show_all();
+                    self.graph.queue_draw();
+                    println!("{:?}", Move::of(&p2));
+                    timeout(self.relm.stream(), 1, || Msg::Partials);
+                } else {
+                    self.update_for_move(&Move::of(&self.m));
+                    self._update();
+                }
+
+            }
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -381,7 +423,7 @@ impl Widget for Win {
         grid.attach(&board, 0, 0, 13, 15);
         grid.attach(&moves_container, 13, 0, 10, 10);
         grid.attach(&rack, 4, 16, 7, 1);
-        grid.attach(&graph, 13, 10, 10, 5);
+//        grid.attach(&graph, 13, 10, 10, 5);
 
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
@@ -401,9 +443,12 @@ impl Widget for Win {
             last_move: Move::none(),
             colors,
             back_colors,
-            relm: relm.clone()
+            relm: relm.clone(),
+            partials: vec![],
+            partialn: 0,
+            m: Move::none()
         };
-        win.setup_board(true);
+        win.setup_board(true, true);
         win
     }
 }

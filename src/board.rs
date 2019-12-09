@@ -565,7 +565,7 @@ impl Board {
 
         todo: code duplication
         */
-        partials.push(Move { word: word.to_string(), position: start_pos, direction, score: 0, evaluation: 0.0, typ: Type::Play });
+        partials.push(Move { word: word.to_string(), position: start_pos.clone(), direction, score: 0, evaluation: 0.0, typ: Type::Play });
 
         if !self.is_letter(position) { // found an empty tile
             if position != anchor { // not the anchor so we can check if it's a move
