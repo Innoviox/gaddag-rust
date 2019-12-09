@@ -1,5 +1,5 @@
 use crate::player::Player;
-use crate::utils::{Position, Move, to_word, alph};
+use crate::utils::{Position, Move, to_word, alph, Direction};
 use crate::board::{Board, STATE};
 use crate::game::Game;
 use std::time::SystemTime;
@@ -30,6 +30,42 @@ pub enum Msg {
     SetMove(usize)
 }
 
+struct ClickData {
+    pub start_pos: Position,
+    direction: Direction,
+    curr_pos: Position,
+    word: Vec<char>,
+    _is_typing: bool
+}
+
+impl ClickData {
+    fn new() -> ClickData {
+        ClickData {
+            start_pos: Position { row: 0, col: 0 },
+            direction: Direction::Across,
+            curr_pos: Position { row: 0, col: 0 },
+            word: vec![],
+            _is_typing: false
+        }
+    }
+
+    pub fn is_typing(&self) -> bool { self._is_typing }
+
+    pub fn start(&mut self, at: Position) {
+        self.start_pos = at.clone();
+        self.direction = Direction::Across;
+        self.curr_pos = at.clone();
+        self.word = vec![];
+        self._is_typing = true;
+    }
+
+    pub fn dir_str(&self) -> String { self.direction.to_str() }
+
+    pub fn is_at(&self, at: Position) -> bool { at == self.curr_pos }
+
+    pub fn flip(&mut self) { self.direction = self.direction.flip() }
+}
+
 struct Win {
     // necessary fields
     model: Game,
@@ -46,6 +82,7 @@ struct Win {
     colors: HashMap::<char, RGBA>,
     back_colors: HashMap::<char, RGBA>,
     relm: Relm<Win>,
+    click_data: ClickData
 }
 
 impl Win {
@@ -226,9 +263,20 @@ impl Update for Win {
                 // todo: columns are sometimes incorrect leftwards towards the right edge of the board (doesn't really matter)
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
-                println!("{} {} {} {}", x, y, col, row);
+                let p = Position { col: col as usize, row: row as usize };
+
+                let old = self.click_data.start_pos;
+                let l = self.get(old.col as i32, old.row as i32);
+                l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", " "));
+
+                if self.click_data.is_at(p) {
+                    self.click_data.flip();
+                } else if !self.click_data.is_typing() && !self.model.get_board().is_letter(p) {
+                    self.click_data.start(p);
+                }
+
                 let l = self.get(col, row);
-                l.override_background_color(gtk::StateFlags::empty(), Some(&RGBA { red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0}));
+                l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
             },
             Msg::Quit => gtk::main_quit(),
         }
@@ -415,6 +463,7 @@ impl Widget for Win {
             colors,
             back_colors,
             relm: relm.clone(),
+            click_data: ClickData::new()
         };
 
         win.setup_board(true);

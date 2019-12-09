@@ -38,6 +38,13 @@ impl Direction {
             Direction::Across => return String::from("→")
         }
     }
+
+    pub fn flip(&self) -> Direction {
+        match self {
+            Direction::Across => Direction::Down,
+            Direction::Down => Direction::Across
+        }
+    }
 }
 
 impl Position {
