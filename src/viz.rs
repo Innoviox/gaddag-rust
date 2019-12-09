@@ -12,7 +12,7 @@ use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
 use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea
+    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, CssProvider
 };
 use gdk::RGBA;
 use itertools::Itertools;
@@ -21,6 +21,18 @@ use std::cmp::max;
 
 const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
 const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
+
+
+
+fn flatten(btn: &Button) -> &Button {
+    btn.get_style_context().add_class("flat");
+    btn
+}
+
+fn square(btn: &Button) -> &Button {
+    btn.get_style_context().add_class("square suggested-action");
+    btn
+}
 
 #[derive(Msg, Debug)]
 pub enum Msg {
@@ -49,7 +61,8 @@ struct Win {
 
 impl Win {
     fn get(&mut self, col: i32, row: i32) -> Label {
-        self.board.get_child_at(col, row).unwrap().dynamic_cast::<Label>().ok().unwrap()
+        self.board.get_child_at(col, row).unwrap().dynamic_cast::<Button>().ok().unwrap()
+            .get_children()[0].clone().dynamic_cast::<Label>().ok().unwrap()
     }
 
     fn lset(&mut self, l: Label, c: &str, a: char, s: i32, b: &RGBA) {
@@ -92,11 +105,14 @@ impl Win {
                 if first {
                     let l = Label::new(Some(" "));
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
-                    self.board.attach(&l, row as i32, col as i32, 1, 1);
+                    let b: Button = Button::new();
+                    b.add(&l);
+                    square(flatten(&b));
+                    self.board.attach(&b, row as i32, col as i32, 1, 1);
                 } else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
-                    l.set_text(" ");
+                    l.set_label(" ");
                 } else {
                     self.set(p, "white");
                 }
@@ -201,6 +217,7 @@ impl Update for Win {
                     }
                     let btn = Button::new();
                     btn.add(&label);
+                    flatten(&btn);
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     self.moves.attach(&btn, c, t, 1, 1);
                 } else if !self.model.finished {
@@ -235,6 +252,17 @@ impl Widget for Win {
         self.window.clone()
     }
 
+    fn init_view(&mut self) {
+        // Adjust the look of the entry.
+        let style_context = self.window.get_style_context(); //.unwrap();
+        // TODO: remove the next line when relm supports css.
+        let style = include_str!("../style/board.css");
+        let provider = CssProvider::new();
+        provider.load_from_data(style.as_bytes()).unwrap();
+        let screen = self.window.get_screen().unwrap();
+        gtk::StyleContext::add_provider_for_screen(&screen, &provider, 0);
+    }
+
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
         let mut colors = HashMap::<char, RGBA>::new();
@@ -256,10 +284,10 @@ impl Widget for Win {
 
         let board = gtk::Grid::new();
         board.set_row_homogeneous(true);
-        board.set_column_homogeneous(true); 
-        board.set_row_spacing(2);
-        board.set_column_spacing(2);
-        board.set_border_width(1);     
+        board.set_column_homogeneous(true);
+//        board.set_row_spacing(2);
+//        board.set_column_spacing(2);
+//        board.set_border_width(1);
 
         let moves = gtk::Grid::new();
         moves.set_row_spacing(10);
