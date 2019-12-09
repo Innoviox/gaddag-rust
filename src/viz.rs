@@ -26,6 +26,7 @@ const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 pub enum Msg {
     Tick,
     Quit,
+    Click((f64, f64)),
     SetMove(usize)
 }
 
@@ -44,7 +45,7 @@ struct Win {
     last_move: Move,
     colors: HashMap::<char, RGBA>,
     back_colors: HashMap::<char, RGBA>,
-    relm: Relm<Win>
+    relm: Relm<Win>,
 }
 
 impl Win {
@@ -221,6 +222,13 @@ impl Update for Win {
                     self._handle(&m);
                 }
             },
+            Msg::Click((x, y)) => {
+                let col = (x / 50.0) as i32;
+                let row = (y / 40.0) as i32;
+                println!("{} {} {} {} {} {}", x, y, x / 53.0, y / 43.0, col, row);
+                let l = self.get(col, row);
+                l.override_background_color(gtk::StateFlags::empty(), Some(&RGBA { red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0}));
+            },
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -263,11 +271,7 @@ impl Widget for Win {
 
         let event_box = gtk::EventBox::new();
         event_box.add(&board);
-
-        event_box.connect_button_press_event(move |w, e| {
-            println!("{:?} {:?}", w, e.get_position());
-            gtk::Inhibit(false)
-        });
+        connect!(relm, event_box, connect_button_press_event(w, e), return (Some(Msg::Click(e.get_position())), Inhibit(false)));
 
         let moves = gtk::Grid::new();
         moves.set_row_spacing(10);
@@ -409,9 +413,11 @@ impl Widget for Win {
             last_move: Move::none(),
             colors,
             back_colors,
-            relm: relm.clone()
+            relm: relm.clone(),
         };
+
         win.setup_board(true);
+
         win
     }
 }
