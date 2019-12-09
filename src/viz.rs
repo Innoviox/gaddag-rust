@@ -223,6 +223,7 @@ impl Update for Win {
                 }
             },
             Msg::Click((x, y)) => {
+                // todo: columns are sometimes incorrect leftwards towards the right edge of the board (doesn't really matter) 
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
                 println!("{} {} {} {}", x, y, col, row);
