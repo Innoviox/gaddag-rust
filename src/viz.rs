@@ -223,9 +223,9 @@ impl Update for Win {
                 }
             },
             Msg::Click((x, y)) => {
-                let col = (x / 50.0) as i32;
-                let row = (y / 40.0) as i32;
-                println!("{} {} {} {} {} {}", x, y, x / 53.0, y / 43.0, col, row);
+                let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
+                let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
+                println!("{} {} {} {}", x, y, col, row);
                 let l = self.get(col, row);
                 l.override_background_color(gtk::StateFlags::empty(), Some(&RGBA { red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0}));
             },
