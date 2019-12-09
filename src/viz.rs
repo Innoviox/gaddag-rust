@@ -92,7 +92,8 @@ impl Win {
         for row in 0..15 {
             for col in 0..15 {
                 let p = Position { row, col };
-                let at = self.model.get_board().at_position(p);
+//                let at = self.model.get_board().at_position(p);
+                let at = self.model.get_last_state().0[row][col];
                 if first {
                     let l = Label::new(Some(" "));
                     l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
@@ -246,16 +247,16 @@ impl Update for Win {
             },
             Msg::Partials => {
                 if self.partialn < self.partials.len() {
+                    self.model.state -= 1; // dont know why this is necessary
                     self.setup_board(false, false);
                     let p = Move::of(&self.partials[self.partialn]);
                     let p2 = Move::of(&self.partials[self.partialn]);
                     self.partialn += 1;
-                    self.model.state -= 1; // dont know why this is necessary
                     self._handle(&Move::of(&p));
                     self.model.state += 1;
                     self.window.show_all();
                     self.graph.queue_draw();
-                    println!("{:?}", Move::of(&p2));
+//                    println!("{:?}",  Move::of(&p2));
                     timeout(self.relm.stream(), 1, || Msg::Partials);
                 } else {
                     self.update_for_move(&Move::of(&self.m));

@@ -82,11 +82,15 @@ impl Game {
     }
 
     pub fn get_last_state(&self) -> S {
+        self.get_state(self.state - 1)
+    }
+
+    pub fn get_state(&self, st: usize) -> S {
         if self.state == 0 {
             return (STATE, vec![], [array_init(|_| Vec::new()), array_init(|_| Vec::new())])
         }
 
-        self.states[self.state - 1].0.clone()
+        self.states[st].0.clone()
     }
 
     pub fn reset(&mut self) {

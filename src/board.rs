@@ -566,12 +566,11 @@ impl Board {
         todo: code duplication
         */
         partials.push(Move { word: word.to_string(), position: start_pos.clone(), direction, score: 0, evaluation: 0.0, typ: Type::Play });
-
         if !self.is_letter(position) { // found an empty tile
             if position != anchor { // not the anchor so we can check if it's a move
                 if let Some(_terminal) = self.trie.can_next(node, '@') { // move forms a valid word
                     // return move
-                    let mut m = Move { word: word.to_string(), position: start_pos, 
+                    let mut m = Move { word: word.to_string(), position: start_pos,
                                        direction, score: 0, evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)), 
                                        typ: Type::Play }; 
                     m.score = self.score(&m, cross_sums); // score move
