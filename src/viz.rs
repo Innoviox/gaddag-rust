@@ -220,7 +220,8 @@ impl Update for Win {
                     let rack: String = p.rack.iter().collect();
                     let score = p.score as i32;
 
-                    let (m, sm) = self.model.do_move(true);
+                    let (m, sm, n_moves) = self.model.do_move(true);
+                    println!("{}", n_moves);
                     self.model.state -= 1; // dont know why this is necessary
                     self._handle(&m);
                     self.model.state += 1;

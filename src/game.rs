@@ -26,7 +26,7 @@ impl Game {
         Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new(), state: 0 }
     }
 
-    pub fn do_move(&mut self, human: bool) -> (Move, String) {
+    pub fn do_move(&mut self, human: bool) -> (Move, String, usize) {
         let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, human);
         self.states.push((self.board.save_state(), Move::of(&m.0), r));
