@@ -62,8 +62,8 @@ impl ClickData {
 
     pub fn flip(&mut self) { self.direction = self.direction.flip() }
 
-    pub fn tick(&mut self) {
-        self.curr_pos.tick(self.direction);
+    pub fn tick(&mut self) -> bool {
+        self.curr_pos.tick(self.direction)
     }
 }
 
@@ -290,11 +290,11 @@ impl Update for Win {
                     let l = self.get(old.col as i32, old.row as i32);
                     l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", (k - 32) as u8 as char));
 
-                    self.click_data.tick();
-
-                    let new = self.click_data.curr_pos;
-                    let l = self.get(new.col as i32, new.row as i32);
-                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                    if self.click_data.tick() {
+                        let new = self.click_data.curr_pos;
+                        let l = self.get(new.col as i32, new.row as i32);
+                        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                    }
                 }
             },
             Msg::Quit => gtk::main_quit(),
