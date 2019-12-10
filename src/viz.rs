@@ -14,7 +14,7 @@ use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
     Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, EventBox
 };
-use gdk::{RGBA, EventButton};
+use gdk::{RGBA, EventButton, EventKey, key};
 use itertools::Itertools;
 use std::cmp::max;
 
@@ -27,6 +27,7 @@ pub enum Msg {
     Tick,
     Quit,
     Click((f64, f64)),
+    Type(u32),
     SetMove(usize)
 }
 
@@ -264,7 +265,6 @@ impl Update for Win {
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
                 let p = Position { col: col as usize, row: row as usize };
-                println!("Received click at {:?}", p);
                 let old = self.click_data.curr_pos;
                 let l = self.get(old.col as i32, old.row as i32);
                 l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", " "));
@@ -282,6 +282,9 @@ impl Update for Win {
                     let l = self.get(col, row);
                     l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
                 }
+            },
+            Msg::Type(k) => {
+                println!("{:?}", k);
             },
             Msg::Quit => gtk::main_quit(),
         }
@@ -325,7 +328,7 @@ impl Widget for Win {
 
         let event_box = gtk::EventBox::new();
         event_box.add(&board);
-        connect!(relm, event_box, connect_button_press_event(w, e), return (Some(Msg::Click(e.get_position())), Inhibit(false)));
+        connect!(relm, event_box, connect_button_press_event(_, e), return (Some(Msg::Click(e.get_position())), Inhibit(false)));
 
         let moves = gtk::Grid::new();
         moves.set_row_spacing(10);
@@ -454,7 +457,8 @@ impl Widget for Win {
         window.set_default_size(1280, 800);
 
         connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        
+        connect!(relm, window, connect_key_press_event(_, e), return (Some(Msg::Type(e.get_keyval())), Inhibit(false)));
+
         window.show_all();
 
         let mut win = Win {
