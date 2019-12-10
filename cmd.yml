@@ -9,3 +9,4 @@ subcommands:
                 short: n
                 help: how many games to play
                 takes_value: true
+                default_value: "1"

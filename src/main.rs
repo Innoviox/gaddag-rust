@@ -21,11 +21,7 @@ fn main() {
     let matches = App::from(yaml).get_matches();
 
     if let Some(ref matches) = matches.subcommand_matches("text") {
-        if let Some(n) = matches.value_of("number") {
-            text::main(n.parse::<u32>().unwrap());
-        } else {
-            text::main(1);
-        }
+        text::main(matches.value_of("number").unwrap().parse::<u32>().unwrap());
     } else {
         viz::main();
     }
