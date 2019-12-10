@@ -95,5 +95,10 @@ impl Game {
             p.score = 0;
             p.rack = self.board.bag.draw_tiles(7);
         }
+        self.current = 0;
+        self.turn = 1;
+        self.finished = false;
+        self.states = Vec::new();
+        self.state = 0;
     }
 }

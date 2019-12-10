@@ -100,10 +100,10 @@ fn two_player_game(g: &mut Game, gcg: bool) {
 
 pub fn main() {
     let mut game = Game::default();
-//    loop {
+    for _ in 0..10 {
         two_player_game(&mut game, true);
         game.reset();
-//    }
+    }
     // let mut b = bag::Bag::default();
     // println!("Score for z is: {}", bag.score('z'));
 
