@@ -1,5 +1,5 @@
 use crate::player::Player;
-use crate::utils::{Position, Move, to_word, alph, Direction};
+use crate::utils::{Position, Move, to_word, ALPH, Direction};
 use crate::board::{Board, STATE};
 use crate::game::Game;
 use std::time::SystemTime;
@@ -20,7 +20,7 @@ use std::cmp::max;
 
 
 const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
-const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
+//const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 
 #[derive(Msg, Debug)]
 pub enum Msg {
@@ -115,7 +115,7 @@ impl Win {
     fn place(&mut self, m: &Move, color: &str, force: bool) {
         let mut p = m.position.clone();
         let last = self.model.get_last_state();
-        for i in m.word.chars() {
+        for _ in m.word.chars() {
             if force || "#^+-*.".contains(last.0[p.row][p.col]) {
                 self.set(p, color);
             }
@@ -168,7 +168,7 @@ impl Win {
         for w in self.rack.get_children() {
             let l = w.dynamic_cast::<Label>().ok().unwrap();
             let c = l.get_text().unwrap().chars().nth(0).unwrap();
-            if let Some(i) = alph.find(c) {
+            if let Some(i) = ALPH.find(c) {
                 if word[i] > 0 {
                     word[i] -= 1;
                     let s = self.model.get_board().bag.score(c);
@@ -273,7 +273,7 @@ impl Update for Win {
                 if self.click_data.is_at(p) {
                     self.click_data.flip();
                     set = true;
-                } else if !self.model.get_board().is_letter(p) { // !self.click_data.is_typing() &&
+                } else if !self.model.get_board().is_letter(p) {
                     self.click_data.start(p);
                     set = true;
                 }
@@ -284,7 +284,7 @@ impl Update for Win {
                 }
             },
             Msg::Type(k) => {
-                println!("{:?}", k);
+//                println!("{:?}", k);
             },
             Msg::Quit => gtk::main_quit(),
         }
@@ -378,7 +378,7 @@ impl Widget for Win {
                                         // get score from text
                                         .split("+").nth(1).unwrap().split("/").nth(1).unwrap().parse::<i32>().unwrap())
                                     // split into player 1 and player 2
-                                    .rev().enumerate().collect::<Vec<(usize, i32)>>().iter().partition(|(i, n)| i % 2 == 0);
+                                    .rev().enumerate().collect::<Vec<(usize, i32)>>().iter().partition(|(i, _)| i % 2 == 0);
 
             // remove partition artifacts
             let mut s1: Vec<i32> = s1.iter().map(|x| x.1).collect();
@@ -400,11 +400,21 @@ impl Widget for Win {
             if end != 0 { if s1.len() > s2.len() { s1.push(end); } else { s2.push(end); } }
 
             // make same length (fill with last value)
-            for i in 0..2 {
+            for _ in 0..2 {
+                // note: the following annoying and unreadable
+                // is required because vecs can't be borrowed
+                // mutably and immutably. goddamn it.
+                // https://github.com/rust-lang/rust/issues/59159
                 if s1.len() < s2.len() {
-                    if let Some(l) = s1.last() { s1.push(*l); }
+                    if let Some(l) = s1.last() {
+                        let l2 = l.clone();
+                        s1.push(l2);
+                    }
                 } else if s1.len() > s2.len() {
-                    if let Some(l) = s2.last() { s2.push(*l); }
+                    if let Some(l) = s2.last() {
+                        let l2 = l.clone();
+                        s2.push(l2);
+                    }
                 }
             }
 

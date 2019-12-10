@@ -12,7 +12,7 @@ impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable f
     }
 }
 
-pub static alph: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?";
+pub static ALPH: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?";
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Position {
@@ -120,7 +120,7 @@ impl Position {
     }
         
     pub fn to_str(&self, dir: Direction) -> String {
-        let a = alph.chars().nth(self.col).unwrap().to_string();
+        let a = ALPH.chars().nth(self.col).unwrap().to_string();
         let b = (self.row + 1).to_string();
         match dir {
             Direction::Across => return b + &a,
@@ -130,7 +130,7 @@ impl Position {
 }
 
 pub fn chars(arr: [bool; 26]) -> Vec<char> {
-    alph.chars()
+    ALPH.chars()
         .zip(arr.iter())
         .filter(|&(_, b)| *b)
         .map(|(a, _)| a)
@@ -138,7 +138,7 @@ pub fn chars(arr: [bool; 26]) -> Vec<char> {
 }
 
 pub fn to_word(arr: &Vec<char>) -> Vec<usize> {
-    alph.chars()
+    ALPH.chars()
         .map(|x| arr.iter().filter(|&y| *y == x).count())
         .collect()
 }

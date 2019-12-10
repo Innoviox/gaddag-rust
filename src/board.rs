@@ -176,7 +176,7 @@ impl Board {
 
         let mut cross = [false; 26];
 
-        for (i, l) in alph.chars().enumerate() {
+        for (i, l) in ALPH.chars().enumerate() {
             if l == '?' { continue } 
             let old = self.at_position(p);
             self.set(p, l);
@@ -493,7 +493,7 @@ impl Board {
 //                let ms = self.trie.nexts(node).par_iter().map(|(next, nnode)| {
 //                    let mut mymoves = vec![];
                 for (next, nnode) in self.trie.nexts(node) { // iterate over nexts
-                    if let Some(i) = alph.find(next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
+                    if let Some(i) = ALPH.find(next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
                         // Valid letters must be both on the rack and in the cross checks.
                         if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) {
                             let mut new_rack = rack.clone();
@@ -577,7 +577,7 @@ impl Board {
             }
 
             for (next, nnode) in self.trie.nexts(node) { // iterate over all possible nexts from the word
-                if let Some(unext) = alph.find(next) {
+                if let Some(unext) = ALPH.find(next) {
                     if cross_checks[position.to_int()].contains(&next) { // confirm that next is valid in the position todo: blanks here?
                         if rack[unext] > 0 || rack[26] > 0 { // confirm that next is on rack, or rack has a blank. todo: reduce left-part code to look like this
                             let mut np = part.clone(); // add to part
@@ -731,7 +731,7 @@ impl fmt::Display for Board {
 
         write!(f, "{}\n", sep).expect("fail");
         write!(f, "|    |").expect("fail");
-        for row in alph.chars().take(15) {
+        for row in ALPH.chars().take(15) {
             write!(f, "{}", format!(" {} |", row)).expect("fail");
         }
         write!(f, "\n{}\n", sep).expect("fail");

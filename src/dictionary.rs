@@ -1,4 +1,4 @@
-use crate::utils::alph;
+use crate::utils::ALPH;
 use crate::utils::to_word;
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -21,11 +21,11 @@ pub struct Dictionary {
 impl Dictionary {
     pub fn default() -> Dictionary {
         let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
-        for i in alph.chars().progress() {
+        for i in ALPH.chars().progress() {
             if i == '?' { continue } 
             let mut sub: HashMap<char, HashSet<String>> = HashMap::new();
 
-            for j in alph.chars() {
+            for j in ALPH.chars() {
                 if j == '?' { continue } 
                 let dipth: String = i.to_string() + &j.to_string();
                 let filepath = format!("resources/{}.txt", dipth);
@@ -92,7 +92,7 @@ impl Trie {
         let current = graph.add_node(' ');
         let mut trie = Trie { graph, current };
 
-        let mut last_node = current;
+        let mut last_node;
         
         let extend = |t: &mut Trie, ln, c| {
             if let Some(new) = t.follow(ln, c) {
@@ -106,11 +106,11 @@ impl Trie {
 
         let dummy = extend(&mut trie, current, '#');
 
-        for i in alph.chars().progress() {
+        for i in ALPH.chars().progress() {
             if i == '?' { continue }
             let i_node = extend(&mut trie, dummy, i);
 
-            for j in alph.chars() {
+            for j in ALPH.chars() {
                 if j == '?' { continue } 
                 let j_node = extend(&mut trie, i_node, j);
 
@@ -193,26 +193,25 @@ impl Trie {
         current
     }
 
-
-    pub fn nseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {        
-        let mut current = self.hashroot();
-        
-        for c in initial {
-            if let Some(next) = self.follow(current, *c) {
-                current = next;
-            } else {
-                return None
-            }
-        }
-
-        Some(current)
-    }
-
-    pub fn nrseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {
-        let mut a = initial.clone();
-        a.reverse();
-        self.nseed(&a)
-    }
+//    pub fn nseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {
+//        let mut current = self.hashroot();
+//
+//        for c in initial {
+//            if let Some(next) = self.follow(current, *c) {
+//                current = next;
+//            } else {
+//                return None
+//            }
+//        }
+//
+//        Some(current)
+//    }
+//
+//    pub fn nrseed(&self, initial: &Vec<char>) -> Option<NodeIndex> {
+//        let mut a = initial.clone();
+//        a.reverse();
+//        self.nseed(&a)
+//    }
 
     pub fn can_next(&self, current: NodeIndex, next: char) -> Option<NodeIndex> {
         let edges = self.graph.raw_edges();
