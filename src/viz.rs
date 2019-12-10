@@ -61,6 +61,10 @@ impl ClickData {
     pub fn is_at(&self, at: Position) -> bool { at == self.curr_pos }
 
     pub fn flip(&mut self) { self.direction = self.direction.flip() }
+
+    pub fn tick(&mut self) {
+        self.curr_pos.tick(self.direction);
+    }
 }
 
 struct Win {
@@ -261,6 +265,7 @@ impl Update for Win {
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
                 let p = Position { col: col as usize, row: row as usize };
+
                 let old = self.click_data.curr_pos;
                 let l = self.get(old.col as i32, old.row as i32);
                 l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", " "));
@@ -280,7 +285,17 @@ impl Update for Win {
                 }
             },
             Msg::Type(k) => {
-//                println!("{:?}", k);
+                if self.click_data.is_typing() {
+                    let old = self.click_data.curr_pos;
+                    let l = self.get(old.col as i32, old.row as i32);
+                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", (k - 32) as u8 as char));
+
+                    self.click_data.tick();
+
+                    let new = self.click_data.curr_pos;
+                    let l = self.get(new.col as i32, new.row as i32);
+                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                }
             },
             Msg::Quit => gtk::main_quit(),
         }
