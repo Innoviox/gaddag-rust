@@ -100,7 +100,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
 
 pub fn main() {
     let mut game = Game::default();
-    for _ in 0..10 {
+    for _ in 0..100 {
         two_player_game(&mut game, true);
         game.reset();
     }
