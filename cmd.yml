@@ -8,4 +8,4 @@ subcommands:
             - number:
                 short: n
                 help: how many games to play
-    - viz
+                takes_value: true
