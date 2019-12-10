@@ -65,6 +65,8 @@ impl ClickData {
     pub fn tick(&mut self) -> bool {
         self.curr_pos.tick(self.direction)
     }
+
+    pub fn push(&mut self, c: char) { self.word.push(c); }
 }
 
 struct Win {
@@ -288,7 +290,10 @@ impl Update for Win {
                 if self.click_data.is_typing() {
                     let old = self.click_data.curr_pos;
                     let l = self.get(old.col as i32, old.row as i32);
-                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", (k - 32) as u8 as char));
+                    let c = (k - 32) as u8 as char;
+                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", c));
+
+                    self.click_data.push(c);
 
                     if self.click_data.tick() {
                         let new = self.click_data.curr_pos;
