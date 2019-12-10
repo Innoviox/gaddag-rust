@@ -1,10 +1,8 @@
-use crate::player::Player;
 use crate::utils::Type;
-use crate::board::Board;
 use crate::game::Game;
 use std::time::SystemTime;
 
-fn two_player_game(mut g: &mut Game, gcg: bool) {
+fn two_player_game(g: &mut Game, gcg: bool) {
     // b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
     let mut out = String::new();
     

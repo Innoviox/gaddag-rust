@@ -9,8 +9,6 @@ use petgraph::graph::{NodeIndex, Edges};
 use petgraph::visit::EdgeRef;
 use indicatif::ProgressBar;
 use indicatif::ProgressIterator;
-use std::io;
-use std::io::*;
 use rayon::prelude::*;
 
 pub struct Dictionary {

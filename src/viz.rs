@@ -1,21 +1,17 @@
-use crate::player::Player;
 use crate::utils::{Position, Move, to_word, ALPH, Direction};
-use crate::board::{Board, STATE};
+use crate::board::STATE;
 use crate::game::Game;
-use std::time::SystemTime;
 use std::collections::HashMap;
 use std::convert::TryInto;
 
 use relm_derive::Msg;
-use relm::{Widget, Relm, Update, interval, timeout};
+use relm::{Widget, Relm, Update, timeout};
 use gtk::prelude::*;
 use gtk::{Inhibit, Window, WindowType};
-use gtk::Orientation::{Vertical, Horizontal};
 use gtk::{
-    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, EventBox
+    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, EventBox, StateFlags, Adjustment, Align
 };
-use gdk::{RGBA, EventButton, EventKey, key};
-use itertools::Itertools;
+use gdk::{RGBA};
 use std::cmp::max;
 
 
@@ -92,7 +88,7 @@ impl Win {
     }
 
     fn lset(&mut self, l: Label, c: &str, a: char, s: i32, b: &RGBA) {
-        l.override_background_color(gtk::StateFlags::empty(), Some(b));
+        l.override_background_color(StateFlags::empty(), Some(b));
         let mut st = s.to_string();
         if s == -1 {
             st = "".to_string();
@@ -130,11 +126,11 @@ impl Win {
                 let at = self.model.get_board().at_position(p);
                 if first {
                     let l = Label::new(Some(" "));
-                    l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                    l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
                     self.board.attach(&l, row as i32, col as i32, 1, 1);
                 } else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
-                    l.override_background_color(gtk::StateFlags::empty(), Some(&self.colors[&at]));
+                    l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
                     l.set_text(" ");
                 } else {
                     self.set(p, "white");
@@ -319,18 +315,18 @@ impl Widget for Win {
         back_colors.insert('*', RGBA { red: 0.71, green: 0.35, blue: 0.35, alpha: 1.0} );
         back_colors.insert('+', RGBA { red: 0.25, green: 0.32, blue: 0.53, alpha: 1.0} );
 
-        let board = gtk::Grid::new();
+        let board = Grid::new();
         board.set_row_homogeneous(true);
         board.set_column_homogeneous(true); 
         board.set_row_spacing(2);
         board.set_column_spacing(2);
         board.set_border_width(1);
 
-        let event_box = gtk::EventBox::new();
+        let event_box = EventBox::new();
         event_box.add(&board);
         connect!(relm, event_box, connect_button_press_event(_, e), return (Some(Msg::Click(e.get_position())), Inhibit(false)));
 
-        let moves = gtk::Grid::new();
+        let moves = Grid::new();
         moves.set_row_spacing(10);
         moves.set_column_spacing(10);
         moves.set_border_width(3);
@@ -340,25 +336,25 @@ impl Widget for Win {
         let l2 = Label::new(Some("Player 2"));
         moves.attach(&l2, 1, 0, 1, 1);
 
-        let no_adjustment: Option<gtk::Adjustment> = None;
-        let scroll: Option<gtk::Adjustment> = Some(gtk::Adjustment::new(0.0, std::f64::MIN, std::f64::MAX, 1.0, 0.0, 0.0));
+        let no_adjustment: Option<Adjustment> = None;
+        let scroll: Option<Adjustment> = Some(Adjustment::new(0.0, std::f64::MIN, std::f64::MAX, 1.0, 0.0, 0.0));
         let moves_container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
-        let rack = gtk::Grid::new();
+        let rack = Grid::new();
         rack.set_hexpand(true); // todo make fn to generate grid
         rack.set_vexpand(true);
         rack.set_row_homogeneous(true);
         rack.set_column_homogeneous(true);
-        rack.set_halign(gtk::Align::Fill);
+        rack.set_halign(Align::Fill);
         rack.set_border_width(5);
         for i in 0..7 {
             let l = Label::new(Some(" "));
-            l.override_background_color(gtk::StateFlags::empty(), Some(&GREY));
+            l.override_background_color(StateFlags::empty(), Some(&GREY));
             rack.attach(&l, i, 0, 1, 1);
         }
 
-        let graph = gtk::DrawingArea::new();
+        let graph = DrawingArea::new();
         graph.connect_draw(move |widget,cr| {
             let children = widget
                 // get parent as grid
@@ -449,13 +445,13 @@ impl Widget for Win {
             Inhibit(false)
         });
 
-        let grid = gtk::Grid::new();
+        let grid = Grid::new();
         grid.set_hexpand(true);
         grid.set_vexpand(true);
         grid.set_row_homogeneous(true);
         grid.set_column_homogeneous(true); 
-        grid.set_halign(gtk::Align::Fill);
-        grid.set_valign(gtk::Align::Fill);
+        grid.set_halign(Align::Fill);
+        grid.set_valign(Align::Fill);
 
         grid.attach(&event_box, 0, 0, 13, 15);
         grid.attach(&moves_container, 13, 0, 10, 10);

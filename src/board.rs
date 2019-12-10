@@ -8,9 +8,6 @@ use std::convert::TryInto;
 use array_init::array_init;
 use petgraph::graph::NodeIndex;
 use itertools::Itertools;
-use rayon::prelude::*;
-use std::io;
-use std::io::*;
 
 pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2]);
 
@@ -342,11 +339,10 @@ impl Board {
         Note that it is repeated twice; the second loop is simply the same operation but on the
         transpose of the board.
         */
-        let mut di = 0;
         let mut d = Direction::Across;
         let mut di_opp = 1; // opposite direction, for indexing cross_checks
 
-        let mut last_anchor_col = 0; // last column of the anchor to calculate the distance between current and last anchor square
+        let mut last_anchor_col; // last column of the anchor to calculate the distance between current and last anchor square
 
         for row in 0..15 { // iterate over positions
             last_anchor_col = 0; // reset last column
@@ -370,7 +366,6 @@ impl Board {
         }
 
         // Repetition with the transpose.
-        di = 1;
         d = Direction::Down;
         di_opp = 0;
         for col in 0..15 { // todo rayon
@@ -492,7 +487,7 @@ impl Board {
                 // todo rayon
 //                let ms = self.trie.nexts(node).par_iter().map(|(next, nnode)| {
 //                    let mut mymoves = vec![];
-                for (next, nnode) in self.trie.nexts(node) { // iterate over nexts
+                for (next, _) in self.trie.nexts(node) { // iterate over nexts
                     if let Some(i) = ALPH.find(next) { // get index of character (needed because rack is stored as bitword, see utils::to_word
                         // Valid letters must be both on the rack and in the cross checks.
                         if rack[i] > 0 && cross_checks[cp.to_int()].contains(&next) {

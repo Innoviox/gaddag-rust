@@ -2,8 +2,6 @@ use crate::utils::ItemRemovable;
 use crate::board::Board;
 use crate::utils::{Move, Type};
 
-use std::cmp;
-
 pub struct Player {
     pub rack: Vec<char>,
     pub name: String,

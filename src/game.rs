@@ -1,6 +1,6 @@
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
-use crate::utils::{Move, Position};
+use crate::utils::Move;
 
 use array_init::array_init;
 
