@@ -264,19 +264,24 @@ impl Update for Win {
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
                 let p = Position { col: col as usize, row: row as usize };
-
-                let old = self.click_data.start_pos;
+                println!("Received click at {:?}", p);
+                let old = self.click_data.curr_pos;
                 let l = self.get(old.col as i32, old.row as i32);
                 l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", " "));
 
+                let mut set = false;
                 if self.click_data.is_at(p) {
                     self.click_data.flip();
-                } else if !self.click_data.is_typing() && !self.model.get_board().is_letter(p) {
+                    set = true;
+                } else if !self.model.get_board().is_letter(p) { // !self.click_data.is_typing() &&
                     self.click_data.start(p);
+                    set = true;
                 }
 
-                let l = self.get(col, row);
-                l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                if set {
+                    let l = self.get(col, row);
+                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                }
             },
             Msg::Quit => gtk::main_quit(),
         }
