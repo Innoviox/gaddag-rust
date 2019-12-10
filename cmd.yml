@@ -1,0 +1,11 @@
+name: gaddag
+version: "0.2"
+author: Simon C. <sarras305@gmail.com>
+about: Uses the gaddag data structure to generate valid moves for a scrabble board.
+subcommands:
+    - text:
+        args:
+            - number:
+                short: n
+                help: how many games to play
+    - viz

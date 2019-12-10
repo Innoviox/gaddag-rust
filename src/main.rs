@@ -2,8 +2,10 @@
 
 #[macro_use] extern crate itertools;
 #[macro_use] extern crate relm;
+#[macro_use] extern crate clap;
 extern crate gdk;
 
+use clap::{Arg, App, SubCommand};
 use std::env;
 
 mod bag;
@@ -16,14 +18,17 @@ mod text;
 mod viz;
 
 fn main() {
-    let mut args = env::args();
+    let yaml = load_yaml!("cli.yml");
+    let matches = App::from(yaml).get_matches();
+
+//    let mut args = env::args();
     let typ = match args.nth(1) {
         Some(s) => s,
         None => String::from("viz")
     };
 
     if typ == "text" {
-        text::main();
+        text::main(10);
     } else if typ == "viz" {
         viz::main();
     } else {

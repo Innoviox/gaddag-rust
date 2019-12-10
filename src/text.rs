@@ -98,9 +98,9 @@ fn two_player_game(g: &mut Game, gcg: bool) {
     println!("{}", out);
 }
 
-pub fn main() {
+pub fn main(n: u32) {
     let mut game = Game::default();
-    for _ in 0..100 {
+    for _ in 0..n {
         two_player_game(&mut game, true);
         game.reset();
     }
