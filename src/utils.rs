@@ -33,7 +33,7 @@ impl Direction {
     }
 
     pub fn to_str(&self) -> String {
-        match self {
+        match self { // todo cooler arrows http://xahlee.info/comp/unicode_arrows.html
             Direction::Down => return String::from("↓"),
             Direction::Across => return String::from("→")
         }
