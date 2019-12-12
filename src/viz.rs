@@ -434,7 +434,7 @@ impl Widget for Win {
                 }
             }
 
-            let top = max(s1.iter().max(), s2.iter().max()).unwrap() + 10;
+            let top = max(s1.iter().max(), s2.iter().max()).unwrap() + 10; // 10px of padding
 
             let width: f64 = widget.get_allocated_width() as f64;
             let height: f64 = widget.get_allocated_height() as f64;

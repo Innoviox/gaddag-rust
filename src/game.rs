@@ -18,9 +18,13 @@ pub struct Game {
 
 impl Game {
     pub fn default() -> Game {
+        Game::with_weights((1.0, 1.0))
+    }
+
+    pub fn with_weights(weights: (f32, f32)) -> Game {
         let mut board = Board::default();
-        let player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0 };
-        let player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
+        let player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0, weights };
+        let player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0, weights };
         let players = [player_1, player_2];
 
         Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new(), state: 0 }

@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
 #[macro_use] extern crate itertools;
-#[macro_use] extern crate relm;
+// #[macro_use] extern crate relm;
 #[macro_use] extern crate clap;
-extern crate gdk;
+// extern crate gdk;
 
 use clap::App;
 
@@ -14,7 +14,7 @@ mod dictionary;
 mod player;
 mod game;
 mod text;
-mod viz;
+// mod viz;
 
 fn main() {
     let yaml = load_yaml!("../cmd.yml");
@@ -23,6 +23,6 @@ fn main() {
     if let Some(ref matches) = matches.subcommand_matches("text") {
         text::main(matches.value_of("number").unwrap().parse::<u32>().unwrap());
     } else {
-        viz::main();
+        // viz::main();
     }
 }
