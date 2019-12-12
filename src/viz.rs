@@ -220,8 +220,7 @@ impl Update for Win {
                     let rack: String = p.rack.iter().collect();
                     let score = p.score as i32;
 
-                    let (m, sm, n_moves) = self.model.do_move(true);
-                    println!("{}", n_moves);
+                    let (m, sm, _n_moves) = self.model.do_move(true);
                     self.model.state -= 1; // dont know why this is necessary
                     self._handle(&m);
                     self.model.state += 1;
@@ -418,7 +417,7 @@ impl Widget for Win {
 
             // make same length (fill with last value)
             for _ in 0..2 {
-                // note: the following annoying and unreadable
+                // note: the following annoying dance
                 // is required because vecs can't be borrowed
                 // mutably and immutably. goddamn it.
                 // https://github.com/rust-lang/rust/issues/59159
