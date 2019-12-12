@@ -30,6 +30,15 @@ impl Game {
         Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new(), state: 0 }
     }
 
+    pub fn test_weights(weights: (f32, f32)) -> Game {
+        let mut board = Board::default();
+        let player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0, weights };
+        let player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0, weights: (1.0, 1.0) };
+        let players = [player_1, player_2];
+
+        Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new(), state: 0 }
+    }
+
     pub fn do_move(&mut self, human: bool) -> (Move, String, usize) {
         let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, human);

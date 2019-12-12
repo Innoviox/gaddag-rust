@@ -98,15 +98,11 @@ fn two_player_game(g: &mut Game, gcg: bool) {
     println!("{}", out);
 }
 
-pub fn main(n: u32) {
-    for w_1 in 1..11 {
-        for w_2 in 1..11 {
-            let mut game = Game::with_weights((w_1 as f32 * 0.1, w_2 as f32 * 0.1));
-            for _ in 0..n {
-                two_player_game(&mut game, true);
-                game.reset();
-            }
-        }
+pub fn main(n: u32, w1: f32, w2: f32) {
+    let mut game = Game::test_weights((w1, w2));
+    for _ in 0..n {
+        two_player_game(&mut game, true);
+        game.reset();
     }
 
     // let mut b = bag::Bag::default();

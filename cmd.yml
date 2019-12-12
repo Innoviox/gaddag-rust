@@ -10,5 +10,15 @@ subcommands:
                 help: how many games to play
                 takes_value: true
                 default_value: "1"
+            - s:
+                short: s
+                help: score weight
+                takes_value: true
+                default_value: "1.0"
+            - e:
+                short: e
+                help: eval weight
+                takes_value: true
+                default_value: "1.0"
     - viz:
         args:

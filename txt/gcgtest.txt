@@ -1,56 +1,80 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: AAOEASA -AAOAA +0 0
-#note Time: 1
->p2: EREIAOA H4 AERIE +12 12
-#note Time: 3
->p1: ESRNEL? 5E SER.NELy +78 78
-#note Time: 233
->p2: OAETEII 6H .ETIA +16 28
-#note Time: 16
->p1: OWIEDSG 4A WODGE +30 108
-#note Time: 30
->p2: OEIBULI 3A OBI +25 53
-#note Time: 18
->p1: ISMRZAL F4 S.Z +43 151
+>p1: DDETAER -D +0 0
+#note Time: 7
+>p2: C?KSNOI H2 COKINgS +84 84
+#note Time: 115
+>p1: DETAERT 3G T. +3 3
 #note Time: 24
->p2: EULIXHT I8 XU +19 72
-#note Time: 15
->p1: IMRALAT J9 MARTIAL +67 218
-#note Time: 26
->p2: ELIHTNN A2 T..LINE +30 102
-#note Time: 53
->p1: LTAPORN 14D PATRON.L +62 280
-#note Time: 53
->p2: HNUAOGJ 15A JUGA +44 146
-#note Time: 38
->p1: EDHSG?I 15H DE.IGHtS +189 469
-#note Time: 378
->p2: HNONEDP G7 PHON +33 179
-#note Time: 38
->p1: AIDYICQ 11C ACIDY +35 504
-#note Time: 20
->p2: NEDATOR 12H AT.ORNED +74 253
-#note Time: 72
->p1: IQFOIYN M9 FIN.Y +30 534
+>p2: RIIEATZ 8H .ATIRIZE +104 188
 #note Time: 22
->p2: AVOUETC O7 COUVA.E +39 292
-#note Time: 49
->p1: QOIORFK D8 FRO.K +36 570
-#note Time: 27
->p2: TBVUWMS 10A UMB.S +21 313
-#note Time: 23
->p1: QIOEE L8 QI +26 596
-#note Time: 15
->p2: TVW C2 V.. +7 320
-#note Time: 11
->p1: OEE C9 O.. +9 605
-#note Time: 5
->p2: TW J4 W.. +6 326
+>p1: DEAERTI 3G ..E +4 7
+#note Time: 58
+>p2: AAOEOOB N6 BA.OO +24 212
 #note Time: 9
->p1: EE C2 ...E +8 613
-#note Time: 6
->p2: T 6A .T +4 330
-#note Time: 6
->p2:  (E) +2 332
+>p1: DAERTIE 6N .E +4 11
+#note Time: 66
+>p2: AEO?UEV L4 OEUV.E +18 230
+#note Time: 230
+>p1: DARTIEV -V +0 11
+#note Time: 58
+>p2: A?BTYEI J6 YT.ErBIA +70 300
+#note Time: 341
+>p1: DARTIEY I8 .Y +18 29
+#note Time: 62
+>p2: IWAEEGL 12H WE.GELIA +84 384
+#note Time: 35
+>p1: DARTIEA K11 A. +14 43
+#note Time: 55
+>p2: LOIUMNN O1 LIMON.N. +35 419
+#note Time: 35
+>p1: DRTIEAS I12 .D +10 53
+#note Time: 95
+>p2: UXHORCI N2 XU +40 459
+#note Time: 27
+>p1: RTIEASL 3M L.. +10 63
+#note Time: 119
+>p2: HORCIAE K3 CHAO +33 492
+#note Time: 88
+>p1: RTIEASA K11 ..A +8 71
+#note Time: 81
+>p2: RIELPMA 11B LEMPIRA +77 569
+#note Time: 59
+>p1: RTIESAO M3 .O +8 79
+#note Time: 87
+>p2: EVDWTQD -VWQD +0 569
+#note Time: 9
+>p1: RTIESAG 10M G. +3 82
+#note Time: 71
+>p2: ETDTREN 10H TE.N +20 589
+#note Time: 26
+>p1: RTIESAF 5H .F +5 87
+#note Time: 75
+>p2: DTREPNU 10E UP +24 613
+#note Time: 40
+>p1: RTIESAW -W +0 87
+#note Time: 63
+>p2: DTRENUQ 13I ...D +9 622
+#note Time: 27
+>p1: RTIESAN 13I ....A +18 105
+#note Time: 91
+>p2: TRENUQV 14M REV +15 637
+#note Time: 22
+>p1: RTIESNS 9N .S +13 118
+#note Time: 46
+>p2: TNUQJHW 10C WH.. +24 661
+#note Time: 9
+>p1: RTIENSR 11J ..R +9 127
+#note Time: 43
+>p2: TNUQJDF 6F JU. +26 687
+#note Time: 10
+>p1: TIENSRI 12B IN +10 137
+#note Time: 46
+>p2: TNQDFDO 13A ODD +30 717
+#note Time: 11
+>p1: TESRIRS 14F TRESS +28 165
+#note Time: 22
+>p2: TNQFG 9L .G.. +14 731
+#note Time: 10
+>p1:  (TNQF) +32 197
