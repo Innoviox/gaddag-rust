@@ -44,3 +44,5 @@ UI Roadmap
 - shows considered moves
 - placable moves
 - more features
+
+rm -rf tests && mkdir tests && touch tests/.gitkeep && python3.7 test.py
