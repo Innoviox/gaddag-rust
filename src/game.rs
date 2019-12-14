@@ -10,7 +10,7 @@ pub struct Game {
     players: [Player; 2],
     board: Board,
     pub current: usize,
-    turn: u32,
+    pub turn: u32,
     pub finished: bool,
     states: Vec<(S, Move, Vec<char>)>,
     pub state: usize

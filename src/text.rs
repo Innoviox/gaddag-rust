@@ -15,7 +15,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
 
     let mut turn = 1;
 
-    while !g.is_over() {
+    while !g.is_over() && g.turn < 20 {
         let rack_1: String = g.get_player(0).rack.clone().iter().collect();
         let start1 = SystemTime::now();
         let (m1, sm1, _nmoves1) = g.do_move(false);
