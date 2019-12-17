@@ -50,7 +50,8 @@ img = Image.new('RGBA', (10, 10))
 for idx, row in enumerate(data):
     for jdx, col in enumerate(row):
         if col != 0:
-            a = int(((col - mi) / (m - mi)) * 255)
-            img.putpixel((idx, jdx), (a, 0, 0))
+            a = 255-int(((col - mi) / (m - mi)) * 255)
+            img.putpixel((idx, jdx), (a, a, a))
 
 img.show()
+img.save("out.png")
