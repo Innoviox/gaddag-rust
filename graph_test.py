@@ -20,37 +20,37 @@ for i in range(1, 11):
 data = np.array(data)
 m = max(map(max, data))
 mi = min(map(lambda i: min(filter(bool, i)), data))
-data = np.array([np.array([(j - mi if j > 0 else 0) for j in i]) for i in data])
+#data = np.array([np.array([(j - mi if j > 0 else 0) for j in i]) for i in data])
+##
+##fig = plt.figure()
+##ax = Axes3D(fig)
+##
+##lx= len(data[0])            # Work out matrix dimensions
+##ly= len(data[:,0])
+##xpos = np.arange(0,lx,1)    # Set up a mesh of positions
+##ypos = np.arange(0,ly,1)
+##xpos, ypos = np.meshgrid(xpos+0.25, ypos+0.25)
+##
+##xpos = xpos.flatten()   # Convert positions to 1D array
+##ypos = ypos.flatten()
+##zpos = np.zeros(lx*ly)
+##
+##dx = 0.5 * np.ones_like(zpos)
+##dy = dx.copy()
+##dz = data.flatten()
+##
+##ax.bar3d(xpos,ypos,zpos, dx, dy, dz, shade=True)
 
-fig = plt.figure()
-ax = Axes3D(fig)
-
-lx= len(data[0])            # Work out matrix dimensions
-ly= len(data[:,0])
-xpos = np.arange(0,lx,1)    # Set up a mesh of positions
-ypos = np.arange(0,ly,1)
-xpos, ypos = np.meshgrid(xpos+0.25, ypos+0.25)
-
-xpos = xpos.flatten()   # Convert positions to 1D array
-ypos = ypos.flatten()
-zpos = np.zeros(lx*ly)
-
-dx = 0.5 * np.ones_like(zpos)
-dy = dx.copy()
-dz = data.flatten()
-
-ax.bar3d(xpos,ypos,zpos, dx, dy, dz, shade=True)
-
-plt.show()
+#plt.show()
 ##
 
-##
-##img = Image.new('RGB', (10, 10))
-##
-##for idx, row in enumerate(data):
-##    for jdx, col in enumerate(row):
-##        if col != 0:
-##            a = int(((col - mi) / (m - mi)) * 255)
-##            img.putpixel((idx, jdx), (a, a, a))
-##
-##img.show()
+
+img = Image.new('RGBA', (10, 10))
+
+for idx, row in enumerate(data):
+    for jdx, col in enumerate(row):
+        if col != 0:
+            a = int(((col - mi) / (m - mi)) * 255)
+            img.putpixel((idx, jdx), (a, 0, 0))
+
+img.show()

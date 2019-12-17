@@ -2,7 +2,7 @@ import os
 
 cmd = "cargo run --release text -n {} -s {} -e {} >> tests/test_{}.txt"
 
-n = 200
+n = 600
 r = 1
 for i in range(10):
     # print(i)
