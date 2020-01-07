@@ -137,7 +137,7 @@ impl Win {
                     self.board.attach(&l, row as i32, col as i32, 1, 1);
                 } else if self.model.get_board().is_anchor(p) {
                     let l = self.get(p.col as i32, p.row as i32);
-                    l.override_background_color(StateFlags::empty(), Some(&ANCHOR));
+                    l.override_background_color(StateFlags::empty(), Some(&ANCHOR)); // color anchors yellow
                     l.set_text(" ");
                 } else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
