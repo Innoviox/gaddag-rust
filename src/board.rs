@@ -248,7 +248,7 @@ impl Board {
         result
     }
 
-    fn is_anchor(&self, p: Position) -> bool {
+    pub fn is_anchor(&self, p: Position) -> bool {
         if self.is_letter(p) { return false }
 
         for n in p.neighbors() {

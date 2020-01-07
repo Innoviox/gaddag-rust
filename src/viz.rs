@@ -15,7 +15,8 @@ use gdk::{RGBA};
 use std::cmp::max;
 
 
-const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0};
+const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0 };
+const ANCHOR: RGBA = RGBA { red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0 };
 //const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 
 #[derive(Msg, Debug)]
@@ -134,6 +135,10 @@ impl Win {
                     let l = Label::new(Some(" "));
                     l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
                     self.board.attach(&l, row as i32, col as i32, 1, 1);
+                } else if self.model.get_board().is_anchor(p) {
+                    let l = self.get(p.col as i32, p.row as i32);
+                    l.override_background_color(StateFlags::empty(), Some(&ANCHOR));
+                    l.set_text(" ");
                 } else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
                     l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
