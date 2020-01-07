@@ -183,8 +183,8 @@ impl Move {
         Move::_cmp(x, y, &1.0, &1.0)
     }
     
-    pub fn cmp_with(a: f32, b: f32) -> impl Fn(&&Move, &&Move) -> Ordering {
-        move |x: &&Move, y: &&Move| Move::_cmp(x, y, &a, &b)
+    pub fn cmp_with(a: f32, b: f32) -> impl Fn(&Move, &Move) -> Ordering {
+        move |x: &Move, y: &Move| Move::_cmp(&x, &y, &a, &b)
     }
 }
 
