@@ -13,9 +13,9 @@ for i, game in enumerate(open("testcogo_3000.txt").read().split("#character-enco
     p2s.extend(p2)
     ts.extend(times)
     for a, b in zip([times[i] for i in range(0, len(times), 2)], [i for i in lines if 'p1' in i]):
-        if False or '?' not in b: t.append(a)
+        if b.count('?') <= 1: t.append(a)
     for a, b in zip([times[i] for i in range(1, len(times), 2)], [i for i in lines if 'p2' in i]):
-        if False or '?' not in b: t.append(a)
+        if b.count('?') <= 1: t.append(a)
 ##    plt.subplot(10, 10, i)
 ##    plt.plot(range(len(times)), times)
 ##    plt.axis('off')
@@ -32,5 +32,6 @@ import seaborn as sns
 sns.set(style="whitegrid")
 # ax2 = sns.violinplot(x=g2s)
 # ax = sns.violinplot(x=g1s)
-ax = sns.violinplot(x=list(map(sum, zip(g1s, g2s))))
+# ax = sns.violinplot(x=list(map(sum, zip(g1s, g2s))))
+ax = sns.violinplot(t)
 plt.show()
