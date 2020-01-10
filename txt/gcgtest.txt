@@ -1,56 +1,50 @@
 #character-encoding UTF-8
 #player1 p1 p1
 #player2 p2 p2
->p1: AAOEASA -AAOAA +0 0
-#note Time: 1
->p2: EREIAOA H4 AERIE +12 12
-#note Time: 3
->p1: ESRNEL? 5E SER.NELy +78 78
-#note Time: 233
->p2: OAETEII 6H .ETIA +16 28
-#note Time: 16
->p1: OWIEDSG 4A WODGE +30 108
-#note Time: 30
->p2: OEIBULI 3A OBI +25 53
-#note Time: 18
->p1: ISMRZAL F4 S.Z +43 151
-#note Time: 24
->p2: EULIXHT I8 XU +19 72
-#note Time: 15
->p1: IMRALAT J9 MARTIAL +67 218
-#note Time: 26
->p2: ELIHTNN A2 T..LINE +30 102
-#note Time: 53
->p1: LTAPORN 14D PATRON.L +62 280
-#note Time: 53
->p2: HNUAOGJ 15A JUGA +44 146
-#note Time: 38
->p1: EDHSG?I 15H DE.IGHtS +189 469
-#note Time: 378
->p2: HNONEDP G7 PHON +33 179
-#note Time: 38
->p1: AIDYICQ 11C ACIDY +35 504
-#note Time: 20
->p2: NEDATOR 12H AT.ORNED +74 253
-#note Time: 72
->p1: IQFOIYN M9 FIN.Y +30 534
-#note Time: 22
->p2: AVOUETC O7 COUVA.E +39 292
-#note Time: 49
->p1: QOIORFK D8 FRO.K +36 570
-#note Time: 27
->p2: TBVUWMS 10A UMB.S +21 313
-#note Time: 23
->p1: QIOEE L8 QI +26 596
-#note Time: 15
->p2: TVW C2 V.. +7 320
-#note Time: 11
->p1: OEE C9 O.. +9 605
+>p1: EWLSEAN H7 WE +10 10
 #note Time: 5
->p2: TW J4 W.. +6 326
-#note Time: 9
->p1: EE C2 ...E +8 613
+>p2: UNDMXTI 9C UNMIXT +30 30
+#note Time: 5
+>p1: LSEANYF 10E EF +30 40
+#note Time: 13
+>p2: DARDOLA E5 ALAR..D +40 70
+#note Time: 8
+>p1: LSANYOE D11 ONLAY +27 67
+#note Time: 19
+>p2: DORWIPP 15A PIP. +33 103
+#note Time: 10
+>p1: SEOO?RC 13B CO.ORErS +72 139
+#note Time: 149
+>p2: DORWGIO H12 G.OW +27 130
+#note Time: 14
+>p1: AEET?GO 14H .OGAmETE +76 215
+#note Time: 119
+>p2: DRIOJSY O8 JOYRID.S +230 360
+#note Time: 17
+>p1: TIMURES I2 MUSTIER +69 284
+#note Time: 38
+>p2: UICETVL K9 VICTU.L +24 384
+#note Time: 27
+>p1: DTVIEHA D1 HIVED +35 319
+#note Time: 29
+>p2: EEEUQOI 5I .OQUE +28 412
+#note Time: 8
+>p1: TABBTRF J5 .FT +33 352
+#note Time: 12
+>p2: EEIADEA 2I .EDIAE +22 434
+#note Time: 10
+>p1: ABBTROE 1A BAT.ROBE +185 537
+#note Time: 21
+>p2: EAZGRKN 1L KARN +54 488
+#note Time: 15
+>p1: SINHNIA 3L SHIN +36 573
+#note Time: 11
+>p2: EZGANL 10I AZ.NE +34 522
+#note Time: 11
+>p1: NIA 13M AI. +14 587
+#note Time: 11
+>p2: GL N12 G.. +7 529
 #note Time: 6
->p2: T 6A .T +4 330
-#note Time: 6
->p2:  (E) +2 332
+>p1: N N1 ...N +4 591
+#note Time: 5
+>p1:  (L) +2 593
