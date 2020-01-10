@@ -32,12 +32,13 @@ g2s.remove(min(g2s))
 # plt.show()
 import seaborn as sns
 # sns.set(style="whitegrid")
-# ax2 = sns.violinplot(x=g2s)
-# ax = sns.violinplot(x=g1s, color='r')
+ax2 = sns.violinplot(x=g2s)
+ax = sns.violinplot(x=g1s, color='r')
 
-plt.scatter(g1s, g2s, s=1)
-plt.xlabel("Player 1")
-plt.ylabel("Player 2")
+plt.title("Mean Final Game Scores")
+# plt.scatter(g1s, g2s, s=1)
+# plt.xlabel("Player 1")
+# plt.ylabel("Player 2")
 
 # ax = sns.violinplot(x=list(map(sum, zip(g1s, g2s))))
 # ax = sns.violinplot(t)
