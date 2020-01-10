@@ -26,12 +26,19 @@ for i, game in enumerate(open("testcogo_3000.txt").read().split("#character-enco
 ##            try:
 ##                plt.plot([j], [times[j]], ' ry'[n]+'o')
 ##            except: pass
+g1s.remove(min(g1s))
+g2s.remove(min(g2s))
 
 # plt.show()
 import seaborn as sns
-sns.set(style="whitegrid")
+# sns.set(style="whitegrid")
 # ax2 = sns.violinplot(x=g2s)
-# ax = sns.violinplot(x=g1s)
+# ax = sns.violinplot(x=g1s, color='r')
+
+plt.scatter(g1s, g2s, s=1)
+plt.xlabel("Player 1")
+plt.ylabel("Player 2")
+
 # ax = sns.violinplot(x=list(map(sum, zip(g1s, g2s))))
-ax = sns.violinplot(t)
+# ax = sns.violinplot(t)
 plt.show()
