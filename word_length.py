@@ -8,7 +8,6 @@ with open("testcogo_3000.txt") as f:
         # L.extend([len(i) for i in words])
         for i in words:
             L[len(i)] = i
-raise ValueError
 
 L = [L.count(i) for i in range(1, max(L) + 1)]
 
