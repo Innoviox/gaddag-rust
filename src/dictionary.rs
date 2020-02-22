@@ -20,10 +20,10 @@ pub struct Dictionary {
 
 impl Dictionary {
     pub fn default() -> Dictionary {
-        match fs::read_to_string("dict.ser") {
-            Ok(s) => {
+        match fs::read("dict.ser") {
+            Ok(b) => {
                 println!("Loaded dict from file!");
-                serde_json::from_str(&s).unwrap()
+                bincode::deserialize(&b).unwrap()
             },
             Err(e) => {
                 let mut dict = Dictionary { words: HashMap::new(), leaves: HashMap::new() };
@@ -60,11 +60,11 @@ impl Dictionary {
                 bar.finish();
                 
                 println!("Saving dictionary (received error {})", e);
-                // let serialized = serde_json::to_string(&dict).unwrap();
-                // match fs::write("dict.ser", &serialized) {
-                //     Ok(_) => { println!("Saving successful"); }
-                //     Err(e) => { println!("error {}", e); }
-                // };
+                let serialized = bincode::serialize(&dict).unwrap();
+                match fs::write("dict.ser", &serialized) {
+                    Ok(_) => { println!("Saving successful"); }
+                    Err(e) => { println!("error {}", e); }
+                };
 
                 dict
             }
@@ -94,10 +94,10 @@ pub struct Trie {
 
 impl Trie {
     pub fn default() -> Trie {
-        match fs::read_to_string("trie.ser") {
-            Ok(s) => {
+        match fs::read("trie.ser") {
+            Ok(b) => {
                 println!("Loaded trie from file!");
-                serde_json::from_str(&s).unwrap()
+                bincode::deserialize(&b).unwrap()
             },
             Err(e) => {
                 let mut graph = Graph::new();
@@ -162,7 +162,7 @@ impl Trie {
                 }
 
                 println!("Saving trie (received error {})", e);
-                let serialized = serde_json::to_string(&trie).unwrap();
+                let serialized = bincode::serialize(&trie).unwrap();
                 match fs::write("trie.ser", &serialized) {
                     Ok(_) => { println!("Saving successful"); }
                     Err(e) => { println!("error {}", e); }
