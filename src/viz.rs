@@ -188,9 +188,8 @@ impl Win {
     fn _handle(&mut self, m: &Move) {
         if !m.exch() {
             self.place(&m, "yellow", false);
-        } else { // todo do it for placements to
-            self.update_rack_for(&m);
         }
+        self.update_rack_for(&m);
     }
 }
 
