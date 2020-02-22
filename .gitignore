@@ -5,3 +5,5 @@
 Cargo.lock
 *.html
 .idea
+trie.ser
+dict.ser
