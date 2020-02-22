@@ -8,7 +8,6 @@ use std::convert::TryInto;
 use array_init::array_init;
 use petgraph::graph::NodeIndex;
 use itertools::Itertools;
-use std::time::SystemTime;
 
 
 pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2]);
@@ -55,12 +54,9 @@ pub const STATE: [[char; 15]; 15] = [
 
 impl Board {
     pub fn default() -> Board {
-        let start1 = SystemTime::now();
         let mut b = Board { state: STATE.clone(), trie: Trie::default(), dict: Dictionary::default(), bag: Bag::default(), 
         blanks: vec![], cross_checks: [array_init(|_| Vec::new()), array_init(|_| Vec::new())], 
         affected: vec![] };
-        let time1 = start1.elapsed().expect("Time went backwards").as_millis();
-        println!("{}", time1);
         for di in 0..2 {
             for p in positions().iter() {
                 b.cross_checks[di][p.to_int()] = chars([true; 26]);
