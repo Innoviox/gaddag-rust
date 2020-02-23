@@ -627,13 +627,11 @@ impl Board {
     }
 
     pub fn reals(&self, m: &Move) -> Vec<char> {
-        let mut curr_pos = m.position.clone();
         let mut result = Vec::new();
-        for i in m.word.chars() {
+        for (curr_pos, i) in m.iter() {
             if !self.is_letter(curr_pos) {
                 result.push(i);
             }
-            curr_pos.tick(m.direction);
         }
 
         result
@@ -641,8 +639,7 @@ impl Board {
 
     pub fn format(&self, m: &Move, human: bool) -> String {
         let mut res = String::new();
-        let mut curr_pos = m.position.clone(); // todo make move iter method
-        for i in m.word.chars() {
+        for (curr_pos, i) in m.iter() {
             if !self.is_letter(curr_pos) {
                 res.push(i);
             } else {
@@ -658,19 +655,17 @@ impl Board {
                     res.push('.');
                 }
             }
-            curr_pos.tick(m.direction);
         }
 
         res.replace(")(", "")
     }
 
     pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 {
-        let mut curr_pos = m.position.clone();
         let mut true_score = 0;
         let mut total_cross_score = 0;
         let mut true_mult = 1;
         let mut n_played = 0;
-        for i in m.word.chars() {
+        for (curr_pos, i) in m.iter() {
             let mut cross_mult = 1;
             let mut tile_mult = 1;
             match self.at_position(curr_pos) {
@@ -695,8 +690,6 @@ impl Board {
             }
 
             true_score += curr_score;
-
-            curr_pos.tick(m.direction); // no check here because must be true
         }
 
 

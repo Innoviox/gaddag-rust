@@ -116,13 +116,11 @@ impl Win {
     } 
 
     fn place(&mut self, m: &Move, color: &str, force: bool) {
-        let mut p = m.position.clone();
         let last = self.model.get_last_state();
-        for _ in m.word.chars() {
+        for (p, _) in m.iter() {
             if force || "#^+-*.".contains(last.0[p.row][p.col]) {
                 self.set(p, color);
             }
-            p.tick(m.direction);
         }
     }
 

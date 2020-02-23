@@ -127,6 +127,14 @@ impl Position {
             Direction::Down   => return a + &b
         }
     }
+
+    pub fn tick_n(&self, d: Direction, n: u32) -> Option<Position> {
+        let mut p = self.clone();
+        for _ in 0..n {
+            if !p.tick(d) { return None }
+        }
+        Some(p)
+    }
 }
 
 pub fn chars(arr: [bool; 26]) -> Vec<char> {
@@ -221,5 +229,35 @@ impl Move {
     
     pub fn exch(&self) -> bool {
         self.typ == Type::Exch
+    }
+}
+
+pub struct IterMove {
+    _m: Move,
+    _curr: u32
+}
+
+impl Move {
+    pub fn iter(&self) -> IterMove {
+        IterMove { _m: Move::of(self), _curr: 0 }
+    }
+}
+
+impl Iterator for IterMove {
+    type Item = (Position, char);
+
+    fn next (&mut self) -> Option<Self::Item> {
+        match self._m.position.tick_n(self._m.direction, self._curr) {
+            Some(p) => {
+                match self._m.word.chars().nth(self._curr as usize) {
+                    Some(c) => {
+                        self._curr += 1;
+                        Some((p, c))
+                    },
+                    None => None
+                }
+            },
+            None => None
+        }
     }
 }
