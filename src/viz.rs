@@ -168,16 +168,21 @@ impl Win {
     }
 
     fn update_rack_for(&mut self, m: &Move) {
+        let s = self.model.get_last_state().0;
         let mut word = to_word(&m.word.chars().collect());
 
-        for w in self.rack.get_children() {
-            let l = w.dynamic_cast::<Label>().ok().unwrap();
-            let c = l.get_text().unwrap().chars().nth(0).unwrap();
-            if let Some(i) = ALPH.find(c) {
-                if word[i] > 0 {
-                    word[i] -= 1;
-                    let s = self.model.get_board().bag.score(c);
-                    self.lset(l, "yellow", c, s, &GREY);
+        for (p, letter) in m.iter() {
+            for w in self.rack.get_children() {
+                let l = w.dynamic_cast::<Label>().ok().unwrap();
+                let c = l.get_text().unwrap().chars().nth(0).unwrap();
+                if letter == c && s[p.row][p.col] != letter {
+                    if let Some(i) = ALPH.find(c) {
+                        if word[i] > 0 {
+                            word[i] -= 1;
+                            let s = self.model.get_board().bag.score(c);
+                            self.lset(l, "yellow", c, s, &GREY);
+                        }
+                    }
                 }
             }
         }
