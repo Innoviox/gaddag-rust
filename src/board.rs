@@ -294,8 +294,8 @@ impl Board {
         cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
         */
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
-        for (di, d) in Direction::iter().enumerate() {
-            for p in positions().iter() {
+        for p in positions().iter() {
+            for (di, d) in Direction::iter().enumerate() {
                 if self.affected.contains(p) { // only reevaluate for newly affected squares
                     self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d)); // note: requires mutability. also expensive method.
                 }
