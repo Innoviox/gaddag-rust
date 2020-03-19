@@ -1,12 +1,13 @@
-use std::slice::Iter;
-use std::ops::Range;
 use std::cmp::Ordering;
+use std::ops::Range;
+use std::slice::Iter;
 
 pub trait ItemRemovable<T> {
     fn _remove_item(&mut self, some_x: T) -> T;
 }
 
-impl<T: PartialEq> ItemRemovable<T> for Vec<T> { // implementation of unstable feature
+impl<T: PartialEq> ItemRemovable<T> for Vec<T> {
+    // implementation of unstable feature
     fn _remove_item(&mut self, some_x: T) -> T {
         self.remove(self.iter().position(|x| *x == some_x).unwrap())
     }
@@ -17,13 +18,13 @@ pub static ALPH: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?";
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Position {
     pub row: usize,
-    pub col: usize
+    pub col: usize,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Direction {
     Across,
-    Down
+    Down,
 }
 
 impl Direction {
@@ -33,16 +34,17 @@ impl Direction {
     }
 
     pub fn to_str(&self) -> String {
-        match self { // todo cooler arrows http://xahlee.info/comp/unicode_arrows.html
+        match self {
+            // todo cooler arrows http://xahlee.info/comp/unicode_arrows.html
             Direction::Down => return String::from("↓"),
-            Direction::Across => return String::from("→")
+            Direction::Across => return String::from("→"),
         }
     }
 
     pub fn flip(&self) -> Direction {
         match self {
             Direction::Across => Direction::Down,
-            Direction::Down => Direction::Across
+            Direction::Down => Direction::Across,
         }
     }
 }
@@ -51,12 +53,13 @@ impl Position {
     pub fn tick(&mut self, d: Direction) -> bool {
         match d {
             Direction::Across => {
-                if self.col < 14 { // note: don't have to check for 0-bound because usizes are positive
+                if self.col < 14 {
+                    // note: don't have to check for 0-bound because usizes are positive
                     self.col += 1;
                 } else {
                     return false;
                 }
-            },
+            }
             Direction::Down => {
                 if self.row < 14 {
                     self.row += 1;
@@ -71,12 +74,13 @@ impl Position {
     pub fn tick_opp(&mut self, d: Direction) -> bool {
         match d {
             Direction::Across => {
-                if 0 < self.col { // note: don't have to check for 0-bound because usizes are positive
+                if 0 < self.col {
+                    // note: don't have to check for 0-bound because usizes are positive
                     self.col -= 1;
                 } else {
                     return false;
                 }
-            },
+            }
             Direction::Down => {
                 if 0 < self.row {
                     self.row -= 1;
@@ -106,11 +110,31 @@ impl Position {
     pub fn neighbors(&self) -> Vec<Position> {
         let mut result = Vec::new();
 
-        if self.col < 14 { result.push(Position { row: self.row, col: self.col + 1 }); }
-        if self.row < 14 { result.push(Position { row: self.row + 1, col: self.col }); }
+        if self.col < 14 {
+            result.push(Position {
+                row: self.row,
+                col: self.col + 1,
+            });
+        }
+        if self.row < 14 {
+            result.push(Position {
+                row: self.row + 1,
+                col: self.col,
+            });
+        }
 
-        if self.col > 0  { result.push(Position { row: self.row, col: self.col - 1 }); }
-        if self.row > 0  { result.push(Position { row: self.row - 1, col: self.col }); }
+        if self.col > 0 {
+            result.push(Position {
+                row: self.row,
+                col: self.col - 1,
+            });
+        }
+        if self.row > 0 {
+            result.push(Position {
+                row: self.row - 1,
+                col: self.col,
+            });
+        }
 
         result
     }
@@ -118,20 +142,22 @@ impl Position {
     pub fn to_int(&self) -> usize {
         self.row * 15 + self.col
     }
-        
+
     pub fn to_str(&self, dir: Direction) -> String {
         let a = ALPH.chars().nth(self.col).unwrap().to_string();
         let b = (self.row + 1).to_string();
         match dir {
             Direction::Across => return b + &a,
-            Direction::Down   => return a + &b
+            Direction::Down => return a + &b,
         }
     }
 
     pub fn tick_n(&self, d: Direction, n: u32) -> Option<Position> {
         let mut p = self.clone();
         for _ in 0..n {
-            if !p.tick(d) { return None }
+            if !p.tick(d) {
+                return None;
+            }
         }
         Some(p)
     }
@@ -154,13 +180,15 @@ pub fn to_word(arr: &Vec<char>) -> Vec<usize> {
 static POS: Range<usize> = 0..15;
 
 pub fn positions() -> Vec<Position> {
-    iproduct!(POS.clone(), POS.clone()).map(|(row, col)| Position { row, col }).collect::<Vec<Position>>()
+    iproduct!(POS.clone(), POS.clone())
+        .map(|(row, col)| Position { row, col })
+        .collect::<Vec<Position>>()
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Type {
     Play,
-    Exch
+    Exch,
 }
 
 #[derive(Debug)]
@@ -170,7 +198,7 @@ pub struct Move {
     pub direction: Direction,
     pub score: i32,
     pub evaluation: f32,
-    pub typ: Type
+    pub typ: Type,
 }
 
 impl Move {
@@ -179,18 +207,18 @@ impl Move {
         let v2 = w1 * (y.score as f32) + w2 * y.evaluation;
 
         if v1 > v2 {
-            return Ordering::Greater
+            return Ordering::Greater;
         } else if v1 < v2 {
-            return Ordering::Less
+            return Ordering::Less;
         } else {
-            return Ordering::Equal
+            return Ordering::Equal;
         }
     }
 
     pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
         Move::_cmp(x, y, &1.0, &1.0)
     }
-    
+
     pub fn cmp_with(a: f32, b: f32) -> impl Fn(&&Move, &&Move) -> Ordering {
         move |x: &&Move, y: &&Move| Move::_cmp(x, y, &a, &b)
     }
@@ -204,7 +232,7 @@ impl Move {
             direction: m.direction.clone(),
             score: m.score.clone(),
             evaluation: m.evaluation.clone(),
-            typ: m.typ.clone()
+            typ: m.typ.clone(),
         }
     }
 
@@ -213,7 +241,9 @@ impl Move {
             word: String::new(),
             position: Position { row: 0, col: 0 },
             direction: Direction::Down,
-            score: 0, evaluation: 0.0, typ: Type::Play
+            score: 0,
+            evaluation: 0.0,
+            typ: Type::Play,
         }
     }
 
@@ -226,7 +256,7 @@ impl Move {
 
         nr
     }
-    
+
     pub fn exch(&self) -> bool {
         self.typ == Type::Exch
     }
@@ -234,30 +264,31 @@ impl Move {
 
 pub struct IterMove {
     _m: Move,
-    _curr: u32
+    _curr: u32,
 }
 
 impl Move {
     pub fn iter(&self) -> IterMove {
-        IterMove { _m: Move::of(self), _curr: 0 }
+        IterMove {
+            _m: Move::of(self),
+            _curr: 0,
+        }
     }
 }
 
 impl Iterator for IterMove {
     type Item = (Position, char);
 
-    fn next (&mut self) -> Option<Self::Item> {
+    fn next(&mut self) -> Option<Self::Item> {
         match self._m.position.tick_n(self._m.direction, self._curr) {
-            Some(p) => {
-                match self._m.word.chars().nth(self._curr as usize) {
-                    Some(c) => {
-                        self._curr += 1;
-                        Some((p, c))
-                    },
-                    None => None
+            Some(p) => match self._m.word.chars().nth(self._curr as usize) {
+                Some(c) => {
+                    self._curr += 1;
+                    Some((p, c))
                 }
+                None => None,
             },
-            None => None
+            None => None,
         }
     }
 }

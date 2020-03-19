@@ -1,22 +1,32 @@
-use crate::utils::{Position, Move, to_word, ALPH, Direction};
 use crate::board::STATE;
 use crate::game::Game;
+use crate::utils::{to_word, Direction, Move, Position, ALPH};
 use std::collections::HashMap;
 use std::convert::TryInto;
 
-use relm_derive::Msg;
-use relm::{Widget, Relm, Update, timeout};
+use gdk::RGBA;
 use gtk::prelude::*;
-use gtk::{Inhibit, Window, WindowType};
 use gtk::{
-    Label, Grid, Button, ScrolledWindow, Viewport, DrawingArea, EventBox, StateFlags, Adjustment, Align
+    Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ScrolledWindow, StateFlags,
+    Viewport,
 };
-use gdk::{RGBA};
+use gtk::{Inhibit, Window, WindowType};
+use relm::{timeout, Relm, Update, Widget};
+use relm_derive::Msg;
 use std::cmp::max;
 
-
-const GREY: RGBA = RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0 };
-const ANCHOR: RGBA = RGBA { red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0 };
+const GREY: RGBA = RGBA {
+    red: 0.38,
+    green: 0.38,
+    blue: 0.38,
+    alpha: 1.0,
+};
+const ANCHOR: RGBA = RGBA {
+    red: 1.0,
+    green: 1.0,
+    blue: 0.0,
+    alpha: 1.0,
+};
 //const WHITE: RGBA = RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0};
 
 #[derive(Msg, Debug)]
@@ -25,7 +35,7 @@ pub enum Msg {
     Quit,
     Click((f64, f64)),
     Type(u32),
-    SetMove(usize)
+    SetMove(usize),
 }
 
 struct ClickData {
@@ -33,7 +43,7 @@ struct ClickData {
     direction: Direction,
     curr_pos: Position,
     word: Vec<char>,
-    _is_typing: bool
+    _is_typing: bool,
 }
 
 impl ClickData {
@@ -43,11 +53,13 @@ impl ClickData {
             direction: Direction::Across,
             curr_pos: Position { row: 0, col: 0 },
             word: vec![],
-            _is_typing: false
+            _is_typing: false,
         }
     }
 
-    pub fn is_typing(&self) -> bool { self._is_typing }
+    pub fn is_typing(&self) -> bool {
+        self._is_typing
+    }
 
     pub fn start(&mut self, at: Position) {
         self.start_pos = at.clone();
@@ -57,17 +69,25 @@ impl ClickData {
         self._is_typing = true;
     }
 
-    pub fn dir_str(&self) -> String { self.direction.to_str() }
+    pub fn dir_str(&self) -> String {
+        self.direction.to_str()
+    }
 
-    pub fn is_at(&self, at: Position) -> bool { at == self.curr_pos }
+    pub fn is_at(&self, at: Position) -> bool {
+        at == self.curr_pos
+    }
 
-    pub fn flip(&mut self) { self.direction = self.direction.flip() }
+    pub fn flip(&mut self) {
+        self.direction = self.direction.flip()
+    }
 
     pub fn tick(&mut self) -> bool {
         self.curr_pos.tick(self.direction)
     }
 
-    pub fn push(&mut self, c: char) { self.word.push(c); }
+    pub fn push(&mut self, c: char) {
+        self.word.push(c);
+    }
 }
 
 struct Win {
@@ -83,15 +103,20 @@ struct Win {
 
     // internal fields
     last_move: Move,
-    colors: HashMap::<char, RGBA>,
-    back_colors: HashMap::<char, RGBA>,
+    colors: HashMap<char, RGBA>,
+    back_colors: HashMap<char, RGBA>,
     relm: Relm<Win>,
-    click_data: ClickData
+    click_data: ClickData,
 }
 
 impl Win {
     fn get(&mut self, col: i32, row: i32) -> Label {
-        self.board.get_child_at(col, row).unwrap().dynamic_cast::<Label>().ok().unwrap()
+        self.board
+            .get_child_at(col, row)
+            .unwrap()
+            .dynamic_cast::<Label>()
+            .ok()
+            .unwrap()
     }
 
     fn lset(&mut self, l: Label, c: &str, a: char, s: i32, b: &RGBA) {
@@ -107,13 +132,14 @@ impl Win {
         let mut at = self.model.get_board().at_position(p);
         let mut score = self.model.get_board().bag.score(at);
         let l = self.get(p.col as i32, p.row as i32);
-        if self.model.get_board().blanks.contains(&p) { // blank
+        if self.model.get_board().blanks.contains(&p) {
+            // blank
             at = (at as u32 + 127215).try_into().unwrap(); // make square character https://unicode.org/charts/nameslist/n_1F100.html
             score = 0;
         }
         let b = self.back_colors[&STATE[p.row][p.col]];
         self.lset(l, color, at, score, &b);
-    } 
+    }
 
     fn place(&mut self, m: &Move, color: &str, force: bool) {
         let last = self.model.get_last_state();
@@ -133,11 +159,13 @@ impl Win {
                     let l = Label::new(Some(" "));
                     l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
                     self.board.attach(&l, row as i32, col as i32, 1, 1);
-                } /* else if self.model.get_board().is_anchor(p) {
+                }
+                /* else if self.model.get_board().is_anchor(p) {
                     let l = self.get(p.col as i32, p.row as i32);
                     l.override_background_color(StateFlags::empty(), Some(&ANCHOR)); // color anchors yellow
                     l.set_text(" ");
-                } */ else if "#^+-*.".contains(at) {
+                } */
+                else if "#^+-*.".contains(at) {
                     let l = self.get(p.col as i32, p.row as i32);
                     l.override_background_color(StateFlags::empty(), Some(&self.colors[&at]));
                     l.set_text(" ");
@@ -152,13 +180,25 @@ impl Win {
 
     fn _update_rack(&mut self, r: &Vec<char>) {
         for i in 0..r.len() {
-            let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
+            let l = self
+                .rack
+                .get_child_at(i as i32, 0)
+                .unwrap()
+                .dynamic_cast::<Label>()
+                .ok()
+                .unwrap();
             let a = r[i as usize];
             let s = self.model.get_board().bag.score(a);
             self.lset(l, "white", a, s, &GREY);
         }
         for i in r.len()..7 {
-            let l = self.rack.get_child_at(i as i32, 0).unwrap().dynamic_cast::<Label>().ok().unwrap();
+            let l = self
+                .rack
+                .get_child_at(i as i32, 0)
+                .unwrap()
+                .dynamic_cast::<Label>()
+                .ok()
+                .unwrap();
             self.lset(l, "white", ' ', -1, &GREY);
         }
     }
@@ -221,7 +261,9 @@ impl Update for Win {
                     // why do i have to do this??? why cant i do
                     // self.place(&self.last_move...)? idk
                     let lm = Move::of(&self.last_move);
-                    if !lm.exch() { self.place(&lm, "white", true); }
+                    if !lm.exch() {
+                        self.place(&lm, "white", true);
+                    }
 
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
@@ -233,17 +275,31 @@ impl Update for Win {
                     self.model.state += 1;
                     self.last_move = Move::of(&m);
 
-                    let mut text = format!("{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
-                            rack, m.position.to_str(m.direction), sm, m.score, score + m.score);
+                    let mut text = format!(
+                        "{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
+                        rack,
+                        m.position.to_str(m.direction),
+                        sm,
+                        m.score,
+                        score + m.score
+                    );
                     if m.exch() {
-                        text = format!("{:<7}/EXC: -{:<11} +{:<03}/{:<03}",
-                            rack, m.word, m.score, score + m.score);
-                    } 
+                        text = format!(
+                            "{:<7}/EXC: -{:<11} +{:<03}/{:<03}",
+                            rack,
+                            m.word,
+                            m.score,
+                            score + m.score
+                        );
+                    }
 
                     let label = Label::new(Some(&text));
                     let n = (t * 2 + c - 1) as usize;
                     if c == 0 {
-                        label.set_markup(&format!("<span face=\"monospace\">{}. {}</span>", t, text));
+                        label.set_markup(&format!(
+                            "<span face=\"monospace\">{}. {}</span>",
+                            t, text
+                        ));
                     } else {
                         label.set_markup(&format!("<span face=\"monospace\">{}</span>", text));
                     }
@@ -260,7 +316,7 @@ impl Update for Win {
                 self.window.show_all();
                 self.graph.queue_draw();
                 timeout(self.relm.stream(), 1, || Msg::Tick);
-            },
+            }
             Msg::SetMove(n) => {
                 if self.model.is_over() {
                     let (m, r) = self.model.set_state(n);
@@ -268,16 +324,22 @@ impl Update for Win {
                     self._update_rack(&r.clone());
                     self._handle(&m);
                 }
-            },
+            }
             Msg::Click((x, y)) => {
                 // todo: columns are sometimes incorrect leftwards towards the right edge of the board (doesn't really matter)
                 let col = (x / 49.7) as i32; // no idea why this works, bashed this number out
                 let row = (y / 43.0) as i32; // 43: 40 wide, border width, row spacing
-                let p = Position { col: col as usize, row: row as usize };
+                let p = Position {
+                    col: col as usize,
+                    row: row as usize,
+                };
 
                 let old = self.click_data.curr_pos;
                 let l = self.get(old.col as i32, old.row as i32);
-                l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", " "));
+                l.set_markup(&format!(
+                    "<span face=\"sans\" color=\"{}\">{}</span>",
+                    "black", " "
+                ));
 
                 let mut set = false;
                 if self.click_data.is_at(p) {
@@ -290,25 +352,36 @@ impl Update for Win {
 
                 if set {
                     let l = self.get(col, row);
-                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                    l.set_markup(&format!(
+                        "<span face=\"sans\" color=\"{}\">{}</span>",
+                        "black",
+                        self.click_data.dir_str()
+                    ));
                 }
-            },
+            }
             Msg::Type(k) => {
                 if self.click_data.is_typing() {
                     let old = self.click_data.curr_pos;
                     let l = self.get(old.col as i32, old.row as i32);
                     let c = (k - 32) as u8 as char;
-                    l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", c));
+                    l.set_markup(&format!(
+                        "<span face=\"sans\" color=\"{}\">{}</span>",
+                        "black", c
+                    ));
 
                     self.click_data.push(c);
 
                     if self.click_data.tick() {
                         let new = self.click_data.curr_pos;
                         let l = self.get(new.col as i32, new.row as i32);
-                        l.set_markup(&format!("<span face=\"sans\" color=\"{}\">{}</span>", "black", self.click_data.dir_str()));
+                        l.set_markup(&format!(
+                            "<span face=\"sans\" color=\"{}\">{}</span>",
+                            "black",
+                            self.click_data.dir_str()
+                        ));
                     }
                 }
-            },
+            }
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -326,32 +399,133 @@ impl Widget for Win {
     // Create the widgets.
     fn view(relm: &Relm<Self>, model: Self::Model) -> Self {
         let mut colors = HashMap::<char, RGBA>::new();
-        colors.insert('#', RGBA { red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0} ); // "red");
-        colors.insert('.', RGBA { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0} ); // "white");
-        colors.insert('-', RGBA { red: 0.48, green: 0.79, blue: 0.90, alpha: 1.0} ); // "light blue");
-        colors.insert('^', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
-        colors.insert('*', RGBA { red: 0.94, green: 0.73, blue: 0.73, alpha: 1.0} ); // "pink");
-        colors.insert('+', RGBA { red: 0.2, green: 0.38, blue: 0.92, alpha: 1.0} ); // "dark blue");
+        colors.insert(
+            '#',
+            RGBA {
+                red: 1.0,
+                green: 0.0,
+                blue: 0.0,
+                alpha: 1.0,
+            },
+        ); // "red");
+        colors.insert(
+            '.',
+            RGBA {
+                red: 1.0,
+                green: 1.0,
+                blue: 1.0,
+                alpha: 1.0,
+            },
+        ); // "white");
+        colors.insert(
+            '-',
+            RGBA {
+                red: 0.48,
+                green: 0.79,
+                blue: 0.90,
+                alpha: 1.0,
+            },
+        ); // "light blue");
+        colors.insert(
+            '^',
+            RGBA {
+                red: 0.94,
+                green: 0.73,
+                blue: 0.73,
+                alpha: 1.0,
+            },
+        ); // "pink");
+        colors.insert(
+            '*',
+            RGBA {
+                red: 0.94,
+                green: 0.73,
+                blue: 0.73,
+                alpha: 1.0,
+            },
+        ); // "pink");
+        colors.insert(
+            '+',
+            RGBA {
+                red: 0.2,
+                green: 0.38,
+                blue: 0.92,
+                alpha: 1.0,
+            },
+        ); // "dark blue");
 
         // colors for back, greyed out
         let mut back_colors = HashMap::<char, RGBA>::new();
-        back_colors.insert('#', RGBA { red: 0.66, green: 0.20, blue: 0.20, alpha: 1.0} );
-        back_colors.insert('.', RGBA { red: 0.38, green: 0.38, blue: 0.38, alpha: 1.0} );
-        back_colors.insert('-', RGBA { red: 0.27, green: 0.50, blue: 0.52, alpha: 1.0} );
-        back_colors.insert('^', RGBA { red: 0.71, green: 0.35, blue: 0.35, alpha: 1.0} );
-        back_colors.insert('*', RGBA { red: 0.71, green: 0.35, blue: 0.35, alpha: 1.0} );
-        back_colors.insert('+', RGBA { red: 0.25, green: 0.32, blue: 0.53, alpha: 1.0} );
+        back_colors.insert(
+            '#',
+            RGBA {
+                red: 0.66,
+                green: 0.20,
+                blue: 0.20,
+                alpha: 1.0,
+            },
+        );
+        back_colors.insert(
+            '.',
+            RGBA {
+                red: 0.38,
+                green: 0.38,
+                blue: 0.38,
+                alpha: 1.0,
+            },
+        );
+        back_colors.insert(
+            '-',
+            RGBA {
+                red: 0.27,
+                green: 0.50,
+                blue: 0.52,
+                alpha: 1.0,
+            },
+        );
+        back_colors.insert(
+            '^',
+            RGBA {
+                red: 0.71,
+                green: 0.35,
+                blue: 0.35,
+                alpha: 1.0,
+            },
+        );
+        back_colors.insert(
+            '*',
+            RGBA {
+                red: 0.71,
+                green: 0.35,
+                blue: 0.35,
+                alpha: 1.0,
+            },
+        );
+        back_colors.insert(
+            '+',
+            RGBA {
+                red: 0.25,
+                green: 0.32,
+                blue: 0.53,
+                alpha: 1.0,
+            },
+        );
 
         let board = Grid::new();
         board.set_row_homogeneous(true);
-        board.set_column_homogeneous(true); 
+        board.set_column_homogeneous(true);
         board.set_row_spacing(2);
         board.set_column_spacing(2);
         board.set_border_width(1);
 
         let event_box = EventBox::new();
         event_box.add(&board);
-        connect!(relm, event_box, connect_button_press_event(_, e), return (Some(Msg::Click(e.get_position())), Inhibit(false)));
+        connect!(
+            relm,
+            event_box,
+            connect_button_press_event(_, e),
+            return (Some(Msg::Click(e.get_position())), Inhibit(false))
+        );
 
         let moves = Grid::new();
         moves.set_row_spacing(10);
@@ -364,7 +538,14 @@ impl Widget for Win {
         moves.attach(&l2, 1, 0, 1, 1);
 
         let no_adjustment: Option<Adjustment> = None;
-        let scroll: Option<Adjustment> = Some(Adjustment::new(0.0, std::f64::MIN, std::f64::MAX, 1.0, 0.0, 0.0));
+        let scroll: Option<Adjustment> = Some(Adjustment::new(
+            0.0,
+            std::f64::MIN,
+            std::f64::MAX,
+            1.0,
+            0.0,
+            0.0,
+        ));
         let moves_container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
@@ -382,45 +563,105 @@ impl Widget for Win {
         }
 
         let graph = DrawingArea::new();
-        graph.connect_draw(move |widget,cr| {
+        graph.connect_draw(move |widget, cr| {
             let children = widget
                 // get parent as grid
-                .get_parent().unwrap().dynamic_cast::<Grid>().ok().unwrap()
+                .get_parent()
+                .unwrap()
+                .dynamic_cast::<Grid>()
+                .ok()
+                .unwrap()
                 // get moves window
-                .get_children().iter().filter(|x| x.is::<ScrolledWindow>()).nth(0).unwrap().clone().dynamic_cast::<ScrolledWindow>().ok().unwrap()
+                .get_children()
+                .iter()
+                .filter(|x| x.is::<ScrolledWindow>())
+                .nth(0)
+                .unwrap()
+                .clone()
+                .dynamic_cast::<ScrolledWindow>()
+                .ok()
+                .unwrap()
                 // get actual moves object
-                .get_children()[0].clone().dynamic_cast::<Viewport>().ok().unwrap().get_children()[0].clone().dynamic_cast::<Grid>().ok().unwrap()
+                .get_children()[0]
+                .clone()
+                .dynamic_cast::<Viewport>()
+                .ok()
+                .unwrap()
+                .get_children()[0]
+                .clone()
+                .dynamic_cast::<Grid>()
+                .ok()
+                .unwrap()
                 // get children of moves object
                 .get_children();
-            let (s1, s2): (Vec<(usize, i32)>, Vec<(usize, i32)>) = children.iter()
-                                    // get buttons, which contain the moves
-                                    .map(|x| x.clone().dynamic_cast::<Button>()).filter(|x| match x { Ok(_) => true, _ => false })
-                                    .map(|x| x
-                                        // get text on label
-                                        .ok().unwrap().get_children()[0].clone().dynamic_cast::<Label>().ok().unwrap().get_text().unwrap()
-                                        // get score from text
-                                        .split("+").nth(1).unwrap().split("/").nth(1).unwrap().parse::<i32>().unwrap())
-                                    // split into player 1 and player 2
-                                    .rev().enumerate().collect::<Vec<(usize, i32)>>().iter().partition(|(i, _)| i % 2 == 0);
+            let (s1, s2): (Vec<(usize, i32)>, Vec<(usize, i32)>) = children
+                .iter()
+                // get buttons, which contain the moves
+                .map(|x| x.clone().dynamic_cast::<Button>())
+                .filter(|x| match x {
+                    Ok(_) => true,
+                    _ => false,
+                })
+                .map(|x| {
+                    x
+                        // get text on label
+                        .ok()
+                        .unwrap()
+                        .get_children()[0]
+                        .clone()
+                        .dynamic_cast::<Label>()
+                        .ok()
+                        .unwrap()
+                        .get_text()
+                        .unwrap()
+                        // get score from text
+                        .split("+")
+                        .nth(1)
+                        .unwrap()
+                        .split("/")
+                        .nth(1)
+                        .unwrap()
+                        .parse::<i32>()
+                        .unwrap()
+                })
+                // split into player 1 and player 2
+                .rev()
+                .enumerate()
+                .collect::<Vec<(usize, i32)>>()
+                .iter()
+                .partition(|(i, _)| i % 2 == 0);
 
             // remove partition artifacts
             let mut s1: Vec<i32> = s1.iter().map(|x| x.1).collect();
             let mut s2: Vec<i32> = s2.iter().map(|x| x.1).collect();
 
-            let end = match children.iter() // match because end may not exist (e.g. game may not be over)
+            let end = match children
+                .iter() // match because end may not exist (e.g. game may not be over)
                 // get all labels
-                .map(|x| x.clone().dynamic_cast::<Label>()).filter(|x| match x { Ok(_) => true, _ => false })
+                .map(|x| x.clone().dynamic_cast::<Label>())
+                .filter(|x| match x {
+                    Ok(_) => true,
+                    _ => false,
+                })
                 // filter for labels with "/" (there should only be one, the one we want)
-                .map(|x| x.ok().unwrap().get_text().unwrap()).filter(|x| x.contains("/"))
+                .map(|x| x.ok().unwrap().get_text().unwrap())
+                .filter(|x| x.contains("/"))
                 // take label we found
-                .nth(0) {
-                    // extract score
-                    Some(s) => s.split("/").nth(1).unwrap().parse::<i32>().unwrap(),
-                    _ => 0
+                .nth(0)
+            {
+                // extract score
+                Some(s) => s.split("/").nth(1).unwrap().parse::<i32>().unwrap(),
+                _ => 0,
             };
 
             // add end score to correct array
-            if end != 0 { if s1.len() > s2.len() { s1.push(end); } else { s2.push(end); } }
+            if end != 0 {
+                if s1.len() > s2.len() {
+                    s1.push(end);
+                } else {
+                    s2.push(end);
+                }
+            }
 
             // make same length (fill with last value)
             for _ in 0..2 {
@@ -447,8 +688,8 @@ impl Widget for Win {
             let height: f64 = widget.get_allocated_height() as f64;
             let m = height / (top as f64);
 
-            cr.rectangle(0.0,0.0, width, height);
-            cr.set_source_rgb(1.0,1.0, 1.0);
+            cr.rectangle(0.0, 0.0, width, height);
+            cr.set_source_rgb(1.0, 1.0, 1.0);
             cr.fill();
 
             cr.set_line_width(1.0);
@@ -462,9 +703,8 @@ impl Widget for Win {
                 cr.stroke();
             };
 
-            cr.set_source_rgb(1.0,0.0, 0.0);
+            cr.set_source_rgb(1.0, 0.0, 0.0);
             draw(s1.clone());
-
 
             cr.set_source_rgb(0.0, 0.0, 1.0);
             draw(s2.clone());
@@ -476,7 +716,7 @@ impl Widget for Win {
         grid.set_hexpand(true);
         grid.set_vexpand(true);
         grid.set_row_homogeneous(true);
-        grid.set_column_homogeneous(true); 
+        grid.set_column_homogeneous(true);
         grid.set_halign(Align::Fill);
         grid.set_valign(Align::Fill);
 
@@ -489,8 +729,18 @@ impl Widget for Win {
         window.add(&grid);
         window.set_default_size(1280, 800);
 
-        connect!(relm, window, connect_delete_event(_, _), return (Some(Msg::Quit), Inhibit(false)));
-        connect!(relm, window, connect_key_press_event(_, e), return (Some(Msg::Type(e.get_keyval())), Inhibit(false)));
+        connect!(
+            relm,
+            window,
+            connect_delete_event(_, _),
+            return (Some(Msg::Quit), Inhibit(false))
+        );
+        connect!(
+            relm,
+            window,
+            connect_key_press_event(_, e),
+            return (Some(Msg::Type(e.get_keyval())), Inhibit(false))
+        );
 
         window.show_all();
 
@@ -505,7 +755,7 @@ impl Widget for Win {
             colors,
             back_colors,
             relm: relm.clone(),
-            click_data: ClickData::new()
+            click_data: ClickData::new(),
         };
 
         win.setup_board(true);

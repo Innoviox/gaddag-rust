@@ -1,11 +1,11 @@
-use crate::utils::ItemRemovable;
 use crate::board::Board;
+use crate::utils::ItemRemovable;
 use crate::utils::{Move, Type};
 
 pub struct Player {
     pub rack: Vec<char>,
     pub name: String,
-    pub score: u32
+    pub score: u32,
 }
 
 impl Player {
@@ -33,8 +33,8 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), skips, len)
-                },
+                    return (Move::of(m), skips, len);
+                }
                 Type::Exch => {
                     let word = m.complement(&self.rack);
                     for c in &word {
@@ -47,7 +47,7 @@ impl Player {
                     let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
-                    return (nm, String::new(), len)
+                    return (nm, String::new(), len);
                 }
             }
         }
@@ -64,13 +64,13 @@ impl Player {
     fn get_val(&self, len: usize) -> f32 {
         /*
         https://www.desmos.com/calculator/lkrdbcoiqt
-        Essentially, the idea is for eval to be roughly 1 the whole game, 
+        Essentially, the idea is for eval to be roughly 1 the whole game,
         but be lower as the bag decreases and exchanging/longetivity becomes impossible.
         This method will have its primary effect to counteract blankholding.
         */
         let x = 1.0 - 1.0 / (4.0 * len as f32);
         if x > 0.0 {
-            return x
+            return x;
         }
         0.0
     }

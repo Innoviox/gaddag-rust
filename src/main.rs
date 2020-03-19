@@ -1,19 +1,22 @@
 #![allow(dead_code)]
 
-#[macro_use] extern crate itertools;
-#[macro_use] extern crate relm;
-#[macro_use] extern crate clap;
+#[macro_use]
+extern crate itertools;
+#[macro_use]
+extern crate relm;
+#[macro_use]
+extern crate clap;
 extern crate gdk;
 
 use clap::App;
 
 mod bag;
-mod utils;
 mod board;
 mod dictionary;
-mod player;
 mod game;
+mod player;
 mod text;
+mod utils;
 mod viz;
 
 fn main() {

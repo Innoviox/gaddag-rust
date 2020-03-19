@@ -13,25 +13,44 @@ pub struct Game {
     turn: u32,
     pub finished: bool,
     states: Vec<(S, Move, Vec<char>)>,
-    pub state: usize
+    pub state: usize,
 }
 
 impl Game {
     pub fn default() -> Game {
         let mut board = Board::default();
-        let player_1 = Player { rack: board.bag.draw_tiles(7), name: "p1".to_string(), score: 0 };
-        let player_2 = Player { rack: board.bag.draw_tiles(7), name: "p2".to_string(), score: 0 };
+        let player_1 = Player {
+            rack: board.bag.draw_tiles(7),
+            name: "p1".to_string(),
+            score: 0,
+        };
+        let player_2 = Player {
+            rack: board.bag.draw_tiles(7),
+            name: "p2".to_string(),
+            score: 0,
+        };
         let players = [player_1, player_2];
 
-        Game { players, board, current: 0, turn: 1, finished: false, states: Vec::new(), state: 0 }
+        Game {
+            players,
+            board,
+            current: 0,
+            turn: 1,
+            finished: false,
+            states: Vec::new(),
+            state: 0,
+        }
     }
 
     pub fn do_move(&mut self, human: bool) -> (Move, String, usize) {
         let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, human);
-        self.states.push((self.board.save_state(), Move::of(&m.0), r));
+        self.states
+            .push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;
-        if self.current == 0 { self.turn += 1; }
+        if self.current == 0 {
+            self.turn += 1;
+        }
         self.state += 1;
         m
     }
@@ -60,11 +79,16 @@ impl Game {
     }
 
     pub fn is_over(&self) -> bool {
-        !(self.board.bag.distribution.len() > 0 || (self.players[0].rack.len() > 0 && self.players[1].rack.len() > 0))
+        !(self.board.bag.distribution.len() > 0
+            || (self.players[0].rack.len() > 0 && self.players[1].rack.len() > 0))
     }
 
-    pub fn get_board(&self) -> &Board { &self.board }
-    pub fn get_turn(&self) -> u32 { self.turn }
+    pub fn get_board(&self) -> &Board {
+        &self.board
+    }
+    pub fn get_turn(&self) -> u32 {
+        self.turn
+    }
 
     pub fn current_player(&self) -> &Player {
         &self.players[self.current]
@@ -83,7 +107,11 @@ impl Game {
 
     pub fn get_last_state(&self) -> S {
         if self.state == 0 {
-            return (STATE, vec![], [array_init(|_| Vec::new()), array_init(|_| Vec::new())])
+            return (
+                STATE,
+                vec![],
+                [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
+            );
         }
 
         self.states[self.state - 1].0.clone()

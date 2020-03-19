@@ -1,16 +1,19 @@
-use crate::utils::Type;
 use crate::game::Game;
+use crate::utils::Type;
 use std::time::SystemTime;
 
 fn two_player_game(g: &mut Game, gcg: bool) {
     // b.bag = bag::Bag::with(&vec!['S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'C', 'Z', 'E', 'P', 'F', 'T', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
     let mut out = String::new();
-    
+
     if gcg {
         let p1 = g.get_player(0).name.clone();
         let p2 = g.get_player(1).name.clone();
-        out = format!("#character-encoding UTF-8\n#player1 {n1} {n1}\n#player2 {n2} {n2}",
-                      n1=p1, n2=p2);
+        out = format!(
+            "#character-encoding UTF-8\n#player1 {n1} {n1}\n#player2 {n2} {n2}",
+            n1 = p1,
+            n2 = p2
+        );
     }
 
     let mut turn = 1;
@@ -20,28 +23,49 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         let start1 = SystemTime::now();
         let (m1, sm1, _nmoves1) = g.do_move(false);
         let time1 = start1.elapsed().expect("Time went backwards").as_millis();
-        
+
         if sm1 == String::new() && m1.typ == Type::Play {
-            break
+            break;
         }
 
         if gcg {
             let p = g.get_player(0);
             out = match m1.typ {
-                Type::Play => format!("{}\n>{}: {} {} {} +{} {}", out, p.name, rack_1,
-                                      m1.position.to_str(m1.direction), sm1, m1.score, p.score),
-                Type::Exch => format!("{}\n>{}: {} -{} +0 {}", out, p.name, rack_1,
-                                      m1.word, p.score)
+                Type::Play => format!(
+                    "{}\n>{}: {} {} {} +{} {}",
+                    out,
+                    p.name,
+                    rack_1,
+                    m1.position.to_str(m1.direction),
+                    sm1,
+                    m1.score,
+                    p.score
+                ),
+                Type::Exch => format!(
+                    "{}\n>{}: {} -{} +0 {}",
+                    out, p.name, rack_1, m1.word, p.score
+                ),
             }
         } else {
-            out = format!("{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})", out, turn, 
-                            rack_1, m1.position.to_str(m1.direction), sm1, m1.score, g.get_player(0).score, time1);
+            out = format!(
+                "{}\n{:<02}. {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})",
+                out,
+                turn,
+                rack_1,
+                m1.position.to_str(m1.direction),
+                sm1,
+                m1.score,
+                g.get_player(0).score,
+                time1
+            );
         }
 
-        if gcg { out = format!("{}\n#note Time: {}", out, time1); }
+        if gcg {
+            out = format!("{}\n#note Time: {}", out, time1);
+        }
 
         if g.get_player(0).rack.len() == 0 {
-            break
+            break;
         }
 
         let rack_2: String = g.get_player(1).rack.clone().iter().collect();
@@ -50,47 +74,72 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         let time2 = start2.elapsed().expect("Time went backwards").as_millis();
 
         if sm2 == String::new() && m2.typ == Type::Play {
-            break
+            break;
         }
 
         if gcg {
             let p = g.get_player(1);
             out = match m2.typ {
-                Type::Play => format!("{}\n>{}: {} {} {} +{} {}", out, p.name, rack_2,
-                                      m2.position.to_str(m2.direction), sm2, m2.score, p.score),
-                Type::Exch => format!("{}\n>{}: {} -{} +0 {}", out, p.name, rack_2,
-                                      m2.word, p.score)
+                Type::Play => format!(
+                    "{}\n>{}: {} {} {} +{} {}",
+                    out,
+                    p.name,
+                    rack_2,
+                    m2.position.to_str(m2.direction),
+                    sm2,
+                    m2.score,
+                    p.score
+                ),
+                Type::Exch => format!(
+                    "{}\n>{}: {} -{} +0 {}",
+                    out, p.name, rack_2, m2.word, p.score
+                ),
             }
         } else {
-            out = format!("{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})", out, 
-                            rack_2, m2.position.to_str(m2.direction), sm2, m2.score, g.get_player(1).score, time2);
+            out = format!(
+                "{} | {:<7}/{:<3}: {:<12} +{:<03}/{:<03} ({:<04})",
+                out,
+                rack_2,
+                m2.position.to_str(m2.direction),
+                sm2,
+                m2.score,
+                g.get_player(1).score,
+                time2
+            );
         }
 
-        if gcg { out = format!("{}\n#note Time: {}", out, time2); }
-        
+        if gcg {
+            out = format!("{}\n#note Time: {}", out, time2);
+        }
+
         turn += 1;
 
-//         println!("{}", out);
-//         println!("{}", g.get_board());
+        //         println!("{}", out);
+        //         println!("{}", g.get_board());
     }
 
     let (end_s, end, n) = g.finish();
     if n == 0 {
         if gcg {
             let p = g.get_player(0);
-            out = format!("{}\n>{}:  ({}) +{} {}", out, p.name,
-                          end_s, end, p.score);
+            out = format!("{}\n>{}:  ({}) +{} {}", out, p.name, end_s, end, p.score);
         } else {
             out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, g.get_player(0).score);
         }
     } else {
         if gcg {
             let p = g.get_player(1);
-            out = format!("{}\n>{}:  ({}) +{} {}", out, p.name,
-                          end_s, end, p.score);
+            out = format!("{}\n>{}:  ({}) +{} {}", out, p.name, end_s, end, p.score);
         } else {
-            out = format!("{}\n {} 2*({}) +{}/{}", out, " ".repeat(45), end_s, end, g.get_player(1).score);
-        }   
+            out = format!(
+                "{}\n {} 2*({}) +{}/{}",
+                out,
+                " ".repeat(45),
+                end_s,
+                end,
+                g.get_player(1).score
+            );
+        }
     }
     if !gcg {
         out = format!("{}\n{}", out, g.get_board());
@@ -121,20 +170,16 @@ pub fn main(n: u32) {
     // let dir = utils::Direction::Across;
 
     // // board.play_word(position, word, dir, false);
-    // // board.play_word(utils::Position { row: 8, col: 7 }, 
+    // // board.play_word(utils::Position { row: 8, col: 7 },
     // //                 String::from("AM"),
     // //                 utils::Direction::Down, false);
 
-    
-
-    
     // // println!("{:?}", utils::chars(board.valid_at(utils::Position { row: 6, col: 7 })));
 
     // // println!("{:?}", board.anchors());
 
     // // let rack = vec!['S', 'A', 'T', 'I', 'R', 'E', 'S'];
 
-    
     // // println!("{:?}", t.graph);
     // // println!("{} {}", t.graph.node_count(), t.graph.edge_count());
 
@@ -173,7 +218,7 @@ pub fn main(n: u32) {
     //     for c in board.bag.draw_tiles(7 - rack.len()) {
     //         rack.push(c);
     //     }
-    // } 
+    // }
 
     // println!("| {:^12} | {} | {} | {} | {} | {} |", "Move", "Position", "Direction", "Score", "Evaluation", "Time");
     // println!("{}", "-".repeat(67));
