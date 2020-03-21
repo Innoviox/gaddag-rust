@@ -1,4 +1,6 @@
 use std::cmp::Ordering;
+use std::fs::File;
+use std::io::Write;
 use std::ops::Range;
 use std::slice::Iter;
 
@@ -290,5 +292,15 @@ impl Iterator for IterMove {
             },
             None => None,
         }
+    }
+}
+
+pub fn write_to_file(file: &str, text: String) {
+    match File::create(file) {
+        Ok(mut f) => match write!(f, "{}", text) {
+            Ok(_) => {}
+            Err(_) => {}
+        },
+        Err(_) => {}
     }
 }

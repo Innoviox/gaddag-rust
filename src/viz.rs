@@ -1,6 +1,6 @@
 use crate::board::STATE;
 use crate::game::Game;
-use crate::utils::{to_word, Direction, Move, Position, ALPH};
+use crate::utils::{to_word, write_to_file, Direction, Move, Position, ALPH};
 use std::collections::HashMap;
 use std::convert::TryInto;
 
@@ -14,8 +14,6 @@ use gtk::{Inhibit, Window, WindowType};
 use relm::{timeout, Relm, Update, Widget};
 use relm_derive::Msg;
 use std::cmp::max;
-use std::fs::File;
-use std::io::Write;
 
 const GREY: RGBA = RGBA {
     red: 0.38,
@@ -110,6 +108,7 @@ struct Win {
     relm: Relm<Win>,
     click_data: ClickData,
     out: String, // gcg output
+    out_nice: String,
 }
 
 impl Win {
@@ -259,7 +258,7 @@ impl Update for Win {
             Msg::Tick => {
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
-                let mut text;
+                let mut text = String::new();
                 let mut gcg_text = String::new();
                 let mut write = false;
                 if !self.model.is_over() {
@@ -341,14 +340,9 @@ impl Update for Win {
 
                 if write {
                     self.out += &(gcg_text + "\n");
-
-                    match File::create("out.gcg") {
-                        Ok(mut f) => match write!(f, "{}", self.out) {
-                            Ok(_) => {}
-                            Err(_) => {}
-                        },
-                        Err(_) => {}
-                    }
+                    self.out_nice += &(text + "\n");
+                    write_to_file("out.gcg", self.out.clone());
+                    write_to_file("out.nice", self.out_nice.clone());
                 }
 
                 self.window.show_all();
@@ -769,6 +763,8 @@ impl Widget for Win {
             n2 = "Bot 2"
         );
 
+        let out_nice = "Bot 1 vs Bot 2\n".to_string();
+
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
         window.set_default_size(1280, 800);
@@ -801,6 +797,7 @@ impl Widget for Win {
             relm: relm.clone(),
             click_data: ClickData::new(),
             out,
+            out_nice,
         };
 
         win.setup_board(true);
