@@ -14,6 +14,8 @@ use gtk::{Inhibit, Window, WindowType};
 use relm::{timeout, Relm, Update, Widget};
 use relm_derive::Msg;
 use std::cmp::max;
+use std::fs::File;
+use std::io::Write;
 
 const GREY: RGBA = RGBA {
     red: 0.38,
@@ -107,6 +109,7 @@ struct Win {
     back_colors: HashMap<char, RGBA>,
     relm: Relm<Win>,
     click_data: ClickData,
+    out: String, // gcg output
 }
 
 impl Win {
@@ -256,6 +259,9 @@ impl Update for Win {
             Msg::Tick => {
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
+                let mut text;
+                let mut gcg_text = String::new();
+                let mut write = false;
                 if !self.model.is_over() {
                     self.update_rack();
                     // why do i have to do this??? why cant i do
@@ -268,18 +274,28 @@ impl Update for Win {
                     let p = self.model.current_player();
                     let rack: String = p.rack.iter().collect();
                     let score = p.score as i32;
+                    let n = p.name.clone();
 
-                    let (m, sm, _n_moves) = self.model.do_move(true);
+                    let (m, human, gcg, _n_moves) = self.model.do_move();
                     self.model.state -= 1; // dont know why this is necessary
                     self._handle(&m);
                     self.model.state += 1;
                     self.last_move = Move::of(&m);
 
-                    let mut text = format!(
+                    text = format!(
                         "{:<7}/{:<3}: {:<12} +{:<03}/{:<03}",
                         rack,
                         m.position.to_str(m.direction),
-                        sm,
+                        human,
+                        m.score,
+                        score + m.score
+                    );
+                    gcg_text = format!(
+                        ">{}: {} {} {} +{} {}",
+                        n,
+                        rack,
+                        m.position.to_str(m.direction),
+                        gcg,
                         m.score,
                         score + m.score
                     );
@@ -307,12 +323,34 @@ impl Update for Win {
                     btn.add(&label);
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     self.moves.attach(&btn, c, t, 1, 1);
+                    write = true;
                 } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
-                    let text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
+                    text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
+                    gcg_text = format!(
+                        ">{}: ({}) +{} {}",
+                        self.model.get_player(n).name,
+                        end_s,
+                        end,
+                        self.model.get_player(n).score
+                    );
                     let label = Label::new(Some(&text));
                     self.moves.attach(&label, n, t + 1, 1, 1);
+                    write = true;
                 }
+
+                if write {
+                    self.out += &(gcg_text + "\n");
+
+                    match File::create("out.gcg") {
+                        Ok(mut f) => match write!(f, "{}", self.out) {
+                            Ok(_) => {}
+                            Err(_) => {}
+                        },
+                        Err(_) => {}
+                    }
+                }
+
                 self.window.show_all();
                 self.graph.queue_draw();
                 timeout(self.relm.stream(), 1, || Msg::Tick);
@@ -725,6 +763,12 @@ impl Widget for Win {
         grid.attach(&rack, 4, 16, 7, 1);
         grid.attach(&graph, 13, 10, 10, 5);
 
+        let out = format!(
+            "#character-encoding UTF-8\n#player1 {n1} {n1}\n#player2 {n2} {n2}\n",
+            n1 = "Bot 1",
+            n2 = "Bot 2"
+        );
+
         let window = Window::new(WindowType::Toplevel);
         window.add(&grid);
         window.set_default_size(1280, 800);
@@ -756,6 +800,7 @@ impl Widget for Win {
             back_colors,
             relm: relm.clone(),
             click_data: ClickData::new(),
+            out,
         };
 
         win.setup_board(true);

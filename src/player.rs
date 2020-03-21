@@ -9,7 +9,7 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn do_move(&mut self, board: &mut Board, human: bool) -> (Move, String, usize) {
+    pub fn do_move(&mut self, board: &mut Board) -> (Move, String, String, usize) {
         let gen = board.gen_all_moves(&self.rack);
         let len = gen.len();
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
@@ -20,7 +20,8 @@ impl Player {
             match m.typ {
                 Type::Play => {
                     let chars = board.reals(&m);
-                    let skips = board.format(&m, human);
+                    let s1 = board.format(&m, true);
+                    let s2 = board.format(&m, false);
                     board.place_move(m);
 
                     for c in chars {
@@ -33,7 +34,7 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), skips, len);
+                    return (Move::of(m), s1, s2, len);
                 }
                 Type::Exch => {
                     let word = m.complement(&self.rack);
@@ -47,12 +48,12 @@ impl Player {
                     let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
-                    return (nm, String::new(), len);
+                    return (nm, String::new(), String::new(), len);
                 }
             }
         }
 
-        (Move::none(), String::new(), len)
+        (Move::none(), String::new(), String::new(), len)
     }
 
     fn draw_up(&mut self, board: &mut Board) {

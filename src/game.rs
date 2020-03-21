@@ -42,9 +42,9 @@ impl Game {
         }
     }
 
-    pub fn do_move(&mut self, human: bool) -> (Move, String, usize) {
+    pub fn do_move(&mut self) -> (Move, String, String, usize) {
         let r = self.current_player().rack.clone();
-        let m = self.players[self.current].do_move(&mut self.board, human);
+        let m = self.players[self.current].do_move(&mut self.board);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;
@@ -70,7 +70,7 @@ impl Game {
         }
 
         end *= 2;
-        let p = self.get_player(n);
+        let p = &mut self.players[n as usize];
         p.score += end as u32;
 
         self.finished = true;
@@ -94,8 +94,8 @@ impl Game {
         &self.players[self.current]
     }
 
-    pub fn get_player(&mut self, n: i32) -> &mut Player {
-        &mut self.players[n as usize]
+    pub fn get_player(&self, n: i32) -> &Player {
+        &self.players[n as usize]
     }
 
     pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>) {
