@@ -15,6 +15,7 @@ mod board;
 mod dictionary;
 mod game;
 mod player;
+mod simulate;
 mod text;
 mod utils;
 mod viz;
@@ -25,7 +26,9 @@ fn main() {
 
     if let Some(ref matches) = matches.subcommand_matches("text") {
         text::main(matches.value_of("number").unwrap().parse::<u32>().unwrap());
-    } else {
+    } else if let Some(ref _matches) = matches.subcommand_matches("viz") {
         viz::main();
+    } else if let Some(ref matches) = matches.subcommand_matches("simulate") {
+        simulate::main(matches.value_of("rack").unwrap().to_string());
     }
 }

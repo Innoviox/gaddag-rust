@@ -75,4 +75,9 @@ impl Player {
         }
         0.0
     }
+
+    pub fn set_rack(&mut self, rack: Vec<char>) {
+        // for debugging
+        self.rack = rack;
+    }
 }

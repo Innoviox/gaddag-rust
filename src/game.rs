@@ -42,6 +42,11 @@ impl Game {
         }
     }
 
+    pub fn set_board(&mut self, board: [[char; 15]; 15]) {
+        // for simulation
+        self.board.set_board(board);
+    }
+
     pub fn do_move(&mut self) -> (Move, String, String, usize) {
         let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board);
@@ -96,6 +101,10 @@ impl Game {
 
     pub fn get_player(&self, n: i32) -> &Player {
         &self.players[n as usize]
+    }
+
+    pub fn get_player_mut(&mut self, n: i32) -> &mut Player {
+        &mut self.players[n as usize]
     }
 
     pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>) {

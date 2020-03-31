@@ -93,10 +93,10 @@ impl Board {
             cross_checks: [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
             affected: vec![],
         };
-        for (di, d) in Direction::iter().enumerate() {
+
+        for di in 0..2 {
             for p in positions().iter() {
-                b.cross_checks[di][p.to_int()] = chars(b.valid_at(*p, *d));
-                // b.cross_checks[di][p.to_int()] = chars([true; 26]);
+                b.cross_checks[di][p.to_int()] = chars([true; 26]);
             }
         }
 
@@ -107,6 +107,19 @@ impl Board {
         //     'I', 'T', 'I', 'D', 'E', 'X', 'O', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
         // ]);
         b
+    }
+
+    pub fn set_board(&mut self, state: [[char; 15]; 15]) {
+        self.state = state;
+        self.update_cross_checks();
+    }
+
+    fn update_cross_checks(&mut self) {
+        for (di, d) in Direction::iter().enumerate() {
+            for p in positions().iter() {
+                self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
+            }
+        }
     }
 
     pub fn reset(&mut self) {

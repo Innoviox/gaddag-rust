@@ -12,3 +12,7 @@ subcommands:
                 default_value: "1"
     - viz:
         args:
+    - simulate:
+        args:
+            - rack:
+                takes_value: true
