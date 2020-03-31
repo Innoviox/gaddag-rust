@@ -93,16 +93,19 @@ impl Board {
             cross_checks: [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
             affected: vec![],
         };
-        for di in 0..2 {
+        for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
-                b.cross_checks[di][p.to_int()] = chars([true; 26]);
+                b.cross_checks[di][p.to_int()] = chars(b.valid_at(*p, *d));
+                // b.cross_checks[di][p.to_int()] = chars([true; 26]);
             }
         }
 
         // for testing exchanges
         // note - at present, game ends 413-506, 9a DISHW.RE
         //        b.bag = Bag::with(&vec!['P', 'F', 'T', 'C', 'Z', 'S', 'D', 'L', 'A', 'N', '?', 'A', 'U', 'E', 'M', 'S', 'R', 'A', 'E', 'I', 'R', 'O', 'E', 'N', 'F', 'O', 'O', 'Y', 'A', 'N', 'I', 'U', 'L', 'M', 'R', 'E', 'B', 'E', 'A', 'U', 'B', 'A', 'T', 'I', 'L', 'W', 'V', 'N', 'E', 'A', 'G', 'T', 'O', 'O', 'E', 'H', 'A', 'K', 'U', 'R', 'D', 'I', 'I', '?', 'D', 'T', 'V', 'Y', 'N', 'I', 'E', 'Q', 'J', 'S', 'D', 'L', 'E', 'R', 'O', 'E', 'X', 'A', 'I', 'H', 'W', 'O', 'I', 'C', 'P', 'T', 'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E']);
-
+        // b.bag = Bag::with(&vec![
+        //     'I', 'T', 'I', 'D', 'E', 'X', 'O', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+        // ]);
         b
     }
 
