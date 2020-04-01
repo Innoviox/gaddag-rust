@@ -5,13 +5,13 @@ use std::collections::HashMap;
 use std::convert::TryInto;
 
 use gdk::RGBA;
+use glib::Type;
 use gtk::prelude::*;
 use gtk::{
-    Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ScrolledWindow, StateFlags,
-    Viewport, Notebook, TreeView, TreeViewColumn, ListStore
+    Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ListStore, Notebook,
+    ScrolledWindow, StateFlags, TreeView, TreeViewColumn, Viewport,
 };
 use gtk::{Inhibit, Window, WindowType};
-use glib::Type;
 use relm::{timeout, Relm, Update, Widget};
 use relm_derive::Msg;
 use std::cmp::max;
@@ -37,6 +37,8 @@ pub enum Msg {
     Click((f64, f64)),
     Type(u32),
     SetMove(usize),
+    GenChoices,
+    NewGame
 }
 
 struct ClickData {
@@ -110,7 +112,7 @@ struct Win {
     relm: Relm<Win>,
     click_data: ClickData,
     out: String, // gcg output
-    out_nice: String,
+    out_nice: String
 }
 
 impl Win {
@@ -416,6 +418,8 @@ impl Update for Win {
                     }
                 }
             }
+            Msg::GenChoices => println!("generating choices"),
+            Msg::NewGame => println!("new game"),
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -441,7 +445,7 @@ fn append_column(
     column.pack_start(&renderer, true);
     column.add_attribute(&renderer, "text", id);
     column.set_clickable(true);
-//    column.set_sort_column_id(id); // todo
+    //    column.set_sort_column_id(id); // todo
     column.set_resizable(true);
     treeview.append_column(&column);
     v.push(column);
@@ -612,24 +616,22 @@ impl Widget for Win {
         moves_container.add(&moves);
 
         let tree_model = ListStore::new(&[
-            Type::String,  // Move
-            Type::String,  // Leave
-            Type::U8,      // Score
-            Type::F32,   // Eval
+            Type::String, // Pos
+            Type::String, // Move
+            Type::String, // Leave
+            Type::U8,     // Score
+            Type::F32,    // Eval
         ]);
         let options_container = TreeView::new_with_model(&tree_model);
         let mut columns: Vec<TreeViewColumn> = Vec::new();
+        append_column("Pos", &mut columns, &options_container, None);
         append_column("Move", &mut columns, &options_container, None);
         append_column("Leave", &mut columns, &options_container, None);
         append_column("Score", &mut columns, &options_container, None);
         append_column("Eval", &mut columns, &options_container, None);
 
         // testing insertion
-        tree_model.insert_with_values(
-            None,
-            &[0, 1, 2, 3],
-            &[&"Test", &"Test 2", &12, &12.6],
-        );
+        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
 
         let side_box = Notebook::new();
         side_box.add(&moves_container);
@@ -669,7 +671,7 @@ impl Widget for Win {
                 .dynamic_cast::<Notebook>()
                 .ok()
                 .unwrap()
-                .get_children()[0]/*
+                .get_children()[0] /*
                 .iter()
                 .filter(|x| x.is::<ScrolledWindow>())
                 .nth(0)
@@ -809,6 +811,22 @@ impl Widget for Win {
             Inhibit(false)
         });
 
+        let button_box = Grid::new();
+        button_box.set_hexpand(true); // todo make fn to generate grid
+        button_box.set_vexpand(true);
+        button_box.set_row_homogeneous(true);
+        button_box.set_column_homogeneous(true);
+
+        let choices_btn = Button::new();
+        choices_btn.add(&Label::new(Some("Generate Choices")));
+        connect!(relm, choices_btn, connect_clicked(_), Msg::GenChoices);
+        button_box.attach(&choices_btn, 0, 0, 1, 1);
+
+        let game_btn = Button::new();
+        game_btn.add(&Label::new(Some("New Game")));
+        connect!(relm, game_btn, connect_clicked(_), Msg::NewGame);
+        button_box.attach(&game_btn, 1, 0, 1, 1);
+
         let grid = Grid::new();
         grid.set_hexpand(true);
         grid.set_vexpand(true);
@@ -817,10 +835,12 @@ impl Widget for Win {
         grid.set_halign(Align::Fill);
         grid.set_valign(Align::Fill);
 
-        grid.attach(&event_box, 0, 0, 13, 15);
-        grid.attach(&side_box, 13, 0, 10, 10);
-        grid.attach(&rack, 4, 16, 7, 1);
-        grid.attach(&graph, 13, 10, 10, 5);
+        // attach: left, top, width, height
+        grid.attach(&button_box, 0, 0, 23, 1);
+        grid.attach(&event_box, 0, 1, 13, 15);
+        grid.attach(&side_box, 13, 1, 10, 10);
+        grid.attach(&rack, 4, 17, 7, 1);
+        grid.attach(&graph, 13, 11, 10, 5);
 
         let out = format!(
             "#character-encoding UTF-8\n#player1 {n1} {n1}\n#player2 {n2} {n2}\n",
@@ -863,7 +883,7 @@ impl Widget for Win {
             relm: relm.clone(),
             click_data: ClickData::new(),
             out,
-            out_nice,
+            out_nice
         };
 
         win.setup_board(true);

@@ -204,7 +204,7 @@ pub struct Move {
 }
 
 impl Move {
-    fn _cmp(x: &&Move, y: &&Move, w1: &f32, w2: &f32) -> Ordering {
+    fn _cmp(x: &Move, y: &Move, w1: &f32, w2: &f32) -> Ordering {
         let v1 = w1 * (x.score as f32) + w2 * x.evaluation;
         let v2 = w1 * (y.score as f32) + w2 * y.evaluation;
 
@@ -217,12 +217,12 @@ impl Move {
         }
     }
 
-    pub fn cmp(x: &&Move, y: &&Move) -> Ordering {
+    pub fn cmp(x: &Move, y: &Move) -> Ordering {
         Move::_cmp(x, y, &1.0, &1.0)
     }
 
-    pub fn cmp_with(a: f32, b: f32) -> impl Fn(&&Move, &&Move) -> Ordering {
-        move |x: &&Move, y: &&Move| Move::_cmp(x, y, &a, &b)
+    pub fn cmp_with(a: f32, b: f32) -> impl Fn(&Move, &Move) -> Ordering {
+        move |x: &Move, y: &Move| Move::_cmp(x, y, &a, &b)
     }
 }
 

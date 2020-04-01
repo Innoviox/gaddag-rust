@@ -9,14 +9,22 @@ pub struct Player {
 }
 
 impl Player {
+    pub fn gen_moves(&mut self, board: &mut Board) -> Vec<Move> {
+        let mut gen = board.gen_all_moves(&self.rack);
+        let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
+        gen.sort_by(Move::cmp_with(1.0, eval_val));
+        gen.reverse();
+
+        gen
+    }
+
     /*
     Returns: the move object, move as a human-readable string, move as a gcg string, number of moves considered
     */
     pub fn do_move(&mut self, board: &mut Board) -> (Move, String, String, usize) {
-        let gen = board.gen_all_moves(&self.rack);
-        let len = gen.len();
-        let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
-        let best_m = gen.iter().max_by(Move::cmp_with(1.0, eval_val));
+        let moves = self.gen_moves(board);
+        let len = moves.len();
+        let best_m = moves.iter().nth(0);
 
         if let Some(m) = best_m {
             self.score += m.score as u32;
