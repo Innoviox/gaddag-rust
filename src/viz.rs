@@ -240,6 +240,13 @@ impl Win {
         }
         self.update_rack_for(&m);
     }
+
+    fn set_state(&mut self, n: usize) {
+        let (m, r) = self.model.set_state(n);
+        self.setup_board(false);
+        self._update_rack(&r.clone());
+        self._handle(&m);
+    }
 }
 
 impl Update for Win {
@@ -355,10 +362,7 @@ impl Update for Win {
             }
             Msg::SetMove(n) => {
                 if self.model.is_over() {
-                    let (m, r) = self.model.set_state(n);
-                    self.setup_board(false);
-                    self._update_rack(&r.clone());
-                    self._handle(&m);
+                    self.set_state(n);
                 }
             }
             Msg::Click((x, y)) => {
@@ -419,19 +423,29 @@ impl Update for Win {
                 }
             }
             Msg::GenChoices => {
-                let p = self.model.current_player().clone();
-                let rack = p.rack.clone();
-                let score = p.score as i32;
-                let n = p.name.clone();
+                if self.model.is_over() {
+                    println!("{} {}", self.model.state, self.model.state - 1);
+                    self.model.set_state(self.model.state - 1);
+                }
+
+                let mut p = self.model.current_player().clone();
+                p.set_rack(self.model.get_rack(self.model.state));
+                println!("{:?}", p.rack);
+
+                let board = self.model.get_board_mut();
+                println!("{}", board);
+                let (moves, eval_val) = p.gen_moves(board);
 
                 self.tree_model.clear();
 
-                let board = self.model.get_board_mut();
-                let (moves, eval_val) = p.gen_moves(board);
-                for m in moves.iter().take(50) {
-                    let pos =
-                    let leave = p.leave()
-                    tree_model.insert_with_values(None, &[0, 1, 2, 3, 4], )
+                for m in moves.iter().take(10) {
+                    let pos = m.position.to_str(m.direction);
+                    let leave: String = p.leave(board.reals(m)).iter().collect();
+                    self.tree_model.insert_with_values(None, &[0, 1, 2, 3, 4], &[&pos, &board.format(&m, true), &leave, &m.score, &m.eval(1.0, eval_val)]);
+                }
+
+                if self.model.is_over() {
+                    self.model.set_state(self.model.state);
                 }
             }
             Msg::NewGame => println!("new game"),

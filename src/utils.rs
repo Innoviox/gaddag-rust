@@ -204,7 +204,7 @@ pub struct Move {
 }
 
 impl Move {
-    pub fn eval(&self, w1: &f32, w2: &f32) -> f32 {
+    pub fn eval(&self, w1: f32, w2: f32) -> f32 {
         w1 * (self.score as f32) + w2 * self.evaluation
     }
 

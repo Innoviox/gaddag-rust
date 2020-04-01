@@ -114,7 +114,13 @@ impl Game {
         let (s, m, r) = &self.states[to];
         self.board.set_state(s);
         self.state = to;
+        self.current = to % 2;
+
         (Move::of(m), r.clone())
+    }
+
+    pub fn get_rack(&self, n: usize) -> Vec<char> {
+        self.states[n].2.clone()
     }
 
     pub fn get_last_state(&self) -> S {

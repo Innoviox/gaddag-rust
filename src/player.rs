@@ -106,9 +106,9 @@ impl Player {
 
     pub fn clone(&self) -> Player {
         Player {
-            rack: rack.clone(),
-            name: name.clone(),
-            score
+            rack: self.rack.clone(),
+            name: self.name.clone(),
+            score: self.score
         }
     }
 }
