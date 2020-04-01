@@ -423,17 +423,19 @@ impl Update for Win {
                 }
             }
             Msg::GenChoices => {
-                if self.model.is_over() {
-                    println!("{} {}", self.model.state, self.model.state - 1);
-                    self.model.set_state(self.model.state - 1);
-                }
+                let shift = self.model.is_over();
 
                 let mut p = self.model.current_player().clone();
-                p.set_rack(self.model.get_rack(self.model.state));
-                println!("{:?}", p.rack);
+
+                if shift {
+                    self.model.set_state(self.model.state - 1);
+                    p.set_rack(self.model.get_rack(self.model.state + 1));
+                } else {
+                    p.set_rack(self.model.get_rack(self.model.state));
+                }
 
                 let board = self.model.get_board_mut();
-                println!("{}", board);
+                board.update_cross_checks();
                 let (moves, eval_val) = p.gen_moves(board);
 
                 self.tree_model.clear();
@@ -444,8 +446,8 @@ impl Update for Win {
                     self.tree_model.insert_with_values(None, &[0, 1, 2, 3, 4], &[&pos, &board.format(&m, true), &leave, &m.score, &m.eval(1.0, eval_val)]);
                 }
 
-                if self.model.is_over() {
-                    self.model.set_state(self.model.state);
+                if shift {
+                    self.model.set_state(self.model.state + 1);
                 }
             }
             Msg::NewGame => println!("new game"),

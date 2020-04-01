@@ -118,7 +118,7 @@ impl Board {
         self.update_cross_checks();
     }
 
-    fn update_cross_checks(&mut self) {
+    pub fn update_cross_checks(&mut self) {
         for (di, d) in Direction::iter().enumerate() {
             for p in positions().iter() {
                 self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
