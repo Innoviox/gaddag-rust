@@ -9,6 +9,9 @@ pub struct Player {
 }
 
 impl Player {
+    /*
+    Returns: the move object, move as a human-readable string, move as a gcg string, number of moves considered
+    */
     pub fn do_move(&mut self, board: &mut Board) -> (Move, String, String, usize) {
         let gen = board.gen_all_moves(&self.rack);
         let len = gen.len();

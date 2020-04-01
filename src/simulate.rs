@@ -8,12 +8,15 @@ pub fn main(rack: String) {
     while !done {
         println!("input ready");
         let mut copy_state = STATE.clone();
+        let mut bag: Vec<char> = vec![];
         for i in 0..15 {
             let mut row = String::new();
             std::io::stdin().read_line(&mut row).unwrap();
             for (idx, c) in row.trim().chars().enumerate() {
                 if idx < 15 && c != '.' {
-                    copy_state[i][idx] = c.to_uppercase().nth(0).unwrap();
+                    let c = c.to_uppercase().nth(0).unwrap();
+                    copy_state[i][idx] = c;
+                    bag.push(c);
                 }
             }
         }
@@ -45,15 +48,51 @@ pub fn main(rack: String) {
 ...............
 ...............
 ...............
+...q...........
+...it........v.
+....roam....fit
+....a.toy..tear
+....n..halter.i
+.jouk.cow..n.lo
+.i..i.....ut.ax
+.v..n.....peh.i
+fe..g.gan..dead
+ed...zap....wee
+y.....bongoes.s
+*/
+
+/*
 ...............
-.............v.
-.............it
-......toy..tear
-.......halter.i
-......cow..n..o
-...........t..x
-...........eh.i
-......gan..de.d
-.....zap....w.e
-......bongoes..
+............B..
+............R..
+...........GI..
+..........MAN..
+..........OI...
+..........AN...
+......GOX..LIEU
+.......RITZY...
+...QUIRE..E....
+..HIN.....D..C.
+T.ES......SHARK
+YAW..........AE
+R............NE
+O............EF
+*/
+
+/*
+...............
+...............
+...............
+...............
+...............
+.........L.....
+.......FOALS...
+......WAWS.ET..
+......H....AH..
+.....BI....MA..
+.....ET....IT..
+...DAYS....N...
+...........G...
+...............
+...............
 */

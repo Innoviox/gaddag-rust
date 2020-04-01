@@ -341,13 +341,13 @@ impl Update for Win {
                 if write {
                     self.out += &(gcg_text + "\n");
                     self.out_nice += &(text + "\n");
-                    write_to_file("out.gcg", self.out.clone());
-                    write_to_file("out.nice", self.out_nice.clone());
+                    write_to_file("text/out.gcg", self.out.clone());
+                    write_to_file("text/out.nice", self.out_nice.clone());
                 }
 
                 self.window.show_all();
                 self.graph.queue_draw();
-                timeout(self.relm.stream(), 1, || Msg::Tick);
+                // timeout(self.relm.stream(), 1, || Msg::Tick);
             }
             Msg::SetMove(n) => {
                 if self.model.is_over() {
