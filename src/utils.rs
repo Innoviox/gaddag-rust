@@ -204,6 +204,10 @@ pub struct Move {
 }
 
 impl Move {
+    pub fn eval(&self, w1: &f32, w2: &f32) -> f32 {
+        w1 * (self.score as f32) + w2 * self.evaluation
+    }
+
     fn _cmp(x: &Move, y: &Move, w1: &f32, w2: &f32) -> Ordering {
         let v1 = w1 * (x.score as f32) + w2 * x.evaluation;
         let v2 = w1 * (y.score as f32) + w2 * y.evaluation;

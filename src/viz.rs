@@ -418,7 +418,22 @@ impl Update for Win {
                     }
                 }
             }
-            Msg::GenChoices => println!("generating choices"),
+            Msg::GenChoices => {
+                let p = self.model.current_player().clone();
+                let rack = p.rack.clone();
+                let score = p.score as i32;
+                let n = p.name.clone();
+
+                self.tree_model.clear();
+
+                let board = self.model.get_board_mut();
+                let (moves, eval_val) = p.gen_moves(board);
+                for m in moves.iter().take(50) {
+                    let pos =
+                    let leave = p.leave()
+                    tree_model.insert_with_values(None, &[0, 1, 2, 3, 4], )
+                }
+            }
             Msg::NewGame => println!("new game"),
             Msg::Quit => gtk::main_quit(),
         }
@@ -631,7 +646,7 @@ impl Widget for Win {
         append_column("Eval", &mut columns, &options_container, None);
 
         // testing insertion
-        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
+//        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
 
         let side_box = Notebook::new();
         side_box.add(&moves_container);

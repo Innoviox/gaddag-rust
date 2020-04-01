@@ -9,20 +9,20 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn gen_moves(&mut self, board: &mut Board) -> Vec<Move> {
+    pub fn gen_moves(&self, board: &mut Board) -> (Vec<Move>, f32) {
         let mut gen = board.gen_all_moves(&self.rack);
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
         gen.sort_by(Move::cmp_with(1.0, eval_val));
         gen.reverse();
 
-        gen
+        (gen, eval_val)
     }
 
     /*
     Returns: the move object, move as a human-readable string, move as a gcg string, number of moves considered
     */
     pub fn do_move(&mut self, board: &mut Board) -> (Move, String, String, usize) {
-        let moves = self.gen_moves(board);
+        let moves = self.gen_moves(board).0;
         let len = moves.len();
         let best_m = moves.iter().nth(0);
 
@@ -45,7 +45,7 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), s1, s2, len);
+                    return (Move::of(m), s1.clone(), s2.clone(), len);
                 }
                 Type::Exch => {
                     let word = m.complement(&self.rack);
@@ -90,5 +90,25 @@ impl Player {
     pub fn set_rack(&mut self, rack: Vec<char>) {
         // for debugging
         self.rack = rack;
+    }
+
+    pub fn leave(&self, chars: Vec<char>) -> Vec<char> { // pass call of board.reals(&m)
+        let mut rack = self.rack.clone();
+        for c in chars {
+            if rack.contains(&c) {
+                rack._remove_item(c);
+            } else {
+                rack._remove_item('?');
+            }
+        }
+        rack
+    }
+
+    pub fn clone(&self) -> Player {
+        Player {
+            rack: rack.clone(),
+            name: name.clone(),
+            score
+        }
     }
 }

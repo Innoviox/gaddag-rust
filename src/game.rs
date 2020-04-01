@@ -91,6 +91,9 @@ impl Game {
     pub fn get_board(&self) -> &Board {
         &self.board
     }
+    pub fn get_board_mut(&mut self) -> &mut Board {
+        &mut self.board
+    }
     pub fn get_turn(&self) -> u32 {
         self.turn
     }
