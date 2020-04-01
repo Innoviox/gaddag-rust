@@ -8,9 +8,10 @@ use gdk::RGBA;
 use gtk::prelude::*;
 use gtk::{
     Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ScrolledWindow, StateFlags,
-    Viewport,
+    Viewport, Notebook, TreeView, TreeViewColumn, ListStore
 };
 use gtk::{Inhibit, Window, WindowType};
+use glib::Type;
 use relm::{timeout, Relm, Update, Widget};
 use relm_derive::Msg;
 use std::cmp::max;
@@ -100,6 +101,7 @@ struct Win {
     moves: Grid,
     rack: Grid,
     graph: DrawingArea,
+    tree_model: ListStore,
 
     // internal fields
     last_move: Move,
@@ -347,7 +349,7 @@ impl Update for Win {
 
                 self.window.show_all();
                 self.graph.queue_draw();
-                // timeout(self.relm.stream(), 1, || Msg::Tick);
+                timeout(self.relm.stream(), 1, || Msg::Tick);
             }
             Msg::SetMove(n) => {
                 if self.model.is_over() {
@@ -417,6 +419,34 @@ impl Update for Win {
             Msg::Quit => gtk::main_quit(),
         }
     }
+}
+
+// utility function (modified from gms8994/boincview)
+fn append_column(
+    title: &str,
+    v: &mut Vec<gtk::TreeViewColumn>,
+    treeview: &gtk::TreeView,
+    max_width: Option<i32>,
+) -> i32 {
+    let id = v.len() as i32;
+    let renderer = gtk::CellRendererText::new();
+
+    let column = TreeViewColumn::new();
+    column.set_title(title);
+    if let Some(max_width) = max_width {
+        column.set_max_width(max_width);
+        column.set_expand(true);
+    }
+    column.set_min_width(10);
+    column.pack_start(&renderer, true);
+    column.add_attribute(&renderer, "text", id);
+    column.set_clickable(true);
+//    column.set_sort_column_id(id); // todo
+    column.set_resizable(true);
+    treeview.append_column(&column);
+    v.push(column);
+
+    return id;
 }
 
 impl Widget for Win {
@@ -581,6 +611,32 @@ impl Widget for Win {
         let moves_container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
         moves_container.add(&moves);
 
+        let tree_model = ListStore::new(&[
+            Type::String,  // Move
+            Type::String,  // Leave
+            Type::U8,      // Score
+            Type::F32,   // Eval
+        ]);
+        let options_container = TreeView::new_with_model(&tree_model);
+        let mut columns: Vec<TreeViewColumn> = Vec::new();
+        append_column("Move", &mut columns, &options_container, None);
+        append_column("Leave", &mut columns, &options_container, None);
+        append_column("Score", &mut columns, &options_container, None);
+        append_column("Eval", &mut columns, &options_container, None);
+
+        // testing insertion
+        tree_model.insert_with_values(
+            None,
+            &[0, 1, 2, 3],
+            &[&"Test", &"Test 2", &12, &12.6],
+        );
+
+        let side_box = Notebook::new();
+        side_box.add(&moves_container);
+        side_box.set_tab_label_text(&moves_container, "Moves");
+        side_box.add(&options_container);
+        side_box.set_tab_label_text(&options_container, "Options");
+
         let rack = Grid::new();
         rack.set_hexpand(true); // todo make fn to generate grid
         rack.set_vexpand(true);
@@ -606,9 +662,18 @@ impl Widget for Win {
                 // get moves window
                 .get_children()
                 .iter()
+                .filter(|x| x.is::<Notebook>())
+                .nth(0) // notebook
+                .unwrap()
+                .clone()
+                .dynamic_cast::<Notebook>()
+                .ok()
+                .unwrap()
+                .get_children()[0]/*
+                .iter()
                 .filter(|x| x.is::<ScrolledWindow>())
                 .nth(0)
-                .unwrap()
+                .unwrap()*/
                 .clone()
                 .dynamic_cast::<ScrolledWindow>()
                 .ok()
@@ -753,7 +818,7 @@ impl Widget for Win {
         grid.set_valign(Align::Fill);
 
         grid.attach(&event_box, 0, 0, 13, 15);
-        grid.attach(&moves_container, 13, 0, 10, 10);
+        grid.attach(&side_box, 13, 0, 10, 10);
         grid.attach(&rack, 4, 16, 7, 1);
         grid.attach(&graph, 13, 10, 10, 5);
 
@@ -791,6 +856,7 @@ impl Widget for Win {
             moves,
             rack,
             graph,
+            tree_model,
             last_move: Move::none(),
             colors,
             back_colors,
