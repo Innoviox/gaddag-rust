@@ -334,7 +334,7 @@ impl Update for Win {
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     self.moves.attach(&btn, c, t, 1, 1);
                     write = true;
-                } else if !self.model.finished {
+                } else if !self.model.is_over() {
                     let (end_s, end, n) = self.model.finish();
                     text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
                     gcg_text = format!(
@@ -358,6 +358,7 @@ impl Update for Win {
 
                 self.window.show_all();
                 self.graph.queue_draw();
+
                 timeout(self.relm.stream(), 1, || Msg::Tick);
             }
             Msg::SetMove(n) => {

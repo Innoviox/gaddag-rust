@@ -1,5 +1,6 @@
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
+use crate::bag::Bag;
 use crate::utils::Move;
 
 use array_init::array_init;
@@ -50,8 +51,7 @@ impl Game {
     pub fn do_move(&mut self) -> (Move, String, String, usize) {
         let r = self.current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board);
-        self.states
-            .push((self.board.save_state(), Move::of(&m.0), r));
+        self.states.push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;
         if self.current == 0 {
             self.turn += 1;
@@ -112,6 +112,7 @@ impl Game {
 
     pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>) {
         let (s, m, r) = &self.states[to];
+
         self.board.set_state(s);
         self.state = to;
         self.current = to % 2;
@@ -129,6 +130,7 @@ impl Game {
                 STATE,
                 vec![],
                 [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
+                Bag::default().distribution
             );
         }
 

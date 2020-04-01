@@ -9,7 +9,7 @@ use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::fmt;
 
-pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2]);
+pub type S = ([[char; 15]; 15], Vec<Position>, [[Vec<char>; 225]; 2], Vec<char>);
 
 fn _as(v: usize) -> i32 {
     // made this before i knew about the as keyword whoops
@@ -343,14 +343,16 @@ impl Board {
             self.state.clone(),
             self.blanks.clone(),
             self.cross_checks.clone(),
+            self.bag.distribution.clone()
         )
     }
 
     pub fn set_state(&mut self, state: &S) {
-        let (s, b, c) = state;
+        let (s, blanks, c, bag) = state;
         self.state = (*s).clone();
-        self.blanks = (*b).clone();
+        self.blanks = (*blanks).clone();
         self.cross_checks = (*c).clone();
+        self.bag.distribution = bag.clone();
     }
 }
 

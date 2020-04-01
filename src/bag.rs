@@ -28,7 +28,7 @@ impl Bag {
             ],
             scores: HashMap::new(),
             distribution: Vec::new(),
-            random: true,
+            random: false,
         };
 
         for (i, &c) in bag.alph.iter().enumerate() {
@@ -40,6 +40,8 @@ impl Bag {
                 bag.distribution.push(c);
             }
         }
+
+        bag.distribution.shuffle(&mut rand::thread_rng());
 
         bag
     }
