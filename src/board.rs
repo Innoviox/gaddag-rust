@@ -111,7 +111,7 @@ impl Board {
         // b.bag = Bag::with(&vec![
         //     'I', 'T', 'I', 'D', 'E', 'X', 'O', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
         // ]);
-        b.bag = Bag::with(&"NLHT?YEFTRALEINOISDBOITGMSTTAREGTEVAWIEHSIEUPDBEAIORWMOKRE?IVYAJISZROUARDUPAEOUNLQCNXGOAIOLNEEADNECF".chars().collect());
+        // b.bag = Bag::with(&"NLHT?YEFTRALEINOISDBOITGMSTTAREGTEVAWIEHSIEUPDBEAIORWMOKRE?IVYAJISZROUARDUPAEOUNLQCNXGOAIOLNEEADNECF".chars().collect());
         b
     }
 

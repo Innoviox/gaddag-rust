@@ -28,7 +28,7 @@ impl Bag {
             ],
             scores: HashMap::new(),
             distribution: Vec::new(),
-            random: false,
+            random: true,
         };
 
         for (i, &c) in bag.alph.iter().enumerate() {
