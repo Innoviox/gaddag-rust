@@ -59,7 +59,9 @@ impl Player {
                     let mut nm = Move::of(m);
                     nm.word = word.iter().collect();
 
-                    return (nm, String::new(), String::new(), len);
+                    let w = nm.word.clone();
+
+                    return (nm, w, String::new(), len);
                 }
             }
         }
@@ -92,7 +94,8 @@ impl Player {
         self.rack = rack;
     }
 
-    pub fn leave(&self, chars: Vec<char>) -> Vec<char> { // pass call of board.reals(&m)
+    pub fn leave(&self, chars: Vec<char>) -> Vec<char> {
+        // pass call of board.reals(&m)
         let mut rack = self.rack.clone();
         for c in chars {
             if rack.contains(&c) {
@@ -108,7 +111,7 @@ impl Player {
         Player {
             rack: self.rack.clone(),
             name: self.name.clone(),
-            score: self.score
+            score: self.score,
         }
     }
 }
