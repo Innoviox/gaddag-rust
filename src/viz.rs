@@ -38,7 +38,7 @@ pub enum Msg {
     Type(u32),
     SetMove(usize),
     GenChoices,
-    NewGame
+    NewGame,
 }
 
 struct ClickData {
@@ -112,7 +112,7 @@ struct Win {
     relm: Relm<Win>,
     click_data: ClickData,
     out: String, // gcg output
-    out_nice: String
+    out_nice: String,
 }
 
 impl Win {
@@ -334,7 +334,7 @@ impl Update for Win {
                     connect!(self.relm, btn, connect_clicked(_), Msg::SetMove(n - 1));
                     self.moves.attach(&btn, c, t, 1, 1);
                     write = true;
-                } else if !self.model.is_over() {
+                } else if !self.model.finished {
                     let (end_s, end, n) = self.model.finish();
                     text = format!("2*({}) +{}/{}", end_s, end, self.model.get_player(n).score);
                     gcg_text = format!(
@@ -444,7 +444,17 @@ impl Update for Win {
                 for m in moves.iter().take(10) {
                     let pos = m.position.to_str(m.direction);
                     let leave: String = p.leave(board.reals(m)).iter().collect();
-                    self.tree_model.insert_with_values(None, &[0, 1, 2, 3, 4], &[&pos, &board.format(&m, true), &leave, &m.score, &m.eval(1.0, eval_val)]);
+                    self.tree_model.insert_with_values(
+                        None,
+                        &[0, 1, 2, 3, 4],
+                        &[
+                            &pos,
+                            &board.format(&m, true),
+                            &leave,
+                            &m.score,
+                            &m.eval(1.0, eval_val),
+                        ],
+                    );
                 }
 
                 if shift {
@@ -663,7 +673,7 @@ impl Widget for Win {
         append_column("Eval", &mut columns, &options_container, None);
 
         // testing insertion
-//        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
+        //        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
 
         let side_box = Notebook::new();
         side_box.add(&moves_container);
@@ -915,7 +925,7 @@ impl Widget for Win {
             relm: relm.clone(),
             click_data: ClickData::new(),
             out,
-            out_nice
+            out_nice,
         };
 
         win.setup_board(true);
