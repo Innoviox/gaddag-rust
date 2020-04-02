@@ -352,8 +352,8 @@ impl Update for Win {
                 if write {
                     self.out += &(gcg_text + "\n");
                     self.out_nice += &(text + "\n");
-                    write_to_file("text/out.gcg", self.out.clone());
-                    write_to_file("text/out.nice", self.out_nice.clone());
+                    write_to_file("out.gcg", self.out.clone());
+                    write_to_file("out.nice", self.out_nice.clone());
                 }
 
                 self.window.show_all();
@@ -428,7 +428,10 @@ impl Update for Win {
 
                 let mut p = self.model.current_player().clone();
 
-                if shift {
+                if self.model.state == 0 {
+                    self.model.get_board_mut().reset();
+                    p.set_rack(self.model.get_rack(0));
+                } else if shift {
                     self.model.set_state(self.model.state - 1);
                     p.set_rack(self.model.get_rack(self.model.state + 1));
                 } else {
