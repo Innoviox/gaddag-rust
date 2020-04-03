@@ -514,7 +514,12 @@ impl Update for Win {
                     } else if self.model.state == 0 {
                         self.model.get_board_mut().reset();
                     } else if shift {
-                        self.model.set_state(self.model.state - 1);
+                        if self.model.state == 1 {
+                            self.model.set_state(self.model.state - 1);
+                            self.model.get_board_mut().reset();
+                        } else {
+                            self.model.set_state(self.model.state - 1);
+                        }
                     }
 
                     let m = &Move {
