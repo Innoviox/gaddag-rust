@@ -134,19 +134,37 @@ O............EF
 */
 
 /*
-KAF.BOOMLET
-.RELAY...N
-.........G
-..DEEM...O
+KAF.BOOMLET...J
+.RELAY...N.Q..U
+..N......G.U..T
+..DEEM..RONIONS
 ....WAITERED
 ....EX...G
-.........E
+......PLIED
 ...CAHOOTS
 ....WAP
-..TING
+.STING
+.HONS.....FAB
+.I.....CAGEY
+.V.....E..REZ
+RADIATOR
+.......T
+*/
+
+/*
 
 
 
+
+
+.........V
+........PI
+...CONKERS
+...I..ANY
+...V.LEG
+..TE
+..IT
+..C
 
 
 */

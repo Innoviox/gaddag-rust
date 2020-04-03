@@ -1,6 +1,6 @@
 use crate::board::STATE;
 use crate::game::Game;
-use crate::utils::{to_word, write_to_file, Direction, Move, Position, ALPH};
+use crate::utils::{to_word, write_to_file, Direction, Move, Position, Type as MoveType, ALPH};
 use std::collections::HashMap;
 use std::convert::TryInto;
 
@@ -477,8 +477,46 @@ impl Update for Win {
             Msg::ItemSelect => {
                 let selection = self.options_container.get_selection();
                 if let Some((list_model, iter)) = selection.get_selected() {
-                    // println!("{} {:?}", list_model, iter);
-                    // let
+                    let index = (list_model
+                        .get_value(&iter, 0)
+                        .get::<u32>()
+                        .ok()
+                        .unwrap()
+                        .unwrap()
+                        - 1) as usize;
+                    let (position, direction) = self.moves_generated[index];
+
+                    let word = list_model
+                        .get_value(&iter, 2)
+                        .get::<String>()
+                        .ok()
+                        .unwrap()
+                        .unwrap()
+                        .replace("(", "")
+                        .replace(")", "");
+                    let score = list_model
+                        .get_value(&iter, 4)
+                        .get::<u8>()
+                        .ok()
+                        .unwrap()
+                        .unwrap() as i32;
+                    let evaluation = list_model
+                        .get_value(&iter, 5)
+                        .get::<f32>()
+                        .ok()
+                        .unwrap()
+                        .unwrap();
+
+                    self.model.get_board_mut().place_move(&Move {
+                        word,
+                        position,
+                        direction,
+                        score,
+                        evaluation,
+                        typ: MoveType::Play,
+                    });
+
+                    self.setup_board(false);
                 }
             }
             Msg::Quit => gtk::main_quit(),
