@@ -115,7 +115,7 @@ struct Win {
     click_data: ClickData,
     out: String, // gcg output
     out_nice: String,
-    moves_generated: Vec<Position>,
+    moves_generated: Vec<(Position, Direction)>,
 }
 
 impl Win {
@@ -452,7 +452,7 @@ impl Update for Win {
                 self.tree_model.clear();
                 self.moves_generated = vec![];
                 for (i, m) in moves.iter().take(10).enumerate() {
-                    self.moves_generated.push(m.position);
+                    self.moves_generated.push((m.position, m.direction));
                     let pos = m.position.to_str(m.direction);
                     let leave: String = p.leave(board.reals(m)).iter().collect();
                     self.tree_model.insert_with_values(
