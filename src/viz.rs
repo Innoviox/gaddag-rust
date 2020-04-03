@@ -248,6 +248,7 @@ impl Win {
 
     fn set_state(&mut self, n: usize) {
         let (m, r) = self.model.set_state(n);
+
         self.setup_board(false);
         self._update_rack(&r.clone());
         self._handle(&m);
@@ -433,13 +434,14 @@ impl Update for Win {
             }
             Msg::GenChoices => {
                 let shift = self.model.is_over();
-
+                let mut zero = false;
                 let mut p = self.model.current_player().clone();
 
                 if self.model.states() == 0 {
                 } else if self.model.state == 0 {
                     self.model.get_board_mut().reset();
                     p.set_rack(self.model.get_rack(0));
+                    zero = true;
                 } else if shift {
                     self.model.set_state(self.model.state - 1);
                     p.set_rack(self.model.get_rack(self.model.state + 1));
@@ -471,7 +473,7 @@ impl Update for Win {
                     );
                 }
 
-                if shift {
+                if shift && !zero {
                     self.model.set_state(self.model.state + 1);
                 }
             }
@@ -510,16 +512,13 @@ impl Update for Win {
                         .unwrap();
 
                     let shift = self.model.is_over();
+                    let mut zero = false;
                     if self.model.states() == 0 {
                     } else if self.model.state == 0 {
                         self.model.get_board_mut().reset();
+                        zero = true;
                     } else if shift {
-                        if self.model.state == 1 {
-                            self.model.set_state(self.model.state - 1);
-                            self.model.get_board_mut().reset();
-                        } else {
-                            self.model.set_state(self.model.state - 1);
-                        }
+                        self.model.set_state(self.model.state - 1);
                     }
 
                     let m = &Move {
@@ -535,7 +534,7 @@ impl Update for Win {
                     self.setup_board(false);
                     self._handle(m);
 
-                    if shift {
+                    if shift && !zero {
                         self.model.set_state(self.model.state + 1);
                     }
                 }
