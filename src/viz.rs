@@ -184,7 +184,9 @@ impl Win {
             }
         }
         self.window.show_all();
-        self.update(Msg::Tick);
+        if (first) {
+            self.update(Msg::Tick);
+        }
     }
 
     fn _update_rack(&mut self, r: &Vec<char>) {
@@ -507,6 +509,13 @@ impl Update for Win {
                         .unwrap()
                         .unwrap();
 
+                    let shift = self.model.is_over();
+                    if self.model.states() == 0 {
+                    } else if self.model.state == 0 {
+                        self.model.get_board_mut().reset();
+                    } else if shift {
+                        self.model.set_state(self.model.state - 1);
+                    }
                     self.model.get_board_mut().place_move(&Move {
                         word,
                         position,
@@ -517,6 +526,10 @@ impl Update for Win {
                     });
 
                     self.setup_board(false);
+
+                    if shift {
+                        self.model.set_state(self.model.state + 1);
+                    }
                 }
             }
             Msg::Quit => gtk::main_quit(),
