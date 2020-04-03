@@ -184,7 +184,7 @@ impl Win {
             }
         }
         self.window.show_all();
-        if (first) {
+        if first {
             self.update(Msg::Tick);
         }
     }
@@ -516,16 +516,19 @@ impl Update for Win {
                     } else if shift {
                         self.model.set_state(self.model.state - 1);
                     }
-                    self.model.get_board_mut().place_move(&Move {
+
+                    let m = &Move {
                         word,
                         position,
                         direction,
                         score,
                         evaluation,
                         typ: MoveType::Play,
-                    });
+                    };
+                    self.model.get_board_mut().place_move(m);
 
                     self.setup_board(false);
+                    self._handle(m);
 
                     if shift {
                         self.model.set_state(self.model.state + 1);
