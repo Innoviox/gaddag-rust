@@ -151,4 +151,8 @@ impl Game {
         self.states = Vec::new();
         self.state = 0;
     }
+
+    pub fn states(&self) -> usize {
+        self.states.len()
+    }
 }

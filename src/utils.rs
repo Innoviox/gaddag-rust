@@ -282,6 +282,16 @@ impl Move {
     }
 }
 
+impl PartialEq for Move {
+    fn eq(&self, other: &Self) -> bool {
+        self.word == other.word
+            && self.position == other.position
+            && self.direction == other.direction
+            && self.score == other.score
+            && self.evaluation == other.evaluation
+    }
+}
+
 impl Iterator for IterMove {
     type Item = (Position, char);
 

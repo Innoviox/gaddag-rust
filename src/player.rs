@@ -13,6 +13,7 @@ impl Player {
         let mut gen = board.gen_all_moves(&self.rack);
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
         gen.sort_by(Move::cmp_with(1.0, eval_val));
+        gen.dedup();
         gen.reverse();
 
         (gen, eval_val)

@@ -153,7 +153,7 @@ impl Board {
         return !"#^+-*.".contains(self.at_position(p));
     }
 
-    fn set(&mut self, p: Position, c: char) {
+    pub fn set(&mut self, p: Position, c: char) {
         self.state[p.row][p.col] = c;
     }
 

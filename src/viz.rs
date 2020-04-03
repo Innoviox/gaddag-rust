@@ -272,6 +272,7 @@ impl Update for Win {
                 let mut text = String::new();
                 let mut gcg_text = String::new();
                 let mut write = false;
+                // let play = false;
                 if !self.model.is_over() {
                     self.update_rack();
                     // why do i have to do this??? why cant i do
@@ -410,6 +411,8 @@ impl Update for Win {
                         "black", c
                     ));
 
+                    self.model.get_board_mut().set(old, c);
+
                     self.click_data.push(c);
 
                     if self.click_data.tick() {
@@ -428,7 +431,8 @@ impl Update for Win {
 
                 let mut p = self.model.current_player().clone();
 
-                if self.model.state == 0 {
+                if self.model.states() == 0 {
+                } else if self.model.state == 0 {
                     self.model.get_board_mut().reset();
                     p.set_rack(self.model.get_rack(0));
                 } else if shift {
@@ -668,6 +672,7 @@ impl Widget for Win {
             Type::F32,    // Eval
         ]);
         let options_container = TreeView::new_with_model(&tree_model);
+        options_container.get_style_context().add_class("monospace");
         let mut columns: Vec<TreeViewColumn> = Vec::new();
         append_column("Pos", &mut columns, &options_container, None);
         append_column("Move", &mut columns, &options_container, None);
