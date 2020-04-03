@@ -106,6 +106,7 @@ struct Win {
     graph: DrawingArea,
     options_container: TreeView,
     tree_model: ListStore,
+    side_box: Notebook,
 
     // internal fields
     last_move: Move,
@@ -435,6 +436,8 @@ impl Update for Win {
                 }
             }
             Msg::GenChoices => {
+                self.side_box.set_current_page(Some(1));
+
                 let shift = self.model.is_over();
                 let mut zero = false;
                 let mut p = self.model.current_player().clone();
@@ -1011,6 +1014,7 @@ impl Widget for Win {
             graph,
             options_container,
             tree_model,
+            side_box,
             last_move: Move::none(),
             colors,
             back_colors,
