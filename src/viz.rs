@@ -39,6 +39,7 @@ pub enum Msg {
     SetMove(usize),
     GenChoices,
     NewGame,
+    ItemSelect,
 }
 
 struct ClickData {
@@ -103,6 +104,7 @@ struct Win {
     moves: Grid,
     rack: Grid,
     graph: DrawingArea,
+    options_container: TreeView,
     tree_model: ListStore,
 
     // internal fields
@@ -113,6 +115,7 @@ struct Win {
     click_data: ClickData,
     out: String, // gcg output
     out_nice: String,
+    moves_generated: Vec<Position>,
 }
 
 impl Win {
@@ -447,14 +450,16 @@ impl Update for Win {
                 let (moves, eval_val) = p.gen_moves(board);
 
                 self.tree_model.clear();
-
-                for m in moves.iter().take(10) {
+                self.moves_generated = vec![];
+                for (i, m) in moves.iter().take(10).enumerate() {
+                    self.moves_generated.push(m.position);
                     let pos = m.position.to_str(m.direction);
                     let leave: String = p.leave(board.reals(m)).iter().collect();
                     self.tree_model.insert_with_values(
                         None,
-                        &[0, 1, 2, 3, 4],
+                        &[0, 1, 2, 3, 4, 5],
                         &[
+                            &((i + 1) as u32),
                             &pos,
                             &board.format(&m, true),
                             &leave,
@@ -469,6 +474,13 @@ impl Update for Win {
                 }
             }
             Msg::NewGame => println!("new game"),
+            Msg::ItemSelect => {
+                let selection = self.options_container.get_selection();
+                if let Some((list_model, iter)) = selection.get_selected() {
+                    // println!("{} {:?}", list_model, iter);
+                    // let
+                }
+            }
             Msg::Quit => gtk::main_quit(),
         }
     }
@@ -665,20 +677,31 @@ impl Widget for Win {
         moves_container.add(&moves);
 
         let tree_model = ListStore::new(&[
+            Type::U32,    // Index
             Type::String, // Pos
             Type::String, // Move
             Type::String, // Leave
             Type::U8,     // Score
             Type::F32,    // Eval
         ]);
+
         let options_container = TreeView::new_with_model(&tree_model);
         options_container.get_style_context().add_class("monospace");
+
         let mut columns: Vec<TreeViewColumn> = Vec::new();
+        append_column("#", &mut columns, &options_container, None);
         append_column("Pos", &mut columns, &options_container, None);
         append_column("Move", &mut columns, &options_container, None);
         append_column("Leave", &mut columns, &options_container, None);
         append_column("Score", &mut columns, &options_container, None);
         append_column("Eval", &mut columns, &options_container, None);
+
+        connect!(
+            relm,
+            options_container,
+            connect_cursor_changed(_),
+            Msg::ItemSelect
+        );
 
         // testing insertion
         //        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
@@ -926,6 +949,7 @@ impl Widget for Win {
             moves,
             rack,
             graph,
+            options_container,
             tree_model,
             last_move: Move::none(),
             colors,
@@ -934,6 +958,7 @@ impl Widget for Win {
             click_data: ClickData::new(),
             out,
             out_nice,
+            moves_generated: vec![],
         };
 
         win.setup_board(true);
