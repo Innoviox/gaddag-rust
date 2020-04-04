@@ -9,10 +9,10 @@ use glib::Type;
 use gtk::prelude::*;
 use gtk::{
     Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ListStore, Notebook,
-    ScrolledWindow, StateFlags, TreeView, TreeViewColumn, Viewport,
+    ScrolledWindow, StateFlags, TreeView, TreeViewColumn, Viewport, Widget as GTKWidget
 };
 use gtk::{Inhibit, Window, WindowType};
-use relm::{timeout, Relm, Update, Widget};
+use relm::{timeout, Relm, Update, Widget, IsA};
 use relm_derive::Msg;
 use std::cmp::max;
 
@@ -104,7 +104,7 @@ struct Win {
     moves: Grid,
     rack: Grid,
     graph: DrawingArea,
-    options_container: TreeView,
+    options: TreeView,
     tree_model: ListStore,
     side_box: Notebook,
 
@@ -460,7 +460,7 @@ impl Update for Win {
 
                 self.tree_model.clear();
                 self.moves_generated = vec![];
-                for (i, m) in moves.iter().take(10).enumerate() {
+                for (i, m) in moves.iter().take(50).enumerate() {
                     self.moves_generated.push((m.position, m.direction));
                     let pos = m.position.to_str(m.direction);
                     let leave: String = p.leave(board.reals(m)).iter().collect();
@@ -484,7 +484,7 @@ impl Update for Win {
             }
             Msg::NewGame => println!("new game"),
             Msg::ItemSelect => {
-                let selection = self.options_container.get_selection();
+                let selection = self.options.get_selection();
                 if let Some((list_model, iter)) = selection.get_selected() {
                     let index = (list_model
                         .get_value(&iter, 0)
@@ -575,6 +575,21 @@ fn append_column(
     v.push(column);
 
     return id;
+}
+
+fn scroll<T: IsA<GTKWidget>>(window: &T) -> ScrolledWindow {
+    let no_adjustment: Option<Adjustment> = None;
+    let scroll: Option<Adjustment> = Some(Adjustment::new(
+        0.0,
+        std::f64::MIN,
+        std::f64::MAX,
+        1.0,
+        0.0,
+        0.0,
+    ));
+    let container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
+    container.add(window);
+    return container;
 }
 
 impl Widget for Win {
@@ -727,17 +742,7 @@ impl Widget for Win {
         let l2 = Label::new(Some("Player 2"));
         moves.attach(&l2, 1, 0, 1, 1);
 
-        let no_adjustment: Option<Adjustment> = None;
-        let scroll: Option<Adjustment> = Some(Adjustment::new(
-            0.0,
-            std::f64::MIN,
-            std::f64::MAX,
-            1.0,
-            0.0,
-            0.0,
-        ));
-        let moves_container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
-        moves_container.add(&moves);
+        let moves_container = scroll(&moves);
 
         let tree_model = ListStore::new(&[
             Type::U32,    // Index
@@ -748,23 +753,20 @@ impl Widget for Win {
             Type::F32,    // Eval
         ]);
 
-        let options_container = TreeView::new_with_model(&tree_model);
-        options_container.get_style_context().add_class("monospace");
+        let options = TreeView::new_with_model(&tree_model);
+        options.get_style_context().add_class("monospace");
+
+        let options_container = scroll(&options);
 
         let mut columns: Vec<TreeViewColumn> = Vec::new();
-        append_column("#", &mut columns, &options_container, None);
-        append_column("Pos", &mut columns, &options_container, None);
-        append_column("Move", &mut columns, &options_container, None);
-        append_column("Leave", &mut columns, &options_container, None);
-        append_column("Score", &mut columns, &options_container, None);
-        append_column("Eval", &mut columns, &options_container, None);
+        append_column("#", &mut columns, &options, None);
+        append_column("Pos", &mut columns, &options, None);
+        append_column("Move", &mut columns, &options, None);
+        append_column("Leave", &mut columns, &options, None);
+        append_column("Score", &mut columns, &options, None);
+        append_column("Eval", &mut columns, &options, None);
 
-        connect!(
-            relm,
-            options_container,
-            connect_cursor_changed(_),
-            Msg::ItemSelect
-        );
+        connect!(relm, options, connect_cursor_changed(_), Msg::ItemSelect);
 
         // testing insertion
         //        tree_model.insert_with_values(None, &[0, 1, 2, 3], &[&"Test", &"Test 2", &12, &12.6]);
@@ -1012,7 +1014,7 @@ impl Widget for Win {
             moves,
             rack,
             graph,
-            options_container,
+            options,
             tree_model,
             side_box,
             last_move: Move::none(),
