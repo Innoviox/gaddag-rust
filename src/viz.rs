@@ -9,10 +9,10 @@ use glib::Type;
 use gtk::prelude::*;
 use gtk::{
     Adjustment, Align, Button, DrawingArea, EventBox, Grid, Label, ListStore, Notebook,
-    ScrolledWindow, StateFlags, TreeView, TreeViewColumn, Viewport, Widget as GTKWidget
+    ScrolledWindow, StateFlags, TreeView, TreeViewColumn, Viewport, Widget as GTKWidget,
 };
 use gtk::{Inhibit, Window, WindowType};
-use relm::{timeout, Relm, Update, Widget, IsA};
+use relm::{timeout, IsA, Relm, Update, Widget};
 use relm_derive::Msg;
 use std::cmp::max;
 
@@ -569,7 +569,7 @@ fn append_column(
     column.pack_start(&renderer, true);
     column.add_attribute(&renderer, "text", id);
     column.set_clickable(true);
-    //    column.set_sort_column_id(id); // todo
+    column.set_sort_column_id(id); // todo
     column.set_resizable(true);
     treeview.append_column(&column);
     v.push(column);
