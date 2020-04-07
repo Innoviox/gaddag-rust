@@ -276,6 +276,7 @@ impl Update for Win {
     fn update(&mut self, event: Msg) {
         match event {
             Msg::Tick => {
+                return;
                 let c = self.model.current as i32;
                 let t = self.model.get_turn() as i32;
                 let mut text = String::new();
@@ -433,6 +434,8 @@ impl Update for Win {
                             self.click_data.dir_str()
                         ));
                     }
+
+                    self.setup_board(false);
                 }
             }
             Msg::GenChoices => {
@@ -792,6 +795,7 @@ impl Widget for Win {
 
         let graph = DrawingArea::new();
         graph.connect_draw(move |widget, cr| {
+            return Inhibit(false);
             let children = widget
                 // get parent as grid
                 .get_parent()
