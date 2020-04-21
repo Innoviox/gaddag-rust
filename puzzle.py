@@ -63,7 +63,7 @@ class Puzzle:
 
                 label.bind("<Button-1>", self.click)
                 
-                self.labels[-1].append(frame)
+                self.labels[-1].append(label)
         self.board_frame.grid(row=0, column=0, rowspan=16, columnspan=16)
 
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
@@ -78,6 +78,8 @@ class Puzzle:
         self.current_direction = Direction.ACROSS
         self.square_at = None
 
+        self.root.bind("<Key>", self.type_char)
+
     def click(self, e):
         set_text = False
         if not self.square_at and not e.widget['text'].strip():
@@ -86,7 +88,17 @@ class Puzzle:
         elif e.widget == self.square_at:
             self.current_direction = self.current_direction.flip()
             set_text = True
+        else:
+            for sq in self.squares_changed:
+                sq.config(text='', fg='black')
+            self.square_at = e.widget
+            self.squares_changed = []
         if set_text:
             e.widget['text'] = str(self.current_direction)
+
+    def type_char(self, e):
+        if self.square_at:
+            self.square_at.config(text=e.char.upper(), fg='yellow')
+            self.squares_changed.append(self.square_at)
 
 Puzzle().root.mainloop()
