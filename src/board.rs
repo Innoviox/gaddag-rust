@@ -360,6 +360,10 @@ impl Board {
         self.cross_checks = (*c).clone();
         self.bag.distribution = bag.clone();
     }
+
+    pub fn get_board(&self) -> [[char; 15]; 15] {
+        return self.state;
+    }
 }
 
 impl Board {

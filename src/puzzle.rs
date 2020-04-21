@@ -12,7 +12,12 @@ pub fn main(turns: u32) {
 
     let (moves, eval_val) = p.gen_moves(game.get_board_mut());
 
-    let mut s = game.get_board().to_string();
+    let mut s = game
+        .get_board()
+        .get_board()
+        .iter()
+        .map(|i| i.iter().collect::<String>())
+        .collect::<String>();
     s = format!("{}{}{}{}", s, "\n", rack, "\n");
 
     for m in moves.iter().take(50) {
