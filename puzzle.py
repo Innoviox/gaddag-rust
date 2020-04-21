@@ -11,7 +11,7 @@ SPECIAL = {
     '*': 'pink'
 }
 
-puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle"]).split()[-1]))[2:-1].replace(r"\n", "\n")
+puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", "10"]).split()[-1]))[2:-1].replace(r"\n", "\n")
 board, rack, *moves = puzzle.split()
 board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
 
@@ -36,9 +36,9 @@ for row in range(16):
             color = SPECIAL[t]
             t = ''
 
-        frame = tk.Frame(root, width=10, height=10, borderwidth=1, bg=color)
+        frame = tk.Frame(root, width=20, height=20, borderwidth=1, bg=color)
             
-        label = tk.Label(frame, text=t)
+        if t: tk.Label(frame, text=t).pack()
         frame.grid(row=row, column=col)
         
         labels[-1].append(frame)
