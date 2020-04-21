@@ -16,3 +16,8 @@ subcommands:
         args:
             - rack:
                 takes_value: true
+    - puzzle:
+        args:
+            - turns:
+                takes_value: true
+                default_value: "5"
