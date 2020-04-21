@@ -43,4 +43,13 @@ for row in range(16):
         
         labels[-1].append(frame)
 
+rack_frame = tk.Frame(root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
+
+for c, l in enumerate(rack):
+    frame = tk.Frame(rack_frame, width=20, height=20, borderwidth=1, relief=tk.GROOVE)
+    tk.Label(frame, text=l).pack()
+    frame.grid(row=0, column=c)
+    
+rack_frame.grid(row=16, column=3, columnspan=10, rowspan=2)
+
 root.mainloop()
