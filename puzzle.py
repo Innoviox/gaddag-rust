@@ -103,7 +103,7 @@ class GUI:
         self.root.bind("<Key>", self.type_char)
 
     def click(self, e):
-        if e.widget['text'].strip():
+        if e.widget['text'].strip().isalpha():
             return
         elif not self.square_at:
             self.square_at = e.widget
