@@ -1,6 +1,4 @@
 use crate::game::Game;
-use crate::utils::Type;
-use std::time::SystemTime;
 
 pub fn main(turns: u32) {
     let mut game = Game::default();
@@ -8,5 +6,11 @@ pub fn main(turns: u32) {
         game.do_move();
     }
 
-    println!("{}", game.get_board());
+    let rack: String = game.current_player().rack.iter().collect();
+
+    let mut s = game.get_board().to_string();
+    s.push_str("\n");
+    s.push_str(&rack);
+
+    println!("{}", s);
 }
