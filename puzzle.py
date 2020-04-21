@@ -4,6 +4,7 @@ import subprocess
 import base64
 import string
 import enum
+import dataclasses
 
 class Direction(enum.Enum):
     ACROSS = 1
@@ -33,12 +34,24 @@ SPECIAL = {
     '*': 'pink'
 }
 
-puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", "10"]).split()[-1]))[2:-1].replace(r"\n", "\n")
-board, rack, *moves = puzzle.split()
-board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
-
+@dataclasses.dataclass
 class Puzzle:
+    board: list
+    rack: str
+    moves: list
+    
+    @staticmethod
+    def load_new(turns=10):
+        puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
+        board, rack, *moves = puzzle.split()
+        board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
+
+        return Puzzle(board, rack, moves)
+
+class GUI:
     def __init__(self):
+        self.puzzle = Puzzle.load_new()
+        
         self.root = tk.Tk()
 
         self.board_frame = tk.Frame(self.root, borderwidth=1, relief=tk.RIDGE)
@@ -55,7 +68,7 @@ class Puzzle:
                 elif col == 0:
                     t = str(row).zfill(2)
                 else:
-                    t = board[row - 1][col - 1]
+                    t = self.puzzle.board[row - 1][col - 1]
 
                 if t in SPECIAL:
                     color = SPECIAL[t]
@@ -76,7 +89,7 @@ class Puzzle:
 
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
 
-        for c, l in enumerate(rack):
+        for c, l in enumerate(self.puzzle.rack):
             frame = tk.Frame(self.rack_frame, width=20, height=20, borderwidth=1, relief=tk.GROOVE)
             tk.Label(frame, text=l).pack()
             frame.grid(row=0, column=c)
@@ -90,34 +103,33 @@ class Puzzle:
         self.root.bind("<Key>", self.type_char)
 
     def click(self, e):
-        set_text = False
         if e.widget['text'].strip():
             return
-        if not self.square_at:
+        elif not self.square_at:
             self.square_at = e.widget
             self.squares_changed.append(e.widget)
-            set_text = True
         elif e.widget == self.square_at:
             self.current_direction = self.current_direction.flip()
-            set_text = True
         else:
             for sq in self.squares_changed:
                 sq.config(text='', fg='black')
             self.square_at = e.widget
             self.squares_changed = [e.widget]
-            set_text = True
-        if set_text:
-            e.widget['text'] = str(self.current_direction)
+        e.widget['text'] = str(self.current_direction)
 
     def type_char(self, e):
         if self.square_at:
             self.square_at.config(text=e.char.upper(), fg='brown')
             self.squares_changed.append(self.square_at)
-            self.square_at.config(text=self.current_direction)
-            self.squares_changed.append(self.square_at)
+            sq = None
+            while self.square_at['text'].strip() and sq != self.square_at:
+                sq, self.square_at = self.square_at, self.next_tile(self.square_at, self.current_direction)
+            if sq != self.square_at:
+                self.square_at.config(text=self.current_direction)
+                self.squares_changed.append(self.square_at)
 
     def next_tile(self, tile, direction):
         a, b = [(row + direction.y, col + direction.x) for row, i in enumerate(self.labels) for col, j in enumerate(i) if j == tile][0]
         return self.labels[min(a, 15)][min(b, 15)]
 
-Puzzle().root.mainloop()
+GUI().root.mainloop()
