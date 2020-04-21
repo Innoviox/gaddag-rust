@@ -87,6 +87,15 @@ class GUI:
                 self.labels[-1].append(label)
         self.board_frame.grid(row=0, column=0, rowspan=16, columnspan=16)
 
+        self.update_rack_frame()
+
+        self.current_direction = Direction.ACROSS
+        self.square_at = None
+        self.squares_changed = []
+
+        self.root.bind("<Key>", self.type_char)
+
+    def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
 
         for c, l in enumerate(self.puzzle.rack):
@@ -94,13 +103,7 @@ class GUI:
             tk.Label(frame, text=l).pack()
             frame.grid(row=0, column=c)
             
-        self.rack_frame.grid(row=16, column=3, columnspan=10, rowspan=2)
-
-        self.current_direction = Direction.ACROSS
-        self.square_at = None
-        self.squares_changed = []
-
-        self.root.bind("<Key>", self.type_char)
+        self.rack_frame.grid(row=16, column=3, columnspan=10, rowspan=2)        
 
     def click(self, e):
         if e.widget['text'].strip().isalpha():
@@ -118,8 +121,12 @@ class GUI:
         e.widget['text'] = str(self.current_direction)
 
     def type_char(self, e):
-        if self.square_at:
-            self.square_at.config(text=e.char.upper(), fg='brown')
+        c = e.char.upper()
+        if self.square_at and c in self.puzzle.rack:
+            i = self.puzzle.rack.index(c)
+            self.update_rack_frame()
+            
+            self.square_at.config(text=c, fg='brown')
             self.squares_changed.append(self.square_at)
             sq = None
             while self.square_at['text'].strip() and sq != self.square_at:
