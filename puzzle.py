@@ -77,13 +77,17 @@ class Puzzle:
 
         self.current_direction = Direction.ACROSS
         self.square_at = None
+        self.squares_changed = []
 
         self.root.bind("<Key>", self.type_char)
 
     def click(self, e):
         set_text = False
-        if not self.square_at and not e.widget['text'].strip():
+        if e.widget['text'].strip():
+            return
+        if not self.square_at:
             self.square_at = e.widget
+            self.squares_changed.append(e.widget)
             set_text = True
         elif e.widget == self.square_at:
             self.current_direction = self.current_direction.flip()
@@ -92,13 +96,14 @@ class Puzzle:
             for sq in self.squares_changed:
                 sq.config(text='', fg='black')
             self.square_at = e.widget
-            self.squares_changed = []
+            self.squares_changed = [e.widget]
+            set_text = True
         if set_text:
             e.widget['text'] = str(self.current_direction)
 
     def type_char(self, e):
         if self.square_at:
-            self.square_at.config(text=e.char.upper(), fg='yellow')
+            self.square_at.config(text=e.char.upper(), fg='brown')
             self.squares_changed.append(self.square_at)
 
 Puzzle().root.mainloop()
