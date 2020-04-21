@@ -113,7 +113,6 @@ class Puzzle:
         if self.square_at:
             self.square_at.config(text=e.char.upper(), fg='brown')
             self.squares_changed.append(self.square_at)
-            while self.square_at['text'].strip():
             self.square_at.config(text=self.current_direction)
             self.squares_changed.append(self.square_at)
 
