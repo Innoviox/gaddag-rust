@@ -17,6 +17,14 @@ class Direction(enum.Enum):
     def __str__(self):
         return {Direction.ACROSS: '⇨', Direction.DOWN: '⇩'}[self]
 
+    @property
+    def x(self):
+        return {Direction.ACROSS: 1, Direction.DOWN: 0}[self]
+
+    @property
+    def y(self):
+        return {Direction.ACROSS: 0, Direction.DOWN: 1}[self]    
+
 SPECIAL = {
     '#': 'red',
     '-': 'light blue',
@@ -105,5 +113,12 @@ class Puzzle:
         if self.square_at:
             self.square_at.config(text=e.char.upper(), fg='brown')
             self.squares_changed.append(self.square_at)
+            while self.square_at['text'].strip():
+            self.square_at.config(text=self.current_direction)
+            self.squares_changed.append(self.square_at)
+
+    def next_tile(self, tile, direction):
+        a, b = [(row + direction.y, col + direction.x) for row, i in enumerate(self.labels) for col, j in enumerate(i) if j == tile][0]
+        return self.labels[min(a, 15)][min(b, 15)]
 
 Puzzle().root.mainloop()
