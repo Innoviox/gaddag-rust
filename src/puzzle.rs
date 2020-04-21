@@ -1,4 +1,5 @@
 use crate::game::Game;
+use base64::encode;
 
 pub fn main(turns: u32) {
     let mut game = Game::default();
@@ -28,5 +29,5 @@ pub fn main(turns: u32) {
         );
     }
 
-    println!("{}", s);
+    println!("{}", encode(s));
 }

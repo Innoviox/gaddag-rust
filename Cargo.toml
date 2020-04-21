@@ -21,3 +21,4 @@ clap = {version = "2.33.0", features = ["yaml", "color"]}
 serde = {version = "1.0.105", features = ["derive"]}
 bincode = "1.2.1"
 glib = "0.9.3"
+base64 = "0.12.0"
