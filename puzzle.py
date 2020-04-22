@@ -43,7 +43,7 @@ class Puzzle:
     @staticmethod
     def load_new(turns=10):
         puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
-        board, rack, *moves = puzzle.split()
+        board, rack, *moves = puzzle.split("\n")
         board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
 
         return Puzzle(board, rack, moves)
@@ -51,6 +51,7 @@ class Puzzle:
 class GUI:
     def __init__(self):
         self.puzzle = Puzzle.load_new()
+        self.original_rack = self.puzzle.rack[:]
         
         self.root = tk.Tk()
 
@@ -94,6 +95,7 @@ class GUI:
         self.squares_changed = []
 
         self.root.bind("<Key>", self.type_char)
+        self.root.bind("<Return>", self.enter_move)
 
     def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
@@ -116,6 +118,7 @@ class GUI:
         else:
             for sq in self.squares_changed:
                 sq.config(text='', fg='black')
+            self.puzzle.rack = self.original_rack[:]
             self.square_at = e.widget
             self.squares_changed = [e.widget]
         e.widget['text'] = str(self.current_direction)
@@ -123,8 +126,7 @@ class GUI:
     def type_char(self, e):
         c = e.char.upper()
         if self.square_at and c in self.puzzle.rack:
-            i = self.puzzle.rack.index(c)
-            self.update_rack_frame()
+            self.puzzle.rack.remove(c)
             
             self.square_at.config(text=c, fg='brown')
             self.squares_changed.append(self.square_at)
@@ -135,8 +137,16 @@ class GUI:
                 self.square_at.config(text=self.current_direction)
                 self.squares_changed.append(self.square_at)
 
-    def next_tile(self, tile, direction):
-        a, b = [(row + direction.y, col + direction.x) for row, i in enumerate(self.labels) for col, j in enumerate(i) if j == tile][0]
-        return self.labels[min(a, 15)][min(b, 15)]
+    def location_of(self, tile):
+        return [(row, col) for row, i in enumerate(self.labels) for col, j in enumerate(i) if j == tile][0]
 
-GUI().root.mainloop()
+
+    def enter_move(self, e):
+        print(self.location_of(self.squares_changed[0])
+
+    def next_tile(self, tile, direction):
+        a, b = self.location_of(tile)
+        return self.labels[min(a + direction.y, 15)][min(b + direction.x, 15)]
+
+g = GUI()
+g.root.mainloop()
