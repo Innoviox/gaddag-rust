@@ -190,7 +190,7 @@ class GUI:
         if self.square_at and c in self.puzzle.rack:
             self.puzzle.rack.remove(c)
             
-            self.square_at.config(text=c, fg='brown')
+            self.square_at.config(text=c, fg='orange')
             self.squares_changed.append(self.square_at)
             sq = None
             while self.square_at['text'].strip() and sq != self.square_at:
@@ -227,6 +227,7 @@ class GUI:
             self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + self.puzzle.moves[i]).ljust(self.ml + 5)
             if human:
                 self.move_btns[i]['fg'] = 'red'
+                self.move_box.canvas.yview_moveto(i / len(self.puzzle.moves))
         return clicked
 
 g = GUI()
@@ -235,6 +236,7 @@ g.root.mainloop()
 
 '''
 check! todo: blanks on board
+check! todo: scroll to move
 todo: blanks on rack
 todo: reveal top move
 todo: backspace
