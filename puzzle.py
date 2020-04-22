@@ -45,8 +45,6 @@ class Puzzle:
         puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
         board, rack, *moves = puzzle.split("\n")
         rack = list(rack)
-
-        print(board)
         
         board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
 
@@ -55,7 +53,7 @@ class Puzzle:
     def rank_of_move(self, position, word, direction):
         y, x = position
         c, r = str(y), string.ascii_uppercase[x - 1]
-        s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word
+        s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word + ' '
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
             print(move, self.moves.index(move) + 1)
@@ -77,6 +75,9 @@ class GUI:
             self.labels.append([])
             for col in range(16):
                 color, fg = "white", "black"
+
+                bw = 1
+                relief=tk.FLAT
                 
                 if row == 0:
                     t = (" " + string.ascii_uppercase)[col]
@@ -84,12 +85,15 @@ class GUI:
                     t = str(row).zfill(2)
                 else:
                     t = self.puzzle.board[row - 1][col - 1]
-
+                    if t.isalpha() and t == t.lower():
+                        relief=tk.RIDGE
+                        t = t.upper()
+                        
                 if t in SPECIAL:
                     color = SPECIAL[t]
                     t = ''
 
-                frame = tk.Frame(self.board_frame, width=20, height=20, borderwidth=1, bg=color)
+                frame = tk.Frame(self.board_frame, width=20, height=20, borderwidth=bw, relief=relief, bg=color)
 
                 label = tk.Label(frame, text=t, bg=color)
                 label.pack()
@@ -178,7 +182,8 @@ g.root.mainloop()
 
 
 '''
-todo: blanks on board
+check! todo: blanks on board
 todo: blanks on rack
 todo: reveal top move
+todo: backspace
 '''

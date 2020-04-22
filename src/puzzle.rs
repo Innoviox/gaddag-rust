@@ -1,6 +1,5 @@
 use crate::game::Game;
 use base64::encode;
-use std::convert::TryInto;
 
 pub fn main(turns: u32) {
     let mut game = Game::default();
