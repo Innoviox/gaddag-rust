@@ -1,5 +1,6 @@
 use crate::game::Game;
 use base64::encode;
+use std::convert::TryInto;
 
 pub fn main(turns: u32) {
     let mut game = Game::default();
@@ -12,9 +13,11 @@ pub fn main(turns: u32) {
 
     let (moves, eval_val) = p.gen_moves(game.get_board_mut());
 
-    let mut s = game
-        .get_board()
-        .get_board()
+    let mut board = game.get_board().get_board().clone();
+    for b in game.get_board().blanks.clone() {
+        board[b.row][b.col] = board[b.row][b.col].to_lowercase().nth(0).unwrap();
+    }
+    let mut s = board
         .iter()
         .map(|i| i.iter().collect::<String>())
         .collect::<String>();

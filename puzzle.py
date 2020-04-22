@@ -45,6 +45,9 @@ class Puzzle:
         puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
         board, rack, *moves = puzzle.split("\n")
         rack = list(rack)
+
+        print(board)
+        
         board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
 
         return Puzzle(board, rack, moves)
