@@ -60,6 +60,37 @@ class Puzzle:
         except IndexError:
             print("Invalid move", s, "(or not in top 500)")
 
+# thanks https://gist.github.com/mp035/9f2027c3ef9172264532fcd6262f3b01 
+class ScrollFrame(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent) # create a frame (self)
+
+        self.canvas = tk.Canvas(self, borderwidth=0, background="#ffffff")          #place canvas on self
+        self.viewPort = tk.Frame(self.canvas, background="#ffffff")                    #place a frame on the canvas, this frame will hold the child widgets 
+        self.vsb = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview) #place a scrollbar on self 
+        self.canvas.configure(yscrollcommand=self.vsb.set)                          #attach scrollbar action to scroll of canvas
+
+        self.vsb.pack(side="right", fill="y")                                       #pack scrollbar to right of self
+        self.canvas.pack(side="left", fill="both", expand=True)                     #pack canvas to left of self and expand to fil
+        self.canvas_window = self.canvas.create_window((4,4), window=self.viewPort, anchor="nw",            #add view port frame to canvas
+                                  tags="self.viewPort")
+
+        self.viewPort.bind("<Configure>", self.onFrameConfigure)                       #bind an event whenever the size of the viewPort frame changes.
+        self.canvas.bind("<Configure>", self.onCanvasConfigure)                       #bind an event whenever the size of the viewPort frame changes.
+
+        self.onFrameConfigure(None)                                                 #perform an initial stretch on render, otherwise the scroll region has a tiny border until the first resize
+
+    def onFrameConfigure(self, event):                                              
+        '''Reset the scroll region to encompass the inner frame'''
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))                 #whenever the size of the frame changes, alter the scroll region respectively.
+
+    def onCanvasConfigure(self, event):
+        '''Reset the canvas window to encompass inner frame when required'''
+        canvas_width = event.width
+        self.canvas.itemconfig(self.canvas_window, width = canvas_width)            #whenever the size of the canvas changes alter the window region respectively.
+
+
+
 class GUI:
     def __init__(self):
         self.puzzle = Puzzle.load_new()
@@ -114,6 +145,17 @@ class GUI:
 
         self.root.bind("<Key>", self.type_char)
         self.root.bind("<Return>", self.enter_move)
+
+        self.move_box = ScrollFrame(self.root)
+        self.move_box.grid(row=0, column=16, rowspan=8, columnspan=2)
+
+        self.move_btns = []
+        self.ml = max(map(len, self.puzzle.moves))
+        for i in range(1, len(self.puzzle.moves)):
+            btn = tk.Button(self.move_box.viewPort, text=str(i).zfill(3).center(self.ml), command=self.show(i - 1), font='TkFixedFont')
+            btn.pack()
+
+            self.move_btns.append(btn)
 
     def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
@@ -176,6 +218,11 @@ class GUI:
     def next_tile(self, tile, direction):
         a, b = self.location_of(tile)
         return self.labels[min(a + direction.y, 15)][min(b + direction.x, 15)]
+
+    def show(self, i):
+        def clicked():
+            self.move_btns[i]['text'] = self.puzzle.moves[i].center(self.ml)
+        return clicked
 
 g = GUI()
 g.root.mainloop()
