@@ -44,9 +44,17 @@ class Puzzle:
     def load_new(turns=10):
         puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
         board, rack, *moves = puzzle.split("\n")
+        rack = list(rack)
         board = [board[i:i+15].replace(".", " ") for i in range(0, len(board), 15)]
 
         return Puzzle(board, rack, moves)
+
+    def rank_of_move(self, position, word, direction):
+        y, x = position
+        c, r = str(y), string.ascii_uppercase[x - 1]
+        s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word
+        move = [i for i in self.moves if i.startswith(s)][0]
+        print(move, self.moves.index(move))
 
 class GUI:
     def __init__(self):
@@ -140,9 +148,20 @@ class GUI:
     def location_of(self, tile):
         return [(row, col) for row, i in enumerate(self.labels) for col, j in enumerate(i) if j == tile][0]
 
-
     def enter_move(self, e):
-        print(self.location_of(self.squares_changed[0])
+        first = self.squares_changed[0]
+        loc = self.location_of(first)
+        word = ''
+        sq = None
+        while first['text'].isalpha() and sq != first:
+            if first in self.squares_changed:
+                word += first['text']
+            else:
+                word += '(' + first['text'] + ')'
+            sq, first = first, self.next_tile(first, self.current_direction)
+        word = word.replace(')(', '')
+        
+        self.puzzle.rank_of_move(loc, word, self.current_direction)
 
     def next_tile(self, tile, direction):
         a, b = self.location_of(tile)

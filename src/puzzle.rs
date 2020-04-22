@@ -20,7 +20,7 @@ pub fn main(turns: u32) {
         .collect::<String>();
     s = format!("{}{}{}{}", s, "\n", rack, "\n");
 
-    for m in moves.iter().take(50) {
+    for m in moves.iter().take(500) {
         s = format!(
             "{}{}",
             s,
