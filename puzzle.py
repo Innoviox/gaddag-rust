@@ -53,8 +53,11 @@ class Puzzle:
         y, x = position
         c, r = str(y), string.ascii_uppercase[x - 1]
         s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word
-        move = [i for i in self.moves if i.startswith(s)][0]
-        print(move, self.moves.index(move))
+        try:
+            move = [i for i in self.moves if i.startswith(s)][0]
+            print(move, self.moves.index(move) + 1)
+        except IndexError:
+            print("Invalid move", s, "(or not in top 500)")
 
 class GUI:
     def __init__(self):
@@ -169,3 +172,10 @@ class GUI:
 
 g = GUI()
 g.root.mainloop()
+
+
+'''
+todo: blanks on board
+todo: blanks on rack
+todo: reveal top move
+'''
