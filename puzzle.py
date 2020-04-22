@@ -56,9 +56,11 @@ class Puzzle:
         s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word + ' '
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
-            print(move, self.moves.index(move) + 1)
+            r = self.moves.index(move) + 1
+            return r
         except IndexError:
-            print("Invalid move", s, "(or not in top 500)")
+            # print("Invalid move", s, "(or not in top 500)")
+            return None
 
 # thanks https://gist.github.com/mp035/9f2027c3ef9172264532fcd6262f3b01 
 class ScrollFrame(tk.Frame):
@@ -213,7 +215,8 @@ class GUI:
             sq, first = first, self.next_tile(first, self.current_direction)
         word = word.replace(')(', '')
         
-        self.puzzle.rank_of_move(loc, word, self.current_direction)
+        if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
+            self.show(r - 1)()
 
     def next_tile(self, tile, direction):
         a, b = self.location_of(tile)
