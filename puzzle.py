@@ -216,15 +216,17 @@ class GUI:
         word = word.replace(')(', '')
         
         if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
-            self.show(r - 1)()
+            self.show(r - 1)(human=True)
 
     def next_tile(self, tile, direction):
         a, b = self.location_of(tile)
         return self.labels[min(a + direction.y, 15)][min(b + direction.x, 15)]
 
     def show(self, i):
-        def clicked():
+        def clicked(human=False):
             self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + self.puzzle.moves[i]).ljust(self.ml + 5)
+            if human:
+                self.move_btns[i]['fg'] = 'red'
         return clicked
 
 g = GUI()
