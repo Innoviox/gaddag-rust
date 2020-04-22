@@ -152,8 +152,8 @@ class GUI:
         self.move_btns = []
         self.ml = max(map(len, self.puzzle.moves))
         for i in range(1, len(self.puzzle.moves)):
-            btn = tk.Button(self.move_box.viewPort, text=str(i).zfill(3).center(self.ml), command=self.show(i - 1), font='TkFixedFont')
-            btn.pack()
+            btn = tk.Button(self.move_box.viewPort, text=str(i), command=self.show(i - 1), font='TkFixedFont')
+            btn.pack(fill=tk.X)
 
             self.move_btns.append(btn)
 
@@ -221,7 +221,7 @@ class GUI:
 
     def show(self, i):
         def clicked():
-            self.move_btns[i]['text'] = self.puzzle.moves[i].center(self.ml)
+            self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + self.puzzle.moves[i]).ljust(self.ml + 5)
         return clicked
 
 g = GUI()
