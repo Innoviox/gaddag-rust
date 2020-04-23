@@ -41,8 +41,8 @@ class Puzzle:
     moves: list
     
     @staticmethod
-    def load_new(turns=10):
-        puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
+    def load_new(turns=10, difficulty=1):
+        puzzle = str(base64.b64decode(subprocess.check_output(["./target/release/gaddag-rust", "puzzle", "-d", str(difficulty), str(turns)]).split()[-1]))[2:-1].replace(r"\n", "\n")
         board, rack, *moves = puzzle.split("\n")
         rack = list(rack)
         
@@ -97,8 +97,8 @@ class ScrollFrame(tk.Frame):
 
 
 class GUI:
-    def __init__(self):
-        self.puzzle = Puzzle.load_new()
+    def __init__(self, **kwargs):
+        self.puzzle = Puzzle.load_new(**kwargs)
         self.original_rack = self.puzzle.rack[:]
         
         self.root = tk.Tk()
@@ -277,7 +277,7 @@ class GUI:
 
         
 
-g = GUI()
+g = GUI(difficulty=1)
 g.root.mainloop()
 
 
@@ -290,4 +290,8 @@ todo: backspace
 check! todo: place on click
 chcek! todo: froms :(
 todo: through blanks
+check! todo: customizable difficulty
+todo: timer
+todo: scores (not like move scores, skill scores based on completion)
+todo: rate puzzle by difficulty
 '''
