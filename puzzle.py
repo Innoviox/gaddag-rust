@@ -184,18 +184,28 @@ class GUI:
             self.current_direction = self.current_direction.flip()
         else:
             for sq in self.squares_changed:
-                sq.config(text='', fg='black')
+                self.reset(sq)
             self.puzzle.rack = self.original_rack[:]
             self.square_at = e.widget
             self.squares_changed = [e.widget]
         e.widget['text'] = str(self.current_direction)
 
+    def reset(self, sq):
+        sq.config(text='', fg='black', relief=tk.FLAT)
+
     def type_char(self, e):
         c = e.char.upper()
-        if self.square_at and c in self.puzzle.rack:
-            self.puzzle.rack.remove(c)
+        if self.square_at and (c in self.puzzle.rack or '?' in self.puzzle.rack):
+            if c in self.puzzle.rack:
+                self.puzzle.rack.remove(c)
+                blank = False
+            else:
+                self.puzzle.rack.remove('?')
+                blank = True
             
             self.square_at.config(text=c, fg='orange')
+            if blank:
+                self.square_at.config(borderwidth=1, relief=tk.RIDGE)
             self.squares_changed.append(self.square_at)
             sq = None
             while self.square_at['text'].strip() and sq != self.square_at:
@@ -250,7 +260,7 @@ class GUI:
 
     def place(self, move):
         for sq in self.squares_changed:
-            sq.config(text='', fg='black')
+            self.reset(sq)
         pos, word, *_ = move.split()
 
         if pos[0].isalpha():
