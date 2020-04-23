@@ -258,7 +258,7 @@ class GUI:
                 if set_text:
                     first['text'] = i
                     first['fg'] = 'orange'
-                self.squares_changed.append(first)
+                    self.squares_changed.append(first)
                 first = self.next_tile(first, direction)
                 
                 
