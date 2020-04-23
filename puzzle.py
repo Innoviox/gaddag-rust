@@ -207,6 +207,13 @@ class GUI:
         loc = self.location_of(first)
         word = ''
         sq = None
+        f2 = first
+        sq, f2 = f2, self.next_tile(f2, self.current_direction, opp=-1)
+        while f2['text'].isalpha() and sq != f2:
+            word += ')' + f2['text'] + '('
+            sq, f2 = f2, self.next_tile(f2, self.current_direction, opp=-1)
+        word = word[::-1]
+        sq = None
         while first['text'].isalpha() and sq != first:
             if first in self.squares_changed:
                 word += first['text']
@@ -218,13 +225,12 @@ class GUI:
         if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
             self.show(r - 1)(human=True)
 
-    def next_tile(self, tile, direction):
+    def next_tile(self, tile, direction, opp=1):
         a, b = self.location_of(tile)
-        return self.labels[min(a + direction.y, 15)][min(b + direction.x, 15)]
+        return self.labels[min(a + direction.y * opp, 15)][min(b + direction.x * opp, 15)]
 
     def show(self, i):
         def clicked(human=False):
-            self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + self.puzzle.moves[i]).ljust(self.ml + 5)
             move = self.puzzle.moves[i]
             self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + move).ljust(self.ml + 5)
             if human:
@@ -276,5 +282,5 @@ todo: blanks on rack
 check! todo: reveal top move
 todo: backspace
 check! todo: place on click
-todo: froms :(
+chcek! todo: froms :(
 '''
