@@ -225,10 +225,45 @@ class GUI:
     def show(self, i):
         def clicked(human=False):
             self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + self.puzzle.moves[i]).ljust(self.ml + 5)
+            move = self.puzzle.moves[i]
+            self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + move).ljust(self.ml + 5)
             if human:
                 self.move_btns[i]['fg'] = 'red'
                 self.move_box.canvas.yview_moveto(i / len(self.puzzle.moves))
+            else:
+                self.place(move)
         return clicked
+
+    def place(self, move):
+        for sq in self.squares_changed:
+            sq.config(text='', fg='black')
+        pos, word, *_ = move.split()
+
+        if pos[0].isalpha():
+            c, *r = pos
+            direction = Direction.DOWN
+        else:
+            *r, c = pos
+            direction = Direction.ACROSS
+            
+        first = self.labels[int(''.join(r))][string.ascii_uppercase.index(c) + 1]
+
+        set_text = True
+        for i in word:
+            if i == '(':
+                set_text = False
+            elif i == ')':
+                set_text = True
+            else:
+                if set_text:
+                    first['text'] = i
+                    first['fg'] = 'orange'
+                self.squares_changed.append(first)
+                first = self.next_tile(first, direction)
+                
+                
+
+        
 
 g = GUI()
 g.root.mainloop()
@@ -238,6 +273,8 @@ g.root.mainloop()
 check! todo: blanks on board
 check! todo: scroll to move
 todo: blanks on rack
-todo: reveal top move
+check! todo: reveal top move
 todo: backspace
+check! todo: place on click
+todo: froms :(
 '''
