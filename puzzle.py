@@ -55,6 +55,8 @@ class Puzzle:
         c, r = str(y), string.ascii_uppercase[x - 1]
         s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word + ' '
 
+        print(s)
+        
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
             r = self.moves.index(move) + 1
@@ -231,7 +233,7 @@ class GUI:
 
     def next_tile(self, tile, direction, opp=1):
         a, b = self.location_of(tile)
-        return self.labels[min(a + direction.y * opp, 15)][min(b + direction.x * opp, 15)]
+        return self.labels[max(1, min(a + direction.y * opp, 15))][max(1, min(b + direction.x * opp, 15))]
 
     def show(self, i):
         def clicked(human=False):
