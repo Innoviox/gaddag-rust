@@ -1,10 +1,10 @@
 use crate::game::Game;
 use base64::encode;
 
-pub fn main(turns: u32) {
+pub fn main(turns: u32, difficulty: usize) {
     let mut game = Game::default();
     for _ in 0..turns {
-        game.do_move();
+        game.do_move(difficulty);
     }
 
     let p = game.current_player().clone();

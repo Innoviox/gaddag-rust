@@ -32,6 +32,13 @@ fn main() {
     } else if let Some(ref matches) = matches.subcommand_matches("simulate") {
         simulate::main(matches.value_of("rack").unwrap().to_string());
     } else if let Some(ref matches) = matches.subcommand_matches("puzzle") {
-        puzzle::main(matches.value_of("turns").unwrap().parse::<u32>().unwrap());
+        puzzle::main(
+            matches.value_of("turns").unwrap().parse::<u32>().unwrap(),
+            matches
+                .value_of("difficulty")
+                .unwrap()
+                .parse::<usize>()
+                .unwrap(),
+        );
     }
 }

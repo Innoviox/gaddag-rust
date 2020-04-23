@@ -22,10 +22,14 @@ impl Player {
     /*
     Returns: the move object, move as a human-readable string, move as a gcg string, number of moves considered
     */
-    pub fn do_move(&mut self, board: &mut Board) -> (Move, String, String, usize) {
+    pub fn do_move(
+        &mut self,
+        board: &mut Board,
+        difficulty: usize,
+    ) -> (Move, String, String, usize) {
         let moves = self.gen_moves(board).0;
         let len = moves.len();
-        let best_m = moves.iter().nth(0);
+        let best_m = moves.iter().nth(difficulty - 1);
 
         if let Some(m) = best_m {
             self.score += m.score as u32;

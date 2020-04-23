@@ -27,7 +27,7 @@ pub fn main(rack: String) {
 
     game.get_player_mut(0).set_rack(rack.chars().collect());
 
-    let (m1, sm1, _, _nmoves1) = game.do_move();
+    let (m1, sm1, _, _nmoves1) = game.do_move(1);
 
     println!(
         "{}",

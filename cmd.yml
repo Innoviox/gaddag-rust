@@ -21,3 +21,7 @@ subcommands:
             - turns:
                 takes_value: true
                 default_value: "5"
+            - difficulty:
+                short: difficulty
+                takes_value: true
+                default_value: "1"
