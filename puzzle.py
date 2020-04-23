@@ -42,8 +42,8 @@ class Puzzle:
     
     @staticmethod
     def load_new(turns=10, difficulty=1):
-        # x = subprocess.check_output(["./target/release/gaddag-rust", "puzzle", "-d", str(difficulty), str(turns)])
-        x = open("blank_puzzle.txt").read().replace(r"\n", "\n").strip()
+        x = subprocess.check_output(["./target/release/gaddag-rust", "puzzle", "-d", str(difficulty), str(turns)])
+        # x = open("blank_puzzle.txt").read().replace(r"\n", "\n").strip()
         puzzle = str(base64.b64decode(x.split()[-1]))[2:-1].replace(r"\n", "\n")
         board, rack, *moves = puzzle.split("\n")
         rack = list(rack)
@@ -194,7 +194,7 @@ class GUI:
         sq.config(text='', fg='black', relief=tk.FLAT)
 
     def is_blank(self, sq):
-        return sq['borderwidth'] == 1
+        return sq['borderwidth'] == 1 and sq['relief'] == tk.RIDGE
 
     def type_char(self, e):
         c = e.char.upper()
