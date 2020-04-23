@@ -289,4 +289,5 @@ check! todo: reveal top move
 todo: backspace
 check! todo: place on click
 chcek! todo: froms :(
+todo: through blanks
 '''
