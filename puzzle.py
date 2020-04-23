@@ -193,6 +193,9 @@ class GUI:
     def reset(self, sq):
         sq.config(text='', fg='black', relief=tk.FLAT)
 
+    def is_blank(self, sq):
+        return sq['borderwidth'] == 1
+
     def type_char(self, e):
         c = e.char.upper()
         if self.square_at and (c in self.puzzle.rack or '?' in self.puzzle.rack):
@@ -225,7 +228,9 @@ class GUI:
         f2 = first
         sq, f2 = f2, self.next_tile(f2, self.current_direction, opp=-1)
         while f2['text'].isalpha() and sq != f2:
-            word += ')' + f2['text'] + '('
+            t = f2['text']
+            if self.is_blank(f2): t = t.lower()
+            word += ')' + t + '('
             sq, f2 = f2, self.next_tile(f2, self.current_direction, opp=-1)
         if sq != f2:
             f2 = self.next_tile(f2, self.current_direction)
@@ -233,10 +238,12 @@ class GUI:
         word = word[::-1]
         sq = None
         while first['text'].isalpha() and sq != first:
+            t = first['text']
+            if self.is_blank(first): t = t.lower()
             if first in self.squares_changed:
-                word += first['text']
+                word += t
             else:
-                word += '(' + first['text'] + ')'
+                word += '(' + t + ')'
             sq, first = first, self.next_tile(first, self.current_direction)
         word = word.replace(')(', '')
         
@@ -283,6 +290,9 @@ class GUI:
                     first['text'] = i
                     first['fg'] = 'orange'
                     self.squares_changed.append(first)
+                    if i == i.lower():
+                        first.config(borderwidth=1, relief=tk.RIDGE, text=i.upper())
+                        
                 first = self.next_tile(first, direction)
                 
                 
@@ -296,12 +306,12 @@ g.root.mainloop()
 '''
 check! todo: blanks on board
 check! todo: scroll to move
-todo: blanks on rack
+check! todo: blanks on rack
 check! todo: reveal top move
 todo: backspace
 check! todo: place on click
 chcek! todo: froms :(
-todo: through blanks
+(hopefully) check! todo: through blanks
 check! todo: customizable difficulty
 todo: timer
 todo: scores (not like move scores, skill scores based on completion)
