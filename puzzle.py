@@ -294,4 +294,5 @@ check! todo: customizable difficulty
 todo: timer
 todo: scores (not like move scores, skill scores based on completion)
 todo: rate puzzle by difficulty
+todo: leave analysis graph (bar graph of each possible leave)
 '''
