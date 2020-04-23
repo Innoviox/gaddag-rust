@@ -54,6 +54,7 @@ class Puzzle:
         y, x = position
         c, r = str(y), string.ascii_uppercase[x - 1]
         s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word + ' '
+
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
             r = self.moves.index(move) + 1
@@ -212,6 +213,9 @@ class GUI:
         while f2['text'].isalpha() and sq != f2:
             word += ')' + f2['text'] + '('
             sq, f2 = f2, self.next_tile(f2, self.current_direction, opp=-1)
+        if sq != f2:
+            f2 = self.next_tile(f2, self.current_direction)
+        loc = self.location_of(f2)
         word = word[::-1]
         sq = None
         while first['text'].isalpha() and sq != first:
