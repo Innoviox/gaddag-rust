@@ -164,6 +164,14 @@ class GUI:
 
             self.move_btns.append(btn)
 
+        self.max_time = 60000
+        self.time_passed = 0
+        self.tick = 1000
+
+        self.timer = tk.Label(self.root, font='TkFixedFont 24')
+        self.timer.grid(row=8, column=16, rowspan=8, columnspan=2)
+        self.start_timer()
+
     def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
 
@@ -295,9 +303,13 @@ class GUI:
                         
                 first = self.next_tile(first, direction)
                 
-                
+    def start_timer(self):
+        curr = self.max_time - self.time_passed
+        self.time_passed += self.tick
 
-        
+        self.timer.config(text="{0:0>2d}:{1:0>2d}".format(curr // 60000, (curr % 60000) // 1000))
+        self.root.after(self.tick, self.start_timer)
+
 
 g = GUI(difficulty=1)
 g.root.mainloop()
