@@ -260,8 +260,10 @@ class GUI:
         word = word.replace(')(', '')
         
         if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
-            self.moves_submitted.append(r)
-            # self.show(r - 1)(human=True)
+            if self.can_submit:
+                self.moves_submitted.append(r)
+            else:
+                self.show(r - 1)(human=True)
 
     def next_tile(self, tile, direction, opp=1):
         a, b = self.location_of(tile)
