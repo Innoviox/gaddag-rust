@@ -169,13 +169,18 @@ class GUI:
         self.time_passed = 0
         self.tick = 1000
 
-        self.timer = tk.Label(self.root, font='TkFixedFont 24')
-        self.timer.grid(row=8, column=16, rowspan=8, columnspan=2)
+        self.timer_frame = tk.Frame(self.root)
+        self.timer = tk.Label(self.timer_frame, font='TkFixedFont 24')
+        
+        self.timer_frame.grid(row=8, column=16, rowspan=8, columnspan=2)
+        self.timer.pack()
+        
         self.start_timer()
 
         self.can_submit = True
         self.moves_submitted = []
-
+        self.lb = None
+        
     def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
 
@@ -270,7 +275,7 @@ class GUI:
         return self.labels[max(1, min(a + direction.y * opp, 15))][max(1, min(b + direction.x * opp, 15))]
 
     def show(self, i):
-        def clicked(human=False):
+        def clicked(human=False, hidden=False):
             if self.can_submit: return
             
             move = self.puzzle.moves[i]
@@ -320,15 +325,46 @@ class GUI:
             self.timer.config(text="{0:0>2d}:{1:0>2d}".format(curr // 60000, (curr % 60000) // 1000))
             self.root.after(self.tick, self.start_timer)
         else:
-            self.finish()
+            self.enter_select()
 
-    def finish(self):
+    def enter_select(self):
         self.can_submit = False
 
-        print("Found moves", sorted(self.moves_submitted))
+        # print("Found moves", sorted(self.moves_submitted))
+        
+        # for i in self.moves_submitted:
+        #     self.show(i - 1)(human=True, hidden=True)
 
+        self.timer.pack_forget()
+
+        if not self.lb:
+            self.lb = tk.Listbox(self.timer_frame)
+        else:
+            self.lb.delete(0, tk.END)
+        
+        for i in self.moves_submitted:
+            self.lb.insert(tk.END, ' '.join(self.puzzle.moves[i - 1].split()[:-1]).ljust(self.ml + 5))
+            
+        self.lb.pack()
+
+        self.sub = tk.Button(self.timer_frame, text='Choose', command=self.submit_move)
+        self.sub.pack()
+
+    def submit_move(self):
+        sel = self.lb.curselection()[0]
+        i = self.moves_submitted[sel]
+        self.show(i - 1)(human=True)
+        self.sub.config(text='Done', command=self.finish)
+
+    def finish(self):
+        self.lb.pack_forget()
+        self.sub.pack_forget()
+        self.timer.pack()
+
+        print("Found moves", sorted(self.moves_submitted))
         for i in self.moves_submitted:
             self.show(i - 1)(human=True)
+        
     
     
 g = GUI(difficulty=1)
