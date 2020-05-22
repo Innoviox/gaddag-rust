@@ -62,7 +62,7 @@ class Puzzle:
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
             r = self.moves.index(move) + 1
-            print()
+            print(move.split()[2]) # print score
             return r
         except IndexError:
             print(" (invalid)")
