@@ -57,14 +57,15 @@ class Puzzle:
         c, r = str(y), string.ascii_uppercase[x - 1]
         s = [r + c, c + r][direction==Direction.ACROSS] + ' ' + word + ' '
 
-        print(s)
+        print(s, end='')
         
         try:
             move = [i for i in self.moves if i.startswith(s)][0]
             r = self.moves.index(move) + 1
+            print()
             return r
         except IndexError:
-            # print("Invalid move", s, "(or not in top 500)")
+            print(" (invalid)")
             return None
 
 # thanks https://gist.github.com/mp035/9f2027c3ef9172264532fcd6262f3b01 
@@ -259,7 +260,7 @@ class GUI:
         word = word.replace(')(', '')
         
         if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
-            self.moves_submitted.append(r - 1)
+            self.moves_submitted.append(r)
             # self.show(r - 1)(human=True)
 
     def next_tile(self, tile, direction, opp=1):
@@ -322,10 +323,10 @@ class GUI:
     def finish(self):
         self.can_submit = False
 
-        print("Found moves", self.moves_submitted)
+        print("Found moves", sorted(self.moves_submitted))
 
         for i in self.moves_submitted:
-            self.show(i)(human=True)
+            self.show(i - 1)(human=True)
     
     
 g = GUI(difficulty=1)
