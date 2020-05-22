@@ -172,6 +172,9 @@ class GUI:
         self.timer.grid(row=8, column=16, rowspan=8, columnspan=2)
         self.start_timer()
 
+        self.can_submit = True
+        self.moves_submitted = []
+
     def update_rack_frame(self):
         self.rack_frame = tk.Frame(self.root, width=100, height=40, borderwidth=1, relief=tk.SUNKEN)
 
@@ -256,7 +259,8 @@ class GUI:
         word = word.replace(')(', '')
         
         if r := self.puzzle.rank_of_move(loc, word, self.current_direction):
-            self.show(r - 1)(human=True)
+            self.moves_submitted.append(r - 1)
+            # self.show(r - 1)(human=True)
 
     def next_tile(self, tile, direction, opp=1):
         a, b = self.location_of(tile)
@@ -264,6 +268,8 @@ class GUI:
 
     def show(self, i):
         def clicked(human=False):
+            if self.can_submit: return
+            
             move = self.puzzle.moves[i]
             self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + move).ljust(self.ml + 5)
             if human:
@@ -305,12 +311,23 @@ class GUI:
                 
     def start_timer(self):
         curr = self.max_time - self.time_passed
-        self.time_passed += self.tick
+        if curr >= 0:
+            self.time_passed += self.tick
 
-        self.timer.config(text="{0:0>2d}:{1:0>2d}".format(curr // 60000, (curr % 60000) // 1000))
-        self.root.after(self.tick, self.start_timer)
+            self.timer.config(text="{0:0>2d}:{1:0>2d}".format(curr // 60000, (curr % 60000) // 1000))
+            self.root.after(self.tick, self.start_timer)
+        else:
+            self.finish()
 
+    def finish(self):
+        self.can_submit = False
 
+        print("Found moves", self.moves_submitted)
+
+        for i in self.moves_submitted:
+            self.show(i)(human=True)
+    
+    
 g = GUI(difficulty=1)
 g.root.mainloop()
 
