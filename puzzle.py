@@ -364,6 +364,7 @@ class GUI:
         print("Found moves", sorted(self.moves_submitted))
         for i in self.moves_submitted:
             self.show(i - 1)(human=True)
+        self.show(0)
         
     
     
