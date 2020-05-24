@@ -12,7 +12,6 @@ def makedir():
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
     else:
-        return
         raise AlreadyRunError
 def makenospd():
     ospd = open("nwl18.txt").read().split("\n")
