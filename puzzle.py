@@ -165,7 +165,7 @@ class GUI:
 
             self.move_btns.append(btn)
 
-        self.max_time = 60000
+        self.max_time = 6000
         self.time_passed = 0
         self.tick = 1000
 
@@ -279,7 +279,8 @@ class GUI:
             if self.can_submit: return
             
             move = self.puzzle.moves[i]
-            self.move_btns[i]['text'] = (str(i + 1).zfill(3) + '. ' + move).ljust(self.ml + 5)
+            diff = round(float(self.puzzle.moves[0].split()[-1]) - float(move.split()[-1]), 2)
+            self.move_btns[i]['text'] = (f'[-{diff}] ' + str(i + 1).zfill(3) + '. ' + move).ljust(self.ml + 5)
             if human:
                 self.move_btns[i]['fg'] = 'red'
                 self.move_box.canvas.yview_moveto(i / len(self.puzzle.moves))
