@@ -165,7 +165,7 @@ class GUI:
 
             self.move_btns.append(btn)
 
-        self.max_time = 6000
+        self.max_time = 60000
         self.time_passed = 0
         self.tick = 1000
 
