@@ -50,7 +50,7 @@ impl Game {
 
     pub fn do_move(&mut self, difficulty: usize) -> (Move, String, String, usize) {
         let r = self.current_player().rack.clone();
-        let m = self.players[self.current].do_move(&mut self.board, difficulty);
+        let m = self.players[self.current].do_move(&mut self.board, difficulty, true);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;
@@ -88,6 +88,10 @@ impl Game {
         self.finished
             || !(self.board.bag.distribution.len() > 0
                 || (self.players[0].rack.len() > 0 && self.players[1].rack.len() > 0))
+    }
+
+    pub fn state_is_over(b: &mut Board, p1: &Player, p2: &Player) -> bool {
+        !(b.bag.distribution.len() > 0 || (p1.rack.len() > 0 && p2.rack.len() > 0))
     }
 
     pub fn get_board(&self) -> &Board {
