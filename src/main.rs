@@ -14,7 +14,6 @@ mod bag;
 mod board;
 mod dictionary;
 mod game;
-mod lookahead;
 mod player;
 mod puzzle;
 mod simulate;
