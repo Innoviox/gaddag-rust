@@ -76,4 +76,12 @@ impl Bag {
         }
         tiles
     }
+
+    pub fn remove_blanks(&mut self) {
+        for _ in 0..2 {
+            if self.distribution.contains(&'?') {
+                self.distribution._remove_item('?');
+            }
+        }
+    }
 }

@@ -50,7 +50,7 @@ impl Player {
                     }
 
                     if simulating {
-                        println!("{:?}", self.simul_for(board, &m, 1, 100));
+                        println!("{:?}", self.simul_for(board, &m, 1, 1));
                     }
 
                     self.draw_up(board);

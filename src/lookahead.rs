@@ -41,6 +41,8 @@ impl Board {
         */
         let pre_state: S = self.save_state();
 
+        self.bag.remove_blanks(); // make things quicker
+
         let looks = vec![(0, 0); k].into_iter().map(|_| self.lookahead(n, leave, &pre_state));
 
         let sums = looks.into_iter().fold((0, 0), |a, b| (a.0 + b.0, a.1 + b.1));
