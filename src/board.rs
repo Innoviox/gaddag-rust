@@ -14,6 +14,7 @@ pub type S = (
     Vec<Position>,
     [[Vec<char>; 225]; 2],
     Vec<char>,
+    Vec<Position>
 );
 
 fn _as(v: usize) -> i32 {
@@ -350,15 +351,17 @@ impl Board {
             self.blanks.clone(),
             self.cross_checks.clone(),
             self.bag.distribution.clone(),
+            self.affected.clone()
         )
     }
 
     pub fn set_state(&mut self, state: &S) {
-        let (s, blanks, c, bag) = state;
+        let (s, blanks, c, bag, affected) = state;
         self.state = (*s).clone();
         self.blanks = (*blanks).clone();
         self.cross_checks = (*c).clone();
         self.bag.distribution = bag.clone();
+        self.affected = affected.clone();
     }
 
     pub fn get_board(&self) -> [[char; 15]; 15] {

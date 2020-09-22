@@ -137,6 +137,7 @@ impl Game {
                 vec![],
                 [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
                 Bag::default().distribution,
+                vec![]
             );
         }
 

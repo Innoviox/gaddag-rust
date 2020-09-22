@@ -29,24 +29,20 @@ impl Board {
             // if mo.exch() {
                 // opponent.score += mo.evaluation as u32;
             // }
-            println!("{:?} {:?}", mo, rack);
 
             let rack2: String = player.rack.clone().iter().collect();
             let mp = player.do_move(self, 1, false).0;
             // if mp.exch() {
                 // player.score += mp.evaluation as u32;
             // }
-            println!("{:?} {:?}", mp, rack2);
 
             i += 1;
         }
 
-        // println!("{}", self);
         self.set_state(pre_state);
-        // println!("{}", self);
 
-        // thread::sleep(time::Duration::from_secs(5));
-        println!("{:?}", (player.score, opponent.score));
+        // todo do a unit test with this
+        // println!("{:?}", (player.score, opponent.score));
 
         (player.score, opponent.score)
     }
