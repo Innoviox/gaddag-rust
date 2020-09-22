@@ -1,7 +1,6 @@
 use crate::board::{Board, S};
 use crate::player::Player;
 use crate::game::Game;
-use std::{thread, time};
 
 impl Board {
     pub fn lookahead(&mut self, n: u32, leave: &Vec<char>) -> (u32, u32) {
@@ -18,7 +17,7 @@ impl Board {
 
         let pre_state: &S = &self.save_state();
 
-        let mut opponent = Player { rack: self.bag.draw_tiles(7), name: "opp".to_string(), score: 0 };
+        let mut opponent = Player { rack: vec!['S', 'O', 'V', 'L', 'E', 'L', 'A'], name: "opp".to_string(), score: 0 };
         let mut player   = Player { rack: leave.to_vec(),         name: "me!".to_string(), score: 0 };
 
         player.draw_up(self);
@@ -76,7 +75,7 @@ pub fn main() {
     let mut game = Game::default();
 
     game.get_player_mut(0).set_rack(vec!['A', 'B', 'C', 'D', 'E', 'F', 'G']);
-    game.get_player_mut(1).set_rack(vec!['S', 'O', 'V', 'L', 'E', 'L', 'A']);
+    // game.get_player_mut(1).set_rack(vec!['S', 'O', 'V', 'L', 'E', 'L', 'A']);
 
     let pre_state = game.get_last_state(); // preserve an empty state
     let player = game.current_player().clone();
@@ -91,6 +90,6 @@ pub fn main() {
 
         board.place_move(&m);
 
-        println!("{:?} {:?}", m.word, l_score(board.simulate(leave, 3, 2)));
+        println!("{:?} {:?}", m.word, l_score(board.simulate(leave, 1, 2)));
     }
 }
