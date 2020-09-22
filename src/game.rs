@@ -50,7 +50,7 @@ impl Game {
 
     pub fn do_move(&mut self, difficulty: usize) -> (Move, String, String, usize) {
         let r = self.current_player().rack.clone();
-        let m = self.players[self.current].do_move(&mut self.board, difficulty, true);
+        let m = self.players[self.current].do_move(&mut self.board, difficulty, false);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
         self.current = (self.current + 1) % 2;

@@ -26,7 +26,7 @@ impl Player {
         &mut self,
         board: &mut Board,
         difficulty: usize,
-        simulating: bool
+        _simulating: bool
     ) -> (Move, String, String, usize) {
         let moves = self.gen_moves(board).0;
         let len = moves.len();
@@ -49,9 +49,9 @@ impl Player {
                         }
                     }
 
-                    if simulating {
-                        println!("{:?}", self.simulate(board, &m, 1, 1));
-                    }
+                    // if simulating {
+                    //     println!("{:?}", self.simulate(board, &m, 1, 1));
+                    // }
 
                     self.draw_up(board);
 

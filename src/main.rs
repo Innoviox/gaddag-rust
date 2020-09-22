@@ -41,7 +41,7 @@ fn main() {
                 .parse::<usize>()
                 .unwrap(),
         );
-    } else if let Some(ref matches) = matches.subcommand_matches("lookahead") {
+    } else if let Some(ref _matches) = matches.subcommand_matches("lookahead") {
         lookahead::main();
     }
 }

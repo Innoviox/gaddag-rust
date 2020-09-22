@@ -25,16 +25,29 @@ impl Board {
 
         let mut i = 0;
         while !Game::state_is_over(self, &opponent, &player) && i < n {
-            opponent.do_move(self, 1, false);
-            player.do_move(self, 1, false);
+            let rack: String = opponent.rack.clone().iter().collect();
+            let mo = opponent.do_move(self, 1, false).0;
+            // if mo.exch() {
+                // opponent.score += mo.evaluation as u32;
+            // }
+            println!("{:?} {:?}", mo, rack);
+
+            let rack2: String = player.rack.clone().iter().collect();
+            let mp = player.do_move(self, 1, false).0;
+            // if mp.exch() {
+                // player.score += mp.evaluation as u32;
+            // }
+            println!("{:?} {:?}", mp, rack2);
+
             i += 1;
         }
 
         // println!("{}", self);
-        // thread::sleep(time::Duration::from_secs(1));
-
         self.set_state(pre_state);
         // println!("{}", self);
+
+        // thread::sleep(time::Duration::from_secs(5));
+        println!("{:?}", (player.score, opponent.score));
 
         (player.score, opponent.score)
     }
@@ -55,16 +68,29 @@ impl Board {
     }
 }
 
+pub fn l_score(value: (f64, f64)) -> f64 {
+    (value.0 - value.1) / 35f64
+}
+
 pub fn main() {
     let mut game = Game::default();
 
+    game.get_player_mut(0).set_rack(vec!['A', 'B', 'C', 'D', 'E', 'F', 'G']);
+    game.get_player_mut(1).set_rack(vec!['S', 'O', 'V', 'L', 'E', 'L', 'A']);
 
     let pre_state = game.get_last_state(); // preserve an empty state
     let player = game.current_player().clone();
+    let board = game.get_board_mut();
 
-    let m = game.do_move(0).0;
+    let moves = player.gen_moves(board).0;
+    // let post_state = game.get_last_state();
 
-    let mut board = game.get_board_mut();
-    board.set_state(&pre_state);    
-    println!("{:?}", board.simulate(&player.leave(board.reals(&m)), 1, 100));
+    for m in moves.iter().take(1) {
+        board.set_state(&pre_state);
+        let leave = &player.leave(board.reals(&m));
+
+        board.place_move(&m);
+
+        println!("{:?} {:?}", m.word, l_score(board.simulate(leave, 3, 2)));
+    }
 }
