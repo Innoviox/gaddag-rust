@@ -50,7 +50,7 @@ impl Player {
                     }
 
                     if simulating {
-                        println!("{:?}", self.simul_for(board, &m, 1, 1));
+                        println!("{:?}", self.simulate(board, &m, 1, 1));
                     }
 
                     self.draw_up(board);
@@ -125,18 +125,8 @@ impl Player {
         }
     }
 
-    fn simul_for(&self, board: &mut Board, m: &Move, n: u32, k: usize) -> (f64, f64) {
+    pub fn simulate(&self, board: &mut Board, m: &Move, n: u32, k: usize) -> (f64, f64) {
         let chars = board.reals(m);
-        let mut leave = self.rack.clone();
-
-        for c in chars {
-            if leave.contains(&c) {
-                leave._remove_item(c);
-            } else {
-                leave._remove_item('?');
-            }
-        }
-
-        board.simulate(n, &leave, k)
+        board.simulate(&self.leave(chars), n, k)
     }
 }
