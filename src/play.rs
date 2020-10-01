@@ -84,8 +84,10 @@ impl<'a> TermionGame<'a> {
         self.mouse_position = Position { row : y as usize, col : x as usize }
     }
 
-    pub fn handle_char(&mut self, c: char) {
-        self.word.push(c);
+    pub fn handle_char(&mut self, c: char) { // todo: shift to place blank
+        if 'a' <= c && c <= 'z' {
+            self.word.push(c.to_ascii_uppercase());
+        }
     }
 }
 
