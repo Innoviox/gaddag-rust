@@ -44,9 +44,11 @@ impl<'a> TermionGame<'a> {
         write!(stdout, "{}", termion::clear::All);
         write!(stdout, "{}", s);
 
-        let x = self.mouse_position.col;
-        let y = self.mouse_position.row;
-        write!(stdout, "{}{}{}", cursor::Goto(x as u16, y as u16), y - 4, (x - 6) / 4);
+        if let Some(pos) = self.pos {
+            let x = (pos.col * 4 + 7) as u16;
+            let y = (pos.row + 4) as u16;
+            write!(stdout, "{} {} ", cursor::Goto(x as u16, y as u16), self.dir.to_str());
+        }
     }
 
     pub fn handle_click(&mut self, x: u16, y: u16) {
