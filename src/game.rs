@@ -4,8 +4,13 @@ use crate::player::Player;
 use crate::utils::Move;
 
 use array_init::array_init;
+use itertools::{
+    Itertools,
+    EitherOrBoth::*,
+};
 
 use std::vec::Vec;
+use std::cmp;
 
 pub struct Game {
     players: [Player; 2],
@@ -159,6 +164,8 @@ impl Game {
     }
 
     pub fn to_str(&mut self) -> String {
+        let board = format!("{}", self.get_board());
+
         let mut res = format!("{:^27}|{:^27}\n{}\n", self.get_player(0).name, 
                                        self.get_player(1).name, 
                                        "-".repeat(56));
@@ -192,6 +199,19 @@ impl Game {
             res = format!("{}{}", res, text);
         }
 
-        res
+        let board = board.split("\n");
+        let res = res.split("\n");
+        
+        let mut out = format!("{}", "");
+
+        for pair in board.zip_longest(res) {
+            match pair {
+                Both(l, r) => out = format!("{}{} {}\n", out, l, r),
+                Left(l)    => out = format!("{}{}\n", out, l),
+                Right(r)   => out = format!("{}{}{}\n", out, "-".repeat(66), r),
+            }
+        }
+
+        out
     }
 }

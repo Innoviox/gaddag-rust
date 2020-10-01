@@ -8,18 +8,10 @@ use termion::input::{TermRead, MouseTerminal};
 use termion::raw::IntoRawMode;
 
 use std::io::{self, Write, stdout, stdin};
+use std::cmp;
 
 fn write_screen(g: &mut Game) {
-    let s1 = format!("{}", g.get_board());
-
-    /*
-    Format:
-
-    XX XXXXXXXXXX +0XX/XXX | 
-    */
-    // let s2 = format!("{}", g);
-
-    
+    let s = g.to_str();
 }
 
 pub fn main() {
