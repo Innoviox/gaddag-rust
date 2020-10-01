@@ -164,7 +164,7 @@ impl Game {
     }
 
     pub fn to_str(&mut self) -> String {
-        let board = format!("{}", self.get_board());
+        let board = format!("{}", self.board);
 
         let mut res = format!("{:^27}|{:^27}\n{}\n", self.get_player(0).name, 
                                        self.get_player(1).name, 

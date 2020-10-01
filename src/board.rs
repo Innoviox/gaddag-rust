@@ -2,9 +2,12 @@ use crate::bag::Bag;
 use crate::dictionary::Dictionary;
 use crate::dictionary::Trie;
 use crate::utils::*;
+
 use array_init::array_init;
 use itertools::Itertools;
 use petgraph::graph::NodeIndex;
+use termion::color;
+
 use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::fmt;
@@ -990,6 +993,43 @@ impl Board {
         }
 
         score
+    }
+
+    pub fn to_termion(&self) -> String {
+        let sep = "-".repeat(66);
+
+        let mut res = format!("{}\n", sep);
+        res = format!("{}|    |", res);
+        for row in ALPH.chars().take(15) {
+            res = format!("{}{}", res, format!(" {} |", row));
+        }
+        res = format!("{}\n{}\n", res, sep);
+
+
+        for (num, row) in self.state.iter().enumerate() {
+            res = format!("{}| {} |", res, format!("{:0>2}", num + 1));
+
+            for (col, sq) in row.iter().enumerate() {
+                match sq {
+                    '#' => res = format!("{}{} {}", res, color::Bg(color::Red),       color::Bg(color::Reset)),
+                    '^' => res = format!("{}{} {}", res, color::Bg(color::LightRed),  color::Bg(color::Reset)),
+                    '+' => res = format!("{}{} {}", res, color::Bg(color::Blue),      color::Bg(color::Reset)),
+                    '-' => res = format!("{}{} {}", res, color::Bg(color::LightBlue), color::Bg(color::Reset)),
+                    '.' => res = format!("{}   ", res),
+                    _ => {
+                        if self.blanks.contains(&Position { row: num, col }) {
+                            res = format!("{} {} ", res, sq.to_lowercase());
+                        } else {
+                            res = format!("{} {} ", res, sq);
+                        }
+                    }
+                };
+                res = format!("{}|", res);
+            }
+            res = format!("{}\n{}\n", res, sep);
+        }
+
+        res
     }
 }
 
