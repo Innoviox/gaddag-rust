@@ -23,6 +23,7 @@ pub struct TermionGame<'a> {
 
     pos:  Option<Position>,
     dir: Direction,
+    word: String,
 
     mouse_position: Position,
 }
@@ -33,6 +34,7 @@ impl<'a> TermionGame<'a> {
             game: g,
             pos: None,
             dir: Direction::Across,
+            word: String::new(),
 
             mouse_position: Position { row: 1, col: 1 },
         }
@@ -45,8 +47,19 @@ impl<'a> TermionGame<'a> {
         write!(stdout, "{}", s);
 
         if let Some(pos) = self.pos {
-            let x = (pos.col * 4 + 7) as u16;
-            let y = (pos.row + 4) as u16;
+            let mut x = (pos.col * 4 + 7) as u16;
+            let mut y = (pos.row + 4) as u16;
+
+            for c in self.word.chars() {
+                write!(stdout, "{} {} ", cursor::Goto(x as u16, y as u16), c);
+
+                if self.dir == Direction::Across {
+                    x += 4;
+                } else {
+                    y += 2;
+                }
+            }
+
             write!(stdout, "{} {} {}", cursor::Goto(x as u16, y as u16), 
                                        self.dir.to_str(), 
                                        termion::cursor::Hide);
@@ -62,11 +75,17 @@ impl<'a> TermionGame<'a> {
         if let Some(old_pos) = self.pos {
             if old_pos == new_pos { // https://github.com/rust-lang/rust/issues/53667
                 self.dir = self.dir.flip();
+            } else {
+                self.word = String::new(); // reset word b/c new position was chosen
             }
         }
         
         self.pos = Some(new_pos);
         self.mouse_position = Position { row : y as usize, col : x as usize }
+    }
+
+    pub fn handle_char(&mut self, c: char) {
+        self.word.push(c);
     }
 }
 
@@ -82,7 +101,11 @@ pub fn main() {
     for c in stdin.events() {
         let evt = c.unwrap();
         match evt {
-            Event::Key(Key::Char('q')) => break,
+            Event::Key(Key::Ctrl('c')) => break,
+            Event::Key(Key::Char(c)) => {
+                game.handle_char(c);
+                stdout.flush().unwrap();
+            },
             Event::Mouse(me) => {
                 match me {
                     // MouseEvent::Press(_, a, b) |
