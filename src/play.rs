@@ -6,15 +6,17 @@ use termion::clear;
 use termion::cursor;
 use termion::event::*;
 use termion::input::{TermRead, MouseTerminal};
-use termion::raw::IntoRawMode;
+use termion::raw::{IntoRawMode, RawTerminal};
 
 use itertools::{
     Itertools,
     EitherOrBoth::*,
 };
 
-use std::io::{self, Write, stdout, stdin};
+use std::io::{self, Write, stdout, Stdout, stdin};
 use std::cmp;
+
+pub type TTY = MouseTerminal<RawTerminal<Stdout>>;
 
 pub struct TermionGame<'a> {
     game: &'a mut Game,
@@ -22,7 +24,7 @@ pub struct TermionGame<'a> {
     pos:  Option<Position>,
     dir: Direction,
 
-    mouse_position: Position
+    mouse_position: Position,
 }
 
 impl<'a> TermionGame<'a> {
@@ -32,11 +34,11 @@ impl<'a> TermionGame<'a> {
             pos: None,
             dir: Direction::Across,
 
-            mouse_position: Position { row: 1, col: 1 }
+            mouse_position: Position { row: 1, col: 1 },
         }
     }
 
-    pub fn display(&mut self) {
+    pub fn display(&mut self, stdout: &mut TTY) {
         let s = self.game.to_str().replace("\n", "\n\r");
 
         write!(stdout, "{}", termion::clear::All);
@@ -49,7 +51,7 @@ impl<'a> TermionGame<'a> {
         // }
     }
 
-    pub fn handle_click(&mut self, x: u16, y: u16) {
+    pub fn handle_click(&mut self, x: u16, y: u16, stdout: &mut TTY) {
         if y % 2 == 1 || y < 4 || 
            x < 7 || (x - 6) % 4 == 0 { return } // clicked somewhere that isnt a square
 
@@ -59,11 +61,11 @@ impl<'a> TermionGame<'a> {
 }
 
 pub fn main() {
-    let mut g = Game::default();
-    let mut game = TermionGame::of(&mut g);
-
     let stdin = stdin();
     let mut stdout = MouseTerminal::from(io::stdout().into_raw_mode().unwrap());
+
+    let mut g = Game::default();
+    let mut game = TermionGame::of(&mut g);
 
     stdout.flush().unwrap();
 
@@ -77,14 +79,14 @@ pub fn main() {
                     MouseEvent::Release(a, b) |
                     MouseEvent::Hold(a, b) => {
                         // write!(stdout, "{}", cursor::Goto(a, b)).unwrap();
-                        game.handle_click(a, b);
+                        game.handle_click(a, b, &mut stdout);
                     }
                 }
             }
             _ => {}
         }
 
-        game.display();
+        game.display(&mut stdout);
         stdout.flush().unwrap();
     }
 
