@@ -77,7 +77,9 @@ impl Game {
 
         end *= 2;
         let p = &mut self.players[n as usize];
-        p.score += end as u32;
+        if !self.finished {
+            p.score += end as u32;
+        }
 
         self.finished = true;
 
@@ -175,6 +177,19 @@ impl Game {
                                                        scores[i % 2]);
 
             res = format!("{}{}", res, ["| ", "\n"][i % 2]);
+        }
+
+        if self.is_over() {
+            let (end_s, end, n) = self.finish();
+            let mut text = format!("2*({}) +{}/{}\n", end_s, end, self.get_player(n).score);
+
+            if self.states() % 2 == 0 {
+                text = format!("{}| {}", " ".repeat(27), text);
+            } else {
+                text = format!("\n{}", text);
+            }
+
+            res = format!("{}{}", res, text);
         }
 
         res
