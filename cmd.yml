@@ -25,3 +25,6 @@ subcommands:
                 short: difficulty
                 takes_value: true
                 default_value: "1"
+    - play:
+        args:
+            

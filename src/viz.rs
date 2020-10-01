@@ -225,7 +225,7 @@ impl Win {
 
         for w in self.rack.get_children() {
             let l = w.dynamic_cast::<Label>().ok().unwrap();
-            let c = l.get_text().unwrap().chars().nth(0).unwrap();
+            let c = l.get_text().as_str().chars().nth(0).unwrap();
             let score = self.model.get_board().bag.score(c);
             let mut set = "white";
             for (p, letter) in m.iter() {
@@ -753,7 +753,7 @@ impl Widget for Win {
             Type::F32,    // Eval
         ]);
 
-        let options = TreeView::new_with_model(&tree_model);
+        let options = TreeView::with_model(&tree_model);
         options.get_style_context().add_class("monospace");
 
         let options_container = scroll(&options);
@@ -850,7 +850,7 @@ impl Widget for Win {
                         .ok()
                         .unwrap()
                         .get_text()
-                        .unwrap()
+                        .as_str()
                         // get score from text
                         .split("+")
                         .nth(1)
@@ -881,8 +881,8 @@ impl Widget for Win {
                     _ => false,
                 })
                 // filter for labels with "/" (there should only be one, the one we want)
-                .map(|x| x.ok().unwrap().get_text().unwrap())
-                .filter(|x| x.contains("/"))
+                .map(|x| x.ok().unwrap().get_text())
+                .filter(|x| x.as_str().contains("/"))
                 // take label we found
                 .nth(0)
             {
@@ -1002,7 +1002,7 @@ impl Widget for Win {
             relm,
             window,
             connect_key_press_event(_, e),
-            return (Some(Msg::Type(e.get_keyval())), Inhibit(false))
+            return (Some(Msg::Type(*e.get_keyval())), Inhibit(false))
         );
 
         window.show_all();

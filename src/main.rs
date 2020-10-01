@@ -7,6 +7,7 @@ extern crate relm;
 #[macro_use]
 extern crate clap;
 extern crate gdk;
+extern crate termion;
 
 use clap::App;
 
@@ -20,6 +21,7 @@ mod simulate;
 mod text;
 mod utils;
 mod viz;
+mod play;
 
 fn main() {
     let yaml = load_yaml!("../cmd.yml");
@@ -40,5 +42,7 @@ fn main() {
                 .parse::<usize>()
                 .unwrap(),
         );
+    } else if let Some(ref _matches) = matches.subcommand_matches("play") {
+        play::main();
     }
 }
