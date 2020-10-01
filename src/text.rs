@@ -151,7 +151,6 @@ pub fn main(n: u32) {
     let mut game = Game::default();
     for _ in 0..n {
         two_player_game(&mut game, true);
-        println!("{}", game.to_str());
         game.reset();
     }
     // let mut b = bag::Bag::default();
