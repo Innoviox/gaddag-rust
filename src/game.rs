@@ -155,4 +155,28 @@ impl Game {
     pub fn states(&self) -> usize {
         self.states.len()
     }
+
+    pub fn to_str(&mut self) -> String {
+        let mut res = format!("{:^27}|{:^27}\n{}\n", self.get_player(0).name, 
+                                       self.get_player(1).name, 
+                                       "-".repeat(56));
+        let mut scores = [0, 0];
+
+        for i in 0..self.states() {
+            let (m, _) = self.set_state(i);
+            self.board.set_state(&self.get_last_state());
+
+            scores[i % 2] += m.score;
+
+            res = format!("{}{:<3}: {:<12} +{:<03}/{:<03} ", res, 
+                                                      m.position.to_str(m.direction),
+                                                       self.board.format(&m, true),
+                                                       m.score,
+                                                       scores[i % 2]);
+
+            res = format!("{}{}", res, ["| ", "\n"][i % 2]);
+        }
+
+        res
+    }
 }
