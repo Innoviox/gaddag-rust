@@ -136,6 +136,7 @@ impl Game {
                 vec![],
                 [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
                 Bag::default().distribution,
+                vec![],
             );
         }
 
@@ -188,6 +189,9 @@ impl Game {
 
             res = format!("{}{}", res, [" ", " │\n"][i % 2]);
         }
+
+        self.state = self.states();
+        self.board.set_state(&self.get_last_state());
 
         for _ in (self.states() / 2)..28 {
             res = format!("{}│{}│{}│\n", res, " ".repeat(27), " ".repeat(27));
