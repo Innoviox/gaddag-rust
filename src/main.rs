@@ -15,13 +15,13 @@ mod bag;
 mod board;
 mod dictionary;
 mod game;
+mod play;
 mod player;
 mod puzzle;
 mod simulate;
 mod text;
 mod utils;
 mod viz;
-mod play;
 
 fn main() {
     let yaml = load_yaml!("../cmd.yml");

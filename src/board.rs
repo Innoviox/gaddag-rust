@@ -1005,16 +1005,43 @@ impl Board {
         }
         res = format!("{}\n{}\n", res, sep);
 
-
         for (num, row) in self.state.iter().enumerate() {
             res = format!("{}| {} |", res, format!("{:0>2}", num + 1));
 
             for (col, sq) in row.iter().enumerate() {
                 match sq {
-                    '#' => res = format!("{}{} {}", res, color::Bg(color::Red),       color::Bg(color::Reset)),
-                    '^' => res = format!("{}{} {}", res, color::Bg(color::LightRed),  color::Bg(color::Reset)),
-                    '+' => res = format!("{}{} {}", res, color::Bg(color::Blue),      color::Bg(color::Reset)),
-                    '-' => res = format!("{}{} {}", res, color::Bg(color::LightBlue), color::Bg(color::Reset)),
+                    '#' => {
+                        res = format!(
+                            "{}{} {}",
+                            res,
+                            color::Bg(color::Red),
+                            color::Bg(color::Reset)
+                        )
+                    }
+                    '^' => {
+                        res = format!(
+                            "{}{} {}",
+                            res,
+                            color::Bg(color::LightRed),
+                            color::Bg(color::Reset)
+                        )
+                    }
+                    '+' => {
+                        res = format!(
+                            "{}{} {}",
+                            res,
+                            color::Bg(color::Blue),
+                            color::Bg(color::Reset)
+                        )
+                    }
+                    '-' => {
+                        res = format!(
+                            "{}{} {}",
+                            res,
+                            color::Bg(color::LightBlue),
+                            color::Bg(color::Reset)
+                        )
+                    }
                     '.' => res = format!("{}   ", res),
                     _ => {
                         if self.blanks.contains(&Position { row: num, col }) {
@@ -1088,7 +1115,6 @@ impl fmt::Display for Board {
                 write!(f, "\n{}\n", sep).expect("fail");
             }
         }
-        
         write!(f, "\n{}\n", bot)
     }
 }

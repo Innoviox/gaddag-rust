@@ -1,27 +1,24 @@
 use crate::game::Game;
-use crate::utils::{Position, Direction};
+use crate::utils::{Direction, Position};
 
-use termion::color;
 use termion::clear;
+use termion::color;
 use termion::cursor;
 use termion::event::*;
-use termion::input::{TermRead, MouseTerminal};
+use termion::input::{MouseTerminal, TermRead};
 use termion::raw::{IntoRawMode, RawTerminal};
 
-use itertools::{
-    Itertools,
-    EitherOrBoth::*,
-};
+use itertools::{EitherOrBoth::*, Itertools};
 
-use std::io::{self, Write, stdout, Stdout, stdin};
 use std::cmp;
+use std::io::{self, stdin, stdout, Stdout, Write};
 
 pub type TTY = MouseTerminal<RawTerminal<Stdout>>;
 
 pub struct TermionGame<'a> {
     game: &'a mut Game,
 
-    pos:  Option<Position>,
+    pos: Option<Position>,
     dir: Direction,
     word: String,
 
@@ -59,32 +56,43 @@ impl<'a> TermionGame<'a> {
                     y += 2;
                 }
             }
-            
-            write!(stdout, "{} {} {}", cursor::Goto(x as u16, y as u16), 
-                                       self.dir.to_str(), 
-                                       termion::cursor::Hide);
+
+            write!(
+                stdout,
+                "{} {} {}",
+                cursor::Goto(x as u16, y as u16),
+                self.dir.to_str(),
+                termion::cursor::Hide
+            );
         }
     }
-
     pub fn handle_click(&mut self, x: u16, y: u16) {
-        if y % 2 == 1 || y < 4 || 
-           x < 7 || (x - 6) % 4 == 0 { return } // clicked somewhere that isnt a square
+        if y % 2 == 1 || y < 4 || x < 7 || (x - 6) % 4 == 0 {
+            return;
+        } // clicked somewhere that isnt a square
 
-        let new_pos = Position { row : (y - 4) as usize, col : ((x - 6) / 4) as usize};
+        let new_pos = Position {
+            row: (y - 4) as usize,
+            col: ((x - 6) / 4) as usize,
+        };
 
         if let Some(old_pos) = self.pos {
-            if old_pos == new_pos { // https://github.com/rust-lang/rust/issues/53667
+            if old_pos == new_pos {
+                // https://github.com/rust-lang/rust/issues/53667
                 self.dir = self.dir.flip();
             } else {
                 self.word = String::new(); // reset word b/c new position was chosen
             }
         }
-        
         self.pos = Some(new_pos);
-        self.mouse_position = Position { row : y as usize, col : x as usize }
+        self.mouse_position = Position {
+            row: y as usize,
+            col: x as usize,
+        }
     }
 
-    pub fn handle_char(&mut self, c: char) { // todo: shift to place blank
+    pub fn handle_char(&mut self, c: char) {
+        // todo: shift to place blank
         if 'a' <= c && c <= 'z' {
             self.word.push(c.to_ascii_uppercase());
         }
@@ -107,7 +115,7 @@ pub fn main() {
             Event::Key(Key::Ctrl('c')) => break,
             Event::Key(Key::Char(c)) => {
                 game.handle_char(c);
-            },
+            }
             Event::Mouse(me) => {
                 match me {
                     // MouseEvent::Press(_, a, b) |
