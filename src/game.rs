@@ -199,15 +199,15 @@ impl Game {
 
         if self.is_over() {
             let (end_s, end, n) = self.finish();
-            let mut text = format!("2*({}) +{}/{}\n", end_s, end, self.get_player(n).score);
-
+            let mut text = format!("2*({}) +{}/{}", end_s, end, self.get_player(n).score);
+            let n = 26 - text.len();
             if self.states() % 2 == 0 {
                 text = format!("{}│ {}", " ".repeat(27), text);
             } else {
                 text = format!("\n{}", text);
             }
 
-            res = format!("{}{}", res, text);
+            res = format!("{}│{}{}│\n", res, text, " ".repeat(n));
         }
 
         res = format!("{}└{}┴{}┘\n", res, "─".repeat(27), "─".repeat(27));
