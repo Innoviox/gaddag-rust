@@ -161,14 +161,16 @@ impl Game {
     }
 
     fn states_str(&mut self) -> String {
+        let l = 28;
         let mut res = format!(
-            "┌{}┬{}┐\n│{:^27}│{:^27}│\n├{}┼{}┤\n",
-            "─".repeat(27),
-            "─".repeat(27),
+            "┌─────┬{}┬{}┐\n│     │{:^l$}│{:^l$}│\n├─────┼{}┼{}┤\n",
+            "─".repeat(l),
+            "─".repeat(l),
             self.get_player(0).name,
             self.get_player(1).name,
-            "─".repeat(27),
-            "─".repeat(27)
+            "─".repeat(l),
+            "─".repeat(l),
+            l = l
         );
         let mut scores = [0, 0];
 
@@ -178,39 +180,47 @@ impl Game {
 
             scores[i % 2] += m.score;
 
+            let mut num = String::new();
+            if i % 2 == 0 {
+                num = format!("│ {:<02}. │", (i / 2) + 1);
+            }
+
             res = format!(
-                "{}│{:<3}: {:<12} +{:<03}/{:<03}",
+                "{}{} {:<3}: {:<12} +{:<03}/{:<03} │",
                 res,
+                num,
                 m.position.to_str(m.direction),
                 self.board.format(&m, true),
                 m.score,
                 scores[i % 2]
             );
 
-            res = format!("{}{}", res, [" ", " │\n"][i % 2]);
+            if i % 2 == 1 {
+                res = format!("{}\n", res);
+            }
         }
 
         self.state = self.states();
         self.board.set_state(&self.get_last_state());
 
         for _ in (self.states() / 2)..28 {
-            res = format!("{}│{}│{}│\n", res, " ".repeat(27), " ".repeat(27));
+            res = format!("{}│     │{}│{}│\n", res, " ".repeat(l), " ".repeat(l));
         }
 
         if self.is_over() {
             let (end_s, end, n) = self.finish();
             let mut text = format!("2*({}) +{}/{}", end_s, end, self.get_player(n).score);
-            let n = 26 - text.len();
+            let n = l - 1 - text.len();
             if self.states() % 2 == 0 {
-                text = format!("{}│ {}", " ".repeat(27), text);
+                text = format!("{}│ {}", " ".repeat(l), text);
             } else {
                 text = format!("\n{}", text);
             }
 
-            res = format!("{}│{}{}│\n", res, text, " ".repeat(n));
+            res = format!("{}│     │{}{}│\n", res, text, " ".repeat(n));
         }
 
-        res = format!("{}└{}┴{}┘\n", res, "─".repeat(27), "─".repeat(27));
+        res = format!("{}└─────┴{}┴{}┘\n", res, "─".repeat(l), "─".repeat(l));
 
         res
     }

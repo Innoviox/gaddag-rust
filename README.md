@@ -50,8 +50,8 @@ UI Roadmap
 ## Termion Roadmap
 
 - [x] box moves
-  - [ ] number moves
-  - [ ] softcode 27
+  - [x] number moves
+  - [x] softcode 27
 - [x] box bag
   - [ ] player-based: can't tell what opponents rack is
 - [ ] box rack
