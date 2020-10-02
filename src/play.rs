@@ -67,7 +67,7 @@ impl<'a> TermionGame<'a> {
     }
 
     pub fn handle_click(&mut self, x: u16, y: u16) {
-        if y % 2 == 1 || y < 4 || 
+        if y % 2 == 0 || y < 4 || 
            x < 7 || (x - 6) % 4 == 0 { return } // clicked somewhere that isnt a square
 
         let new_pos = Position { row : (y - 4) as usize, col : ((x - 6) / 4) as usize};
