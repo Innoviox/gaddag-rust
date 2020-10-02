@@ -1,10 +1,9 @@
 use crate::bag::Bag;
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
-use crate::utils::Move;
+use crate::utils::{splice, Move};
 
 use array_init::array_init;
-use itertools::{EitherOrBoth::*, Itertools};
 
 use std::cmp;
 use std::vec::Vec;
@@ -205,19 +204,9 @@ impl Game {
 
     pub fn to_str(&mut self) -> String {
         let board = format!("{}", self.board);
+        let state = self.states_str();
+        let bag = self.board.bag.to_str();
 
-        let board = board.split("\n");
-        let res = res.split("\n");
-        let mut out = format!("{}", "");
-
-        for pair in board.zip_longest(res) {
-            match pair {
-                Both(l, r) => out = format!("{}{} {}\n", out, l, r),
-                Left(l) => out = format!("{}{}\n", out, l),
-                Right(r) => out = format!("{}{}{}\n", out, "-".repeat(66), r),
-            }
-        }
-
-        out
+        splice(splice(board, state), bag)
     }
 }

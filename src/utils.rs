@@ -1,3 +1,4 @@
+use itertools::{EitherOrBoth::*, Itertools};
 use std::cmp::Ordering;
 use std::fs::File;
 use std::io::Write;
@@ -12,6 +13,16 @@ impl<T: PartialEq> ItemRemovable<T> for Vec<T> {
     // implementation of unstable feature
     fn _remove_item(&mut self, some_x: T) -> T {
         self.remove(self.iter().position(|x| *x == some_x).unwrap())
+    }
+}
+
+pub trait ItemCountable<T> {
+    fn count(&self, some_x: T) -> usize;
+}
+
+impl<T: PartialEq> ItemCountable<T> for Vec<T> {
+    fn count(&self, some_x: T) -> usize {
+        self.iter().filter(|&n| *n == some_x).count()
     }
 }
 
@@ -317,4 +328,18 @@ pub fn write_to_file(file: &str, text: String) {
         },
         Err(_) => {}
     }
+}
+
+pub fn splice(s1: String, s2: String) -> String {
+    let mut out = format!("{}", "");
+
+    for pair in s1.split("\n").zip_longest(s2.split("\n")) {
+        match pair {
+            Both(l, r) => out = format!("{}{} {}\n", out, l, r),
+            Left(l) => out = format!("{}{}\n", out, l),
+            Right(r) => out = format!("{}{}{}\n", out, "-".repeat(66), r),
+        }
+    }
+
+    out
 }

@@ -2,11 +2,12 @@ use crate::utils::*;
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
 use std::vec::Vec;
+use termion::color;
 
 #[derive(Debug)]
 pub struct Bag {
     alph: [char; 27],
-    amts: [i32; 27],
+    amts: [usize; 27],
     values: [i32; 27],
     scores: HashMap<char, i32>,
     pub distribution: Vec<char>,
@@ -75,5 +76,24 @@ impl Bag {
             self.distribution._remove_item(*i);
         }
         tiles
+    }
+
+    pub fn to_str(&self) -> String {
+        let mut res = format!("┌─────{:<03}/100─────┐\n", self.distribution.len());
+
+        for (i, c) in self.alph.iter().enumerate() {
+            let count = self.distribution.count(*c);
+
+            res = format!(
+                "{}│ {}{grey}{used}{clear}{spaces} |\n",
+                res,
+                c.to_string().repeat(count),
+                grey = color::Fg(color::Rgb(220, 220, 220)),
+                used = c.to_string().repeat(self.amts[i] - count),
+                clear = color::Fg(color::Reset),
+                spaces = &" ".repeat(15 - self.amts[i])
+            );
+        }
+        res
     }
 }
