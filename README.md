@@ -44,3 +44,19 @@ UI Roadmap
 - shows considered moves
 - placable moves
 - more features
+
+# Human Play
+
+## Termion Roadmap
+
+- [ ] box moves
+  - [ ] number moves
+- [ ] box bag
+- [ ] box rack
+- [ ] set tiles from rack
+  - [ ] handle blanks: shift type
+- [ ] game
+  - [ ] valid move: connected checker
+  - [ ] when typing: skip placed tiles
+  - [ ] score tracker
+
