@@ -7,7 +7,7 @@ pub fn main(turns: u32, difficulty: usize) {
         game.do_move(difficulty);
     }
 
-    let p = game.current_player().clone();
+    let p = game.get_current_player().clone();
     let rack: String = p.rack.iter().collect();
 
     let (moves, eval_val) = p.gen_moves(game.get_board_mut());

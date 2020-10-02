@@ -50,7 +50,7 @@ impl Game {
     }
 
     pub fn do_move(&mut self, difficulty: usize) -> (Move, String, String, usize) {
-        let r = self.current_player().rack.clone();
+        let r = self.get_current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, difficulty);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
@@ -103,7 +103,7 @@ impl Game {
         self.turn
     }
 
-    pub fn current_player(&self) -> &Player {
+    pub fn get_current_player(&self) -> &Player {
         &self.players[self.current]
     }
 
@@ -230,10 +230,12 @@ impl Game {
         let state = self.states_str();
         let bag = self.board.bag.to_str();
 
-        let mut rack = String::new();
-        if self.states() > 0 {
-            rack = rack_to_string(self.get_rack(self.states() - 1), &self.board.bag);
-        }
+        // let mut rack = String::new();
+        // if self.states() > 0 {
+        //     rack = rack_to_string(self.get_rack(self.states() - 1), &self.board.bag);
+        // }
+
+        let rack = rack_to_string(self.get_current_player().rack.clone(), &self.board.bag);
         splice!(board, state, bag, rack)
     }
 }

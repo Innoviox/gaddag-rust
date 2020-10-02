@@ -216,7 +216,7 @@ impl Win {
     }
 
     fn update_rack(&mut self) {
-        self._update_rack(&self.model.current_player().rack.clone());
+        self._update_rack(&self.model.get_current_player().rack.clone());
     }
 
     fn update_rack_for(&mut self, m: &Move) {
@@ -291,7 +291,7 @@ impl Update for Win {
                         self.place(&lm, "white", true);
                     }
 
-                    let p = self.model.current_player();
+                    let p = self.model.get_current_player();
                     let rack: String = p.rack.iter().collect();
                     let score = p.score as i32;
                     let n = p.name.clone();
@@ -440,7 +440,7 @@ impl Update for Win {
 
                 let shift = self.model.is_over();
                 let mut zero = false;
-                let mut p = self.model.current_player().clone();
+                let mut p = self.model.get_current_player().clone();
 
                 if self.model.states() == 0 {
                 } else if self.model.state == 0 {
