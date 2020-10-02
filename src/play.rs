@@ -1,17 +1,12 @@
 use crate::game::Game;
 use crate::utils::{Direction, Position};
 
-use termion::clear;
-use termion::color;
 use termion::cursor;
 use termion::event::*;
 use termion::input::{MouseTerminal, TermRead};
 use termion::raw::{IntoRawMode, RawTerminal};
 
-use itertools::{EitherOrBoth::*, Itertools};
-
-use std::cmp;
-use std::io::{self, stdin, stdout, Stdout, Write};
+use std::io::{self, stdin, Stdout, Write};
 
 pub type TTY = MouseTerminal<RawTerminal<Stdout>>;
 
@@ -40,15 +35,15 @@ impl<'a> TermionGame<'a> {
     pub fn display(&mut self, stdout: &mut TTY) {
         let s = self.game.to_str().replace("\n", "\n\r");
 
-        write!(stdout, "{}", termion::clear::All);
-        write!(stdout, "{}{}", cursor::Goto(1, 1), s);
+        write!(stdout, "{}", termion::clear::All).expect("fail");
+        write!(stdout, "{}{}", cursor::Goto(1, 1), s).expect("fail");
 
         if let Some(pos) = self.pos {
             let mut x = (pos.col * 4 + 7) as u16;
             let mut y = (pos.row + 4) as u16;
 
             for c in self.word.chars() {
-                write!(stdout, "{} {} ", cursor::Goto(x as u16, y as u16), c);
+                write!(stdout, "{} {} ", cursor::Goto(x as u16, y as u16), c).expect("fail");
 
                 if self.dir == Direction::Across {
                     x += 4;
@@ -63,7 +58,8 @@ impl<'a> TermionGame<'a> {
                 cursor::Goto(x as u16, y as u16),
                 self.dir.to_str(),
                 termion::cursor::Hide
-            );
+            )
+            .expect("fail");
         }
     }
     pub fn handle_click(&mut self, x: u16, y: u16) {

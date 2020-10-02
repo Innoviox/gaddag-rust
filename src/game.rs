@@ -6,7 +6,6 @@ use crate::utils::{rack_to_string, Move};
 
 use array_init::array_init;
 
-use std::cmp;
 use std::vec::Vec;
 
 pub struct Game {
@@ -230,8 +229,11 @@ impl Game {
         let board = format!("{}", self.board);
         let state = self.states_str();
         let bag = self.board.bag.to_str();
-        let rack = rack_to_string(self.get_rack(self.states() - 1), &self.board.bag);
 
+        let mut rack = String::new();
+        if self.states() > 0 {
+            rack = rack_to_string(self.get_rack(self.states() - 1), &self.board.bag);
+        }
         splice!(board, state, bag, rack)
     }
 }

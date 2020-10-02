@@ -54,7 +54,8 @@ UI Roadmap
   - [x] softcode 27
 - [x] box bag
   - [ ] player-based: can't tell what opponents rack is
-- [ ] box rack
+- [x] box rack
+  - [ ] todo: z score is 10
 - [ ] set tiles from rack
   - [ ] handle blanks: shift type
 - [ ] game

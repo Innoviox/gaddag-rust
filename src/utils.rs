@@ -1,4 +1,3 @@
-#[macro_use]
 use itertools::{EitherOrBoth::*, Itertools};
 use std::char::from_u32;
 use std::cmp::Ordering;
