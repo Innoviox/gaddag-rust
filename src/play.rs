@@ -44,7 +44,7 @@ impl<'a> TermionGame<'a> {
         let s = self.game.to_str().replace("\n", "\n\r");
 
         write!(stdout, "{}", termion::clear::All);
-        write!(stdout, "{}", s);
+        write!(stdout, "{}{}", cursor::Goto(1, 1), s);
 
         if let Some(pos) = self.pos {
             let mut x = (pos.col * 4 + 7) as u16;
@@ -61,13 +61,13 @@ impl<'a> TermionGame<'a> {
             }
             
             write!(stdout, "{} {} {}", cursor::Goto(x as u16, y as u16), 
-                                    self.dir.to_str(), 
-                                    termion::cursor::Hide);
+                                       self.dir.to_str(), 
+                                       termion::cursor::Hide);
         }
     }
 
     pub fn handle_click(&mut self, x: u16, y: u16) {
-        if y % 2 == 0 || y < 4 || 
+        if y % 2 == 1 || y < 4 || 
            x < 7 || (x - 6) % 4 == 0 { return } // clicked somewhere that isnt a square
 
         let new_pos = Position { row : (y - 4) as usize, col : ((x - 6) / 4) as usize};
@@ -107,7 +107,6 @@ pub fn main() {
             Event::Key(Key::Ctrl('c')) => break,
             Event::Key(Key::Char(c)) => {
                 game.handle_char(c);
-                stdout.flush().unwrap();
             },
             Event::Mouse(me) => {
                 match me {
@@ -115,7 +114,6 @@ pub fn main() {
                     MouseEvent::Release(a, b) /* |
                     MouseEvent::Hold(a, b) */ => {
                         game.handle_click(a, b);
-                        stdout.flush().unwrap();
                     },
 
                     _ => ()
