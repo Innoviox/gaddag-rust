@@ -1,10 +1,13 @@
 #[macro_use]
 use itertools::{EitherOrBoth::*, Itertools};
+use std::char::from_u32;
 use std::cmp::Ordering;
 use std::fs::File;
 use std::io::Write;
 use std::ops::Range;
 use std::slice::Iter;
+
+use crate::bag::Bag;
 
 pub trait ItemRemovable<T> {
     fn _remove_item(&mut self, some_x: T) -> T;
@@ -358,4 +361,19 @@ macro_rules! splice {
             result
         }
     }
+}
+
+pub fn rack_to_string(rack: Vec<char>, bag: &Bag) -> String {
+    let mut res = format!("{}┌{}────┐\n", "\n".repeat(34), "────┬".repeat(6));
+
+    for c in rack.iter() {
+        res = format!(
+            "{}│ {}{} ",
+            res,
+            c,
+            from_u32(0x2080 + bag.score(*c) as u32).unwrap()
+        );
+    }
+
+    format!("{}│\n└{}────┘\n", res, "────┴".repeat(6))
 }

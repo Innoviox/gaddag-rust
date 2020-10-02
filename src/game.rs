@@ -2,7 +2,7 @@ use crate::bag::Bag;
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
 use crate::splice;
-use crate::utils::Move;
+use crate::utils::{rack_to_string, Move};
 
 use array_init::array_init;
 
@@ -230,7 +230,8 @@ impl Game {
         let board = format!("{}", self.board);
         let state = self.states_str();
         let bag = self.board.bag.to_str();
+        let rack = rack_to_string(self.get_rack(self.states() - 1), &self.board.bag);
 
-        splice!(board, state, bag)
+        splice!(board, state, bag, rack)
     }
 }
