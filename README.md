@@ -62,4 +62,5 @@ UI Roadmap
   - [ ] valid move: connected checker
   - [ ] when typing: skip placed tiles
   - [ ] score tracker
+  - [ ] can't click outside board
 

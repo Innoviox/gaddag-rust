@@ -363,16 +363,24 @@ macro_rules! splice {
 }
 
 pub fn rack_to_string(rack: Vec<char>, bag: &Bag) -> String {
-    let mut res = format!("{}┌{}────┐\n", "\n".repeat(34), "────┬".repeat(6));
+    let top = format!("┌{}────┐", "────┬".repeat(6));
+    let bot = format!("└{}────┘", "────┴".repeat(6));
 
+    let mut letters = String::new();
     for c in rack.iter() {
-        res = format!(
+        letters = format!(
             "{}│ {}{} ",
-            res,
+            letters,
             c,
             from_u32(0x2080 + bag.score(*c) as u32).unwrap()
         );
     }
 
-    format!("{}│\n└{}────┘\n", res, "────┴".repeat(6))
+    format!(
+        "{}{:^66}\n{:^66}\n{:^66}\n",
+        "\n".repeat(34),
+        top,
+        format!("{}│", letters),
+        bot
+    )
 }
