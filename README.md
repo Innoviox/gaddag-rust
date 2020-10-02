@@ -52,6 +52,7 @@ UI Roadmap
 - [ ] box moves
   - [ ] number moves
 - [ ] box bag
+  - [ ] player-based: can't tell what opponents rack is
 - [ ] box rack
 - [ ] set tiles from rack
   - [ ] handle blanks: shift type

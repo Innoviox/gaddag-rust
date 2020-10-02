@@ -161,7 +161,9 @@ impl Game {
 
     fn states_str(&mut self) -> String {
         let mut res = format!(
-            "{:^27}│{:^27}\n{}┼{}\n",
+            "┌{}┬{}┐\n│{:^27}│{:^27}│\n├{}┼{}┤\n",
+            "─".repeat(27),
+            "─".repeat(27),
             self.get_player(0).name,
             self.get_player(1).name,
             "─".repeat(27),
@@ -176,7 +178,7 @@ impl Game {
             scores[i % 2] += m.score;
 
             res = format!(
-                "{}{:<3}: {:<12} +{:<03}/{:<03} ",
+                "{}│{:<3}: {:<12} +{:<03}/{:<03}",
                 res,
                 m.position.to_str(m.direction),
                 self.board.format(&m, true),
@@ -184,7 +186,11 @@ impl Game {
                 scores[i % 2]
             );
 
-            res = format!("{}{}", res, ["│ ", "\n"][i % 2]);
+            res = format!("{}{}", res, [" ", " │\n"][i % 2]);
+        }
+
+        for _ in (self.states() / 2)..28 {
+            res = format!("{}│{}│{}│\n", res, " ".repeat(27), " ".repeat(27));
         }
 
         if self.is_over() {
@@ -199,6 +205,9 @@ impl Game {
 
             res = format!("{}{}", res, text);
         }
+
+        res = format!("{}└{}┴{}┘\n", res, "─".repeat(27), "─".repeat(27));
+
         res
     }
 

@@ -85,15 +85,18 @@ impl Bag {
             let count = self.distribution.count(*c);
 
             res = format!(
-                "{}│ {}{grey}{used}{clear}{spaces} |\n",
+                "{}│ {}{grey}{used}{spaces}{clear} │\n",
                 res,
                 c.to_string().repeat(count),
                 grey = color::Fg(color::Rgb(220, 220, 220)),
                 used = c.to_string().repeat(self.amts[i] - count),
-                clear = color::Fg(color::Reset),
-                spaces = &" ".repeat(15 - self.amts[i])
+                spaces = &" ".repeat(15 - self.amts[i]),
+                clear = "\u{001b}[0m"
             );
         }
+
+        res = format!("{}└{}┘", res, "─".repeat(17));
+
         res
     }
 }
