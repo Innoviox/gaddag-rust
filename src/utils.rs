@@ -1,3 +1,4 @@
+#[macro_use]
 use itertools::{EitherOrBoth::*, Itertools};
 use std::cmp::Ordering;
 use std::fs::File;
@@ -335,11 +336,26 @@ pub fn splice(s1: String, s2: String) -> String {
 
     for pair in s1.split("\n").zip_longest(s2.split("\n")) {
         match pair {
-            Both(l, r) => out = format!("{}{} {}\n", out, l, r),
+            Both(l, r) => out = format!("{}{}{}\n", out, l, r),
             Left(l) => out = format!("{}{}\n", out, l),
-            Right(r) => out = format!("{}{}{}\n", out, "-".repeat(66), r),
+            Right(r) => out = format!("{}{}\n", out, r),
         }
     }
 
     out
+}
+
+#[macro_export]
+macro_rules! splice {
+    ( $( $s:expr ),* ) => {
+        {
+            let mut result = String::new();
+
+            $(
+                result = crate::utils::splice(result, $s);
+            )*
+
+            result
+        }
+    }
 }

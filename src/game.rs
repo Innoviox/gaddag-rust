@@ -1,7 +1,8 @@
 use crate::bag::Bag;
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
-use crate::utils::{splice, Move};
+use crate::splice;
+use crate::utils::Move;
 
 use array_init::array_init;
 
@@ -230,6 +231,6 @@ impl Game {
         let state = self.states_str();
         let bag = self.board.bag.to_str();
 
-        splice(splice(board, state), bag)
+        splice!(board, state, bag)
     }
 }

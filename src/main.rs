@@ -20,6 +20,7 @@ mod player;
 mod puzzle;
 mod simulate;
 mod text;
+#[macro_use]
 mod utils;
 mod viz;
 
