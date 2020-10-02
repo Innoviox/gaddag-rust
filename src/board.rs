@@ -1046,19 +1046,21 @@ impl Board {
 
 impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let sep = "-".repeat(66);
+        let top = "┌────┬".to_owned() + &"───┬".repeat(14) + "───┐";
+        let sep = "├────┼".to_owned() + &"───┼".repeat(14) + "───┤";
+        let bot = "└────┴".to_owned() + &"───┴".repeat(14) + "───┘";
 
-        write!(f, "{}\n", sep).expect("fail");
-        write!(f, "|    |").expect("fail");
+        write!(f, "{}\n", top).expect("fail");
+        write!(f, "│    │").expect("fail");
         for row in ALPH.chars().take(15) {
-            write!(f, "{}", format!(" {} |", row)).expect("fail");
+            write!(f, "{}", format!(" {} │", row)).expect("fail");
         }
         write!(f, "\n{}\n", sep).expect("fail");
 
         // let a = &self.affected;
 
         for (num, row) in self.state.iter().enumerate() {
-            write!(f, "| {} |", format!("{:0>2}", num + 1)).expect("fail");
+            write!(f, "│ {} │", format!("{:0>2}", num + 1)).expect("fail");
             // for sq in row.iter() {
 
             for (col, sq) in row.iter().enumerate() {
@@ -1080,12 +1082,14 @@ impl fmt::Display for Board {
                     }
                 };
                 // }
-                write!(f, "|").expect("fail");
+                write!(f, "│").expect("fail");
             }
-            write!(f, "\n{}\n", sep).expect("fail");
+            if num != 14 {
+                write!(f, "\n{}\n", sep).expect("fail");
+            }
         }
-
-        write!(f, "")
+        
+        write!(f, "\n{}\n", bot)
     }
 }
 /*

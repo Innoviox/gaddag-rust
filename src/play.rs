@@ -59,10 +59,10 @@ impl<'a> TermionGame<'a> {
                     y += 2;
                 }
             }
-
+            
             write!(stdout, "{} {} {}", cursor::Goto(x as u16, y as u16), 
-                                       self.dir.to_str(), 
-                                       termion::cursor::Hide);
+                                    self.dir.to_str(), 
+                                    termion::cursor::Hide);
         }
     }
 
@@ -98,6 +98,7 @@ pub fn main() {
     let mut g = Game::default();
     let mut game = TermionGame::of(&mut g);
 
+    game.display(&mut stdout);
     stdout.flush().unwrap();
 
     for c in stdin.events() {
