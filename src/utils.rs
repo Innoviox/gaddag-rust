@@ -267,6 +267,14 @@ impl Move {
         }
     }
 
+    pub fn with(word: &String, pos: Position) -> Move {
+        let mut m = Move::none();
+        m.word = word.clone();
+        m.position = pos;
+
+        m
+    }
+
     pub fn complement(&self, rack: &Vec<char>) -> Vec<char> {
         let mut nr = rack.clone();
 

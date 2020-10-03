@@ -1,5 +1,5 @@
 use crate::game::Game;
-use crate::utils::{Direction, ItemRemovable, Position, RESET};
+use crate::utils::{Direction, ItemRemovable, Move, Position, RESET};
 
 use std::io::{self, stdin, Stdout, Write};
 use termion::color;
@@ -79,12 +79,15 @@ impl<'a> TermionGame<'a> {
             }
             let y = 4 + s / 2;
 
+            let m = Move::with(&self.word, pos);
+
             write!(
                 stdout,
-                "{goto}{red}{pos}{reset}",
+                "{goto}{red}{pos} {word}{reset}",
                 goto = cursor::Goto(x as u16, y as u16),
                 red = color::Fg(color::Red),
                 pos = pos.to_str(self.dir),
+                word = self.game.get_board().format(&m, true),
                 reset = RESET
             )
             .expect("fail");
@@ -107,6 +110,7 @@ impl<'a> TermionGame<'a> {
                 self.dir = self.dir.flip();
             } else {
                 self.word = String::new(); // reset word b/c new position was chosen
+                self.set_rack();
             }
         }
         self.pos = Some(new_pos);
