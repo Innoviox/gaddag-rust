@@ -267,10 +267,11 @@ impl Move {
         }
     }
 
-    pub fn with(word: &String, pos: Position) -> Move {
+    pub fn with(word: &String, pos: Position, dir: Direction) -> Move {
         let mut m = Move::none();
         m.word = word.clone();
         m.position = pos;
+        m.direction = dir;
 
         m
     }

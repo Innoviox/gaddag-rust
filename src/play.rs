@@ -79,7 +79,7 @@ impl<'a> TermionGame<'a> {
             }
             let y = 4 + s / 2;
 
-            let m = Move::with(&self.word, pos);
+            let m = Move::with(&self.word, pos, self.dir);
 
             write!(
                 stdout,
