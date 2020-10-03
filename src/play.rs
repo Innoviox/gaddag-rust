@@ -51,7 +51,7 @@ impl<'a> TermionGame<'a> {
 
         if let Some(pos) = self.pos {
             let mut x = (pos.col * 4 + 7) as u16;
-            let mut y = (pos.row + 4) as u16;
+            let mut y = (pos.row * 2 + 4) as u16;
 
             for c in self.word.chars() {
                 write!(stdout, "{} {} ", cursor::Goto(x as u16, y as u16), c).expect("fail");
@@ -100,7 +100,7 @@ impl<'a> TermionGame<'a> {
         } // clicked somewhere that isnt a square
 
         let new_pos = Position {
-            row: (y - 4) as usize,
+            row: ((y - 4) / 2) as usize,
             col: ((x - 6) / 4) as usize,
         };
 
