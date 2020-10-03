@@ -91,7 +91,7 @@ impl Bag {
                 grey = color::Fg(color::Rgb(220, 220, 220)),
                 used = c.to_string().repeat(self.amts[i] - count),
                 spaces = &" ".repeat(15 - self.amts[i]),
-                clear = "\u{001b}[0m"
+                clear = RESET
             );
         }
 

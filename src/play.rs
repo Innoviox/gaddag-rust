@@ -1,12 +1,12 @@
 use crate::game::Game;
-use crate::utils::{Direction, Position};
+use crate::utils::{Direction, ItemRemovable, Position, RESET};
 
+use std::io::{self, stdin, Stdout, Write};
+use termion::color;
 use termion::cursor;
 use termion::event::*;
 use termion::input::{MouseTerminal, TermRead};
 use termion::raw::{IntoRawMode, RawTerminal};
-
-use std::io::{self, stdin, Stdout, Write};
 
 pub type TTY = MouseTerminal<RawTerminal<Stdout>>;
 
@@ -18,18 +18,29 @@ pub struct TermionGame<'a> {
     word: String,
 
     mouse_position: Position,
+
+    rack: Vec<char>,
 }
 
 impl<'a> TermionGame<'a> {
     pub fn of(g: &'a mut Game) -> TermionGame {
-        TermionGame {
+        let mut tg = TermionGame {
             game: g,
             pos: None,
             dir: Direction::Across,
             word: String::new(),
 
             mouse_position: Position { row: 1, col: 1 },
-        }
+            rack: vec![],
+        };
+
+        tg.set_rack();
+
+        tg
+    }
+
+    fn set_rack(&mut self) {
+        self.rack = self.game.get_current_player().rack.clone();
     }
 
     pub fn display(&mut self, stdout: &mut TTY) {
@@ -60,8 +71,26 @@ impl<'a> TermionGame<'a> {
                 termion::cursor::Hide
             )
             .expect("fail");
+
+            let s = self.game.states();
+            let mut x = 75;
+            if s % 2 == 1 {
+                x += 29;
+            }
+            let y = 4 + s / 2;
+
+            write!(
+                stdout,
+                "{goto}{red}{pos}{reset}",
+                goto = cursor::Goto(x as u16, y as u16),
+                red = color::Fg(color::Red),
+                pos = pos.to_str(self.dir),
+                reset = RESET
+            )
+            .expect("fail");
         }
     }
+
     pub fn handle_click(&mut self, x: u16, y: u16) {
         if y % 2 == 1 || y < 4 || x < 7 || (x - 6) % 4 == 0 {
             return;
@@ -89,8 +118,15 @@ impl<'a> TermionGame<'a> {
 
     pub fn handle_char(&mut self, c: char) {
         // todo: shift to place blank
-        if 'a' <= c && c <= 'z' {
-            self.word.push(c.to_ascii_uppercase());
+        let c = c.to_ascii_uppercase();
+        if 'A' <= c && c <= 'Z' {
+            if self.rack.contains(&c) {
+                self.rack._remove_item(c);
+                self.word.push(c);
+            } else if self.rack.contains(&'?') {
+                self.rack._remove_item('?');
+                self.word.push(c.to_ascii_lowercase());
+            }
         }
     }
 }

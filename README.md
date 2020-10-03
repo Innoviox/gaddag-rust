@@ -63,4 +63,6 @@ UI Roadmap
   - [ ] when typing: skip placed tiles
   - [ ] score tracker
   - [ ] can't click outside board
+  - [ ] blinking cursor
+  - [ ] blinking move hypothetical: red invalid, green valid
 

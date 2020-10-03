@@ -384,3 +384,5 @@ pub fn rack_to_string(rack: Vec<char>, bag: &Bag) -> String {
         bot
     )
 }
+
+pub static RESET: &str = "\u{001b}[0m";
