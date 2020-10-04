@@ -319,13 +319,24 @@ impl Board {
         true
     }
 
-    pub fn valid_move(&self, m: &Move) -> bool {
-        if self.state[7][7] == '*' {
+    pub fn valid_move(&mut self, m: &Move) -> bool {
+        let state = self.state.clone();
+        self.place_move(m);
+
+        let star = self.state[7][7] == '*';
+        self.state = state;
+
+        if star {
+            self.state = state;
             return false;
         }
 
         let positions: HashSet<Position> = HashSet::from_iter(m.iter().map(|i| i.0));
         let anchors: HashSet<Position> = HashSet::from_iter(self.anchors().iter().map(|i| *i));
+
+        if anchors.len() == 0 {
+            return true;
+        }
 
         let intersect: HashSet<_> = positions.intersection(&anchors).collect();
 
