@@ -20,6 +20,8 @@ pub struct TermionGame<'a> {
     mouse_position: Position,
 
     rack: Vec<char>,
+    curr_move: Move,
+    valid: bool,
 }
 
 impl<'a> TermionGame<'a> {
@@ -32,6 +34,8 @@ impl<'a> TermionGame<'a> {
 
             mouse_position: Position { row: 1, col: 1 },
             rack: vec![],
+            curr_move: Move::none(),
+            valid: false,
         };
 
         tg.set_rack();
@@ -45,6 +49,8 @@ impl<'a> TermionGame<'a> {
 
     pub fn display(&mut self, stdout: &mut TTY) {
         let s = self.game.to_str().replace("\n", "\n\r");
+
+        self.set_rack();
 
         write!(stdout, "{}", termion::clear::All).expect("fail");
         write!(stdout, "{}{}", cursor::Goto(1, 1), s).expect("fail");
@@ -79,10 +85,12 @@ impl<'a> TermionGame<'a> {
             }
             let y = 4 + s / 2;
 
-            let m = Move::with(&self.word, pos, self.dir);
+            let m = Move::with(&self.word, self.pos.unwrap(), self.dir);
+            self.curr_move = Move::of(&m);
+            self.valid = self.game.get_board_mut().valid_move(&m);
 
             write!(stdout, "{goto}", goto = cursor::Goto(x as u16, y as u16),).expect("fail");
-            if self.game.get_board_mut().valid_move(&m) {
+            if self.valid {
                 write!(stdout, "{color}", color = color::Fg(color::Green)).expect("fail");
             } else {
                 write!(stdout, "{color}", color = color::Fg(color::Red)).expect("fail");
@@ -98,6 +106,10 @@ impl<'a> TermionGame<'a> {
             .expect("fail");
         }
     }
+
+    // pub fn curr_move(&self) -> Move {
+    // Move::with(&self.word, self.pos.unwrap(), self.dir)
+    // }
 
     pub fn handle_click(&mut self, x: u16, y: u16) {
         if y % 2 == 1 || y < 4 || x < 7 || (x - 6) % 4 == 0 {
@@ -126,6 +138,10 @@ impl<'a> TermionGame<'a> {
     }
 
     pub fn handle_char(&mut self, c: char) {
+        if c == '\n' {
+            return self.handle_move();
+        }
+
         // todo: shift to place blank
         let c = c.to_ascii_uppercase();
         if 'A' <= c && c <= 'Z' {
@@ -136,6 +152,12 @@ impl<'a> TermionGame<'a> {
                 self.rack._remove_item('?');
                 self.word.push(c.to_ascii_lowercase());
             }
+        }
+    }
+
+    pub fn handle_move(&mut self) {
+        if self.valid {
+            self.game.force_move(&self.curr_move);
         }
     }
 }

@@ -112,6 +112,11 @@ impl Player {
         rack
     }
 
+    pub fn remove(&mut self, board: &mut Board, m: &Move) {
+        self.rack = self.leave(board.reals(&m));
+        self.draw_up(board);
+    }
+
     pub fn clone(&self) -> Player {
         Player {
             rack: self.rack.clone(),

@@ -54,12 +54,24 @@ impl Game {
         let m = self.players[self.current].do_move(&mut self.board, difficulty);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
+        self.tick();
+        m
+    }
+
+    pub fn tick(&mut self) {
         self.current = (self.current + 1) % 2;
         if self.current == 0 {
             self.turn += 1;
         }
         self.state += 1;
-        m
+    }
+
+    pub fn force_move(&mut self, m: &Move) {
+        let r = self.get_current_player().rack.clone();
+        self.players[self.current].remove(&mut self.board, &m);
+        self.board.place_move(m);
+        self.states.push((self.board.save_state(), Move::of(&m), r));
+        self.tick();
     }
 
     pub fn finish(&mut self) -> (String, i32, i32) {
