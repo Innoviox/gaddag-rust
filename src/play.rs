@@ -127,7 +127,7 @@ impl<'a> TermionGame<'a> {
                 self.dir = self.dir.flip();
             } else {
                 self.word = String::new(); // reset word b/c new position was chosen
-                self.set_rack();
+                self.set_rack(); // todo: code duplication
             }
         }
         self.pos = Some(new_pos);
@@ -142,15 +142,32 @@ impl<'a> TermionGame<'a> {
             return self.handle_move();
         }
 
-        // todo: shift to place blank
-        let c = c.to_ascii_uppercase();
-        if 'A' <= c && c <= 'Z' {
-            if self.rack.contains(&c) {
-                self.rack._remove_item(c);
-                self.word.push(c);
-            } else if self.rack.contains(&'?') {
-                self.rack._remove_item('?');
-                self.word.push(c.to_ascii_lowercase());
+        if let Some(pos) = self.pos {
+            // must click before typing
+            // todo: shift to place blank
+            // todo: backspace
+
+            let c = c.to_ascii_uppercase();
+            if 'A' <= c && c <= 'Z' {
+                if self.rack.contains(&c) {
+                    self.rack._remove_item(c);
+                    self.word.push(c);
+                } else if self.rack.contains(&'?') {
+                    self.rack._remove_item('?');
+                    self.word.push(c.to_ascii_lowercase());
+                }
+            }
+
+            let mut p = Position {
+                row: pos.row,
+                col: pos.col,
+            };
+            for _ in 0..self.word.len() {
+                p.tick(self.dir);
+            }
+            while self.game.get_board().is_letter(p) {
+                self.word.push(self.game.get_board().at_position(p));
+                p.tick(self.dir);
             }
         }
     }
