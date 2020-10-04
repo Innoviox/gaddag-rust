@@ -56,13 +56,14 @@ UI Roadmap
   - [ ] player-based: can't tell what opponents rack is
 - [x] box rack
   - [ ] todo: z score is 10
-- [ ] set tiles from rack
+- [x] set tiles from rack
   - [ ] handle blanks: shift type
 - [ ] game
-  - [ ] valid move: connected checker
-  - [ ] when typing: skip placed tiles
-  - [ ] score tracker
+  - [x] valid move: connected checker
+  - [x] when typing: skip placed tiles
+  - [x] score tracker
   - [ ] can't click outside board
   - [ ] blinking cursor
   - [x] blinking move hypothetical: red invalid, green valid
+    - [ ] add scores
   - [ ] backspace
