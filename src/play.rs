@@ -111,10 +111,9 @@ impl<'a> TermionGame<'a> {
                 let s = self.curr_move.score as u32;
                 write!(
                     stdout,
-                    "{:<03}/{:<03}{reset}",
+                    " +{:<03}/{:<03}",
                     s,
                     self.game.get_current_player().score + s,
-                    reset = RESET
                 )
                 .expect("fail");
             }
