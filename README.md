@@ -64,5 +64,5 @@ UI Roadmap
   - [ ] score tracker
   - [ ] can't click outside board
   - [ ] blinking cursor
-  - [ ] blinking move hypothetical: red invalid, green valid
-
+  - [x] blinking move hypothetical: red invalid, green valid
+  - [ ] backspace

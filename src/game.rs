@@ -217,6 +217,7 @@ impl Game {
         }
 
         self.state = self.states();
+        self.current = self.state % 2;
         self.board.set_state(&self.get_last_state());
 
         for _ in (self.states() / 2)..28 {
@@ -252,6 +253,7 @@ impl Game {
         // }
 
         let rack = rack_to_string(self.get_current_player().rack.clone(), &self.board.bag);
+        // rack = format!("{} {} {}", rack, self.current, self.state);
         splice!(board, state, bag, rack)
     }
 }
