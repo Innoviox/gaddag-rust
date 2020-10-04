@@ -212,6 +212,10 @@ impl Game {
             }
         }
 
+        if self.states() % 2 == 1 {
+            res = format!("{}{}│\n", res, " ".repeat(l));
+        }
+
         self.state = self.states();
         self.board.set_state(&self.get_last_state());
 

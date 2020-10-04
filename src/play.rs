@@ -158,6 +158,8 @@ impl<'a> TermionGame<'a> {
     pub fn handle_move(&mut self) {
         if self.valid {
             self.game.force_move(&self.curr_move);
+            self.pos = None;
+            self.word = String::new();
         }
     }
 }
