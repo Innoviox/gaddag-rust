@@ -8,9 +8,11 @@ use itertools::Itertools;
 use petgraph::graph::NodeIndex;
 use termion::color;
 
+use std::collections::HashSet;
 use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::fmt;
+use std::iter::FromIterator;
 
 pub type S = (
     [[char; 15]; 15],
@@ -315,6 +317,19 @@ impl Board {
         }
 
         true
+    }
+
+    pub fn valid_move(&self, m: &Move) -> bool {
+        if self.state[7][7] == '*' {
+            return false;
+        }
+
+        let positions: HashSet<Position> = HashSet::from_iter(m.iter().map(|i| i.0));
+        let anchors: HashSet<Position> = HashSet::from_iter(self.anchors().iter().map(|i| *i));
+
+        let intersect: HashSet<_> = positions.intersection(&anchors).collect();
+
+        intersect.len() != 0
     }
 
     pub fn anchors(&self) -> Vec<Position> {

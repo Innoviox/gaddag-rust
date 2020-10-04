@@ -81,11 +81,16 @@ impl<'a> TermionGame<'a> {
 
             let m = Move::with(&self.word, pos, self.dir);
 
+            let mut k = color::Red;
+            if self.game.get_board().valid_move(&m) {
+                k = color::Green;
+            }
+
             write!(
                 stdout,
-                "{goto}{red}{pos} {word}{reset}",
+                "{goto}{color}{pos} {word}{reset}",
                 goto = cursor::Goto(x as u16, y as u16),
-                red = color::Fg(color::Red),
+                color = color::Fg(k),
                 pos = pos.to_str(self.dir),
                 word = self.game.get_board().format(&m, true),
                 reset = RESET
