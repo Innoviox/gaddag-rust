@@ -403,27 +403,7 @@ impl Board {
 }
 
 impl Board {
-    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
-        // println!("{:?}", self.affected);
-        /*
-        This method generates all possible moves from the current state with the given rack.
-
-        Note that the board passed must counterintuitively be mutable because this method calls valid_at,
-        which requires mutability even though it does not mutate. Therefore, this is a non-mutating method.
-
-        This method follows the generation method outlined in https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf
-        by Appel and Jacobson with a few minor changes.
-        */
-
-        let mut result = Vec::new(); // This will store the found moves and be passed-by-reference to the recursive methods.
-
-        // todo only recalc for affected squares <<<<< IMPORTANT
-        /*
-        cross-checks say what letters are valid for a given space.
-        Note that these are coded by direction because different letters are necessary to check in different directions.
-        For example, if you are going across, you only care about the words that are going down, and vice-versa (hence *cross*-checks).
-        cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
-        */
+    pub fn update_crosses(&mut self) -> [[i32; 225]; 2] {
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for p in positions().iter() {
             for (di, d) in Direction::iter().enumerate() {
@@ -461,6 +441,33 @@ impl Board {
                 }
             }
         }
+
+        cross_sums
+    }
+
+    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
+        // println!("{:?}", self.affected);
+        /*
+        This method generates all possible moves from the current state with the given rack.
+
+        Note that the board passed must counterintuitively be mutable because this method calls valid_at,
+        which requires mutability even though it does not mutate. Therefore, this is a non-mutating method.
+
+        This method follows the generation method outlined in https://www.cs.cmu.edu/afs/cs/academic/class/15451-s06/www/lectures/scrabble.pdf
+        by Appel and Jacobson with a few minor changes.
+        */
+
+        let mut result = Vec::new(); // This will store the found moves and be passed-by-reference to the recursive methods.
+
+        // todo only recalc for affected squares <<<<< IMPORTANT
+        /*
+        cross-checks say what letters are valid for a given space.
+        Note that these are coded by direction because different letters are necessary to check in different directions.
+        For example, if you are going across, you only care about the words that are going down, and vice-versa (hence *cross*-checks).
+        cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
+        */
+
+        let cross_sums = self.update_crosses();
 
         // println!("{}", self);
 
@@ -972,6 +979,11 @@ impl Board {
         }
 
         res.replace(")(", "")
+    }
+
+    pub fn score_without_sums(&mut self, m: &mut Move) {
+        let cross_sums = &self.update_crosses()[m.direction.to_int()];
+        m.score = self.score(m, cross_sums);
     }
 
     pub fn score(&self, m: &Move, cross_sums: &[i32; 225]) -> i32 {

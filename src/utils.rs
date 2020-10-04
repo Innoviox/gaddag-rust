@@ -63,6 +63,13 @@ impl Direction {
             Direction::Down => Direction::Across,
         }
     }
+
+    pub fn to_int(&self) -> usize {
+        match self {
+            Direction::Across => 1,
+            Direction::Down => 0,
+        }
+    }
 }
 
 impl Position {

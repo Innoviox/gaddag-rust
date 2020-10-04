@@ -69,8 +69,13 @@ impl Game {
     pub fn force_move(&mut self, m: &Move) {
         let r = self.get_current_player().rack.clone();
         self.players[self.current].remove(&mut self.board, &m);
+
+        let mut state_move = Move::of(&m);
+        self.board.score_without_sums(&mut state_move);
+
         self.board.place_move(m);
-        self.states.push((self.board.save_state(), Move::of(&m), r));
+
+        self.states.push((self.board.save_state(), state_move, r));
         self.tick();
     }
 
