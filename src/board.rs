@@ -319,14 +319,19 @@ impl Board {
         true
     }
 
+    pub fn all_valid(&self) -> bool {
+        self.valid(&Direction::Across) && self.valid(&Direction::Down)
+    }
+
     pub fn valid_move(&mut self, m: &Move) -> bool {
         let state = self.state.clone();
         self.place_move(m);
 
         let star = self.state[7][7] == '*';
+        let valid = self.all_valid();
         self.state = state;
 
-        if star {
+        if star || !valid {
             self.state = state;
             return false;
         }
