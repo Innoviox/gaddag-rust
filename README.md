@@ -67,3 +67,5 @@ UI Roadmap
   - [x] blinking move hypothetical: red invalid, green valid
     - [ ] add scores
   - [ ] backspace
+  - [ ] Pre-word
+  - [ ] single letter move

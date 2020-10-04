@@ -98,12 +98,28 @@ impl<'a> TermionGame<'a> {
 
             write!(
                 stdout,
-                "{pos} {word}{reset}",
-                pos = pos.to_str(self.dir),
-                word = self.game.get_board().format(&m, true),
-                reset = RESET
+                "{:<3}: {:<12}",
+                pos.to_str(self.dir),
+                self.game.get_board().format(&m, true),
             )
             .expect("fail");
+
+            if self.valid {
+                self.game
+                    .get_board_mut()
+                    .score_without_sums(&mut self.curr_move);
+                let s = self.curr_move.score as u32;
+                write!(
+                    stdout,
+                    "{:<03}/{:<03}{reset}",
+                    s,
+                    self.game.get_current_player().score + s,
+                    reset = RESET
+                )
+                .expect("fail");
+            }
+
+            write!(stdout, "{reset}", reset = RESET).expect("fail");
         }
     }
 
