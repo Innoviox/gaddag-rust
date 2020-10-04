@@ -332,7 +332,6 @@ impl Board {
         self.state = state;
 
         if star || !valid {
-            self.state = state;
             return false;
         }
 
