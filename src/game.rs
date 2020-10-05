@@ -261,7 +261,7 @@ impl Game {
     pub fn to_str(&mut self) -> String {
         let board = format!("{}", self.board);
         let state = self.states_str();
-        let bag = self.board.bag.to_str();
+        let bag = self.board.bag.to_str_for_current_player(&self);
 
         // let mut rack = String::new();
         // if self.states() > 0 {

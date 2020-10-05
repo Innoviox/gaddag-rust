@@ -1,3 +1,4 @@
+use crate::game::Game;
 use crate::utils::*;
 use rand::seq::SliceRandom;
 use std::collections::HashMap;
@@ -98,5 +99,14 @@ impl Bag {
         res = format!("{}└{}┘", res, "─".repeat(17));
 
         res
+    }
+
+    pub fn to_str_for_current_player(&self, game: &Game) -> String {
+        let mut d = self.distribution.clone();
+        for i in game.get_player(((game.current + 1) % 2) as i32).rack.iter() {
+            d.push(*i);
+        }
+
+        Bag::with(&d).to_str()
     }
 }
