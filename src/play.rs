@@ -147,7 +147,9 @@ impl<'a> TermionGame<'a> {
         self.mouse_position = Position {
             row: y as usize,
             col: x as usize,
-        }
+        };
+
+        self.pre_word();
     }
 
     pub fn handle_char(&mut self, c: char) {
@@ -195,7 +197,26 @@ impl<'a> TermionGame<'a> {
     }
 
     pub fn handle_backspace(&mut self) {
-        self.word.pop();
+        if let Some(c) = self.word.pop() {
+            self.rack.push(c);
+        }
+    }
+
+    fn pre_word(&mut self) {
+        if let Some(pos) = self.pos {
+            let mut p = Position {
+                row: pos.row,
+                col: pos.col,
+            };
+            p.tick_opp(self.dir);
+            while self.game.get_board().is_letter(p) {
+                self.word = self.game.get_board().at_position(p).to_string() + &self.word;
+                p.tick_opp(self.dir);
+            }
+            p.tick(self.dir);
+
+            self.pos = Some(p)
+        }
     }
 }
 

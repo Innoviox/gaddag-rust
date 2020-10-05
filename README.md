@@ -66,12 +66,13 @@ UI Roadmap
 
 - [x] backspace
 - [x] enforce rack
-- [ ] Pre-word
+- [x] Pre-word
 - [ ] single letter move
 - [ ] fix bag
 - [ ] can't click outside board
 - [ ] handle blanks: shift type
 - [ ] player-based: can't tell what opponents rack is
+- [ ] press enter before clicking: glitch
 
 ### enhancements
 
