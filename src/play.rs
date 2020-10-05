@@ -20,6 +20,7 @@ pub struct TermionGame<'a> {
     rack: Vec<char>,
     curr_move: Move,
     valid: bool,
+    type_pos: Option<Position>,
 }
 
 impl<'a> TermionGame<'a> {
@@ -33,6 +34,7 @@ impl<'a> TermionGame<'a> {
             rack: vec![],
             curr_move: Move::none(),
             valid: false,
+            type_pos: None,
         };
 
         tg.set_rack();
@@ -144,12 +146,11 @@ impl<'a> TermionGame<'a> {
         if self.game.get_board().is_letter(new_pos) {
             return;
         }
-        if let Some(old_pos) = self.pos {
+        if let Some(old_pos) = self.type_pos {
+            self.reset();
             if old_pos == new_pos {
                 // https://github.com/rust-lang/rust/issues/53667
                 self.dir = self.dir.flip();
-            } else {
-                self.reset();
             }
         }
 
@@ -207,6 +208,7 @@ impl<'a> TermionGame<'a> {
 
     fn pre_word(&mut self) {
         if let Some(pos) = self.pos {
+            self.type_pos = Some(pos);
             let mut p = Position {
                 row: pos.row,
                 col: pos.col,

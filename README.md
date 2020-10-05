@@ -74,10 +74,10 @@ UI Roadmap
 - [x] handle blanks: shift type
 - [x] press enter before clicking: glitch
 - [x] can't click on tile on board
-- [ ] click after preword
-- [ ] game doesn't do anything if AI is first
 - [x] Click first row/column bugs
 - [x] get rid of mouse_position
+- [x] change dir after preword
+- [ ] game doesn't do anything if AI is first
 
 ### enhancements
 
