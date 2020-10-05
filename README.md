@@ -77,7 +77,7 @@ UI Roadmap
 - [ ] click after preword
 - [ ] game doesn't do anything if AI is first
 - [x] Click first row/column bugs
-- [ ] get rid of mouse_position
+- [x] get rid of mouse_position
 
 ### enhancements
 

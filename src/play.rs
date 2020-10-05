@@ -17,8 +17,6 @@ pub struct TermionGame<'a> {
     dir: Direction,
     word: String,
 
-    mouse_position: Position,
-
     rack: Vec<char>,
     curr_move: Move,
     valid: bool,
@@ -32,7 +30,6 @@ impl<'a> TermionGame<'a> {
             dir: Direction::Across,
             word: String::new(),
 
-            mouse_position: Position { row: 1, col: 1 },
             rack: vec![],
             curr_move: Move::none(),
             valid: false,
@@ -157,10 +154,6 @@ impl<'a> TermionGame<'a> {
         }
 
         self.pos = Some(new_pos);
-        self.mouse_position = Position {
-            row: y as usize,
-            col: x as usize,
-        };
 
         self.pre_word();
     }
