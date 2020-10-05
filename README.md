@@ -68,10 +68,10 @@ UI Roadmap
 - [x] enforce rack
 - [x] Pre-word
 - [x] single letter move
-- [ ] fix bag
+- [x] fix bag
+  - [ ] player-based: can't tell what opponents rack is
 - [ ] can't click outside board
 - [ ] handle blanks: shift type
-- [ ] player-based: can't tell what opponents rack is
 - [ ] press enter before clicking: glitch
 
 ### enhancements
@@ -79,3 +79,4 @@ UI Roadmap
 - [ ] blinking cursor
 - [ ] todo: z score is 10
 - [ ] player choices
+- [ ] exchange

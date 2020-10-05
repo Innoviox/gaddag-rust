@@ -76,7 +76,7 @@ impl<'a> TermionGame<'a> {
             )
             .expect("fail");
 
-            let s = self.game.states();
+            let s = self.game.states() - 1;
             let mut x = 75;
             if s % 2 == 1 {
                 x += 29;
@@ -88,11 +88,11 @@ impl<'a> TermionGame<'a> {
             self.valid = self.game.get_board_mut().valid_move(&m);
 
             // edge case because valid() doesn't check for 1-length words
-            if self.game.state == 0 && self.word.len() == 1 {
+            if self.game.state == 1 && self.word.len() == 1 {
                 self.valid = false;
             }
 
-            write!(stdout, "{goto}", goto = cursor::Goto(x as u16, y as u16),).expect("fail");
+            write!(stdout, "{goto}", goto = cursor::Goto(x as u16, y as u16)).expect("fail");
             if self.valid {
                 write!(stdout, "{color}", color = color::Fg(color::Green)).expect("fail");
             } else {

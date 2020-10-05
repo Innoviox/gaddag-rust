@@ -33,14 +33,26 @@ impl Game {
         };
         let players = [player_1, player_2];
 
+        let dist = board.bag.distribution.clone();
+
         Game {
             players,
             board,
             current: 0,
             turn: 1,
             finished: false,
-            states: Vec::new(),
-            state: 0,
+            states: vec![(
+                (
+                    STATE,
+                    vec![],
+                    [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
+                    dist,
+                    vec![],
+                ),
+                Move::none(),
+                vec![],
+            )],
+            state: 1,
         }
     }
 
@@ -136,7 +148,7 @@ impl Game {
 
         self.board.set_state(s);
         self.state = to;
-        self.current = to % 2;
+        self.current = (to - 1) % 2;
 
         (Move::of(m), r.clone())
     }
@@ -190,8 +202,8 @@ impl Game {
         );
         let mut scores = [0, 0];
 
-        for i in 0..self.states() {
-            let (m, _) = self.set_state(i);
+        for i in 0..(self.states() - 1) {
+            let (m, _) = self.set_state(i + 1);
             self.board.set_state(&self.get_last_state());
 
             scores[i % 2] += m.score;
@@ -216,12 +228,12 @@ impl Game {
             }
         }
 
-        if self.states() % 2 == 1 {
+        if (self.states() - 1) % 2 == 1 {
             res = format!("{}{}│\n", res, " ".repeat(l));
         }
 
         self.state = self.states();
-        self.current = self.state % 2;
+        self.current = (self.state - 1) % 2;
         self.board.set_state(&self.get_last_state());
 
         for _ in (self.states() / 2)..28 {
