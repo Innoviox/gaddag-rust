@@ -70,7 +70,7 @@ UI Roadmap
 - [x] single letter move
 - [x] fix bag
   - [x] player-based: can't tell what opponents rack is
-- [ ] can't click outside board
+- [x] can't click outside board
 - [ ] handle blanks: shift type
 - [ ] press enter before clicking: glitch
 
