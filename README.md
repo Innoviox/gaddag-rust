@@ -71,8 +71,9 @@ UI Roadmap
 - [x] fix bag
   - [x] player-based: can't tell what opponents rack is
 - [x] can't click outside board
-- [ ] handle blanks: shift type
+- [x] handle blanks: shift type
 - [ ] press enter before clicking: glitch
+- [ ] can't click on tile on board
 
 ### enhancements
 
@@ -80,3 +81,4 @@ UI Roadmap
 - [ ] todo: z score is 10
 - [ ] player choices
 - [ ] exchange
+- [ ] boxed blanks

@@ -173,13 +173,12 @@ impl<'a> TermionGame<'a> {
         if let Some(pos) = self.pos {
             // must click before typing
             // todo: shift to place blank
-            // todo: backspace
 
-            let c = c.to_ascii_uppercase();
-            if 'A' <= c && c <= 'Z' {
-                if self.rack.contains(&c) {
-                    self.rack._remove_item(c);
-                    self.word.push(c);
+            let u = c.to_ascii_uppercase();
+            if 'A' <= u && u <= 'Z' {
+                if u != c && self.rack.contains(&u) {
+                    self.rack._remove_item(u);
+                    self.word.push(u);
                 } else if self.rack.contains(&'?') {
                     self.rack._remove_item('?');
                     self.word.push(c.to_ascii_lowercase());
