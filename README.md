@@ -67,7 +67,7 @@ UI Roadmap
 - [x] backspace
 - [x] enforce rack
 - [x] Pre-word
-- [ ] single letter move
+- [x] single letter move
 - [ ] fix bag
 - [ ] can't click outside board
 - [ ] handle blanks: shift type
