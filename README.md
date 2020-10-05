@@ -53,19 +53,28 @@ UI Roadmap
   - [x] number moves
   - [x] softcode 27
 - [x] box bag
-  - [ ] player-based: can't tell what opponents rack is
 - [x] box rack
-  - [ ] todo: z score is 10
 - [x] set tiles from rack
-  - [ ] handle blanks: shift type
 - [ ] game
   - [x] valid move: connected checker
   - [x] when typing: skip placed tiles
   - [x] score tracker
-  - [ ] can't click outside board
-  - [ ] blinking cursor
   - [x] blinking move hypothetical: red invalid, green valid
-    - [ ] add scores
-  - [ ] backspace
-  - [ ] Pre-word
-  - [ ] single letter move
+    - [x] add scores
+
+### Bugs
+
+- [x] backspace
+- [ ] enforce rack
+- [ ] Pre-word
+- [ ] single letter move
+- [ ] fix bag
+- [ ] can't click outside board
+- [ ] handle blanks: shift type
+- [ ] player-based: can't tell what opponents rack is
+
+### enhancements
+
+- [ ] blinking cursor
+- [ ] todo: z score is 10
+- [ ] player choices

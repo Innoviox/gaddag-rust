@@ -194,6 +194,10 @@ impl<'a> TermionGame<'a> {
             self.word = String::new();
         }
     }
+
+    pub fn handle_backspace(&mut self) {
+        self.word.pop();
+    }
 }
 
 pub fn main() {
@@ -212,6 +216,9 @@ pub fn main() {
             Event::Key(Key::Ctrl('c')) => break,
             Event::Key(Key::Char(c)) => {
                 game.handle_char(c);
+            }
+            Event::Key(Key::Backspace) => {
+                game.handle_backspace();
             }
             Event::Mouse(me) => {
                 match me {
