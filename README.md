@@ -65,7 +65,7 @@ UI Roadmap
 ### Bugs
 
 - [x] backspace
-- [ ] enforce rack
+- [x] enforce rack
 - [ ] Pre-word
 - [ ] single letter move
 - [ ] fix bag

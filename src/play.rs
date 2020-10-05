@@ -50,8 +50,6 @@ impl<'a> TermionGame<'a> {
     pub fn display(&mut self, stdout: &mut TTY) {
         let s = self.game.to_str().replace("\n", "\n\r");
 
-        self.set_rack();
-
         write!(stdout, "{}", termion::clear::All).expect("fail");
         write!(stdout, "{}{}", cursor::Goto(1, 1), s).expect("fail");
 
@@ -192,6 +190,7 @@ impl<'a> TermionGame<'a> {
             self.game.force_move(&self.curr_move);
             self.pos = None;
             self.word = String::new();
+            self.set_rack();
         }
     }
 
