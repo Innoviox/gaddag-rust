@@ -72,7 +72,7 @@ UI Roadmap
   - [x] player-based: can't tell what opponents rack is
 - [x] can't click outside board
 - [x] handle blanks: shift type
-- [ ] press enter before clicking: glitch
+- [x] press enter before clicking: glitch
 - [ ] can't click on tile on board
 
 ### enhancements

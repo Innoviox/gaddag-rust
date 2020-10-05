@@ -152,8 +152,7 @@ impl<'a> TermionGame<'a> {
                 // https://github.com/rust-lang/rust/issues/53667
                 self.dir = self.dir.flip();
             } else {
-                self.word = String::new(); // reset word b/c new position was chosen
-                self.set_rack(); // todo: code duplication
+                self.reset();
             }
         }
         self.pos = Some(new_pos);
@@ -202,9 +201,7 @@ impl<'a> TermionGame<'a> {
     pub fn handle_move(&mut self) {
         if self.valid {
             self.game.force_move(&self.curr_move);
-            self.pos = None;
-            self.word = String::new();
-            self.set_rack();
+            self.reset()
         }
     }
 
@@ -229,6 +226,13 @@ impl<'a> TermionGame<'a> {
 
             self.pos = Some(p)
         }
+    }
+
+    fn reset(&mut self) {
+        self.pos = None;
+        self.word = String::new();
+        self.valid = false;
+        self.set_rack();
     }
 }
 
