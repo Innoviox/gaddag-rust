@@ -76,7 +76,8 @@ UI Roadmap
 - [x] can't click on tile on board
 - [ ] click after preword
 - [ ] game doesn't do anything if AI is first
-- [ ] can't click first row
+- [x] Click first row/column bugs
+- [ ] get rid of mouse_position
 
 ### enhancements
 

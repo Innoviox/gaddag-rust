@@ -83,7 +83,7 @@ impl<'a> TermionGame<'a> {
             }
             let y = 4 + s / 2;
 
-            let m = Move::with(&self.word, self.pos.unwrap(), self.dir);
+            let m = Move::with(&self.word, pos, self.dir);
             self.curr_move = Move::of(&m);
             self.valid = self.game.get_board_mut().valid_move(&m);
 
@@ -133,15 +133,12 @@ impl<'a> TermionGame<'a> {
         if y < 4 || x < 7 {
             return;
         } // clicked somewhere that isnt a square
-
         if y % 2 == 1 || (x - 6) % 4 == 0 {
             return;
         } // clicked between squares
-
         if y > 33 || x > 66 {
             return;
         } // clicked off board, todo: exchange
-
         let new_pos = Position {
             row: ((y - 4) / 2) as usize,
             col: ((x - 6) / 4) as usize,
@@ -150,7 +147,6 @@ impl<'a> TermionGame<'a> {
         if self.game.get_board().is_letter(new_pos) {
             return;
         }
-
         if let Some(old_pos) = self.pos {
             if old_pos == new_pos {
                 // https://github.com/rust-lang/rust/issues/53667
@@ -159,6 +155,7 @@ impl<'a> TermionGame<'a> {
                 self.reset();
             }
         }
+
         self.pos = Some(new_pos);
         self.mouse_position = Position {
             row: y as usize,
@@ -221,12 +218,15 @@ impl<'a> TermionGame<'a> {
                 row: pos.row,
                 col: pos.col,
             };
-            p.tick_opp(self.dir);
+
+            let mut edge = p.tick_opp(self.dir);
             while self.game.get_board().is_letter(p) {
                 self.word = self.game.get_board().at_position(p).to_string() + &self.word;
-                p.tick_opp(self.dir);
+                edge &= p.tick_opp(self.dir);
             }
-            p.tick(self.dir);
+            if edge {
+                p.tick(self.dir);
+            }
 
             self.pos = Some(p)
         }
