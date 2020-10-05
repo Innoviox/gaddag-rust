@@ -9,8 +9,8 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn gen_moves(&self, board: &mut Board) -> (Vec<Move>, f32) {
-        let mut gen = board.gen_all_moves(&self.rack);
+    pub fn gen_moves(&self, board: &mut Board, eff: bool) -> (Vec<Move>, f32) {
+        let mut gen = board.gen_all_moves(&self.rack, eff);
         let eval_val = self.get_val(board.bag.distribution.len()); // todo implement if bag is empty, empty rack
         gen.sort_by(Move::cmp_with(1.0, eval_val));
         gen.dedup();
@@ -26,8 +26,9 @@ impl Player {
         &mut self,
         board: &mut Board,
         difficulty: usize,
+        eff: bool,
     ) -> (Move, String, String, usize) {
-        let moves = self.gen_moves(board).0;
+        let moves = self.gen_moves(board, eff).0;
         let len = moves.len();
         let best_m = moves.iter().nth(difficulty - 1);
 

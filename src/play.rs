@@ -205,7 +205,7 @@ impl<'a> TermionGame<'a> {
     pub fn handle_move(&mut self) {
         if self.valid {
             self.game.force_move(&self.curr_move);
-            self.reset()
+            self.tick();
         }
     }
 
@@ -238,13 +238,20 @@ impl<'a> TermionGame<'a> {
         self.valid = false;
         self.set_rack();
     }
+
+    fn tick(&mut self) {
+        if self.game.get_current_player().name == "AI" {
+            self.game.do_move(1, true); // todo: difficulty
+        }
+        self.reset();
+    }
 }
 
 pub fn main() {
     let stdin = stdin();
     let mut stdout = MouseTerminal::from(io::stdout().into_raw_mode().unwrap());
 
-    let mut g = Game::default();
+    let mut g = Game::with("Simon".to_string(), "AI".to_string());
     let mut game = TermionGame::of(&mut g);
 
     game.display(&mut stdout);

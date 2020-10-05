@@ -20,15 +20,19 @@ pub struct Game {
 
 impl Game {
     pub fn default() -> Game {
+        Game::with("p1".to_string(), "p2".to_string())
+    }
+
+    pub fn with(name1: String, name2: String) -> Game {
         let mut board = Board::default();
         let player_1 = Player {
             rack: board.bag.draw_tiles(7),
-            name: "p1".to_string(),
+            name: name1,
             score: 0,
         };
         let player_2 = Player {
             rack: board.bag.draw_tiles(7),
-            name: "p2".to_string(),
+            name: name2,
             score: 0,
         };
         let players = [player_1, player_2];
@@ -61,9 +65,9 @@ impl Game {
         self.board.set_board(board);
     }
 
-    pub fn do_move(&mut self, difficulty: usize) -> (Move, String, String, usize) {
+    pub fn do_move(&mut self, difficulty: usize, eff: bool) -> (Move, String, String, usize) {
         let r = self.get_current_player().rack.clone();
-        let m = self.players[self.current].do_move(&mut self.board, difficulty);
+        let m = self.players[self.current].do_move(&mut self.board, difficulty, eff);
         self.states
             .push((self.board.save_state(), Move::of(&m.0), r));
         self.tick();

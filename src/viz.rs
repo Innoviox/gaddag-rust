@@ -296,7 +296,7 @@ impl Update for Win {
                     let score = p.score as i32;
                     let n = p.name.clone();
 
-                    let (m, human, gcg, _n_moves) = self.model.do_move(1);
+                    let (m, human, gcg, _n_moves) = self.model.do_move(1, false);
                     self.model.state -= 1; // dont know why this is necessary
                     self._handle(&m);
                     self.model.state += 1;
@@ -456,7 +456,7 @@ impl Update for Win {
 
                 let board = self.model.get_board_mut();
                 board.update_cross_checks();
-                let (moves, eval_val) = p.gen_moves(board);
+                let (moves, eval_val) = p.gen_moves(board, false);
 
                 self.tree_model.clear();
                 self.moves_generated = vec![];

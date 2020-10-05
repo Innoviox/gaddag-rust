@@ -4,13 +4,13 @@ use base64::encode;
 pub fn main(turns: u32, difficulty: usize) {
     let mut game = Game::default();
     for _ in 0..turns {
-        game.do_move(difficulty);
+        game.do_move(difficulty, false);
     }
 
     let p = game.get_current_player().clone();
     let rack: String = p.rack.iter().collect();
 
-    let (moves, eval_val) = p.gen_moves(game.get_board_mut());
+    let (moves, eval_val) = p.gen_moves(game.get_board_mut(), false);
 
     let mut board = game.get_board().get_board().clone();
     for b in game.get_board().blanks.clone() {

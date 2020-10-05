@@ -403,11 +403,11 @@ impl Board {
 }
 
 impl Board {
-    pub fn update_crosses(&mut self) -> [[i32; 225]; 2] {
+    pub fn update_crosses(&mut self, inefficient: bool) -> [[i32; 225]; 2] {
         let mut cross_sums: [[i32; 225]; 2] = [array_init(|_| 0), array_init(|_| 0)];
         for p in positions().iter() {
             for (di, d) in Direction::iter().enumerate() {
-                if self.affected.contains(p) {
+                if inefficient || self.affected.contains(p) {
                     // only reevaluate for newly affected squares
                     self.cross_checks[di][p.to_int()] = chars(self.valid_at(*p, *d));
                     // note: requires mutability. also expensive method.
@@ -445,7 +445,10 @@ impl Board {
         cross_sums
     }
 
-    pub fn gen_all_moves(&mut self, rack: &Vec<char>) -> Vec<Move> {
+    /*
+    pass ineff = false unless you are an idiot
+    */
+    pub fn gen_all_moves(&mut self, rack: &Vec<char>, inefficient: bool) -> Vec<Move> {
         // println!("{:?}", self.affected);
         /*
         This method generates all possible moves from the current state with the given rack.
@@ -467,7 +470,7 @@ impl Board {
         cross-sums are similar, but they sum the values of contiguous letters to aid in scoring. (e.g., not important to the algorithm).
         */
 
-        let cross_sums = self.update_crosses();
+        let cross_sums = self.update_crosses(inefficient);
 
         // println!("{}", self);
 
@@ -982,7 +985,7 @@ impl Board {
     }
 
     pub fn score_without_sums(&mut self, m: &mut Move) {
-        let cross_sums = &self.update_crosses()[m.direction.to_int()];
+        let cross_sums = &self.update_crosses(false)[m.direction.to_int()];
         m.score = self.score(m, cross_sums);
     }
 
@@ -1136,7 +1139,7 @@ impl fmt::Display for Board {
             // for sq in row.iter() {
 
             for (col, sq) in row.iter().enumerate() {
-                // if a.contains(&Position{ row: num, col }) {
+                // if a.contains(&Position { row: num, col }) {
                 // write!(f, "AAA").expect("fail");
                 // } else {
                 match sq {
