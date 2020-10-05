@@ -2,7 +2,7 @@ use crate::bag::Bag;
 use crate::board::{Board, S, STATE};
 use crate::player::Player;
 use crate::splice;
-use crate::utils::{rack_to_string, Move};
+use crate::utils::{rack_to_string, Move, Type};
 
 use array_init::array_init;
 
@@ -217,11 +217,16 @@ impl Game {
                 num = format!("│ {:<02}. │", (i / 2) + 1);
             }
 
+            let mut s = m.position.to_str(m.direction);
+            if m.typ == Type::Exch {
+                s = "EXC".to_string();
+            }
+
             res = format!(
                 "{}{} {:<3}: {:<12} +{:<03}/{:<03} │",
                 res,
                 num,
-                m.position.to_str(m.direction),
+                s,
                 self.board.format(&m, true),
                 m.score,
                 scores[i % 2]

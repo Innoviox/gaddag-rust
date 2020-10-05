@@ -1,6 +1,7 @@
 use crate::game::Game;
-use crate::utils::{Direction, ItemRemovable, Move, Position, RESET};
+use crate::utils::{self, Direction, ItemRemovable, Move, Position, RESET};
 
+use itertools::Itertools;
 use std::io::{self, stdin, Stdout, Write};
 use termion::color;
 use termion::cursor;
@@ -21,6 +22,7 @@ pub struct TermionGame<'a> {
     curr_move: Move,
     valid: bool,
     type_pos: Option<Position>,
+    exch: Vec<usize>,
 }
 
 impl<'a> TermionGame<'a> {
@@ -35,6 +37,7 @@ impl<'a> TermionGame<'a> {
             curr_move: Move::none(),
             valid: false,
             type_pos: None,
+            exch: vec![],
         };
 
         tg.set_rack();
@@ -121,6 +124,21 @@ impl<'a> TermionGame<'a> {
             }
 
             write!(stdout, "{reset}", reset = RESET).expect("fail");
+        } else {
+            for i in self.exch.iter() {
+                write!(
+                    stdout,
+                    "{}{}{}{}{}",
+                    cursor::Goto((*i as u16) * 5 + 18, 36),
+                    color::Fg(color::Yellow),
+                    utils::letter_with_score(&self.rack[*i], &self.game.get_board().bag),
+                    RESET,
+                    termion::cursor::Hide
+                )
+                .expect("fail");
+
+                self.valid = true;
+            }
         }
     }
 
@@ -132,12 +150,15 @@ impl<'a> TermionGame<'a> {
         if y < 4 || x < 7 {
             return;
         } // clicked somewhere that isnt a square
+        if y > 33 || x > 66 {
+            if 34 < y && y < 38 && 16 < x && x < 51 {
+                self.handle_exch(x, y);
+            }
+            return;
+        } // clicked off board, todo: exchange
         if y % 2 == 1 || (x - 6) % 4 == 0 {
             return;
         } // clicked between squares
-        if y > 33 || x > 66 {
-            return;
-        } // clicked off board, todo: exchange
         let new_pos = Position {
             row: ((y - 4) / 2) as usize,
             col: ((x - 6) / 4) as usize,
@@ -147,7 +168,7 @@ impl<'a> TermionGame<'a> {
             return;
         }
         if let Some(old_pos) = self.type_pos {
-            self.reset();
+            self.reset(true);
             if old_pos == new_pos {
                 // https://github.com/rust-lang/rust/issues/53667
                 self.dir = self.dir.flip();
@@ -157,6 +178,17 @@ impl<'a> TermionGame<'a> {
         self.pos = Some(new_pos);
 
         self.pre_word();
+    }
+
+    pub fn handle_exch(&mut self, x: u16, _y: u16) {
+        self.reset(false);
+
+        let i = ((x - 16) / 5) as usize;
+        if self.exch.contains(&i) {
+            self.exch._remove_item(i);
+        } else {
+            self.exch.push(i);
+        }
     }
 
     pub fn handle_char(&mut self, c: char) {
@@ -195,6 +227,21 @@ impl<'a> TermionGame<'a> {
 
     pub fn handle_move(&mut self) {
         if self.valid {
+            if self.exch.len() > 0 {
+                self.curr_move = Move {
+                    word: self
+                        .exch
+                        .iter()
+                        .map(|i| self.rack[*i])
+                        .sorted()
+                        .collect::<String>(),
+                    position: Position { row: 0, col: 0 },
+                    direction: self.dir,
+                    score: 0,
+                    evaluation: 0f32,
+                    typ: utils::Type::Exch,
+                }
+            }
             self.game.force_move(&self.curr_move);
             self.tick();
         }
@@ -227,18 +274,22 @@ impl<'a> TermionGame<'a> {
         }
     }
 
-    fn reset(&mut self) {
+    fn reset(&mut self, exch: bool) {
         self.pos = None;
         self.word = String::new();
         self.valid = false;
         self.set_rack();
+
+        if exch {
+            self.exch = vec![];
+        }
     }
 
     fn tick(&mut self) {
         if self.game.get_current_player().name == "AI" {
             self.game.do_move(1, true); // todo: difficulty
         }
-        self.reset();
+        self.reset(true);
     }
 }
 

@@ -230,7 +230,10 @@ impl Board {
     }
 
     pub fn place_move(&mut self, m: &Move) -> bool {
-        self.play_word(m.position, m.word.clone(), m.direction, true)
+        if m.typ == Type::Play {
+            return self.play_word(m.position, m.word.clone(), m.direction, true);
+        }
+        false
     }
 
     pub fn place_move_cloned(&mut self, m: &Move) -> String {

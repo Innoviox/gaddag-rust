@@ -378,18 +378,17 @@ macro_rules! splice {
     }
 }
 
+pub fn letter_with_score(c: &char, bag: &Bag) -> String {
+    format!("{}{}", c, from_u32(0x2080 + bag.score(*c) as u32).unwrap())
+}
+
 pub fn rack_to_string(rack: Vec<char>, bag: &Bag) -> String {
     let top = format!("┌{}────┐", "────┬".repeat(6));
     let bot = format!("└{}────┘", "────┴".repeat(6));
 
     let mut letters = String::new();
     for c in rack.iter() {
-        letters = format!(
-            "{}│ {}{} ",
-            letters,
-            c,
-            from_u32(0x2080 + bag.score(*c) as u32).unwrap()
-        );
+        letters = format!("{}│ {} ", letters, letter_with_score(c, bag));
     }
 
     format!(

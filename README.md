@@ -85,5 +85,5 @@ UI Roadmap
 - [ ] todo: z score is 10
 - [ ] player choices
   - [x] Add AI
-- [ ] exchange
+- [x] exchange
 - [ ] boxed blanks
