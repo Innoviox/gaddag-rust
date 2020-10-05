@@ -73,7 +73,7 @@ UI Roadmap
 - [x] can't click outside board
 - [x] handle blanks: shift type
 - [x] press enter before clicking: glitch
-- [ ] can't click on tile on board
+- [x] can't click on tile on board
 
 ### enhancements
 

@@ -147,6 +147,10 @@ impl<'a> TermionGame<'a> {
             col: ((x - 6) / 4) as usize,
         };
 
+        if self.game.get_board().is_letter(new_pos) {
+            return;
+        }
+
         if let Some(old_pos) = self.pos {
             if old_pos == new_pos {
                 // https://github.com/rust-lang/rust/issues/53667
