@@ -253,7 +253,7 @@ impl Game {
             let (end_s, end, n) = self.finish();
             let mut text = format!("2*({}) +{}/{}", end_s, end, self.get_player(n).score);
             let n = l - 1 - text.len();
-            if self.states() % 2 == 0 {
+            if self.states() % 2 == 1 {
                 text = format!("{}│ {}", " ".repeat(l), text);
             } else {
                 text = format!("\n{}", text);

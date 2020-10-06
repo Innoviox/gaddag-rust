@@ -253,6 +253,33 @@ impl<'a> TermionGame<'a> {
         }
     }
 
+    pub fn handle(&mut self, evt: Event) {
+        if self.game.finished {
+            return;
+        }
+
+        match evt {
+            Event::Key(Key::Char(c)) => {
+                self.handle_char(c);
+            }
+            Event::Key(Key::Backspace) => {
+                self.handle_backspace();
+            }
+            Event::Mouse(me) => {
+                match me {
+                    // MouseEvent::Press(_, a, b) |
+                    MouseEvent::Release(a, b) /* |
+                    MouseEvent::Hold(a, b) */ => {
+                        self.handle_click(a, b);
+                    },
+
+                    _ => ()
+                }
+            }
+            _ => {}
+        }
+    }
+
     fn pre_word(&mut self) {
         if let Some(pos) = self.pos {
             self.type_pos = Some(pos);
@@ -286,10 +313,17 @@ impl<'a> TermionGame<'a> {
     }
 
     fn tick(&mut self) {
-        if self.game.get_current_player().name == "AI" {
-            self.game.do_move(1, true); // todo: difficulty
+        if self.game.is_over() {
+            self.game.finish();
+        } else {
+            if self.game.get_current_player().name == "AI" {
+                self.game.do_move(1, true); // todo: difficulty
+
+                self.reset(true);
+                self.tick();
+            }
+            self.reset(true);
         }
-        self.reset(true);
     }
 }
 
@@ -297,8 +331,10 @@ pub fn main() {
     let stdin = stdin();
     let mut stdout = MouseTerminal::from(io::stdout().into_raw_mode().unwrap());
 
-    let mut g = Game::with("Simon".to_string(), "AI".to_string());
+    let mut g = Game::with("AI".to_string(), "AI".to_string());
     let mut game = TermionGame::of(&mut g);
+
+    game.tick();
 
     game.display(&mut stdout);
     stdout.flush().unwrap();
@@ -307,24 +343,7 @@ pub fn main() {
         let evt = c.unwrap();
         match evt {
             Event::Key(Key::Ctrl('c')) => break,
-            Event::Key(Key::Char(c)) => {
-                game.handle_char(c);
-            }
-            Event::Key(Key::Backspace) => {
-                game.handle_backspace();
-            }
-            Event::Mouse(me) => {
-                match me {
-                    // MouseEvent::Press(_, a, b) |
-                    MouseEvent::Release(a, b) /* |
-                    MouseEvent::Hold(a, b) */ => {
-                        game.handle_click(a, b);
-                    },
-
-                    _ => ()
-                }
-            }
-            _ => {}
+            x => game.handle(x),
         }
 
         game.display(&mut stdout);

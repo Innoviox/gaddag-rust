@@ -77,7 +77,7 @@ UI Roadmap
 - [x] Click first row/column bugs
 - [x] get rid of mouse_position
 - [x] change dir after preword
-- [ ] game doesn't do anything if AI is first
+- [x] game doesn't do anything if AI is first
 - [ ] can't type off board
 - [ ] if a word has a blank, pre/postwording it removes the blank visually
 
