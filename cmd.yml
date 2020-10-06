@@ -27,4 +27,9 @@ subcommands:
                 default_value: "1"
     - play:
         args:
-            
+            - p1:
+                takes_value: true
+                default_value: "Human"
+            - p2:
+                takes_value: true
+                default_value: "AI"

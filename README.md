@@ -79,6 +79,7 @@ UI Roadmap
 - [x] change dir after preword
 - [x] game doesn't do anything if AI is first
 - [ ] can't type off board
+- [ ] can delete tiles on board
 - [ ] if a word has a blank, pre/postwording it removes the blank visually
 
 ### enhancements

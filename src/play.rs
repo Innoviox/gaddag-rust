@@ -327,11 +327,11 @@ impl<'a> TermionGame<'a> {
     }
 }
 
-pub fn main() {
+pub fn main(p1: String, p2: String) {
     let stdin = stdin();
     let mut stdout = MouseTerminal::from(io::stdout().into_raw_mode().unwrap());
 
-    let mut g = Game::with("AI".to_string(), "AI".to_string());
+    let mut g = Game::with(p1, p2);
     let mut game = TermionGame::of(&mut g);
 
     game.tick();
