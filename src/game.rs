@@ -303,7 +303,7 @@ impl Game {
             if i % 2 == 0 {
                 num = format!("│ {:<02}. │", (i / 2) + 1);
             }
-            res = format!("{}{} {:<3} {:<07} │", res, num, p, format!("{:.4}", d));
+            res = format!("{}{} {:<03} {:0>7} │", res, num, p, format!("{:.4}", d));
 
             if i % 2 == 1 {
                 res = format!("{}\n", res);
