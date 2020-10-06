@@ -88,6 +88,7 @@ UI Roadmap
 - [ ] todo: z score is 10
 - [ ] player choices
   - [x] Add AI
+  - [ ] modular ai
 - [x] exchange
 - [ ] boxed blanks
 - [ ] finish game
@@ -95,3 +96,6 @@ UI Roadmap
 - [ ] highlight recently played move
 - [ ] timer
 - [ ] Passing
+- [ ] arrow keys
+- [ ] highlight used tiles?
+- [ ] skill level

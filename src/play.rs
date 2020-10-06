@@ -236,7 +236,7 @@ impl<'a> TermionGame<'a> {
                         .sorted()
                         .collect::<String>(),
                     position: Position { row: 0, col: 0 },
-                    direction: self.dir,
+                    direction: Direction::Down,
                     score: 0,
                     evaluation: 0f32,
                     typ: utils::Type::Exch,

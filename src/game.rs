@@ -267,9 +267,74 @@ impl Game {
         res
     }
 
+    fn skills_str(&mut self) -> String {
+        let l = 13;
+        let mut res = format!(
+            "┌─────┬{}┬{}┐\n│     │{:^l$}│{:^l$}│\n├─────┼{}┼{}┤\n",
+            "─".repeat(l),
+            "─".repeat(l),
+            self.get_player(0).name,
+            self.get_player(1).name,
+            "─".repeat(l),
+            "─".repeat(l),
+            l = l
+        );
+        let mut places = [vec![], vec![]];
+        let mut diffs = [vec![], vec![]];
+
+        for i in 0..(self.states() - 1) {
+            let (m, r) = self.set_state(i + 1);
+            self.board.set_state(&self.get_last_state());
+
+            let mut a = self.get_current_player().clone();
+            a.rack = r;
+
+            let k = a.gen_moves(&mut self.board, true).0;
+
+            let p = k.iter().position(|i| *i == m).unwrap();
+
+            let d =
+                f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
+
+            places[i % 2].push(p);
+            diffs[i % 2].push(d);
+
+            let mut num = String::new();
+            if i % 2 == 0 {
+                num = format!("│ {:<02}. │", (i / 2) + 1);
+            }
+            res = format!("{}{} {:<3} {:<07} │", res, num, p, format!("{:.4}", d));
+
+            if i % 2 == 1 {
+                res = format!("{}\n", res);
+            }
+        }
+
+        if (self.states() - 1) % 2 == 1 {
+            res = format!("{}{}│\n", res, " ".repeat(l));
+        }
+
+        self.state = self.states();
+        self.current = (self.state - 1) % 2;
+        self.board.set_state(&self.get_last_state());
+
+        for _ in (self.states() / 2)..28 {
+            res = format!("{}│     │{}│{}│\n", res, " ".repeat(l), " ".repeat(l));
+        }
+
+        if self.is_over() {
+            // todo summary
+        }
+
+        res = format!("{}└─────┴{}┴{}┘\n", res, "─".repeat(l), "─".repeat(l));
+
+        res
+    }
+
     pub fn to_str(&mut self) -> String {
         let board = format!("{}", self.board);
         let state = self.states_str();
+        let skills = self.skills_str();
         let bag = self.board.bag.to_str_for_current_player(&self);
 
         // let mut rack = String::new();
@@ -279,6 +344,6 @@ impl Game {
 
         let rack = rack_to_string(self.get_current_player().rack.clone(), &self.board.bag);
         // rack = format!("{} {} {}", rack, self.current, self.state);
-        splice!(board, state, bag, rack)
+        splice!(board, state, skills, bag, rack)
     }
 }

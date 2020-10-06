@@ -317,8 +317,8 @@ impl PartialEq for Move {
         self.word == other.word
             && self.position == other.position
             && self.direction == other.direction
-            && self.score == other.score
-            && self.evaluation == other.evaluation
+        // && self.score == other.score
+        // && self.evaluation == other.evaluation
     }
 }
 
