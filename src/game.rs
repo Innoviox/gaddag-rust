@@ -256,7 +256,7 @@ impl Game {
             if self.states() % 2 == 1 {
                 text = format!("{}│ {}", " ".repeat(l), text);
             } else {
-                text = format!("\n{}", text);
+                text = format!(" {}", text);
             }
 
             res = format!("{}│     │{}{}│\n", res, text, " ".repeat(n));
