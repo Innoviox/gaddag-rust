@@ -250,7 +250,7 @@ impl Win {
     }
 
     fn set_state(&mut self, n: usize) {
-        let (m, r) = self.model.set_state(n);
+        let (m, r) = self.model.set_state(n + 1);
 
         self.setup_board(false);
         self._update_rack(&r.clone());

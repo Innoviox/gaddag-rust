@@ -45,8 +45,8 @@ fn main() {
         );
     } else if let Some(ref matches) = matches.subcommand_matches("play") {
         play::main(
-            matches.value_of("p1").unwrap().to_string(),
-            matches.value_of("p2").unwrap().to_string(),
+            matches.value_of("first").unwrap().to_string(),
+            matches.value_of("second").unwrap().to_string(),
         );
     }
 }

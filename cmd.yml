@@ -28,8 +28,12 @@ subcommands:
     - play:
         args:
             - first:
+                short: f
+                help: first player type
                 takes_value: true
                 default_value: "Human"
             - second:
+                short: s
+                help: second player type
                 takes_value: true
                 default_value: "AI"
