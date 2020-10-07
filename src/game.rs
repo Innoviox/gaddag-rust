@@ -334,7 +334,7 @@ impl Game {
     pub fn to_str(&mut self) -> String {
         let board = format!("{}", self.board);
         let state = self.states_str();
-        let skills = self.skills_str();
+        // let skills = self.skills_str();
         let bag = self.board.bag.to_str_for_current_player(&self);
 
         // let mut rack = String::new();
@@ -344,6 +344,6 @@ impl Game {
 
         let rack = rack_to_string(self.get_current_player().rack.clone(), &self.board.bag);
         // rack = format!("{} {} {}", rack, self.current, self.state);
-        splice!(board, state, skills, bag, rack)
+        splice!(board, state, bag, rack)
     }
 }

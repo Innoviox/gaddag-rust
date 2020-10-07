@@ -98,4 +98,6 @@ UI Roadmap
 - [ ] Passing
 - [ ] arrow keys
 - [ ] highlight used tiles?
-- [ ] skill level
+- [x] skill level
+  - [ ] show best move (teacher, maybe choices? idk)
+  - [ ] skills summary
