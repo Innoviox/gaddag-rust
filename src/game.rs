@@ -193,7 +193,7 @@ impl Game {
     }
 
     fn states_str(&mut self) -> String {
-        let l = 28;
+        let l = 38;
         let mut res = format!(
             "┌─────┬{}┬{}┐\n│     │{:^l$}│{:^l$}│\n├─────┼{}┼{}┤\n",
             "─".repeat(l),
@@ -207,8 +207,18 @@ impl Game {
         let mut scores = [0, 0];
 
         for i in 0..(self.states() - 1) {
-            let (m, _) = self.set_state(i + 1);
+            let (m, r) = self.set_state(i + 1);
             self.board.set_state(&self.get_last_state());
+
+            let mut a = self.get_current_player().clone();
+            a.rack = r;
+
+            let k = a.gen_moves(&mut self.board, true).0;
+
+            let p = k.iter().position(|i| *i == m).unwrap();
+
+            let d =
+                f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
 
             scores[i % 2] += m.score;
 
@@ -223,13 +233,14 @@ impl Game {
             }
 
             res = format!(
-                "{}{} {:<3}: {:<12} +{:<03}/{:<03} │",
+                "{}{} {:<3}: {:<12} +{:<03}/{:<03} [{:0>7}] │",
                 res,
                 num,
                 s,
                 self.board.format(&m, true),
                 m.score,
-                scores[i % 2]
+                scores[i % 2],
+                format!("{:.4}", d)
             );
 
             if i % 2 == 1 {

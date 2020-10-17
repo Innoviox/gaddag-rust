@@ -101,3 +101,5 @@ UI Roadmap
 - [x] skill level
   - [ ] show best move (teacher, maybe choices? idk)
   - [ ] skills summary
+- [ ] save gcg
+
