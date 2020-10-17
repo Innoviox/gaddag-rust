@@ -14,7 +14,7 @@ pub struct Game {
     pub current: usize,
     turn: u32,
     pub finished: bool,
-    states: Vec<(S, Move, Vec<char>)>,
+    states: Vec<(S, Move, Vec<char>, f32)>,
     pub state: usize,
 }
 
@@ -55,6 +55,7 @@ impl Game {
                 ),
                 Move::none(),
                 vec![],
+                0.0f32,
             )],
             state: 1,
         }
@@ -69,7 +70,7 @@ impl Game {
         let r = self.get_current_player().rack.clone();
         let m = self.players[self.current].do_move(&mut self.board, difficulty, eff);
         self.states
-            .push((self.board.save_state(), Move::of(&m.0), r));
+            .push((self.board.save_state(), Move::of(&m.0), r, 0.0f32));
         self.tick();
         m
     }
@@ -83,14 +84,19 @@ impl Game {
     }
 
     pub fn force_move(&mut self, m: &Move) {
-        let r = self.get_current_player().rack.clone();
+        let p = self.get_current_player().clone();
+        let r = p.rack.clone();
+
+        let k = p.gen_moves(&mut self.board, true).0;
+        let p = k.iter().position(|i| *i == *m).unwrap();
+        let d = f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
+
         self.players[self.current].remove(&mut self.board, &m);
-
         self.players[self.current].score += m.score as u32;
-
         self.board.place_move(m);
 
-        self.states.push((self.board.save_state(), Move::of(&m), r));
+        self.states
+            .push((self.board.save_state(), Move::of(&m), r, d));
         self.tick();
     }
 
@@ -147,14 +153,14 @@ impl Game {
         &mut self.players[n as usize]
     }
 
-    pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>) {
-        let (s, m, r) = &self.states[to];
+    pub fn set_state(&mut self, to: usize) -> (Move, Vec<char>, f32) {
+        let (s, m, r, skill) = &self.states[to];
 
         self.board.set_state(s);
         self.state = to;
         self.current = (to - 1) % 2;
 
-        (Move::of(m), r.clone())
+        (Move::of(m), r.clone(), *skill)
     }
 
     pub fn get_rack(&self, n: usize) -> Vec<char> {
@@ -207,19 +213,8 @@ impl Game {
         let mut scores = [0, 0];
 
         for i in 0..(self.states() - 1) {
-            let (m, r) = self.set_state(i + 1);
+            let (m, r, d) = self.set_state(i + 1);
             self.board.set_state(&self.get_last_state());
-
-            let mut a = self.get_current_player().clone();
-            a.rack = r;
-
-            let k = a.gen_moves(&mut self.board, true).0;
-
-            let p = k.iter().position(|i| *i == m).unwrap();
-
-            let d =
-                f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
-
             scores[i % 2] += m.score;
 
             let mut num = String::new();
@@ -271,70 +266,6 @@ impl Game {
             }
 
             res = format!("{}│     │{}{}│\n", res, text, " ".repeat(n));
-        }
-
-        res = format!("{}└─────┴{}┴{}┘\n", res, "─".repeat(l), "─".repeat(l));
-
-        res
-    }
-
-    fn skills_str(&mut self) -> String {
-        let l = 13;
-        let mut res = format!(
-            "┌─────┬{}┬{}┐\n│     │{:^l$}│{:^l$}│\n├─────┼{}┼{}┤\n",
-            "─".repeat(l),
-            "─".repeat(l),
-            self.get_player(0).name,
-            self.get_player(1).name,
-            "─".repeat(l),
-            "─".repeat(l),
-            l = l
-        );
-        let mut places = [vec![], vec![]];
-        let mut diffs = [vec![], vec![]];
-
-        for i in 0..(self.states() - 1) {
-            let (m, r) = self.set_state(i + 1);
-            self.board.set_state(&self.get_last_state());
-
-            let mut a = self.get_current_player().clone();
-            a.rack = r;
-
-            let k = a.gen_moves(&mut self.board, true).0;
-
-            let p = k.iter().position(|i| *i == m).unwrap();
-
-            let d =
-                f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
-
-            places[i % 2].push(p);
-            diffs[i % 2].push(d);
-
-            let mut num = String::new();
-            if i % 2 == 0 {
-                num = format!("│ {:<02}. │", (i / 2) + 1);
-            }
-            res = format!("{}{} {:<03} {:0>7} │", res, num, p, format!("{:.4}", d));
-
-            if i % 2 == 1 {
-                res = format!("{}\n", res);
-            }
-        }
-
-        if (self.states() - 1) % 2 == 1 {
-            res = format!("{}{}│\n", res, " ".repeat(l));
-        }
-
-        self.state = self.states();
-        self.current = (self.state - 1) % 2;
-        self.board.set_state(&self.get_last_state());
-
-        for _ in (self.states() / 2)..28 {
-            res = format!("{}│     │{}│{}│\n", res, " ".repeat(l), " ".repeat(l));
-        }
-
-        if self.is_over() {
-            // todo summary
         }
 
         res = format!("{}└─────┴{}┴{}┘\n", res, "─".repeat(l), "─".repeat(l));
