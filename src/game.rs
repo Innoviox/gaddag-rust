@@ -213,7 +213,7 @@ impl Game {
         let mut scores = [0, 0];
 
         for i in 0..(self.states() - 1) {
-            let (m, r, d) = self.set_state(i + 1);
+            let (m, _r, d) = self.set_state(i + 1);
             self.board.set_state(&self.get_last_state());
             scores[i % 2] += m.score;
 
