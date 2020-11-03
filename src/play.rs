@@ -81,7 +81,7 @@ impl<'a> TermionGame<'a> {
             let s = self.game.states() - 1;
             let mut x = 75;
             if s % 2 == 1 {
-                x += 29;
+                x += 39;
             }
             let y = 4 + s / 2;
 
