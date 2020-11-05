@@ -117,7 +117,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         //         println!("{}", out);
         //         println!("{}", g.get_board());
 
-        println!("{}", g.to_str());
+        // println!("{}", g.to_str());
     }
 
     let (end_s, end, n) = g.finish();

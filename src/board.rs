@@ -156,7 +156,14 @@ impl Board {
     }
 
     pub fn is_letter(&self, p: Position) -> bool {
-        return !"#^+-*.".contains(self.at_position(p));
+        // !"#^+-*.".contains(self.at_position(p));
+        self.at_position(p).is_alphabetic()
+        // let l = self.at_position(p);
+        // if l.is_alphabetic() {
+        //     return Some(l);
+        // }
+
+        // None
     }
 
     pub fn set(&mut self, p: Position, c: char) {
@@ -261,7 +268,43 @@ impl Board {
             }
             let old = self.at_position(p);
             self.set(p, l);
-            cross[i] = self.valid(&dir);
+
+            // cross[i] = self.valid(&dir);
+
+            cross[i] = true;
+            let mut node = self.trie.root();
+            let mut curr = p;
+            while curr.tick_opp(dir) && self.is_letter(curr) {
+                if let Some(next_node) = self.trie.follow(node, self.at_position(curr)) {
+                    node = next_node;
+                } else {
+                    cross[i] = false;
+                    break;
+                }
+            }
+
+            if cross[i] {
+                if let Some(next_node) = self.trie.follow(node, '#') {
+                    node = next_node;
+                    curr = p;
+                    while self.is_letter(curr) {
+                        if let Some(next_node) = self.trie.follow(node, self.at_position(curr)) {
+                            node = next_node;
+                            curr.tick(dir);
+                        } else {
+                            cross[i] = false;
+                            break;
+                        }
+                    }
+
+                    if self.trie.follow(node, '@') == None {
+                        cross[i] = false;
+                    }
+                } else {
+                    cross[i] = false;
+                }
+            }
+
             self.set(p, old);
         }
 
@@ -305,6 +348,14 @@ impl Board {
                         if !self.dict.check_word(&word) {
                             return false;
                         }
+
+                        // if let Some(_) = self
+                        //     .trie
+                        //     .follow(self.trie.seed(&word.chars().collect::<Vec<_>>()), '@')
+                        // {
+                        // } else {
+                        //     return false;
+                        // }
                     }
 
                     // if len > 1 {
