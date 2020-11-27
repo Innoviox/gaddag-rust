@@ -23,16 +23,15 @@ impl Game {
         Game::with("p1".to_string(), "p2".to_string())
     }
 
-    pub fn with(name1: String, name2: String) -> Game {
-        let mut board = Board::default();
+    fn with_board(mut board: Board) -> Game {
         let player_1 = Player {
             rack: board.bag.draw_tiles(7),
-            name: name1,
+            name: String::new(),
             score: 0,
         };
         let player_2 = Player {
             rack: board.bag.draw_tiles(7),
-            name: name2,
+            name: String::new(),
             score: 0,
         };
         let players = [player_1, player_2];
@@ -59,6 +58,18 @@ impl Game {
             )],
             state: 1,
         }
+    }
+
+    pub fn with(name1: String, name2: String) -> Game {
+        let mut g = Game::with_board(Board::default());
+        g.players[0].name = name1;
+        g.players[1].name = name2;
+
+        g
+    }
+
+    pub fn with_distr(vec: &Vec<char>) -> Game {
+        Game::with_board(Board::with_distr(vec))
     }
 
     pub fn set_board(&mut self, board: [[char; 15]; 15]) {

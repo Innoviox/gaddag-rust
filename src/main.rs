@@ -22,6 +22,7 @@ mod simulate;
 mod text;
 #[macro_use]
 mod utils;
+mod profile;
 mod viz;
 
 fn main() {
@@ -48,5 +49,7 @@ fn main() {
             matches.value_of("first").unwrap().to_string(),
             matches.value_of("second").unwrap().to_string(),
         );
+    } else if let Some(ref _matches) = matches.subcommand_matches("profile") {
+        profile::main();
     }
 }

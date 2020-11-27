@@ -12,6 +12,8 @@ subcommands:
                 default_value: "1"
     - viz:
         args:
+    - profile:
+        args:
     - simulate:
         args:
             - rack:

@@ -94,12 +94,12 @@ pub const STATE: [[char; 15]; 15] = [
 ];
 
 impl Board {
-    pub fn with_preloads(t: Trie, d: Dictionary) -> Board {
+    pub fn with_preloads(t: Trie, d: Dictionary, b: Bag) -> Board {
         let mut b = Board {
             state: STATE.clone(),
             trie: t,
             dict: d,
-            bag: Bag::default(),
+            bag: b,
             blanks: vec![],
             cross_checks: [array_init(|_| Vec::new()), array_init(|_| Vec::new())],
             affected: vec![],
@@ -122,7 +122,15 @@ impl Board {
     }
 
     pub fn default() -> Board {
-        Board::with_preloads(Trie::default(), Dictionary::default())
+        Board::with_preloads(Trie::default(), Dictionary::default(), Bag::default())
+    }
+
+    pub fn with_distr(distribution: &Vec<char>) -> Board {
+        Board::with_preloads(
+            Trie::default(),
+            Dictionary::default(),
+            Bag::with(distribution),
+        )
     }
 
     pub fn set_board(&mut self, state: [[char; 15]; 15]) {
