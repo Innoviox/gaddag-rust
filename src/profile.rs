@@ -13,7 +13,7 @@ pub fn main() {
         'S', 'R', 'N', 'E', 'T', 'O', 'G', 'G', 'I', 'E',
     ]);
 
-    for _ in 0..12 {
+    for _ in 0..11 {
         g.do_move(1, false);
     }
 
