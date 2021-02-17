@@ -6,6 +6,7 @@ use crate::utils::{rack_to_string, Move, Type};
 
 use array_init::array_init;
 
+use std::cmp;
 use std::vec::Vec;
 
 pub struct Game {
@@ -108,7 +109,7 @@ impl Game {
         let r = p.rack.clone();
 
         let k = p.gen_moves(&mut self.board, true).0;
-        let m = &k[diff];
+        let m = &k[cmp::min(k.len() - 1, diff)];
         let d = f32::abs(k[0].evaluation - m.evaluation);
 
         self.players[self.current].remove(&mut self.board, &m);

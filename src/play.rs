@@ -322,7 +322,7 @@ impl<'a> TermionGame<'a> {
                 let diff = if v.len() > 1 {
                     v[1].parse::<usize>().unwrap()
                 } else {
-                    1
+                    0
                 };
                 self.game.force_move_k(diff);
 
