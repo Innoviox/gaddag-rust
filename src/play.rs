@@ -317,7 +317,8 @@ impl<'a> TermionGame<'a> {
             self.game.finish();
         } else {
             if self.game.get_current_player().name == "AI" {
-                self.game.do_move(1, true); // todo: difficulty
+                // self.game.do_move(2, true); // todo: difficulty
+                self.game.force_move_k(2);
 
                 self.reset(true);
                 self.tick();

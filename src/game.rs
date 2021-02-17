@@ -103,6 +103,23 @@ impl Game {
         self.tick();
     }
 
+    pub fn force_move_k(&mut self, diff: usize) {
+        let p = self.get_current_player().clone();
+        let r = p.rack.clone();
+
+        let k = p.gen_moves(&mut self.board, true).0;
+        let m = k.iter().nth(diff).unwrap();
+        let d = f32::abs(k.iter().nth(0).unwrap().evaluation - m.evaluation);
+
+        self.players[self.current].remove(&mut self.board, &m);
+        self.players[self.current].score += m.score as u32;
+        self.board.place_move(m);
+
+        self.states
+            .push((self.board.save_state(), Move::of(&m), r, d));
+        self.tick();
+    }
+
     pub fn finish(&mut self) -> (String, i32, i32) {
         let mut n = 0;
         if self.get_player(1).rack.len() == 0 {
