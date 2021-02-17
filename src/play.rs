@@ -316,9 +316,15 @@ impl<'a> TermionGame<'a> {
         if self.game.is_over() {
             self.game.finish();
         } else {
-            if self.game.get_current_player().name == "AI" {
-                // self.game.do_move(2, true); // todo: difficulty
-                self.game.force_move_k(2);
+            let n = &self.game.get_current_player().name;
+            if n.starts_with("AI") {
+                let v: Vec<&str> = n.split('/').collect();
+                let diff = if v.len() > 1 {
+                    v[1].parse::<usize>().unwrap()
+                } else {
+                    1
+                };
+                self.game.force_move_k(diff);
 
                 self.reset(true);
                 self.tick();

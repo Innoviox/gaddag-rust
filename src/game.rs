@@ -92,7 +92,7 @@ impl Game {
             Some(x) => x,
             None => k.len() - 1,
         };
-        let d = f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
+        let d = f32::abs(k[0].evaluation - k[p].evaluation);
 
         self.players[self.current].remove(&mut self.board, &m);
         self.players[self.current].score += m.score as u32;
@@ -108,8 +108,8 @@ impl Game {
         let r = p.rack.clone();
 
         let k = p.gen_moves(&mut self.board, true).0;
-        let m = k.iter().nth(diff).unwrap();
-        let d = f32::abs(k.iter().nth(0).unwrap().evaluation - m.evaluation);
+        let m = &k[diff];
+        let d = f32::abs(k[0].evaluation - m.evaluation);
 
         self.players[self.current].remove(&mut self.board, &m);
         self.players[self.current].score += m.score as u32;
