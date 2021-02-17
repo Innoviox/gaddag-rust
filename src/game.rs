@@ -88,7 +88,10 @@ impl Game {
         let r = p.rack.clone();
 
         let k = p.gen_moves(&mut self.board, true).0;
-        let p = k.iter().position(|i| *i == *m).unwrap();
+        let p = match k.iter().position(|i| *i == *m) {
+            Some(x) => x,
+            None => k.len() - 1,
+        };
         let d = f32::abs(k.iter().nth(0).unwrap().evaluation - k.iter().nth(p).unwrap().evaluation);
 
         self.players[self.current].remove(&mut self.board, &m);
