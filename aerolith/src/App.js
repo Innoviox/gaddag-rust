@@ -11,7 +11,7 @@ class App extends Component {
         inputs: ['', '', '', '', '', '', ''],
         words: [],
         wordI: 0,
-        currGuess: 0
+        currGuess: []
     };
 
     this.updateItem = this.updateItem.bind(this);
@@ -35,11 +35,13 @@ class App extends Component {
       const next = this.input(i + 1);
       if (next === null) {
           let guess = this.inputs().map(i => i.value).join("");
-          if (this.currWord().w.includes(guess)) {
-              this.setState( { currGuess: this.state.currGuess + 1}, () => this.flickerClass('green', 500, () => {
+          if (this.currWord().w.includes(guess) && !this.state.currGuess.includes(guess)) {
+              this.setState( { currGuess: this.state.currGuess.concat([guess]) }, () => this.flickerClass('green', 500, () => {
                   this.clearInputs();
-                  if (this.state.currGuess === this.currWord().w.length) {
-                      this.setState( { wordI: this.state.wordI + 1 }, this.writeAnagram);
+                  if (this.state.currGuess.length === this.currWord().w.length) {
+                      this.setState( { wordI: this.state.wordI + 1, currGuess: [] }, this.writeAnagram);
+                  } else {
+                      this.input(0).focus();
                   }
               }))
           } else {
