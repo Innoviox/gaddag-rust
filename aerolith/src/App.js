@@ -21,26 +21,20 @@ class App extends Component {
   }
 
   updateItem = (i, e) => {
-      this.setState(state => {
-          const inputs = state.inputs.map((item, j) => {
-              if (j === i) {
-                  return e.target.value;
-              } else {
-                  return item;
-              }
-          });
+      this.setState({ inputs: this.state.inputs.map((item, j) => j === i ? e.target.value : item) });
+      const next = document.querySelector(`input[name=input-${i+1}]`);
+      if (next === null) {
 
-          return {
-              inputs,
-          };
-      });
+      } else {
+          next.focus();
+      }
   }
 
   render = () =>
     <div>
         <div id="inputs">
             {this.state.inputs.map((item, i) => (
-                <input key={i} ref={i} type="text" onChange={e => this.updateItem(i, e)} />
+                <input key={i} name={`input-${i}`} type="text" onChange={e => this.updateItem(i, e)} />
             ))}
         </div>
     </div>;
