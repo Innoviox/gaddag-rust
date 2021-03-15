@@ -9,3 +9,11 @@
 .test-input:focus {
     background-color: lightblue;
 }
+
+.green {
+    background-color: lawngreen;
+}
+
+.red {
+    background-color: orangered;
+}
