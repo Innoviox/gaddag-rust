@@ -20,9 +20,14 @@ class App extends Component {
     //     });
   }
 
+  input = i => document.querySelector(`input[name=input-${i}]`);
+
   updateItem = (i, e) => {
       this.setState({ inputs: this.state.inputs.map((item, j) => j === i ? e.target.value : item) });
-      const next = document.querySelector(`input[name=input-${i+1}]`);
+
+      this.input(i).value = this.input(i).value.toUpperCase();
+
+      const next = this.input(i + 1);
       if (next === null) {
 
       } else {
@@ -34,7 +39,7 @@ class App extends Component {
     <div>
         <div id="inputs">
             {this.state.inputs.map((item, i) => (
-                <input key={i} name={`input-${i}`} type="text" onChange={e => this.updateItem(i, e)} />
+                <input maxLength={1} key={i} name={`input-${i}`} className="test-input" type="text" onChange={e => this.updateItem(i, e)} />
             ))}
         </div>
     </div>;
