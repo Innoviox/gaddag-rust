@@ -81,6 +81,7 @@ class App extends Component {
                 <input maxLength={1} key={i} name={`input-${i}`} className="test-input" type="text" onChange={e => this.updateItem(i, e)} />
             ))}
         </div>
+        <br />
         <span id="test" />
     </div>;
 }

@@ -28,3 +28,9 @@
     margin-top: -100px;
     margin-left: -133px;
 }
+
+#test {
+    position: absolute;
+    left: 50%;
+    margin-left: -34px;
+}
