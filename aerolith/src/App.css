@@ -17,3 +17,14 @@
 .red {
     background-color: orangered;
 }
+
+#test-div {
+    height: 200px;
+    width: 266px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -133px;
+}
