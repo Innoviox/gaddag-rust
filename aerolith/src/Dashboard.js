@@ -11,6 +11,18 @@ class Dashboard extends Component {
         };
     }
 
+    componentDidMount() {
+        window.addEventListener('load', this.handleLoad);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('load', this.handleLoad)
+    }
+
+    handleLoad() {
+        document.getElementsByTagName("html")[0].classList.add("has-navbar-fixed-top")
+    }
+
     render = () =>
         <div>
         <nav className="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
@@ -33,6 +45,9 @@ class Dashboard extends Component {
                 </div>
             </div>
         </nav>
+        <div>
+            
+        </div>
         </div>;
 }
 
