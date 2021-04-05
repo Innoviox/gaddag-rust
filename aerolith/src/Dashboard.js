@@ -1,4 +1,3 @@
-import './Dashboard.css';
 import {Component} from "react/cjs/react.production.min";
 import React from "react";
 
@@ -23,6 +22,8 @@ class App extends Component {
     }
 
     render = () =>
+        <div>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
         <div id="test-div">
             <div id="inputs">
                 {this.state.inputs.map((item, i) => (
@@ -31,6 +32,7 @@ class App extends Component {
             </div>
             <br />
             <span id="test" />
+        </div>
         </div>;
 }
 
