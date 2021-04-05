@@ -12,11 +12,7 @@ class Dashboard extends Component {
     }
 
     render = () =>
-        <html className="has-navbar-fixed-top">
-        <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
-        </head>
-        <body>
+        <div>
         <nav className="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
                 <h1 className="navbar-item">Myrolith</h1>
@@ -37,8 +33,7 @@ class Dashboard extends Component {
                 </div>
             </div>
         </nav>
-        </body>
-        </html>;
+        </div>;
 }
 
 export default Dashboard;
