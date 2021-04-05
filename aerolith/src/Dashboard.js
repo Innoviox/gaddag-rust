@@ -1,39 +1,44 @@
+import './Dashboard.css';
 import {Component} from "react/cjs/react.production.min";
 import React from "react";
 
 
-class App extends Component {
+class Dashboard extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            inputs: ['', '', '', '', '', '', ''],
-            words: [],
-            wordI: 0,
-            currGuess: []
         };
-
-        this.updateItem = this.updateItem.bind(this);
-        this.setWords = this.setWords.bind(this);
-
-        fetch(process.env.PUBLIC_URL + '/files/sevens1000-out.txt')
-            .then(r => r.text())
-            .then(this.setWords);
     }
 
     render = () =>
-        <div>
+        <html className="has-navbar-fixed-top">
+        <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
-        <div id="test-div">
-            <div id="inputs">
-                {this.state.inputs.map((item, i) => (
-                    <input maxLength={1} key={i} name={`input-${i}`} className="test-input" type="text" onChange={e => this.updateItem(i, e)} />
-                ))}
+        </head>
+        <body>
+        <nav className="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+            <div className="navbar-brand">
+                <h1 className="navbar-item">Myrolith</h1>
             </div>
-            <br />
-            <span id="test" />
-        </div>
-        </div>;
+
+            <div id="navbarBasicExample" className="navbar-menu">
+                <div className="navbar-end">
+                    <div className="navbar-item">
+                        <div className="buttons">
+                            <a className="button is-primary">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a className="button is-light">
+                                Log in
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        </body>
+        </html>;
 }
 
-export default App;
+export default Dashboard;
