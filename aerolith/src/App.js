@@ -25,7 +25,10 @@ class App extends Component {
   input = i => document.querySelector(`input[name=input-${i}]`);
   inputs = () => [0, 1, 2, 3, 4, 5, 6].map(this.input);
   currWord = () => this.state.words[this.state.wordI];
-  clearInputs = () => this.inputs().map(i => i.value = "");
+  clearInputs = () => {
+      this.inputs().map(i => i.value = "");
+      this.input(0).focus();
+  }
 
   updateItem = (i, e) => {
       this.setState({ inputs: this.state.inputs.map((item, j) => j === i ? e.target.value : item) });
