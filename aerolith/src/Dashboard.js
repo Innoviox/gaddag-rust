@@ -16,11 +16,11 @@ class Dashboard extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('load', this.handleLoad)
+        window.removeEventListener('load', this.handleLoad);
     }
 
     handleLoad() {
-        document.getElementsByTagName("html")[0].classList.add("has-navbar-fixed-top")
+        document.getElementsByTagName("html")[0].classList.add("has-navbar-fixed-top");
     }
 
     render = () =>
@@ -46,7 +46,7 @@ class Dashboard extends Component {
             </div>
         </nav>
         <div>
-            
+
         </div>
         </div>;
 }
