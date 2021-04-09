@@ -104,7 +104,7 @@ class App extends Component {
   }
 
   render = () =>
-    <div id="test-div">
+    <div id="test-div" className="animate__animated animate__slideInLeft">
         <div id="inputs">
             {this.state.inputs.map((item, i) => (
                 <input maxLength={1} key={i} name={`input-${i}`} className="test-input" type="text" onChange={e => this.updateItem(i, e)} />
