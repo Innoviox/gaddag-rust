@@ -14,6 +14,14 @@
     background-color: lawngreen;
 }
 
+.text-green {
+    color: lawngreen;
+}
+
+.text-red {
+    color: orangered;
+}
+
 .red {
     background-color: orangered;
 }

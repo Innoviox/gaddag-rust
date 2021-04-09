@@ -38,6 +38,8 @@ class App extends Component {
       const next = this.input(i + 1);
       if (next === null) {
           let guess = this.inputs().map(i => i.value).join("");
+          let el = document.createElement("SPAN");
+          el.innerText = guess;
           if (this.currWord().w.includes(guess) && !this.state.currGuess.includes(guess)) {
               this.setState( { currGuess: this.state.currGuess.concat([guess]) }, () => this.flickerClass('green', 500, () => {
                   this.clearInputs();
@@ -46,10 +48,14 @@ class App extends Component {
                   } else {
                       this.input(0).focus();
                   }
-              }))
+              }));
+              el.classList.add("text-green");
           } else {
-              this.flickerClass('red', 500, this.clearInputs)
+              this.flickerClass('red', 500, this.clearInputs);
+              el.classList.add("text-red");
           }
+          document.getElementById('attempts').appendChild(el);
+          document.getElementById('attempts').appendChild(document.createElement('br'));
       } else {
           next.focus();
       }
@@ -105,6 +111,8 @@ class App extends Component {
         </div>
         <br />
         <span id="test" />
+        <br />
+        <div id="attempts"/>
     </div>;
 }
 
