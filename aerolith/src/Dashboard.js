@@ -28,7 +28,7 @@ class Dashboard extends Component {
     }
 
     render = () =>
-        <div>
+        <div className="blocK">
         <nav className="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
                 <h1 className="navbar-item">Myrolith</h1>
@@ -49,6 +49,8 @@ class Dashboard extends Component {
                 </div>
             </div>
         </nav>
+        <br />
+        <br />
         <div className="block" id="main">
             <button className="button is-primary" id="playbtn">Play</button>
         </div>
