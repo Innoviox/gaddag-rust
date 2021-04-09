@@ -100,6 +100,7 @@ class App extends Component {
   writeAnagram = () => {
       document.getElementById("test").innerHTML = this.currWord().a;
       this.input(0).focus();
+      document.getElementById("attempts").innerHTML = "";
   }
 
   render = () =>
