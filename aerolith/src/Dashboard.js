@@ -13,6 +13,10 @@ class Dashboard extends Component {
 
     componentDidMount() {
         window.addEventListener('load', this.handleLoad);
+        document.getElementsByTagName("html")[0].addEventListener('click', e => {
+            document.getElementsByTagName("html")[0].classList.toggle("is-clipped");
+            document.getElementById("playmodal").classList.toggle("is-active");
+        });
     }
 
     componentWillUnmount() {
@@ -45,8 +49,24 @@ class Dashboard extends Component {
                 </div>
             </div>
         </nav>
-        <div>
-
+        <div className="block" id="main">
+            <button className="button is-primary" id="playbtn">Play</button>
+        </div>
+        <div className="modal" id="playmodal">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+                <header className="modal-card-head">
+                    <p className="modal-card-title">Modal title</p>
+                    <button className="delete" aria-label="close"></button>
+                </header>
+                <section className="modal-card-body">
+                    Content
+                </section>
+                <footer className="modal-card-foot">
+                    <button className="button is-success">Save changes</button>
+                    <button className="button">Cancel</button>
+                </footer>
+            </div>
         </div>
         </div>;
 }
