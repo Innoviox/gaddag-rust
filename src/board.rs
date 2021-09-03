@@ -96,7 +96,7 @@ pub const STATE: [[char; 15]; 15] = [
 impl Board {
     pub fn with_preloads(t: Trie, d: Dictionary) -> Board {
         let mut b = Board {
-            state: STATE.clone(),
+            state: STATE,
             trie: t,
             dict: d,
             bag: Bag::default(),
@@ -139,7 +139,7 @@ impl Board {
     }
 
     pub fn reset(&mut self) {
-        self.state = STATE.clone();
+        self.state = STATE;
         self.bag = Bag::default();
         self.blanks = vec![];
         self.cross_checks = [array_init(|_| Vec::new()), array_init(|_| Vec::new())];
@@ -156,7 +156,7 @@ impl Board {
     }
 
     pub fn is_letter(&self, p: Position) -> bool {
-        return !"#^+-*.".contains(self.at_position(p));
+        !"#^+-*.".contains(self.at_position(p))
     }
 
     pub fn set(&mut self, p: Position, c: char) {
@@ -165,7 +165,7 @@ impl Board {
 
     pub fn play_word(&mut self, p: Position, word: String, dir: Direction, force: bool) -> bool {
         // self.affected.clear();
-        let mut current = p.clone();
+        let mut current = p;
         let mut aff = Vec::new();
 
         for c in word.chars() {
@@ -198,7 +198,7 @@ impl Board {
 
         for p in aff {
             for d in Direction::iter() {
-                let mut np = p.clone();
+                let mut np = p;
                 self.affected.push(np);
                 while np.tick(*d) && self.is_letter(np) {
                     self.affected.push(np);
@@ -208,7 +208,7 @@ impl Board {
                     self.affected.push(c);
                 }
 
-                np = p.clone();
+                np = p;
                 while np.tick_opp(*d) && self.is_letter(np) {
                     self.affected.push(np);
                 }
@@ -237,7 +237,7 @@ impl Board {
     }
 
     pub fn place_move_cloned(&mut self, m: &Move) -> String {
-        let state = self.state.clone();
+        let state = self.state;
         self.place_move(m);
         let out = format!("{}", self);
         self.state = state;
@@ -277,7 +277,7 @@ impl Board {
             for col in 0..15 {
                 let p = Position { row, col };
                 if !marked[p.to_int()] && self.is_letter(p) {
-                    let mut curr = p.clone();
+                    let mut curr = p;
                     // let mut node = self.trie.hashroot();
                     // let mut len = 0;
                     // let mut c = self.at_position(curr);
@@ -301,10 +301,8 @@ impl Board {
                         // c = self.at_position(curr);
                     }
 
-                    if word.len() > 1 {
-                        if !self.dict.check_word(&word) {
-                            return false;
-                        }
+                    if word.len() > 1 && !self.dict.check_word(&word) {
+                        return false;
                     }
 
                     // if len > 1 {
@@ -327,7 +325,7 @@ impl Board {
     }
 
     pub fn valid_move(&mut self, m: &Move) -> bool {
-        let state = self.state.clone();
+        let state = self.state;
         self.place_move(m);
 
         let star = self.state[7][7] == '*';
@@ -339,15 +337,15 @@ impl Board {
         }
 
         let positions: HashSet<Position> = HashSet::from_iter(m.iter().map(|i| i.0));
-        let anchors: HashSet<Position> = HashSet::from_iter(self.anchors().iter().map(|i| *i));
+        let anchors: HashSet<Position> = HashSet::from_iter(self.anchors().iter().copied());
 
-        if anchors.len() == 0 {
+        if anchors.is_empty() {
             return true;
         }
 
         let intersect: HashSet<_> = positions.intersection(&anchors).collect();
 
-        intersect.len() != 0
+        !intersect.is_empty()
     }
 
     pub fn anchors(&self) -> Vec<Position> {
@@ -383,7 +381,7 @@ impl Board {
 
     pub fn save_state(&self) -> S {
         (
-            self.state.clone(),
+            self.state,
             self.blanks.clone(),
             self.cross_checks.clone(),
             self.bag.distribution.clone(),
@@ -393,7 +391,7 @@ impl Board {
 
     pub fn set_state(&mut self, state: &S) {
         let (s, blanks, c, bag, affected) = state;
-        self.state = (*s).clone();
+        self.state = *s;
         self.blanks = (*blanks).clone();
         self.cross_checks = (*c).clone();
         self.bag.distribution = bag.clone();
@@ -401,7 +399,7 @@ impl Board {
     }
 
     pub fn get_board(&self) -> [[char; 15]; 15] {
-        return self.state;
+        self.state
     }
 }
 
@@ -416,7 +414,7 @@ impl Board {
                     // note: requires mutability. also expensive method.
                 }
 
-                let mut p_sums = p.clone(); // start at position
+                let mut p_sums = *p; // start at position
                 let mut score = 0;
                 let mut found = false;
                 while p_sums.tick(*d) && self.is_letter(p_sums) {
@@ -428,7 +426,7 @@ impl Board {
                         score += self.bag.score(self.at_position(p_sums));
                     }
                 }
-                p_sums = p.clone();
+                p_sums = *p;
                 while p_sums.tick_opp(*d) && self.is_letter(p_sums) {
                     // go backwards until find non letter
                     found = true;
@@ -480,7 +478,7 @@ impl Board {
         // Initialize some necessary variables.
         let root = self.trie.root();
 
-        let rword = to_word(&rack); // convert it to a vector-word (see utils.rs) for ease of insertion and deletion.
+        let rword = to_word(rack); // convert it to a vector-word (see utils.rs) for ease of insertion and deletion.
 
         let n_center = !self.is_letter(Position { row: 7, col: 7 }); // if we need to play at the center or not
 
@@ -501,7 +499,7 @@ impl Board {
                 let p = Position { row, col };
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
                     // operate on either anchor, or middle piece *if* center is not *
-                    let mut np = p.clone();
+                    let mut np = p;
                     if np.tick_opp(d) && self.is_letter(np) {
                         // if left is a letter, use left part already on board
                         self.left_on_board(
@@ -543,7 +541,7 @@ impl Board {
             for row in 0..15 {
                 let p = Position { row, col };
                 if self.is_anchor(p) || (n_center && (p.col == 7 && p.row == 7)) {
-                    let mut np = p.clone();
+                    let mut np = p;
                     if np.tick_opp(d) && self.is_letter(np) {
                         self.left_on_board(
                             np,
@@ -591,7 +589,7 @@ impl Board {
                         position: Position { row: 0, col: 0 },
                         direction: Direction::Down,
                         score: 0,
-                        evaluation: *self.dict.evaluate(&jw).expect(&format!("{:?}", &jw)),
+                        evaluation: *self.dict.evaluate(&jw).unwrap_or_else(|| panic!("{:?}", &jw)),
                         typ: Type::Exch,
                     });
                 }
@@ -621,7 +619,7 @@ impl Board {
         Note that this method is called with the position of the first letter (so E in the example).
         */
         // println!("Received call left-board with {:?}", position);
-        let mut np = position.clone();
+        let mut np = position;
 
         let mut word = Vec::<char>::new();
 
@@ -638,9 +636,9 @@ impl Board {
                 // end method
                 word.reverse(); // reverse word - we were traversing left, so in the above example we would have found "EH", so we need to
                                 // reverse before passing to lower methods
-                let mut nnp = position.clone(); // get position that extend-right will start at, which is one right of the given position.
+                let mut nnp = position; // get position that extend-right will start at, which is one right of the given position.
                 nnp.tick(direction);
-                let mut nnnp = np.clone(); // we may need to tick the start position.
+                let mut nnnp = np; // we may need to tick the start position.
                                            /*
                                            In the above example, we would hit the space to the left of H and get a non-letter (case (2)).
                                            In that case, the start position of the move is H, so we need to move one right before extending right.
@@ -716,7 +714,7 @@ impl Board {
 
         if limit > 0 {
             // can still travel in the given direction
-            let mut cp = position.clone(); // current position
+            let mut cp = position; // current position
             if cp.tick_opp(direction) {
                 // try to move left
                 // todo rayon
@@ -736,7 +734,7 @@ impl Board {
                             new_part.push(next);
                             let new_word = next.to_string() + &word;
 
-                            let mut ccp = cp.clone(); // new starting position
+                            let mut ccp = cp; // new starting position
                             ccp.tick_opp(direction);
 
                             if !self.is_letter(ccp) {
@@ -777,9 +775,9 @@ impl Board {
                 let mut new_rack = rack.clone();
                 new_rack[26] -= 1; // remove the blank
 
-                let mut cp = position.clone();
+                let mut cp = position;
                 if cp.tick_opp(direction) {
-                    let mut ccp = cp.clone();
+                    let mut ccp = cp;
                     ccp.tick_opp(direction);
                     if !self.is_letter(ccp) {
                         for (c, nnode) in self.trie.nexts(node) {
@@ -847,7 +845,7 @@ impl Board {
                         position: start_pos,
                         direction,
                         score: 0,
-                        evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)),
+                        evaluation: *self.dict.evaluate(&rack).unwrap_or_else(|| panic!("{:?}", &rack)),
                         typ: Type::Play,
                     };
                     m.score = self.score(&m, cross_sums); // score move
@@ -872,7 +870,7 @@ impl Board {
                                 nr[26] -= 1;
                                 snext = next.to_lowercase().to_string();
                             }
-                            let mut npp = position.clone();
+                            let mut npp = position;
 
                             let nword = &(word.to_owned() + &snext); // add to word
 
@@ -901,7 +899,7 @@ impl Board {
                                     evaluation: *self
                                         .dict
                                         .evaluate(&nr)
-                                        .expect(&format!("{:?}", &nr)),
+                                        .unwrap_or_else(|| panic!("{:?}", &nr)),
                                     typ: Type::Play,
                                 };
                                 m.score = self.score(&m, cross_sums);
@@ -916,7 +914,7 @@ impl Board {
             let next = self.at_position(position);
             let mut np = part.clone();
             np.push(next);
-            let mut npp = position.clone();
+            let mut npp = position;
 
             let nword = &(word.to_owned() + &next.to_string());
 
@@ -943,7 +941,7 @@ impl Board {
                         position: start_pos,
                         direction,
                         score: 0,
-                        evaluation: *self.dict.evaluate(&rack).expect(&format!("{:?}", &rack)),
+                        evaluation: *self.dict.evaluate(&rack).unwrap_or_else(|| panic!("{:?}", &rack)),
                         typ: Type::Play,
                     };
                     m.score = self.score(&m, cross_sums);
@@ -969,18 +967,16 @@ impl Board {
         for (curr_pos, i) in m.iter() {
             if !self.is_letter(curr_pos) {
                 res.push(i);
-            } else {
-                if human {
-                    res.push('(');
-                    if self.blanks.contains(&curr_pos) {
-                        res.push(i.to_lowercase().nth(0).unwrap());
-                    } else {
-                        res.push(i);
-                    }
-                    res.push(')');
+            } else if human {
+                res.push('(');
+                if self.blanks.contains(&curr_pos) {
+                    res.push(i.to_lowercase().next().unwrap());
                 } else {
-                    res.push('.');
+                    res.push(i);
                 }
+                res.push(')');
+            } else {
+                res.push('.');
             }
         }
 
@@ -1128,7 +1124,7 @@ impl fmt::Display for Board {
         let sep = "├────┼".to_owned() + &"───┼".repeat(14) + "───┤";
         let bot = "└────┴".to_owned() + &"───┴".repeat(14) + "───┘";
 
-        write!(f, "{}\n", top).expect("fail");
+        writeln!(f, "{}", top).expect("fail");
         write!(f, "│    │").expect("fail");
         for row in ALPH.chars().take(15) {
             write!(f, "{}", format!(" {} │", row)).expect("fail");

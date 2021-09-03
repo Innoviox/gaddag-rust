@@ -201,7 +201,7 @@ impl<'a> TermionGame<'a> {
             // todo: shift to place blank
 
             let u = c.to_ascii_uppercase();
-            if 'A' <= u && u <= 'Z' {
+            if ('A'..='Z').contains(&u) {
                 if u != c && self.rack.contains(&u) {
                     self.rack._remove_item(u);
                     self.word.push(u);
@@ -227,7 +227,7 @@ impl<'a> TermionGame<'a> {
 
     pub fn handle_move(&mut self) {
         if self.valid {
-            if self.exch.len() > 0 {
+            if !self.exch.is_empty() {
                 self.curr_move = Move {
                     word: self
                         .exch

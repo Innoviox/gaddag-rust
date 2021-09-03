@@ -95,12 +95,12 @@ impl Game {
         };
         let d = f32::abs(k[0].evaluation - k[p].evaluation);
 
-        self.players[self.current].remove(&mut self.board, &m);
+        self.players[self.current].remove(&mut self.board, m);
         self.players[self.current].score += m.score as u32;
         self.board.place_move(m);
 
         self.states
-            .push((self.board.save_state(), Move::of(&m), r, d));
+            .push((self.board.save_state(), Move::of(m), r, d));
         self.tick();
     }
 
@@ -112,18 +112,18 @@ impl Game {
         let m = &k[cmp::min(k.len() - 1, diff)];
         let d = f32::abs(k[0].evaluation - m.evaluation);
 
-        self.players[self.current].remove(&mut self.board, &m);
+        self.players[self.current].remove(&mut self.board, m);
         self.players[self.current].score += m.score as u32;
         self.board.place_move(m);
 
         self.states
-            .push((self.board.save_state(), Move::of(&m), r, d));
+            .push((self.board.save_state(), Move::of(m), r, d));
         self.tick();
     }
 
     pub fn finish(&mut self) -> (String, i32, i32) {
         let mut n = 0;
-        if self.get_player(1).rack.len() == 0 {
+        if self.get_player(1).rack.is_empty() {
             n = 1;
         }
 
@@ -148,8 +148,8 @@ impl Game {
 
     pub fn is_over(&self) -> bool {
         self.finished
-            || !(self.board.bag.distribution.len() > 0
-                || (self.players[0].rack.len() > 0 && self.players[1].rack.len() > 0))
+            || !(!self.board.bag.distribution.is_empty()
+                || (!self.players[0].rack.is_empty() && !self.players[1].rack.is_empty()))
     }
 
     pub fn get_board(&self) -> &Board {
@@ -298,7 +298,7 @@ impl Game {
         let board = format!("{}", self.board);
         let state = self.states_str();
         // let skills = self.skills_str();
-        let bag = self.board.bag.to_str_for_current_player(&self);
+        let bag = self.board.bag.to_str_for_current_player(self);
 
         // let mut rack = String::new();
         // if self.states() > 0 {

@@ -12,9 +12,9 @@ pub fn main(turns: u32, difficulty: usize) {
 
     let (moves, eval_val) = p.gen_moves(game.get_board_mut(), false);
 
-    let mut board = game.get_board().get_board().clone();
+    let mut board = game.get_board().get_board();
     for b in game.get_board().blanks.clone() {
-        board[b.row][b.col] = board[b.row][b.col].to_lowercase().nth(0).unwrap();
+        board[b.row][b.col] = board[b.row][b.col].to_lowercase().next().unwrap();
     }
     let mut s = board
         .iter()
@@ -29,7 +29,7 @@ pub fn main(turns: u32, difficulty: usize) {
             format!(
                 "{} {} {} {}\n",
                 m.position.to_str(m.direction),
-                game.get_board_mut().format(&m, true),
+                game.get_board_mut().format(m, true),
                 m.score,
                 m.eval(1.0, eval_val)
             )

@@ -66,9 +66,9 @@ impl ClickData {
     }
 
     pub fn start(&mut self, at: Position) {
-        self.start_pos = at.clone();
+        self.start_pos = at;
         self.direction = Direction::Across;
-        self.curr_pos = at.clone();
+        self.curr_pos = at;
         self.word = vec![];
         self._is_typing = true;
     }
@@ -225,7 +225,7 @@ impl Win {
 
         for w in self.rack.get_children() {
             let l = w.dynamic_cast::<Label>().ok().unwrap();
-            let c = l.get_text().as_str().chars().nth(0).unwrap();
+            let c = l.get_text().as_str().chars().next().unwrap();
             let score = self.model.get_board().bag.score(c);
             let mut set = "white";
             for (p, letter) in m.iter() {
@@ -244,16 +244,16 @@ impl Win {
 
     fn _handle(&mut self, m: &Move) {
         if !m.exch() {
-            self.place(&m, "yellow", false);
+            self.place(m, "yellow", false);
         }
-        self.update_rack_for(&m);
+        self.update_rack_for(m);
     }
 
     fn set_state(&mut self, n: usize) {
         let (m, r, _) = self.model.set_state(n + 1);
 
         self.setup_board(false);
-        self._update_rack(&r.clone());
+        self._update_rack(&r);
         self._handle(&m);
     }
 }
@@ -470,7 +470,7 @@ impl Update for Win {
                         &[
                             &((i + 1) as u32),
                             &pos,
-                            &board.format(&m, true),
+                            &board.format(m, true),
                             &leave,
                             &m.score,
                             &m.eval(1.0, eval_val),
@@ -574,7 +574,7 @@ fn append_column(
     treeview.append_column(&column);
     v.push(column);
 
-    return id;
+    id
 }
 
 fn scroll<T: IsA<GTKWidget>>(window: &T) -> ScrolledWindow {
@@ -589,7 +589,7 @@ fn scroll<T: IsA<GTKWidget>>(window: &T) -> ScrolledWindow {
     ));
     let container = ScrolledWindow::new(no_adjustment.as_ref(), scroll.as_ref());
     container.add(window);
-    return container;
+    container
 }
 
 impl Widget for Win {
@@ -801,9 +801,7 @@ impl Widget for Win {
                 .unwrap()
                 // get moves window
                 .get_children()
-                .iter()
-                .filter(|x| x.is::<Notebook>())
-                .nth(0) // notebook
+                .iter().find(|x| x.is::<Notebook>()) // notebook
                 .unwrap()
                 .clone()
                 .dynamic_cast::<Notebook>()
@@ -852,10 +850,10 @@ impl Widget for Win {
                         .get_text()
                         .as_str()
                         // get score from text
-                        .split("+")
+                        .split('+')
                         .nth(1)
                         .unwrap()
-                        .split("/")
+                        .split('/')
                         .nth(1)
                         .unwrap()
                         .parse::<i32>()
@@ -881,13 +879,10 @@ impl Widget for Win {
                     _ => false,
                 })
                 // filter for labels with "/" (there should only be one, the one we want)
-                .map(|x| x.ok().unwrap().get_text())
-                .filter(|x| x.as_str().contains("/"))
-                // take label we found
-                .nth(0)
+                .map(|x| x.ok().unwrap().get_text()).find(|x| x.as_str().contains('/'))
             {
                 // extract score
-                Some(s) => s.split("/").nth(1).unwrap().parse::<i32>().unwrap(),
+                Some(s) => s.split('/').nth(1).unwrap().parse::<i32>().unwrap(),
                 _ => 0,
             };
 
@@ -908,12 +903,12 @@ impl Widget for Win {
                 // https://github.com/rust-lang/rust/issues/59159
                 if s1.len() < s2.len() {
                     if let Some(l) = s1.last() {
-                        let l2 = l.clone();
+                        let l2 = *l;
                         s1.push(l2);
                     }
                 } else if s1.len() > s2.len() {
                     if let Some(l) = s2.last() {
-                        let l2 = l.clone();
+                        let l2 = *l;
                         s2.push(l2);
                     }
                 }

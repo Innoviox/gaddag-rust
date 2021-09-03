@@ -28,13 +28,13 @@ fn main() {
     let yaml = load_yaml!("../cmd.yml");
     let matches = App::from(yaml).get_matches();
 
-    if let Some(ref matches) = matches.subcommand_matches("text") {
+    if let Some(matches) = matches.subcommand_matches("text") {
         text::main(matches.value_of("number").unwrap().parse::<u32>().unwrap());
-    } else if let Some(ref _matches) = matches.subcommand_matches("viz") {
+    } else if let Some(_matches) = matches.subcommand_matches("viz") {
         viz::main();
-    } else if let Some(ref matches) = matches.subcommand_matches("simulate") {
+    } else if let Some(matches) = matches.subcommand_matches("simulate") {
         simulate::main(matches.value_of("rack").unwrap().to_string());
-    } else if let Some(ref matches) = matches.subcommand_matches("puzzle") {
+    } else if let Some(matches) = matches.subcommand_matches("puzzle") {
         puzzle::main(
             matches.value_of("turns").unwrap().parse::<u32>().unwrap(),
             matches
@@ -43,7 +43,7 @@ fn main() {
                 .parse::<usize>()
                 .unwrap(),
         );
-    } else if let Some(ref matches) = matches.subcommand_matches("play") {
+    } else if let Some(matches) = matches.subcommand_matches("play") {
         play::main(
             matches.value_of("first").unwrap().to_string(),
             matches.value_of("second").unwrap().to_string(),

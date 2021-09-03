@@ -36,9 +36,9 @@ impl Player {
             self.score += m.score as u32;
             match m.typ {
                 Type::Play => {
-                    let chars = board.reals(&m);
-                    let s1 = board.format(&m, true);
-                    let s2 = board.format(&m, false);
+                    let chars = board.reals(m);
+                    let s1 = board.format(m, true);
+                    let s2 = board.format(m, false);
                     board.place_move(m);
 
                     for c in chars {
@@ -51,7 +51,7 @@ impl Player {
 
                     self.draw_up(board);
 
-                    return (Move::of(m), s1.clone(), s2.clone(), len);
+                    return (Move::of(m), s1, s2, len);
                 }
                 Type::Exch => {
                     let word = m.complement(&self.rack);
@@ -114,7 +114,7 @@ impl Player {
     }
 
     pub fn remove(&mut self, board: &mut Board, m: &Move) {
-        self.rack = self.leave(board.reals(&m));
+        self.rack = self.leave(board.reals(m));
         self.draw_up(board);
     }
 

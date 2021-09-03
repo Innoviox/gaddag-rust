@@ -81,7 +81,7 @@ impl Dictionary {
                 .collect::<Vec<String>>()
                 .par_iter()
                 .map(|line| {
-                    let s: Vec<&str> = line.split(" ").collect();
+                    let s: Vec<&str> = line.split(' ').collect();
                     let word = to_word(&s[0].chars().collect());
                     let eval = s[1].parse::<f32>().unwrap();
                     (word, eval)
@@ -132,11 +132,11 @@ impl Trie {
 
             let extend = |t: &mut Trie, ln, c| {
                 if let Some(new) = t.follow(ln, c) {
-                    return new;
+                    new
                 } else {
                     let next_node = t.graph.add_node(c);
-                    t.graph.add_edge(ln, next_node, c.clone());
-                    return next_node;
+                    t.graph.add_edge(ln, next_node, c);
+                    next_node
                 }
             };
 

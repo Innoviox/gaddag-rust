@@ -64,7 +64,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
             out = format!("{}\n#note Time: {}", out, time1);
         }
 
-        if g.get_player(0).rack.len() == 0 {
+        if g.get_player(0).rack.is_empty() {
             break;
         }
 
@@ -128,20 +128,18 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         } else {
             out = format!("{}\n 2*({}) +{}/{}", out, end_s, end, g.get_player(0).score);
         }
+    } else if gcg {
+        let p = g.get_player(1);
+        out = format!("{}\n>{}:  ({}) +{} {}", out, p.name, end_s, end, p.score);
     } else {
-        if gcg {
-            let p = g.get_player(1);
-            out = format!("{}\n>{}:  ({}) +{} {}", out, p.name, end_s, end, p.score);
-        } else {
-            out = format!(
-                "{}\n {} 2*({}) +{}/{}",
-                out,
-                " ".repeat(45),
-                end_s,
-                end,
-                g.get_player(1).score
-            );
-        }
+        out = format!(
+            "{}\n {} 2*({}) +{}/{}",
+            out,
+            " ".repeat(45),
+            end_s,
+            end,
+            g.get_player(1).score
+        );
     }
     if !gcg {
         out = format!("{}\n{}", out, g.get_board());

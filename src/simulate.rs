@@ -7,14 +7,14 @@ pub fn main(rack: String) {
     let mut done = false;
     while !done {
         println!("input ready");
-        let mut copy_state = STATE.clone();
+        let mut copy_state = STATE;
         let mut bag: Vec<char> = vec![];
         for i in 0..15 {
             let mut row = String::new();
             std::io::stdin().read_line(&mut row).unwrap();
             for (idx, c) in row.trim().chars().enumerate() {
                 if idx < 15 && c != '.' {
-                    let c = c.to_uppercase().nth(0).unwrap();
+                    let c = c.to_uppercase().next().unwrap();
                     copy_state[i][idx] = c;
                     bag.push(c);
                 }

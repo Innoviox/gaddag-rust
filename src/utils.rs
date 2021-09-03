@@ -52,8 +52,8 @@ impl Direction {
     pub fn to_str(&self) -> String {
         match self {
             // todo cooler arrows http://xahlee.info/comp/unicode_arrows.html
-            Direction::Down => return String::from("↓"),
-            Direction::Across => return String::from("→"),
+            Direction::Down => String::from("↓"),
+            Direction::Across => String::from("→"),
         }
     }
 
@@ -170,13 +170,13 @@ impl Position {
         let a = ALPH.chars().nth(self.col).unwrap().to_string();
         let b = (self.row + 1).to_string();
         match dir {
-            Direction::Across => return b + &a,
-            Direction::Down => return a + &b,
+            Direction::Across => b + &a,
+            Direction::Down => a + &b,
         }
     }
 
     pub fn tick_n(&self, d: Direction, n: u32) -> Option<Position> {
-        let mut p = self.clone();
+        let mut p = *self;
         for _ in 0..n {
             if !p.tick(d) {
                 return None;
@@ -234,11 +234,11 @@ impl Move {
         let v2 = w1 * (y.score as f32) + w2 * y.evaluation;
 
         if v1 > v2 {
-            return Ordering::Greater;
+            Ordering::Greater
         } else if v1 < v2 {
-            return Ordering::Less;
+            Ordering::Less
         } else {
-            return Ordering::Equal;
+            Ordering::Equal
         }
     }
 
@@ -255,11 +255,11 @@ impl Move {
     pub fn of(m: &Move) -> Move {
         Move {
             word: m.word.clone(),
-            position: m.position.clone(),
-            direction: m.direction.clone(),
-            score: m.score.clone(),
-            evaluation: m.evaluation.clone(),
-            typ: m.typ.clone(),
+            position: m.position,
+            direction: m.direction,
+            score: m.score,
+            evaluation: m.evaluation,
+            typ: m.typ,
         }
     }
 
@@ -350,9 +350,9 @@ pub fn write_to_file(file: &str, text: String) {
 }
 
 pub fn splice(s1: String, s2: String) -> String {
-    let mut out = format!("{}", "");
+    let mut out = "".to_string();
 
-    for pair in s1.split("\n").zip_longest(s2.split("\n")) {
+    for pair in s1.split('\n').zip_longest(s2.split('\n')) {
         match pair {
             Both(l, r) => out = format!("{}{}{}\n", out, l, r),
             Left(l) => out = format!("{}{}\n", out, l),
