@@ -17,9 +17,10 @@ fn two_player_game(g: &mut Game, gcg: bool) {
     }
 
     let mut turn = 1;
+    println!("-- START --");
 
     while !g.is_over() {
-        let rack_1: String = g.get_player(0).rack.clone().iter().collect();
+        let rack_1: String = g.get_current_player().rack.clone().iter().collect();
         let start1 = SystemTime::now();
         let (m1, _, sm1, _nmoves1) = g.do_move(1, false);
         let time1 = start1.elapsed().expect("Time went backwards").as_millis();
@@ -68,7 +69,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
             break;
         }
 
-        let rack_2: String = g.get_player(1).rack.clone().iter().collect();
+        let rack_2: String = g.get_current_player().rack.clone().iter().collect();
         let start2 = SystemTime::now();
         let (m2, _, sm2, _nmoves2) = g.do_move(1, false);
         let time2 = start2.elapsed().expect("Time went backwards").as_millis();
@@ -117,7 +118,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         //         println!("{}", out);
         //         println!("{}", g.get_board());
 
-        println!("{}", g.to_str());
+        // println!("{}", g.to_str());
     }
 
     let (end_s, end, n) = g.finish();
@@ -145,6 +146,7 @@ fn two_player_game(g: &mut Game, gcg: bool) {
         out = format!("{}\n{}", out, g.get_board());
     }
     println!("{}", out);
+    println!("-- END --");
 }
 
 pub fn main(n: u32) {

@@ -42,7 +42,7 @@ fn main() {
                 .unwrap()
                 .parse::<usize>()
                 .unwrap(),
-        );
+        ); 
     } else if let Some(matches) = matches.subcommand_matches("play") {
         play::main(
             matches.value_of("first").unwrap().to_string(),
